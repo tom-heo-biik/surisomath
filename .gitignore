@@ -6,3 +6,4 @@ __pycache__/
 
 # 렌더 결과물
 skills/surisomath-a4/templates/*.pdf
+build/_*
