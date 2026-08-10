@@ -1,0 +1,30 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "surisomath",
+  "description": "수리소 수학학원 브랜드 플러그인 마켓플레이스",
+  "owner": {
+    "name": "biik"
+  },
+  "plugins": [
+    {
+      "name": "biik",
+      "description": "수리소 수학학원 표준 양식 스킬 — A4 인쇄물",
+      "version": "0.1.0",
+      "author": {
+        "name": "biik"
+      },
+      "source": "./",
+      "category": "productivity",
+      "tags": [
+        "suriso",
+        "surisomath",
+        "template",
+        "a4",
+        "print",
+        "document",
+        "biik"
+      ]
+    }
+  ],
+  "version": "0.1.0"
+}

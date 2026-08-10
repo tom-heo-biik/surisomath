@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>수리소 수학학원 문서 양식 견본</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+
+<h1>수리소 수학학원 문서 양식 견본</h1>
+
+<section>
+  <h2>개요</h2>
+  <p>이 문서는 수리소 수학학원 문서 양식에 들어 있는 요소를 한 번씩 보여 준다. 판형은 A4 세로 595×842pt, 여백은 위 72pt, 좌우 60pt, 아래 88pt다. 본문 영역 높이는 682pt이고 이는 22pt 그리드로 정확히 31행에 떨어진다.</p>
+  <p>모든 글줄은 22pt 베이스라인 그리드 위에 놓인다. 문단 사이는 한 칸, 섹션 위는 한 칸 반, 섹션 아래는 반 칸을 둔다. 섹션은 중간에서 쪽이 끊기지 않으므로 아래쪽 여백이 크게 남을 수 있는데, 이는 의도한 결과다.</p>
+  <p>줄은 어절 단위로 바꾼다. 인쇄해서 읽는 문서라 한 어절이 두 줄에 걸치면 읽는 속도가 눈에 띄게 떨어지기 때문이다. 렌더러가 어절마다 <q>줄 바꿈 금지</q>를 걸어 이를 지킨다.</p>
+</section>
+
+<section>
+  <h2>표기 규칙</h2>
+
+  <h3>날짜와 시각</h3>
+  <p>날짜는 2026. 8. 6. 처럼 쓰고, 시각은 14:30 처럼 쓴다. 기간은 2026. 8. 6.~2026. 9. 5. 와 같이 물결표 앞뒤를 모두 붙인다.</p>
+
+  <h3>수와 단위</h3>
+  <p>통화는 120,000원으로 적는다. 단위는 숫자에 붙여 10건, 3개월, 50%로 쓴다. 숫자는 고정폭이라 0123456789와 1111111111의 폭이 같다.</p>
+</section>
+
+<section>
+  <h2>리스트</h2>
+
+  <h3>글머리표</h3>
+  <ul>
+    <li>1레벨 항목은 마커 왼끝에서 텍스트 왼끝까지 10pt를 둔다</li>
+    <li>되돌아온 줄도 텍스트 왼끝에 맞으므로 긴 항목이 두 줄이 되어도 왼쪽 선이 흐트러지지 않는다</li>
+    <li>2레벨은 12pt 들어간다
+      <ul>
+        <li>마커와 텍스트가 함께 이동한다</li>
+        <li>중첩은 2레벨까지만 쓴다</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>순서 표기</h3>
+  <ol class="n1">
+    <li>첫째 단계</li>
+    <li>둘째 단계</li>
+  </ol>
+  <ol class="n2">
+    <li>가나다 순서</li>
+    <li>두 번째 항목</li>
+  </ol>
+  <ol class="n5">
+    <li>괄호를 쓰는 층위</li>
+    <li>두 번째 항목</li>
+  </ol>
+  <ol class="n7">
+    <li>동그라미 숫자</li>
+    <li>두 번째 항목</li>
+  </ol>
+</section>
+
+<section>
+  <h2>표</h2>
+  <table>
+    <thead>
+      <tr><th>구분</th><th>내용</th><th class="num">수량</th><th class="num">금액</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>가</td><td>첫 번째 항목</td><td class="num">10건</td><td class="num">120,000원</td></tr>
+      <tr><td>나</td><td>두 번째 항목</td><td class="num">3건</td><td class="num">36,000원</td></tr>
+      <tr><td>다</td><td>세 번째 항목</td><td class="num">25건</td><td class="num">300,000원</td></tr>
+      <tr><td>라</td><td>네 번째 항목</td><td class="num">8건</td><td class="num">96,000원</td></tr>
+      <tr><td>합계</td><td></td><td class="num">46건</td><td class="num">552,000원</td></tr>
+    </tbody>
+  </table>
+  <p class="caption">표 1. 선은 가로만 0.4pt로 긋고 배경은 쓰지 않는다. 행 높이는 테두리를 포함해 22pt다.</p>
+</section>
+
+<section>
+  <h2>수식</h2>
+  <p>수식은 별행으로 놓고 블록 높이를 22의 배수로 맞춘다. 수식 안에서는 줄을 바꾸지 않는다.</p>
+  <div class="math" style="--u:3"><img src="figures/equation-sample.svg" alt="수식"></div>
+  <p class="caption">식 1. Computer Modern, 본문 배율 1.0.</p>
+</section>
+
+<section>
+  <h2>그래프</h2>
+  <p>그래프도 블록 높이를 22의 배수로 맞춘다. 축은 0.4pt, 그래프 선은 1pt, 점선은 0.4pt에 2pt 등간격이다.</p>
+  <div class="figure" style="--u:8"><img src="figures/graph-sample.svg" alt="그래프"></div>
+  <p class="caption">그림 1. 월별 추이.</p>
+</section>
+
+<section>
+  <h2>쪽 나눔</h2>
+  <p>섹션은 중간에서 끊기지 않는다. 한 섹션이 남은 자리에 다 들어가지 않으면 통째로 다음 쪽으로 넘어가고, 넘어간 섹션은 윗여백선에서 정확히 시작해 그리드를 유지한다.</p>
+  <p>외톨이줄은 두지 않는다. 문단의 첫 줄이나 마지막 줄이 혼자 남으면 두 줄이 함께 넘어간다.</p>
+  <p>쪽번호는 하단 가운데, 종이 아래끝에서 44pt 위에 놓인다.</p>
+</section>
+
+</body>
+</html>

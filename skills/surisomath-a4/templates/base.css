@@ -1,0 +1,356 @@
+/* ==========================================================================
+   수리소 수학학원 문서 양식
+   판형 595×842pt · 여백 72/60/88pt · 베이스라인 그리드 22pt
+   렌더러: WeasyPrint
+   --------------------------------------------------------------------------
+   본문 영역 높이 = 842 - 72 - 88 = 682pt = 22pt × 31행 (정확히 떨어짐)
+   본문 영역 너비 = 595 - 60 - 60 = 475pt
+   ========================================================================== */
+
+
+/* --- 폰트 ---------------------------------------------------------------- */
+/* 로컬 fonts/ 를 먼저 쓰고, 없으면 CDN으로 폴백한다. */
+
+@font-face {
+  font-family: "KoPubWorld Batang";
+  font-weight: 300;
+  font-style: normal;
+  src: url("fonts/KoPubWorld-Batang-Light.otf") format("opentype"),
+       url("https://cdn.jsdelivr.net/npm/font-kopubworld@1.0.3/fonts/KoPubWorld-Batang-Light.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "KoPubWorld Batang";
+  font-weight: 500;
+  font-style: normal;
+  src: url("fonts/KoPubWorld-Batang-Medium.otf") format("opentype"),
+       url("https://cdn.jsdelivr.net/npm/font-kopubworld@1.0.3/fonts/KoPubWorld-Batang-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "KoPubWorld Batang";
+  font-weight: 700;
+  font-style: normal;
+  src: url("fonts/KoPubWorld-Batang-Bold.otf") format("opentype"),
+       url("https://cdn.jsdelivr.net/npm/font-kopubworld@1.0.3/fonts/KoPubWorld-Batang-Bold.otf") format("opentype");
+}
+
+
+/* --- 토큰 ---------------------------------------------------------------- */
+
+:root {
+  /* 명도 */
+  --neutral-500:  #636363;   /* L 0.500 */
+  --neutral-600:  #484848;   /* L 0.402 */
+  --neutral-700:  #2E2E2E;   /* L 0.301 */
+  --neutral-800:  #161616;   /* L 0.200 */
+  --neutral-900:  #030303;   /* L 0.097 */
+  --neutral-1000: #000000;   /* L 0.000 */
+
+  /* 그리드 */
+  --grid: 22pt;              /* 한 칸 */
+  --half: 11pt;              /* 반 칸 */
+
+  /* 역할별 명도 배정 — 스펙에 매핑이 없어 정한 기본값. 필요하면 바꿔 쓴다. */
+  --c-title:   var(--neutral-1000);
+  --c-heading: var(--neutral-900);
+  --c-body:    var(--neutral-800);
+  --c-caption: var(--neutral-600);
+  --c-rule:    var(--neutral-500);
+  --c-folio:   var(--neutral-600);
+}
+
+
+/* --- 판형 ---------------------------------------------------------------- */
+
+@page {
+  size: 595pt 842pt;              /* A4 세로. 그리드가 정수로 떨어지도록 pt로 고정 */
+  margin: 72pt 60pt 88pt;
+
+  /* 쪽번호 — 하단 여백 88pt의 한가운데, 곧 아래에서 44pt 위 */
+  @bottom-center {
+    content: "- " counter(page) " -";
+    font-family: "KoPubWorld Batang";
+    font-weight: 300;
+    font-size: 10pt;
+    letter-spacing: -0.02em;
+    line-height: 22pt;
+    height: 88pt;
+    vertical-align: middle;
+    white-space: nowrap;        /* 없으면 마진 박스가 최소폭으로 줄어 두 줄로 깨진다 */
+    color: #484848;
+  }
+}
+
+
+/* --- 본문 기본 ------------------------------------------------------------ */
+
+body {
+  font-family: "KoPubWorld Batang";
+  font-weight: 300;
+  font-size: 12pt;
+  line-height: var(--grid);
+  letter-spacing: -0.03em;
+  color: var(--c-body);
+
+  margin: 0;
+  text-align: left;               /* 왼끝맞추기 */
+  hyphens: none;
+  orphans: 2;                     /* 외톨이줄 금지 */
+  widows: 2;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 어절 단위 줄 바꿈.
+   WeasyPrint는 word-break:keep-all 을 지원하지 않으므로 어절마다 이 클래스를 건다.
+   render.py 가 본문 텍스트에 자동으로 씌운다. */
+.w { white-space: nowrap; }
+
+/* 둥근 따옴표 */
+q { quotes: "\201C" "\201D" "\2018" "\2019"; }
+
+
+/* --- 타이포그래피 --------------------------------------------------------- */
+
+.typo-4 { font-size: 20pt; font-weight: 700; letter-spacing: -0.05em; line-height: var(--grid); }
+.typo-3 { font-size: 16pt; font-weight: 500; letter-spacing: -0.04em; line-height: var(--grid); }
+.typo-2 { font-size: 12pt; font-weight: 500; letter-spacing: -0.03em; line-height: var(--grid); }
+.typo-1 { font-size: 12pt; font-weight: 300; letter-spacing: -0.03em; line-height: var(--grid); }
+.typo-0 { font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: var(--grid); }
+.typo-0-strong { font-size: 10pt; font-weight: 500; letter-spacing: -0.02em; }
+
+
+/* 제목 — typo-4, 가운데정렬 */
+h1 {
+  font-size: 20pt; font-weight: 700; letter-spacing: -0.05em;
+  line-height: var(--grid);
+  color: var(--c-title);
+  text-align: center;
+  margin: 0 0 44pt;               /* 두 칸. 스펙 미지정 기본값 */
+}
+
+/* 섹션 — typo-3 */
+h2 {
+  font-size: 16pt; font-weight: 500; letter-spacing: -0.04em;
+  line-height: var(--grid);
+  color: var(--c-heading);
+  margin: 0 0 var(--half);        /* 섹션 아래 11pt. 위 33pt는 section 이 만든다 */
+  break-after: avoid;
+}
+
+/* 소제목 — typo-2 */
+h3 {
+  font-size: 12pt; font-weight: 500; letter-spacing: -0.03em;
+  line-height: var(--grid);
+  color: var(--c-heading);
+  margin: 0;                      /* 위 간격은 앞 문단의 22pt 가 만든다 */
+  break-after: avoid;
+}
+
+p {
+  margin: 0 0 var(--grid);        /* 문단 간격 22pt */
+}
+
+/* 세로 간격은 전부 '아래 여백'으로만 준다.
+   위 여백을 함께 쓰면 마진 병합으로 큰 쪽이 이겨서, 예컨대 섹션 제목 바로 뒤에
+   표가 오면 섹션 아래 간격 11pt 가 표의 위 여백 22pt 에 먹힌다. 그러면 그
+   섹션부터 뒤쪽 전체가 반 칸씩 밀린다. */
+h1, h2, h3, p, ul, ol, table, .math, .figure { margin-top: 0; }
+
+
+/* --- 섹션 ---------------------------------------------------------------- */
+/* 섹션 위 33pt 는 "앞 섹션의 아래 여백"으로 준다.
+   h2 에 margin-top 을 걸면 섹션이 다음 쪽으로 넘어갔을 때 그 여백이 쪽 맨 위에
+   남아 그리드가 밀린다. 아래 여백으로 주면 쪽이 바뀌어도 본문이 정확히
+   상단 여백선에서 시작한다. */
+
+section {
+  break-inside: avoid;            /* 섹션 중간에서 쪽이 끊기지 않게 */
+  margin: 0 0 33pt;
+}
+section > :last-child { margin-bottom: 0; }
+section:last-child      { margin-bottom: 0; }
+
+
+/* --- 리스트 -------------------------------------------------------------- */
+/* --pad = 마커 칸 폭. 곧 마커 왼끝에서 텍스트 왼끝까지의 거리다.
+   되돌아온 줄도 텍스트 왼끝에 맞는다. */
+
+ul, ol {
+  --pad: 10pt;                    /* 글머리표 마커 간격 10pt */
+  margin: 0 0 var(--grid);
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  --parent-pad: var(--pad);       /* 중첩 리스트가 되짚어 쓸 부모의 마커 칸 */
+  margin: 0;                      /* 항목 사이 간격 0pt */
+  line-height: var(--grid);       /* 블록 높이 22pt */
+  padding-left: var(--pad);
+}
+
+li::before {
+  display: inline-block;
+  width: var(--pad);
+  margin-left: calc(-1 * var(--pad));
+  content: "\2022";               /* • 1레벨 */
+}
+
+/* 2레벨 — 마커와 텍스트가 함께 12pt 이동.
+   중첩 리스트는 부모 항목의 '텍스트' 위치에서 시작하므로, 부모의 마커 칸만큼
+   되돌린 뒤 12pt를 준다. 그래야 마커 기준으로 정확히 12pt 이동한다. */
+li > ul, li > ol {
+  margin: 0 0 0 calc(-1 * var(--parent-pad));
+  padding-left: 12pt;
+}
+li > ul > li::before { content: "\25E6"; }   /* ◦ */
+
+/* 리스트 안의 중첩은 2레벨까지만 쓴다 */
+
+
+/* --- 순서 표기 ------------------------------------------------------------ */
+/* 1. → 가. → 1) → 가) → (1) → (가) → ① → ㉮
+   ul 과 달리 마커 폭은 스펙에 없다. 22pt(한 칸)를 기본으로 두고
+   괄호형만 33pt(한 칸 반)를 쓴다. */
+
+/* WeasyPrint에는 hangul 카운터가 없어 쓰면 1·2·3으로 떨어진다. 직접 정의한다. */
+@counter-style ko-hangul {
+  system: alphabetic;
+  symbols: "가" "나" "다" "라" "마" "바" "사" "아" "자" "차" "카" "타" "파" "하";
+  suffix: "";
+}
+
+@counter-style circled-decimal {
+  system: fixed 1;
+  symbols: "\2460" "\2461" "\2462" "\2463" "\2464" "\2465" "\2466" "\2467" "\2468" "\2469"
+           "\246A" "\246B" "\246C" "\246D" "\246E" "\246F" "\2470" "\2471" "\2472" "\2473";
+  suffix: "";
+}
+
+@counter-style circled-hangul {
+  system: fixed 1;
+  symbols: "\326E" "\326F" "\3270" "\3271" "\3272" "\3273" "\3274"
+           "\3275" "\3276" "\3277" "\3278" "\3279" "\327A" "\327B";
+  suffix: "";
+}
+
+ol { --pad: 22pt; counter-reset: item; }
+ol.n5, ol.n6 { --pad: 33pt; }          /* 괄호형은 한 칸 반 */
+ol > li { counter-increment: item; }
+
+ol.n1 > li::before { content: counter(item, decimal) "."; }
+ol.n2 > li::before { content: counter(item, ko-hangul) "."; }
+ol.n3 > li::before { content: counter(item, decimal) ")"; }
+ol.n4 > li::before { content: counter(item, ko-hangul) ")"; }
+ol.n5 > li::before { content: "(" counter(item, decimal) ")"; }
+ol.n6 > li::before { content: "(" counter(item, ko-hangul) ")"; }
+ol.n7 > li::before { content: counter(item, circled-decimal); }
+ol.n8 > li::before { content: counter(item, circled-hangul); }
+
+
+/* --- 표 ------------------------------------------------------------------ */
+/* 행 높이 22pt 를 지키려면 선 두께를 행 높이 안에서 빼야 한다. 그러지 않으면
+   행마다 밀려 표 아래 본문이 그리드를 벗어난다. WeasyPrint 는 collapse 상태에서
+   '아래선'만 행 높이에 더하고, '위선'은 행이 아니라 표 전체 높이에 더한다.
+
+     내용 높이 = 22pt - (그 행의 아래선)        ← 선이 없는 행은 22pt 그대로
+     첫 행은 여기서 위선 두께를 한 번 더 뺀다
+
+   그래서 두께를 상수로 박지 않고 --rule / --top 으로 두고 계산한다. 선을 모든
+   행에 긋지 않는 표(머리행 아래와 맨 아래에만 긋는 식)에서도 높이가 맞는다.
+   표 전체 높이 = 22pt × 행수.
+
+   위선을 첫 행에만 거는 까닭: 이웃한 아래선과 위선은 합쳐져 한 줄이 된다.
+   가운데 행에도 위선을 걸면 없는 줄을 한 번 더 빼게 되어 행마다 0.4pt 모자란다.
+
+   height 를 line-height 와 함께 주는 까닭: 행 높이를 실제로 정하는 것은
+   line-height 지만, 셀이 전부 빈 행은 줄상자가 생기지 않아 높이가 0 이 된다.
+   height 가 그 바닥을 잡아 준다. 둘 중 하나만 지우면 안 된다. */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 var(--grid);        /* 표 아래 22pt. 위 간격은 앞 요소가 만든다 */
+  break-inside: avoid;
+
+  font-size: 10pt;                /* typo-0 */
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+th, td {
+  --rule: 0.4pt;                  /* 이 행의 아래선 두께. 0pt 면 선이 없다 */
+  --top: 0pt;                     /* 이 행의 위선 두께. 첫 행에서만 0.4pt */
+
+  height:      calc(var(--grid) - var(--rule) - var(--top));
+  line-height: calc(var(--grid) - var(--rule) - var(--top));
+  padding: 0 16pt;                /* 셀 가로 패딩 16pt */
+  border: 0;
+  border-top:    var(--top) solid var(--c-rule);
+  border-bottom: var(--rule) solid var(--c-rule);
+  background: none;               /* 배경 없음 */
+  vertical-align: middle;
+  text-align: left;
+}
+
+/* 첫 열 왼쪽 · 끝 열 오른쪽 패딩은 0 — 본문 세로선에 맞춘다 */
+tr > :first-child { padding-left: 0; }
+tr > :last-child  { padding-right: 0; }
+
+/* 표 맨 위 가로선. 높이 보정은 위 calc 이 알아서 한다.
+   :not() 으로 걸러 두는 까닭은, 나중에 --top 을 0 으로 되돌리는 규칙을 따로
+   쓰면 이 선택자가 특정도에서 이겨 버리기 때문이다. 아예 안 걸리게 한다. */
+table:not(.no-top-rule) > thead:first-child > tr:first-child > *,
+table:not(.no-top-rule) > tbody:first-child > tr:first-child > *,
+table:not(.no-top-rule) > tr:first-child > * {
+  --top: 0.4pt;
+}
+
+/* 이 행 아래에 선을 긋지 않는다. 그래도 행 높이는 22pt 로 유지된다 */
+tr.no-rule > * { --rule: 0pt; }
+
+thead th { font-weight: 500; }    /* typo-0 강조 */
+
+/* 숫자 열 — 고정폭 숫자를 못 쓰는 경우 오른쪽 정렬 */
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+caption, figcaption, .caption {
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
+  line-height: var(--grid);
+  color: var(--c-caption);
+  text-align: left;
+  caption-side: bottom;
+}
+
+
+/* --- 수식 · 그래프 -------------------------------------------------------- */
+/* LaTeX(수식) / TikZ·pgfplots(그래프) 결과물을 SVG 또는 PDF로 뽑아 넣는다.
+   블록 높이는 22의 배수여야 한다. --u 로 칸 수를 준다: style="--u:6" → 132pt */
+
+.math, .figure {
+  --u: 4;
+  height: calc(var(--u) * var(--grid));
+  margin: 0 0 var(--grid);
+  text-align: center;
+  break-inside: avoid;
+  overflow: hidden;
+}
+
+/* 배율 1.0 — 제 크기로 놓는다. 블록보다 클 때만 비율을 지켜 줄인다. */
+.math > *, .figure > * {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.math { white-space: nowrap; }    /* 수식 안에서는 줄을 바꾸지 않는다 */
+
+
+/* --- 쪽 나눔 -------------------------------------------------------------- */
+
+.page-break { break-before: page; }
+.keep       { break-inside: avoid; }
