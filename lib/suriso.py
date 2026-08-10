@@ -18,19 +18,37 @@ from pathlib import Path
 # ── 경로 ────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
+FONTS = ASSETS / "fonts"
 
-# 서체 실파일은 surisomath-a4 스킬 안에 산다. 스킬 명세가 templates/fonts/ 를
+# KoPubWorld 바탕체만 스킬 안에 산다. surisomath-a4 명세가 templates/fonts/ 를
 # 자기 파일 목록으로 잡고 있어서, 사본을 하나 더 두지 않고 그쪽을 정본으로 본다.
-FONTS = ROOT / "skills" / "surisomath-a4" / "templates" / "fonts"
+BATANG_DIR = ROOT / "skills" / "surisomath-a4" / "templates" / "fonts"
 
 # ── 서체 ────────────────────────────────────────────────────────────────
-# KoPubWorld 바탕체. 무게는 웹 축(300·500·700)으로 부른다.
-# 패키지 공식 CSS는 Medium을 400에 매핑하지만 비익 계열 플러그인은 500에 앉힌다.
-BATANG_LIGHT = FONTS / "KoPubWorld-Batang-Light.otf"
-BATANG_MEDIUM = FONTS / "KoPubWorld-Batang-Medium.otf"
-BATANG_BOLD = FONTS / "KoPubWorld-Batang-Bold.otf"
+# 무게는 웹 축(300~700)으로 부른다. KoPubWorld 공식 CSS는 Medium을 400에
+# 매핑하지만 비익 계열 플러그인은 500에 앉힌다.
+BATANG_LIGHT = BATANG_DIR / "KoPubWorld-Batang-Light.otf"
+BATANG_MEDIUM = BATANG_DIR / "KoPubWorld-Batang-Medium.otf"
+BATANG_BOLD = BATANG_DIR / "KoPubWorld-Batang-Bold.otf"
 
 BATANG = {300: BATANG_LIGHT, 500: BATANG_MEDIUM, 700: BATANG_BOLD}
+
+PRETENDARD = {
+    300: FONTS / "Pretendard-Light.otf",
+    400: FONTS / "Pretendard-Regular.otf",
+    500: FONTS / "Pretendard-Medium.otf",
+    600: FONTS / "Pretendard-SemiBold.otf",
+    700: FONTS / "Pretendard-Bold.otf",
+}
+
+# 학교안심 상장체. 상장에만 쓴다. 무게가 하나뿐이다.
+SANGJANG = FONTS / "HakgyoansimSangjangR.ttf"
+
+FAMILIES = {
+    "batang": BATANG,
+    "pretendard": PRETENDARD,
+    "sangjang": {400: SANGJANG},
+}
 
 # ── 로고 ────────────────────────────────────────────────────────────────
 # 래스터 PNG뿐이라 확대에 한계가 있다. 원본 픽셀을 넘겨 키우면 흐려진다.
@@ -94,24 +112,31 @@ def natural_mm(name: str, dpi: int = DPI) -> float:
     return px2mm(LOGO_SIZE[name][0], dpi)
 
 
-def font(weight: int = 500, size: int = 12):
-    """KoPubWorld 바탕체 PIL ImageFont. size는 픽셀."""
+def font(weight: int = 500, size: int = 12, family: str = "batang"):
+    """PIL ImageFont. size는 픽셀. family는 batang·pretendard·sangjang."""
     from PIL import ImageFont  # 필요할 때만 부른다
 
     try:
-        path = BATANG[weight]
+        faces = FAMILIES[family]
     except KeyError:
-        raise ValueError(f"무게는 300·500·700 중 하나여야 합니다: {weight}") from None
+        raise ValueError(f"서체는 {'·'.join(FAMILIES)} 중 하나여야 합니다: {family}") from None
+    try:
+        path = faces[weight]
+    except KeyError:
+        have = "·".join(str(w) for w in faces)
+        raise ValueError(f"{family}의 무게는 {have} 중 하나여야 합니다: {weight}") from None
     return ImageFont.truetype(str(path), size)
+
+
+def _all_assets():
+    for faces in FAMILIES.values():
+        yield from faces.values()
+    yield from LOGOS.values()
 
 
 def verify() -> list[str]:
     """빠진 자산의 목록. 비어 있으면 정상."""
-    return [
-        str(p.relative_to(ROOT))
-        for p in (*BATANG.values(), *LOGOS.values())
-        if not p.exists()
-    ]
+    return [str(p.relative_to(ROOT)) for p in _all_assets() if not p.exists()]
 
 
 if __name__ == "__main__":
@@ -125,11 +150,16 @@ if __name__ == "__main__":
             print(f"  - {m}")
         sys.exit(1)
 
-    print(f"자산 {len(BATANG) + len(LOGOS)}종 모두 있음.")
+    print(f"자산 {len(list(_all_assets()))}종 모두 있음.\n")
     for name in LOGO_SIZE:
         w, h = LOGO_SIZE[name]
         print(f"  {name:14s} {w}×{h}px  1:1 = {natural_mm(name):.1f}mm @ {DPI}DPI")
+
+    print()
     try:
-        print(f"서체 적재 성공: {font(500, 40).getname()}")
+        for fam, faces in FAMILIES.items():
+            for weight in faces:
+                got = font(weight, 40, fam).getname()
+                print(f"  {fam:11s} {weight}  {got[0]} {got[1]}")
     except ImportError:
         print("PIL 미설치 — 서체 적재는 건너뜀 (pip install pillow)")

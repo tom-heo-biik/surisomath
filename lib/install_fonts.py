@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""KoPubWorld 바탕체를 이 PC에 설치한다.
+"""플러그인에 담긴 서체를 이 PC에 설치한다.
 
-플러그인 안의 스킬은 templates/fonts/ 를 직접 읽으므로 설치 없이도 돌아간다.
-이 스크립트는 그 바깥, 곧 한글·워드·파워포인트처럼 OS에 깔린 서체만 쓰는
-프로그램에서도 같은 서체를 쓰려고 할 때만 필요하다.
+플러그인 안의 스킬과 빌드 스크립트는 담아 둔 파일을 직접 읽으므로 설치 없이도
+돌아간다. 이 스크립트는 그 바깥, 곧 한글·워드·파워포인트처럼 OS에 깔린 서체만
+쓰는 프로그램에서도 같은 서체를 쓰려고 할 때만 필요하다.
 
     python lib/install_fonts.py            → 설치
     python lib/install_fonts.py --check    → 설치 여부만 본다
@@ -18,22 +18,36 @@ import subprocess
 import sys
 from pathlib import Path
 
-FONTS = Path(__file__).resolve().parent.parent / "skills" / "surisomath-a4" / "templates" / "fonts"
+import suriso
 
-# 파일 이름 → (서체 안에 박힌 이름, 무게 키워드).
-# 이름은 윈도우 레지스트리 등록에, 무게 키워드는 이미 깔렸는지 볼 때 쓴다.
-FACES = {
-    "KoPubWorld-Batang-Light.otf": ("KoPubWorldBatang_Pro Light", "light"),
-    "KoPubWorld-Batang-Medium.otf": ("KoPubWorldBatang_Pro Medium", "medium"),
-    "KoPubWorld-Batang-Bold.otf": ("KoPubWorldBatang_Pro Bold", "bold"),
-}
+# 설치할 서체. (파일, 서체에 박힌 이름, 계열 토큰, 무게 토큰)
+# 계열·무게 토큰은 이미 깔렸는지 볼 때 쓴다. 파일 이름은 배포처마다 다르다.
+FACES = [
+    (suriso.BATANG_LIGHT, "KoPubWorldBatang_Pro Light", "kopubworldbatang", "light"),
+    (suriso.BATANG_MEDIUM, "KoPubWorldBatang_Pro Medium", "kopubworldbatang", "medium"),
+    (suriso.BATANG_BOLD, "KoPubWorldBatang_Pro Bold", "kopubworldbatang", "bold"),
+    (suriso.PRETENDARD[300], "Pretendard Light", "pretendard", "light"),
+    (suriso.PRETENDARD[400], "Pretendard Regular", "pretendard", "regular"),
+    (suriso.PRETENDARD[500], "Pretendard Medium", "pretendard", "medium"),
+    (suriso.PRETENDARD[600], "Pretendard SemiBold", "pretendard", "semibold"),
+    (suriso.PRETENDARD[700], "Pretendard Bold", "pretendard", "bold"),
+    (suriso.SANGJANG, "Hakgyoansim Sangjang R", "hakgyoansimsangjang", None),
+]
 
-FAMILY = "kopubworldbatang"
+# 긴 것부터 봐야 한다. 'semibold' 안에 'bold'가 들어 있어서, 짧은 쪽을 먼저 집으면
+# 세미볼드 파일을 볼드로 잘못 센다.
+WEIGHTS = ["extrabold", "semibold", "regular", "medium", "light", "black", "thin", "bold"]
 
 
 def _norm(s: str) -> str:
     """공백·하이픈·밑줄을 지우고 소문자로. 배포처마다 파일 이름이 달라서 필요하다."""
     return re.sub(r"[\s_\-]+", "", s).lower()
+
+
+def _weight_of(flat: str) -> str | None:
+    """눌러 편 파일 이름에서 무게를 읽는다. 겹치는 토큰은 긴 쪽이 이긴다."""
+    hits = [w for w in WEIGHTS if w in flat]
+    return max(hits, key=len) if hits else None
 
 
 def target_dir() -> Path:
@@ -66,7 +80,7 @@ def _registered_files() -> list[str]:
 
 
 def installed() -> set[str]:
-    """이미 깔려 있는 서체의 파일 이름 집합(우리 이름 기준).
+    """이미 깔려 있는 서체 이름.
 
     같은 서체라도 배포처마다 파일 이름이 다르다. 실제로 이 PC에는 벤더 설치본이
     'KoPubWorld Batang_Pro Medium.otf' 라는 이름에 'KoPubWorld바탕체_Pro' 라는
@@ -77,11 +91,11 @@ def installed() -> set[str]:
     if sys.platform == "win32":
         names += _registered_files()
 
-    flat = [_norm(n) for n in names]
+    seen = [(f, _weight_of(f)) for f in map(_norm, names)]
     return {
-        name
-        for name, (_, weight) in FACES.items()
-        if any(FAMILY in f and weight in f for f in flat)
+        face
+        for _, face, family, weight in FACES
+        if any(family in flat and w == weight for flat, w in seen)
     }
 
 
@@ -94,9 +108,10 @@ def _register_windows(path: Path, face: str) -> None:
     import ctypes
     import winreg
 
+    kind = "TrueType" if path.suffix.lower() == ".ttf" else "OpenType"
     key = r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
     with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key, 0, winreg.KEY_SET_VALUE) as k:
-        winreg.SetValueEx(k, f"{face} (OpenType)", 0, winreg.REG_SZ, str(path))
+        winreg.SetValueEx(k, f"{face} ({kind})", 0, winreg.REG_SZ, str(path))
 
     ctypes.windll.gdi32.AddFontResourceW(str(path))
     ctypes.windll.user32.SendMessageTimeoutW(
@@ -113,38 +128,39 @@ def main() -> int:
     check_only = "--check" in sys.argv
     dst = target_dir()
 
-    missing = [n for n in FACES if not (FONTS / n).exists()]
+    missing = [src.name for src, *_ in FACES if not src.exists()]
     if missing:
         print(f"플러그인 안에 서체가 없다: {', '.join(missing)}", file=sys.stderr)
-        print(f"  찾은 곳: {FONTS}", file=sys.stderr)
         return 1
 
     done = installed()
 
     if check_only:
-        for name, (face, _) in FACES.items():
-            print(f"  {'설치됨' if name in done else '미설치'}  {face}")
+        for _, face, _, _ in FACES:
+            print(f"  {'설치됨' if face in done else '미설치'}  {face}")
         return 0 if len(done) == len(FACES) else 1
 
-    for name, (face, _) in FACES.items():
-        if name in done:
+    fresh = 0
+    for src, face, _, _ in FACES:
+        if face in done:
             print(f"  건너뜀  {face} (이미 있음)")
             continue
         dst.mkdir(parents=True, exist_ok=True)
-        out = dst / name
-        shutil.copy2(FONTS / name, out)
+        out = dst / src.name
+        shutil.copy2(src, out)
         if sys.platform == "win32":
             _register_windows(out, face)
         print(f"  설치됨  {face}")
+        fresh += 1
 
-    if sys.platform not in ("win32", "darwin") and len(done) < len(FACES):
+    if fresh and sys.platform not in ("win32", "darwin"):
         if shutil.which("fc-cache"):
             subprocess.run(["fc-cache", "-f", str(dst)], check=False)
         else:
             print("  fc-cache 가 없다. 서체 목록 갱신은 직접 해야 한다.")
 
     print(f"\n{dst}")
-    print("워드·한글·파워포인트에서 서체 이름은 'KoPubWorld바탕체_Pro' 로 뜬다.")
+    print("서체 이름은 'KoPubWorld바탕체_Pro' · 'Pretendard' · '학교안심 상장' 으로 뜬다.")
     return 0
 
 
