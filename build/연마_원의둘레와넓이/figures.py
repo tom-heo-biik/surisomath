@@ -98,27 +98,35 @@ DASH = (0, (2, 2))     # 점선 2pt 등간격
 
 def dim(ax, p, q, text, side=1, gap=1.5, lw=AUX):
     """p에서 q까지의 길이 표시. 두 점을 side 쪽으로 gap만큼 부푼 점선 곡선으로
-    잇고, 글은 곡선 꼭대기 바깥에 둔다."""
+    잇고, 곡선 한가운데를 끊어 그 자리에 글을 앉힌다. 글이 없으면 곡선만 긋고
+    꼭대기 좌표를 돌려준다(지시선을 이을 때 쓴다)."""
     dx, dy = q[0] - p[0], q[1] - p[1]
     L = math.hypot(dx, dy)
     ux, uy = dx / L, dy / L
     nx, ny = -uy * side, ux * side          # side 쪽 법선
     mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
     cx, cy = mx + nx * 2 * gap, my + ny * 2 * gap      # 2차 베지어 제어점(꼭대기가 gap)
-    pts = [((1 - t) ** 2 * p[0] + 2 * (1 - t) * t * cx + t ** 2 * q[0],
-            (1 - t) ** 2 * p[1] + 2 * (1 - t) * t * cy + t ** 2 * q[1])
-           for t in (i / 40 for i in range(41))]
-    ax.plot([x for x, _ in pts], [y for _, y in pts], color=INK, linewidth=lw,
-            linestyle=DASH, dash_capstyle="butt")
     apex = (mx + nx * gap, my + ny * gap)
+
+    def bez(t):
+        return ((1 - t) ** 2 * p[0] + 2 * (1 - t) * t * cx + t ** 2 * q[0],
+                (1 - t) ** 2 * p[1] + 2 * (1 - t) * t * cy + t ** 2 * q[1])
+
+    def draw(t0, t1):
+        pts = [bez(t0 + (t1 - t0) * i / 24) for i in range(25)]
+        ax.plot([x for x, _ in pts], [y for _, y in pts], color=INK, linewidth=lw,
+                linestyle=DASH, dash_capstyle="butt")
+
     if not text:
+        draw(0, 1)
         return apex
-    off = 6.0 / ax.pt
-    m = (apex[0] + nx * off, apex[1] + ny * off)
-    if abs(nx) > abs(ny):
-        label(ax, m[0], m[1], text, ha="left" if nx > 0 else "right")
-    else:
-        label(ax, m[0], m[1], text, va="bottom" if ny > 0 else "top")
+    # 글이 차지하는 폭(pt). 곡선이 가로면 글 너비, 세로면 글 높이만큼 비운다.
+    horizontal = abs(ux) > abs(uy)
+    w = (sum(5.4 if ch.isdigit() else 4.6 for ch in text) if horizontal else 7.5) + 2 * 3.0
+    h = min(w / ax.pt / L / 2, 0.4)          # 매개변수 t 기준 반폭. 현 방향 성분은 t에 비례한다
+    draw(0, 0.5 - h)
+    draw(0.5 + h, 1)
+    label(ax, apex[0], apex[1], text)
     return apex
 
 
@@ -236,7 +244,7 @@ def p3():
 def p3_1():
     s, r = 18.0, 9.0
     corners = [(0, 0), (s, 0), (s, s), (0, s)]
-    f, ax = canvas(6, -1.5, 29.5, -4.6, 19.5)
+    f, ax = canvas(6, -1.5, 30.5, -4.6, 19.5)
     for c, t1 in zip(corners, (0, 90, 180, 270)):
         ax.add_patch(Wedge(c, r, t1, t1 + 90, facecolor=INK, alpha=TINT,
                            edgecolor="none"))
@@ -251,7 +259,7 @@ def p3_1():
     right_angle(ax, (s, 0), -1, 1, m)
     right_angle(ax, (s, s), -1, -1, m)
     right_angle(ax, (0, s), 1, -1, m)
-    dim(ax, (s, 0), (s, s), "18cm", side=-1, gap=1.8)    # 오른쪽 변
+    dim(ax, (s, 0), (s, s), "18cm", side=-1, gap=3.0)    # 오른쪽 변. 글 너비만큼 부풀린다
     dim(ax, (0, 0), (s, 0), "18cm", side=-1, gap=1.8)    # 아래 변
     save(f, "p3_1.svg")
 
@@ -259,7 +267,7 @@ def p3_1():
 def p3_2():
     s, r = 20.0, 10.0
     A, B = (20, 10), (10, 0)             # 오른쪽 반원·아래 반원의 중심
-    f, ax = canvas(6, -1.5, 32.0, -4.9, 21.5)
+    f, ax = canvas(6, -1.5, 33.5, -4.9, 21.5)
     # 두 반원 바깥의 왼쪽 위 조각
     shade(ax, [(0, 0), (0, s), (s, s)] + arc_pts(A, r, 90, 180)
           + arc_pts(B, r, 90, 180))
@@ -277,7 +285,7 @@ def p3_2():
     right_angle(ax, (s, 0), -1, 1, m)
     right_angle(ax, (s, s), -1, -1, m)
     right_angle(ax, (0, s), 1, -1, m)
-    dim(ax, (s, 0), (s, s), "20cm", side=-1, gap=2.0)
+    dim(ax, (s, 0), (s, s), "20cm", side=-1, gap=3.4)
     dim(ax, (0, 0), (s, 0), "20cm", side=-1, gap=2.0)
     save(f, "p3_2.svg")
 
