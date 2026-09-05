@@ -4,17 +4,6 @@
 <meta charset="utf-8">
 <title>연마(硏磨) 원의 둘레와 넓이</title>
 <style>
-/* 모든 쪽 본문 영역의 오른쪽 아래 칸에 심볼. 높이 22pt(그리드 한 칸)를 그리드
-   마지막 줄(31번째)에 앉히고 오른쪽 끝선(두 단의 오른쪽 세로선)에서 4pt 띄운다.
-   여백 상자는 본문 바깥에만 놓이므로 쪽 배경으로 그린다. WeasyPrint는 쪽 배경의
-   기준 상자를 여백 안쪽 본문 영역(475×682pt)으로 잡으므로 right 4pt bottom 0 이
-   본문 오른쪽 끝에서 4pt 안쪽, 맨 아래 칸이다. */
-@page {
-  background: url("figures/symbol.svg") no-repeat;
-  background-position: right 4pt bottom 0;
-  background-size: auto 22pt;
-}
-
 /* 문제 한 개가 한 쪽이다. 본문 영역 높이 682pt(31칸)를 세로 플렉스로 잡아
    문제·그림은 위에 두고, 남은 높이를 두 단 풀이 자리가 채운다.
    위에 반 칸(11pt)을 비우는 까닭: 첫 줄의 시리즈 이름·정답은 캡션 글자라 다른
@@ -61,7 +50,13 @@ section.problem .cols > div + div {
   width: 238pt;
   border-right: 0.4pt solid var(--neutral-1000);
 }
-section.problem .cols.head > div { border-color: transparent; }
+section.problem .cols.head > div { border-color: transparent; padding-left: 4pt; }
+
+/* 소제목 앞 심볼. 높이 22pt(한 칸). 선(투명)에서 4pt, 글은 심볼에서 4pt.
+   글은 span으로 감싼다. 플렉스 상자는 자식 사이 공백을 버려서 어절 span 사이의
+   띄어쓰기가 사라진다. */
+section.problem .cols.head h3 { display: flex; align-items: center; }
+section.problem .cols.head h3 img { height: 22pt; width: auto; margin-right: 4pt; }
 
 </style>
 </head>
@@ -75,8 +70,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p class="answer">정답: 5바퀴</p>
   <p>지름이 17cm인 원 모양의 접시를 굴렸더니 접시가 움직인 거리가 266.9cm였습니다. 접시를 몇 바퀴 굴렸는지 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -90,8 +85,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p class="answer">정답: 10바퀴</p>
   <p>반지름이 6.5cm인 원판을 굴렸더니 원판이 움직인 거리가 408.2cm였습니다. 원판을 몇 바퀴 굴렸는지 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -105,8 +100,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p class="answer">정답: 4바퀴</p>
   <p>반지름이 25cm인 굴렁쇠를 굴렸더니 굴렁쇠가 움직인 거리가 6m 28cm였습니다. 굴렁쇠를 몇 바퀴 굴렸는지 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -123,8 +118,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>반지름이 8cm인 원 3개를 끈으로 묶어 놓은 것입니다. 묶은 끈의 길이는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. (단, 매듭은 생각하지 않습니다.)</p>
   <div class="figure" style="--u:5"><img src="figures/p2.svg" alt="반지름 8cm인 원 3개를 나란히 놓고 끈으로 묶은 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -139,8 +134,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>반지름이 5cm인 원 4개를 끈으로 묶어 놓은 것입니다. 묶은 끈의 길이는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. (단, 매듭은 생각하지 않습니다.)</p>
   <div class="figure" style="--u:6"><img src="figures/p2_1.svg" alt="반지름 5cm인 원 4개를 두 줄로 놓고 끈으로 묶은 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -155,8 +150,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>지름이 21cm인 원 3개를 끈으로 묶어 놓은 것입니다. 묶은 끈의 길이는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. (단, 매듭은 생각하지 않습니다.)</p>
   <div class="figure" style="--u:7"><img src="figures/p2_2.svg" alt="지름 21cm인 원 3개를 삼각형으로 놓고 끈으로 묶은 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -173,8 +168,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>색칠한 부분의 둘레와 넓이를 각각 구하려고 합니다. 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="figure" style="--u:6"><img src="figures/p3.svg" alt="반지름 6cm인 원 안에 반지름 3cm인 반원 두 개로 나눈 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -189,8 +184,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>색칠한 부분의 둘레와 넓이를 각각 구하려고 합니다. 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="figure" style="--u:6"><img src="figures/p3_1.svg" alt="한 변이 18cm인 정사각형의 네 꼭짓점에서 그린 사분원 네 개를 색칠한 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -205,8 +200,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>색칠한 부분의 둘레와 넓이를 각각 구하려고 합니다. 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="figure" style="--u:6"><img src="figures/p3_2.svg" alt="한 변이 20cm인 정사각형 안에 반지름 10cm인 반원 두 개가 겹친 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -223,8 +218,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>작은 원의 원주는 25.12cm입니다. 큰 원의 넓이는 몇 cm²인지 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="figure" style="--u:5"><img src="figures/p4.svg" alt="중심이 같은 두 원. 두 원 사이의 폭이 2cm"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -239,8 +234,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>작은 원의 넓이는 78.5cm²입니다. 큰 원의 원주는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="figure" style="--u:5"><img src="figures/p4_1.svg" alt="큰 원의 반지름을 지름으로 하는 작은 원이 큰 원 안에 붙어 있는 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
@@ -255,8 +250,8 @@ section.problem .cols.head > div { border-color: transparent; }
   <p>큰 원의 넓이는 254.34cm²입니다. 작은 원 1개의 원주는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오.</p>
   <div class="figure" style="--u:6"><img src="figures/p4_2.svg" alt="큰 원의 지름 위에 크기가 같은 작은 원 3개가 나란히 놓인 그림"></div>
   <div class="cols head">
-    <div><h3>원석 풀이</h3></div>
-    <div><h3>보석 풀이</h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>원석 풀이</span></h3></div>
+    <div><h3><img src="figures/symbol.svg" alt=""><span>보석 풀이</span></h3></div>
   </div>
   <div class="cols">
     <div></div>
