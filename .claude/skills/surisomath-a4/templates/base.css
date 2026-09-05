@@ -39,25 +39,22 @@
 /* --- 토큰 ---------------------------------------------------------------- */
 
 :root {
-  /* 명도 */
+  /* 명도 — 스펙에 있는 두 단계뿐이다. 그 사이 회색은 만들지 않는다. */
   --neutral-500:  #636363;   /* L 0.500 */
-  --neutral-600:  #484848;   /* L 0.402 */
-  --neutral-700:  #2E2E2E;   /* L 0.301 */
-  --neutral-800:  #161616;   /* L 0.200 */
-  --neutral-900:  #030303;   /* L 0.097 */
   --neutral-1000: #000000;   /* L 0.000 */
 
   /* 그리드 */
   --grid: 22pt;              /* 한 칸 */
   --half: 11pt;              /* 반 칸 */
 
-  /* 역할별 명도 배정 — 스펙에 매핑이 없어 정한 기본값. 필요하면 바꿔 쓴다. */
+  /* 역할별 명도 배정 — 스펙에 매핑이 없어 정한 기본값. 필요하면 바꿔 쓴다.
+     글은 전부 1000, 캡션·쪽번호·표 선은 500. */
   --c-title:   var(--neutral-1000);
-  --c-heading: var(--neutral-900);
-  --c-body:    var(--neutral-800);
-  --c-caption: var(--neutral-600);
+  --c-heading: var(--neutral-1000);
+  --c-body:    var(--neutral-1000);
+  --c-caption: var(--neutral-500);
   --c-rule:    var(--neutral-500);
-  --c-folio:   var(--neutral-600);
+  --c-folio:   var(--neutral-500);
 }
 
 
@@ -78,7 +75,7 @@
     height: 88pt;
     vertical-align: middle;
     white-space: nowrap;        /* 없으면 마진 박스가 최소폭으로 줄어 두 줄로 깨진다 */
-    color: #484848;
+    color: var(--c-folio);      /* 마진 박스 안에서도 var()가 풀린다(WeasyPrint 69) */
   }
 }
 

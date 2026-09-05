@@ -15,7 +15,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 sys.path.insert(0, str(ROOT / "lib"))
 sys.path.insert(0, str(ROOT / "build"))
-sys.path.insert(0, str(ROOT / "skills" / "surisomath-a4" / "templates"))
+sys.path.insert(0, str(ROOT / ".claude" / "skills" / "surisomath-a4" / "templates"))
 
 import suriso
 import vectorize
@@ -29,7 +29,7 @@ OUT.mkdir(exist_ok=True)
 
 GRID = 22.0
 PT = 1 / 72
-INK = "#161616"        # figure.py와 같은 잉크색
+INK = fig.INK          # figure.py와 같은 잉크색(neutral-1000)
 EDGE = 0.7             # 도형 변
 AUX = 0.4              # 보조선
 PATH = 1.0             # 최단 경로(그래프 선 두께)

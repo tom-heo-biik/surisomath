@@ -1,8 +1,8 @@
 """수리소 수학학원 문서 양식 — 수식·그래프를 SVG로 뽑는다.
 
 스펙대로 Computer Modern, 배율 1.0, 축 0.4pt / 곡선 1pt / 점선 0.4pt·2pt 등간격,
-블록 높이는 22pt의 배수로 맞춘다. 글자는 패스로 변환하므로 결과 SVG는 폰트
-설치 없이 그대로 렌더된다.
+블록 높이는 22pt의 배수로 맞춘다. 글과 선은 neutral-1000, 격자만 neutral-500이다.
+글자는 패스로 변환하므로 결과 SVG는 폰트 설치 없이 그대로 렌더된다.
 
     from figure import equation, graph
 
@@ -31,7 +31,8 @@ PT = 1 / 72          # pt → inch
 RULE = 0.4           # 축 선 두께
 CURVE = 1.0          # 그래프 선 두께
 DASH = (0, (2, 2))   # 점선 2pt 등간격
-INK = "#161616"      # neutral-800
+INK = "#000000"      # neutral-1000 — 글·선
+INK_AUX = "#636363"  # neutral-500 — 격자. 알파 틴트 대신 스펙의 회색을 그대로 쓴다
 
 # Computer Modern에는 한글이 없다. 숫자·수식은 CM으로 두고 한글만 본문 활자로
 # 떨어지도록 폴백을 건다(matplotlib 3.6+ 의 글리프 단위 폴백).
@@ -97,7 +98,7 @@ def graph(series: dict, out: str, units: int = 8, size: float = 12.0,
     if ylabel:
         ax.set_ylabel(ylabel, fontsize=size, color=INK)
     if grid:
-        ax.grid(True, axis="y", linewidth=RULE, linestyle=DASH, color=INK, alpha=0.45)
+        ax.grid(True, axis="y", linewidth=RULE, linestyle=DASH, color=INK_AUX)
         ax.set_axisbelow(True)
     if len(series) > 1:
         ax.legend(fontsize=size, frameon=False, labelcolor=INK)
