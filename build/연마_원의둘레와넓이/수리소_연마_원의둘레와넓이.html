@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>연마(硏磨) 원의 둘레와 넓이</title>
+<style>
+/* 모든 쪽 본문 영역의 오른쪽 아래 칸에 심볼. 높이 22pt(그리드 한 칸)를 그리드
+   마지막 줄(31번째)에 앉히고 오른쪽 끝선(두 단의 오른쪽 세로선)에서 4pt 띄운다.
+   여백 상자는 본문 바깥에만 놓이므로 쪽 배경으로 그린다. WeasyPrint는 쪽 배경의
+   기준 상자를 여백 안쪽 본문 영역(475×682pt)으로 잡으므로 right 4pt bottom 0 이
+   본문 오른쪽 끝에서 4pt 안쪽, 맨 아래 칸이다. */
+@page {
+  background: url("figures/symbol.svg") no-repeat;
+  background-position: right 4pt bottom 0;
+  background-size: auto 22pt;
+}
+
+/* 문제 한 개가 한 쪽이다. 본문 영역 높이 682pt(31칸)를 세로 플렉스로 잡아
+   문제·그림은 위에 두고, 남은 높이를 두 단 풀이 자리가 채운다.
+   위에 반 칸(11pt)을 비우는 까닭: 첫 줄의 시리즈 이름·정답은 캡션 글자라 다른
+   캡션·표와 같은 본문 위상(11 + 22k)에 있어야 한다. 그 아래 반 칸을 더 띄워
+   문제 번호 h2를 제목 위상(22k)에 되돌린다. 11 + 22 + 11 + 22 + 11 = 77. */
+section.problem {
+  box-sizing: border-box; height: 682pt; padding-top: 11pt; margin: 0;
+  break-after: page; position: relative;
+  display: flex; flex-direction: column;
+}
+section.problem > * { flex: none; }
+
+/* 문제 번호 001~012 — 가장 센 위계 typo-4(20pt/700/-0.05em). 줄 높이·아래 여백은
+   h2 그대로라 위상은 변하지 않는다. 문서 제목과 달리 왼끝에 맞춘다. */
+section.problem h2 {
+  font-size: 20pt; font-weight: 700; letter-spacing: -0.05em; text-align: left;
+}
+
+/* 첫 줄: 왼쪽에 시리즈 이름(캡션 서체·검정), 오른쪽 끝에 정답(캡션 서체·회색).
+   둘 다 본문 위상이다. 문제 번호 h2는 반 칸 아래 제목 위상에 온다. */
+section.problem p.series {
+  margin: 0 0 11pt; font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
+  line-height: 22pt; color: var(--neutral-1000);
+}
+section.problem p.answer {
+  position: absolute; top: 11pt; right: 0; margin: 0;
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: 22pt;
+  color: var(--c-caption); text-align: right;
+}
+section.problem .cols { flex: 1; display: flex; margin: 0; min-height: 0; }
+section.problem .cols.head { flex: none; }     /* 소제목 줄. 선은 이 줄 아래서 시작한다 */
+
+/* 두 단은 왼쪽 끝·가운데·오른쪽 끝 세 세로선으로 나눈다. 선은 검정 0.4pt,
+   글은 선에서 8pt. 단 너비를 237·238pt로 못 박는 까닭: 반반(237.5)으로 나누면
+   가운데 선이 픽셀 경계에 걸쳐 화면에서 회색으로 보인다. 정수 좌표(297pt)에
+   두면 세 선이 같은 진하기로 찍힌다. 소제목 줄은 같은 상자에 선만 투명하게
+   두어 글 자리를 아래 단과 똑같이 맞춘다. */
+section.problem .cols > div {
+  flex: none; box-sizing: border-box; width: 237pt; min-width: 0;
+  padding: 0 8pt;
+  border-left: 0.4pt solid var(--neutral-1000);
+}
+section.problem .cols > div + div {
+  width: 238pt;
+  border-right: 0.4pt solid var(--neutral-1000);
+}
+section.problem .cols.head > div { border-color: transparent; }
+
+/* 제목 없이 이어지는 섹션 — 위 11pt를 채워 그리드 위상을 지킨다. */
+section.cont { padding-top: 11pt; }
+
+table.info th { width: 66pt; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- ─── 묶음 1 ─────────────────────────────────────────────────────── -->
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>001</h2>
+  <p class="answer">정답: 5바퀴</p>
+  <p>지름이 17cm인 원 모양의 접시를 굴렸더니 접시가 움직인 거리가 266.9cm였습니다. 접시를 몇 바퀴 굴렸는지 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>002</h2>
+  <p class="answer">정답: 10바퀴</p>
+  <p>반지름이 6.5cm인 원판을 굴렸더니 원판이 움직인 거리가 408.2cm였습니다. 원판을 몇 바퀴 굴렸는지 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>003</h2>
+  <p class="answer">정답: 4바퀴</p>
+  <p>반지름이 25cm인 굴렁쇠를 굴렸더니 굴렁쇠가 움직인 거리가 6m 28cm였습니다. 굴렁쇠를 몇 바퀴 굴렸는지 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<!-- ─── 묶음 2 ─────────────────────────────────────────────────────── -->
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>004</h2>
+  <p class="answer">정답: 114.24cm</p>
+  <p>반지름이 8cm인 원 3개를 끈으로 묶어 놓은 것입니다. 묶은 끈의 길이는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. (단, 매듭은 생각하지 않습니다. <span class="w">원주율: 3.14)</span></p>
+  <div class="figure" style="--u:5"><img src="figures/p2.svg" alt="반지름 8cm인 원 3개를 나란히 놓고 끈으로 묶은 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>005</h2>
+  <p class="answer">정답: 71.4cm</p>
+  <p>반지름이 5cm인 원 4개를 끈으로 묶어 놓은 것입니다. 묶은 끈의 길이는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. (단, 매듭은 생각하지 않습니다. <span class="w">원주율: 3.14)</span></p>
+  <div class="figure" style="--u:6"><img src="figures/p2_1.svg" alt="반지름 5cm인 원 4개를 두 줄로 놓고 끈으로 묶은 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>006</h2>
+  <p class="answer">정답: 128.94cm</p>
+  <p>지름이 21cm인 원 3개를 끈으로 묶어 놓은 것입니다. 묶은 끈의 길이는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. (단, 매듭은 생각하지 않습니다. <span class="w">원주율: 3.14)</span></p>
+  <div class="figure" style="--u:7"><img src="figures/p2_2.svg" alt="지름 21cm인 원 3개를 삼각형으로 놓고 끈으로 묶은 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<!-- ─── 묶음 3 ─────────────────────────────────────────────────────── -->
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>007</h2>
+  <p class="answer">정답: 둘레 37.68cm, 넓이 56.52cm²</p>
+  <p>색칠한 부분의 둘레와 넓이를 각각 구하려고 합니다. 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="figure" style="--u:6"><img src="figures/p3.svg" alt="반지름 6cm인 원 안에 반지름 3cm인 반원 두 개로 나눈 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>008</h2>
+  <p class="answer">정답: 둘레 56.52cm, 넓이 254.34cm²</p>
+  <p>색칠한 부분의 둘레와 넓이를 각각 구하려고 합니다. 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="figure" style="--u:6"><img src="figures/p3_1.svg" alt="한 변이 18cm인 정사각형의 네 꼭짓점에서 그린 사분원 네 개를 색칠한 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>009</h2>
+  <p class="answer">정답: 둘레 102.8cm, 넓이 200cm²</p>
+  <p>색칠한 부분의 둘레와 넓이를 각각 구하려고 합니다. 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="figure" style="--u:6"><img src="figures/p3_2.svg" alt="한 변이 20cm인 정사각형 안에 반지름 10cm인 반원 두 개가 겹친 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<!-- ─── 묶음 4 ─────────────────────────────────────────────────────── -->
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>010</h2>
+  <p class="answer">정답: 113.04cm²</p>
+  <p>작은 원의 원주는 25.12cm입니다. 큰 원의 넓이는 몇 cm²인지 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="figure" style="--u:5"><img src="figures/p4.svg" alt="중심이 같은 두 원. 두 원 사이의 폭이 2cm"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>011</h2>
+  <p class="answer">정답: 62.8cm</p>
+  <p>작은 원의 넓이는 78.5cm²입니다. 큰 원의 원주는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="figure" style="--u:5"><img src="figures/p4_1.svg" alt="큰 원의 반지름을 지름으로 하는 작은 원이 큰 원 안에 붙어 있는 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<section class="problem">
+  <p class="series">연마(硏磨)</p>
+  <h2>012</h2>
+  <p class="answer">정답: 18.84cm</p>
+  <p>큰 원의 넓이는 254.34cm²입니다. 작은 원 1개의 원주는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오. <span class="w">(원주율: 3.14)</span></p>
+  <div class="figure" style="--u:6"><img src="figures/p4_2.svg" alt="큰 원의 지름 위에 크기가 같은 작은 원 3개가 나란히 놓인 그림"></div>
+  <div class="cols head">
+    <div><h3>원석 풀이</h3></div>
+    <div><h3>보석 풀이</h3></div>
+  </div>
+  <div class="cols">
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<!-- ─── 정답과 풀이 ────────────────────────────────────────────────── -->
+
+<section>
+  <h2>정답과 풀이</h2>
+  <p>채점하는 사람을 위한 장입니다. 묶음마다 생각의 뼈대를 먼저 적고, 계산은 표로 모았습니다. 학생 풀이가 표의 식과 다르더라도 뼈대가 같으면 정답으로 봅니다.</p>
+
+  <h3>묶음 1. 굴린 바퀴 수</h3>
+  <p>원을 한 바퀴 굴리면 원주만큼 움직인다. 그러니 움직인 거리를 원주로 나누면 바퀴 수다. 002번과 003번은 반지름이 주어졌으니 지름으로 바꾸는 한 단계가 더 있고, 003번은 m와 cm가 섞여 있으니 628cm로 먼저 고친다.</p>
+  <table>
+    <thead><tr><th>문제</th><th>원주</th><th>바퀴 수</th><th class="num">답</th></tr></thead>
+    <tbody>
+      <tr><td>001</td><td>17×3.14=53.38(cm)</td><td>266.9÷53.38=5</td><td class="num">5바퀴</td></tr>
+      <tr><td>002</td><td>6.5×2×3.14=40.82(cm)</td><td>408.2÷40.82=10</td><td class="num">10바퀴</td></tr>
+      <tr><td>003</td><td>25×2×3.14=157(cm)</td><td>628÷157=4</td><td class="num">4바퀴</td></tr>
+    </tbody>
+  </table>
+
+  <h3>묶음 2. 원을 묶은 끈의 길이</h3>
+  <p>끈은 곧은 부분과 굽은 부분으로 나뉜다. 곧은 부분은 이웃한 원의 중심을 잇는 선분과 길이가 같고, 굽은 부분은 전부 모아 붙이면 원 하나의 원주가 된다. 어떤 모양으로 묶어도 굽은 부분의 합은 원 한 개의 원주라는 점이 이 묶음의 핵심이다.</p>
+  <table>
+    <thead><tr><th>문제</th><th>곧은 부분</th><th>굽은 부분</th><th class="num">답</th></tr></thead>
+    <tbody>
+      <tr><td>004</td><td>32×2=64(cm)</td><td>16×3.14=50.24(cm)</td><td class="num">114.24cm</td></tr>
+      <tr><td>005</td><td>10×4=40(cm)</td><td>10×3.14=31.4(cm)</td><td class="num">71.4cm</td></tr>
+      <tr><td>006</td><td>21×3=63(cm)</td><td>21×3.14=65.94(cm)</td><td class="num">128.94cm</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="cont">
+  <h3>묶음 3. 색칠한 부분의 둘레와 넓이</h3>
+  <p>007번은 큰 원의 반지름이 6cm이므로 작은 반원의 반지름은 3cm다. 둘레는 큰 원 원주의 절반에 작은 반원의 곡선 두 개를 더한 것이고, 작은 곡선 둘을 합치면 반지름 3cm인 원의 원주다. 넓이는 아래쪽 작은 반원을 떼어 위쪽 빈자리에 옮겨 붙이면 큰 원의 절반이 된다.</p>
+  <p>008번은 네 귀퉁이의 사분원을 모으면 반지름 9cm인 원 하나다. 둘레도 넓이도 그 원의 것이다.</p>
+  <p>009번은 반지름 10cm인 반원 두 개가 정사각형 안에서 겹친다. 둘레는 정사각형의 두 변에 두 반원의 곡선 전부를 더한 것이다. 넓이는 겹친 부분이 열쇠다. 겹친 부분은 사분원에서 직각삼각형을 뺀 조각 두 개이므로 (78.5−50)×2=57(cm²)이다. 색칠한 부분은 정사각형에서 반원 둘을 뺀 것에 겹친 부분을 두 번 더한 것이다. 한 번은 두 번 빠진 것을 되돌리는 몫이고, 한 번은 색칠된 겹친 부분 자체다. 400−314+57×2=200으로 정사각형의 꼭 절반이 나온다.</p>
+  <table>
+    <thead><tr><th>문제</th><th>둘레</th><th>넓이</th></tr></thead>
+    <tbody>
+      <tr><td>007</td><td>12×3.14÷2+6×3.14=37.68(cm)</td><td>6×6×3.14÷2=56.52(cm²)</td></tr>
+      <tr><td>008</td><td>18×3.14=56.52(cm)</td><td>9×9×3.14=254.34(cm²)</td></tr>
+      <tr><td>009</td><td>20+20+10×2×3.14=102.8(cm)</td><td>400−314+57×2=200(cm²)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>묶음 4. 원주와 넓이 사이를 오가기</h3>
+  <p>주어진 원주나 넓이에서 반지름을 거꾸로 캐낸 다음, 그림이 말해 주는 관계로 다른 원의 반지름을 읽는다. 넓이에서 반지름을 찾을 때는 3.14로 나눈 값이 어떤 수를 두 번 곱한 것인지 본다. 011번은 작은 원의 지름이 큰 원의 반지름이고, 012번은 작은 원 세 개의 지름이 큰 원의 지름이다.</p>
+  <table>
+    <thead><tr><th>문제</th><th>주어진 원의 반지름</th><th>구하는 원</th><th class="num">답</th></tr></thead>
+    <tbody>
+      <tr><td>010</td><td>25.12÷3.14=8, 반지름 4cm</td><td>반지름 4+2=6(cm), 6×6×3.14</td><td class="num">113.04cm²</td></tr>
+      <tr><td>011</td><td>78.5÷3.14=25=5×5, 반지름 5cm</td><td>지름 10×2=20(cm), 20×3.14</td><td class="num">62.8cm</td></tr>
+      <tr><td>012</td><td>254.34÷3.14=81=9×9, 반지름 9cm</td><td>지름 18÷3=6(cm), 6×3.14</td><td class="num">18.84cm</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>
