@@ -93,30 +93,33 @@ def right_angle(ax, corner, dx, dy, s):
             linewidth=AUX)
 
 
-TICK = 3.0             # 치수선 끝 눈금 반길이(pt)
+DASH = (0, (2, 2))     # 점선 2pt 등간격
 
 
-def dim(ax, p, q, text, side=1, gap=0.0, lw=AUX):
-    """p에서 q까지 치수선. 양끝에 수직 눈금을 긋고 글은 side 쪽(법선 방향)에 둔다.
-    gap을 주면 p·q에서 법선 방향으로 그만큼 띄운 자리에 긋는다(도형 변 옆 치수)."""
+def dim(ax, p, q, text, side=1, gap=1.5, lw=AUX):
+    """p에서 q까지의 길이 표시. 두 점을 side 쪽으로 gap만큼 부푼 점선 곡선으로
+    잇고, 글은 곡선 꼭대기 바깥에 둔다."""
     dx, dy = q[0] - p[0], q[1] - p[1]
     L = math.hypot(dx, dy)
     ux, uy = dx / L, dy / L
     nx, ny = -uy * side, ux * side          # side 쪽 법선
-    p = (p[0] + nx * gap, p[1] + ny * gap)
-    q = (q[0] + nx * gap, q[1] + ny * gap)
-    seg(ax, p, q, lw=lw)
-    t = TICK / ax.pt
-    for e in (p, q):
-        seg(ax, (e[0] - nx * t, e[1] - ny * t), (e[0] + nx * t, e[1] + ny * t), lw=lw)
+    mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
+    cx, cy = mx + nx * 2 * gap, my + ny * 2 * gap      # 2차 베지어 제어점(꼭대기가 gap)
+    pts = [((1 - t) ** 2 * p[0] + 2 * (1 - t) * t * cx + t ** 2 * q[0],
+            (1 - t) ** 2 * p[1] + 2 * (1 - t) * t * cy + t ** 2 * q[1])
+           for t in (i / 40 for i in range(41))]
+    ax.plot([x for x, _ in pts], [y for _, y in pts], color=INK, linewidth=lw,
+            linestyle=DASH, dash_capstyle="butt")
+    apex = (mx + nx * gap, my + ny * gap)
     if not text:
-        return
-    off = 7.0 / ax.pt
-    m = ((p[0] + q[0]) / 2 + nx * off, (p[1] + q[1]) / 2 + ny * off)
+        return apex
+    off = 6.0 / ax.pt
+    m = (apex[0] + nx * off, apex[1] + ny * off)
     if abs(nx) > abs(ny):
         label(ax, m[0], m[1], text, ha="left" if nx > 0 else "right")
     else:
         label(ax, m[0], m[1], text, va="bottom" if ny > 0 else "top")
+    return apex
 
 
 def polar(c, r, deg):
@@ -166,7 +169,8 @@ def p2():
     seg(ax, (8, -o), (40, -o), lw=STRING)
     arc(ax, cs[0], r + o, 90, 270, lw=STRING)
     arc(ax, cs[2], r + o, -90, 90, lw=STRING)
-    dim(ax, cs[2], (48, 8), "8cm")
+    seg(ax, cs[2], (48, 8), lw=AUX)
+    dim(ax, cs[2], (48, 8), "8cm", gap=1.6)
     save(f, "p2.svg")
 
 
@@ -185,7 +189,8 @@ def p2_1():
     arc(ax, (5, 5), r + o, 180, 270, lw=STRING)
     arc(ax, (15, 5), r + o, 270, 360, lw=STRING)
     arc(ax, (15, 15), r + o, 0, 90, lw=STRING)
-    dim(ax, (15, 15), (20, 15), "5cm")
+    seg(ax, (15, 15), (20, 15), lw=AUX)
+    dim(ax, (15, 15), (20, 15), "5cm", gap=1.1)
     save(f, "p2_1.svg")
 
 
@@ -205,7 +210,8 @@ def p2_2():
     arc(ax, br, r + o, -90, 30, lw=STRING)
     arc(ax, t, r + o, 30, 150, lw=STRING)
     arc(ax, bl, r + o, 150, 270, lw=STRING)
-    dim(ax, (t[0] - r, t[1]), (t[0] + r, t[1]), "21cm")
+    seg(ax, (t[0] - r, t[1]), (t[0] + r, t[1]), lw=AUX)
+    dim(ax, (t[0] - r, t[1]), (t[0] + r, t[1]), "21cm", gap=2.4)
     save(f, "p2_2.svg")
 
 
@@ -223,7 +229,7 @@ def p3():
     arc(ax, L, 3, 180, 360)
     for p in (O, L, Rr):
         dot(ax, p)
-    dim(ax, (-R, 0), (0, 0), "6cm", gap=1.1)
+    dim(ax, (-R, 0), (0, 0), "6cm", gap=1.3)
     save(f, "p3.svg")
 
 
@@ -245,8 +251,8 @@ def p3_1():
     right_angle(ax, (s, 0), -1, 1, m)
     right_angle(ax, (s, s), -1, -1, m)
     right_angle(ax, (0, s), 1, -1, m)
-    dim(ax, (s, 0), (s, s), "18cm", side=-1, gap=1.4)    # 오른쪽 변
-    dim(ax, (0, 0), (s, 0), "18cm", side=-1, gap=1.4)    # 아래 변
+    dim(ax, (s, 0), (s, s), "18cm", side=-1, gap=1.8)    # 오른쪽 변
+    dim(ax, (0, 0), (s, 0), "18cm", side=-1, gap=1.8)    # 아래 변
     save(f, "p3_1.svg")
 
 
@@ -271,8 +277,8 @@ def p3_2():
     right_angle(ax, (s, 0), -1, 1, m)
     right_angle(ax, (s, s), -1, -1, m)
     right_angle(ax, (0, s), 1, -1, m)
-    dim(ax, (s, 0), (s, s), "20cm", side=-1, gap=1.5)
-    dim(ax, (0, 0), (s, 0), "20cm", side=-1, gap=1.5)
+    dim(ax, (s, 0), (s, s), "20cm", side=-1, gap=2.0)
+    dim(ax, (0, 0), (s, 0), "20cm", side=-1, gap=2.0)
     save(f, "p3_2.svg")
 
 
@@ -285,8 +291,8 @@ def p4():
     circle(ax, O, 4)
     seg(ax, (-6, 0), (6, 0))
     dot(ax, O)
-    dim(ax, (4, 0), (6, 0), "", gap=0.8)    # 고리 안, 지름선 위에 띄운 치수선
-    seg(ax, (5, 1.1), (7.6, 2.6), lw=AUX)   # 글은 지시선으로 밖에
+    apex = dim(ax, (4, 0), (6, 0), "", gap=0.9)   # 고리 폭. 글은 지시선으로 밖에
+    seg(ax, apex, (7.6, 2.6), lw=AUX)
     label(ax, 7.9, 2.9, "2cm", ha="left", va="bottom")
     save(f, "p4.svg")
 
