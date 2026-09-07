@@ -50,25 +50,24 @@ AUX = 0.4              # 보조선·치수선·지시선. 높이·반지름처�
 DOT = 2.4              # 점 지름(pt)
 TINT = 0.10            # 색칠한 부분
 LABEL = 10.0           # 그림 글자 크기(pt)
-DASH = (0, (2, 2))     # 점선 2pt 등간격
+DASH = (0, (2, 2))     # 점선. matplotlib이 선 두께를 곱하므로 0.4pt 선에서 0.8pt 등간격이 된다
 MARK = 5.5             # 직각 표시 한 변(pt)
 MARGIN = 4.0           # 잉크에서 캔버스 가장자리까지 최소(pt). 잘리지 않게
 LEADER = 22.0          # 지시선 길이(pt)
 PAD = 2.0              # 길이 글 양옆에 비우는 점선 길이(pt)
 SLACK = 22.0           # 위아래 여백이 이보다 크면 그림이 블록에 비해 작다
 
-OUT = HERE / "figures"
-WARNINGS = 0           # save()·dim()이 낸 경고 수. build.py가 종료 코드에 쓴다
+OUT = None             # setup()이 단원 폴더의 figures/ 로 잡는다
 
 
 def warn(msg: str) -> None:
-    global WARNINGS
-    WARNINGS += 1
+    """경고 한 줄. build.py가 이 '!' 줄을 세어 종료 코드를 정한다."""
     print(f"  ! {msg}")
 
 
 def setup(script_file: str) -> Path:
-    """단원 figures.py의 __file__을 받아 그 옆 figures/ 를 출력 폴더로 잡는다."""
+    """단원 figures.py의 __file__을 받아 그 옆 figures/ 를 출력 폴더로 잡는다.
+    figures.py 첫머리에서 반드시 부른다."""
     global OUT
     OUT = Path(script_file).resolve().parent / "figures"
     OUT.mkdir(exist_ok=True)
@@ -144,6 +143,8 @@ def _ink_bbox(f, ax):
 def save(f, name: str) -> Path:
     """x 범위를 잉크 기준 좌우 대칭으로 잡아 SVG로 저장한다. 위아래 여백이 모자라거나
     지나치게 남으면 y 범위를 얼마로 바꾸면 되는지 알려 준다."""
+    if OUT is None:
+        raise RuntimeError("g.setup(__file__)을 먼저 불러라. 출력 폴더가 정해지지 않았다")
     ax = f.axes[0]
     H = ax.units * GRID
     scale = ax.pt
@@ -162,15 +163,25 @@ def save(f, name: str) -> Path:
     f.set_size_inches(w * PT, H * PT)
     ax.set_xlim(cx - w / 2 / scale, cx + w / 2 / scale)
 
-    # y — 배율을 바꾸는 일이라 손으로 정한다. 얼마로 바꾸면 되는지 일러 준다
+    # y — 배율을 바꾸는 일이라 손으로 정한다. 얼마로 바꾸면 되는지 일러 준다.
+    # 도형은 배율을 따라 커지지만 글자와 선 두께는 pt로 고정이다. 둘을 갈라 셈해야
+    # 알려 준 값이 한 번에 맞는다. 뭉뚱그리면 글이 많은 그림에서 범위가 0으로 빨려 든다.
     gap = min(by0, H - by1)
     if gap < MARGIN or gap > SLACK:
         cy = Y0 + (by0 + by1) / 2 / H * (Y1 - Y0)
-        want = (H - 2 * (MARGIN + 1)) / (by1 - by0)          # 잉크를 이만큼 키운다
-        span = (Y1 - Y0) / want
+        shape = ax.dataLim.height                 # 배율을 따라 커지는 몫(좌표 단위)
+        if not math.isfinite(shape):              # 도형이 하나도 없으면 무한대로 온다
+            shape = 0.0
+        fixed = (by1 - by0) - shape * scale       # pt로 고정인 몫(글자·선 두께)
+        room = H - fixed - 2 * (MARGIN + 1)
         how = "모자란다" if gap < MARGIN else "남는다"
-        warn(f"{name}: 위아래 여백 {gap:.1f}pt. {how}. "
-             f"y 범위를 ({cy - span / 2:.2f}, {cy + span / 2:.2f})로 잡아라")
+        if shape > 0 and room > 0:
+            span = shape * H / room
+            warn(f"{name}: 위아래 여백 {gap:.1f}pt. {how}. "
+                 f"y 범위를 ({cy - span / 2:.2f}, {cy + span / 2:.2f})로 잡아라")
+        else:
+            warn(f"{name}: 위아래 여백 {gap:.1f}pt. {how}. 글자와 선만으로 "
+                 f"{fixed:.0f}pt를 차지한다. units를 {'키워라' if gap < MARGIN else '줄여라'}")
 
     print(f"  {name}  ({w:.0f}×{H:.0f}pt)")
     path = OUT / name
@@ -205,7 +216,7 @@ def arc(ax, c, r, t1, t2, lw=EDGE):
 
 def dot(ax, p):
     ax.plot([p[0]], [p[1]], marker="o", markersize=DOT, markeredgewidth=0,
-            color=INK, linestyle="none", zorder=5)
+            linewidth=0, color=INK, linestyle="none", zorder=5)
 
 
 def label(ax, x, y, s, ha="center", va="center", size=LABEL):
@@ -223,13 +234,20 @@ def wedge(ax, c, r, t1, t2):
     ax.add_patch(Wedge(c, r, t1, t2, facecolor=INK, alpha=TINT, edgecolor="none"))
 
 
-def right_angle(ax, corner, dx, dy, s=None):
-    """꼭짓점 corner에서 (dx, dy) 방향(각 ±1)으로 직각 표시. 한 변 s는 생략하면 MARK pt."""
+def corner_mark(ax, corner, u, v, s=None):
+    """corner에서 방향 u와 v(단위벡터 둘)로 한 변 s인 직각 표시. 축에 나란하지 않아도 된다."""
     if s is None:
         s = pt(ax, MARK)
     x, y = corner
-    pts = [(x + dx * s, y), (x + dx * s, y + dy * s), (x, y + dy * s)]
-    ax.plot([p[0] for p in pts], [p[1] for p in pts], color=INK, linewidth=AUX)
+    a = (x + u[0] * s, y + u[1] * s)
+    c = (x + v[0] * s, y + v[1] * s)
+    b = (a[0] + v[0] * s, a[1] + v[1] * s)
+    ax.plot([a[0], b[0], c[0]], [a[1], b[1], c[1]], color=INK, linewidth=AUX)
+
+
+def right_angle(ax, corner, dx, dy, s=None):
+    """꼭짓점 corner에서 (dx, dy) 방향(각 ±1)으로 직각 표시. 한 변 s는 생략하면 MARK pt."""
+    corner_mark(ax, corner, (dx, 0), (0, dy), s)
 
 
 def poly(ax, pts, lw=EDGE):
@@ -253,13 +271,17 @@ def rect(ax, origin, w, h, mark=True, lw=EDGE):
 
 def foot(ax, apex, p, q, side=-1):
     """apex에서 선분 pq에 내린 높이. 실선 0.4pt를 긋고 발에 직각 표시를 한다.
-    직각 표시는 발의 side 쪽(+1 오른쪽, -1 왼쪽). 밑변이 가로일 때 쓴다.
-    발의 좌표를 돌려준다."""
+    직각 표시는 밑변을 따라 side 쪽(+1은 p→q 방향, -1은 그 반대)에 둔다.
+    밑변이 기울어도 표시가 두 선에 붙는다. 발의 좌표를 돌려준다."""
     dx, dy = q[0] - p[0], q[1] - p[1]
-    t = ((apex[0] - p[0]) * dx + (apex[1] - p[1]) * dy) / (dx * dx + dy * dy)
+    L = math.hypot(dx, dy)
+    t = ((apex[0] - p[0]) * dx + (apex[1] - p[1]) * dy) / (L * L)
     h = (p[0] + t * dx, p[1] + t * dy)
     seg(ax, apex, h, lw=AUX)
-    right_angle(ax, h, side, 1 if apex[1] > h[1] else -1)
+    n = math.hypot(apex[0] - h[0], apex[1] - h[1])
+    if n > 0:
+        corner_mark(ax, h, (dx / L * side, dy / L * side),
+                    ((apex[0] - h[0]) / n, (apex[1] - h[1]) / n))
     return h
 
 

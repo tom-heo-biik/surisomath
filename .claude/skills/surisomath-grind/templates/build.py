@@ -11,7 +11,7 @@
   3. problems.yaml을 읽어 문제 한 개 = 한 쪽인 HTML을 쓴다. 그림마다 SVG 높이가
      units×22pt인지 확인한다. base.css와 grind.css는 저장소 안 상대 경로로 링크한다.
   4. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
-  5. 쪽마다 풀이 자리가 몇 칸 남았는지 재서 가장 좁은 쪽을 알려 준다. 12칸 아래면 경고.
+  5. 쪽마다 두 단 상자를 재서 풀이 자리가 몇 칸인지 알려 준다. 12칸 아래면 경고.
 
 경고가 하나라도 있으면 종료 코드가 1이다. PDF는 그래도 나온다.
 
@@ -22,7 +22,7 @@ problems.yaml
   problems:
     - text: 지름이 17cm인 …    # 문제 글. 한 문단. ": "가 들어가면 따옴표로 감싼다
       answer: 5바퀴           # 정답. "정답: " 뒤에 그대로 붙는다
-    - no: "004"               # 번호. 생략하면 순서대로 001, 002, …
+    - "no": "004"             # 번호. 키까지 따옴표로. YAML은 no를 거짓으로 읽는다
       text: …
       figure: p2.svg          # figures/ 안의 그림 파일
       units: 5                # 그림 블록 높이(22pt의 칸 수). figure가 있으면 필수
@@ -52,6 +52,7 @@ SYMBOL = HERE / "symbol.svg"
 DEFAULT_SERIES = "연마(硏磨)"
 LEFT, RIGHT = "원석 풀이", "보석 풀이"
 GRID = 22.0
+BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 두 단 상자가 여기서 끝난다
 MIN_ROWS = 12          # 풀이 자리 최소 칸 수
 
 
@@ -106,6 +107,20 @@ def numbers(problems: list[dict]) -> list[str]:
     return [str(p.get("no") or f"{i:03d}") for i, p in enumerate(problems, 1)]
 
 
+def check(problems: list[dict]) -> None:
+    """yaml에서 흔히 나는 잘못을 문제 번호와 함께 알려 준다."""
+    for i, p in enumerate(problems, 1):
+        if not isinstance(p, dict):
+            raise SystemExit(f"{i}번째 문제가 표가 아니다. '- text: …' 꼴로 적어라")
+        # YAML 1.1은 따옴표 없는 no를 거짓으로 읽는다. 조용히 번호가 밀리므로 여기서 잡는다
+        if False in p:
+            raise SystemExit(f'{i}번째 문제: no를 "no": "{p[False]}" 로 적어라. '
+                             "따옴표가 없으면 YAML이 거짓으로 읽어 번호가 무시된다")
+        for key in ("text", "answer"):
+            if key not in p:
+                raise SystemExit(f"{i}번째 문제에 {key}가 없다")
+
+
 def build_html(data: dict, out_dir: Path) -> str:
     series = data.get("series") or DEFAULT_SERIES
     unit = data.get("unit") or ""
@@ -126,32 +141,39 @@ def build_html(data: dict, out_dir: Path) -> str:
 
 
 def report_space(pdf: Path, nos: list[str]) -> int:
-    """쪽마다 두 단 풀이 자리가 몇 칸인지 잰다. 소제목 줄('원석 풀이')의 자리로 안다.
-    소제목 줄상자 위는 72 + 11 + 22m, 풀이 자리는 그 아래 칸부터 754까지다."""
+    """쪽마다 두 단 풀이 자리가 몇 칸인지 잰다.
+
+    두 단 상자(테두리)를 PDF에서 직접 재므로 글자에 기대지 않는다. 소제목 글을
+    찾아 세던 때는 문제 글에 '원석'이 들어 있으면 그 낱말을 소제목으로 알고
+    엉뚱한 값을 냈다. 상자가 아예 없는 쪽은 문제가 한 쪽을 넘쳐 두 단이 잘린
+    것이다."""
     try:
         import pdfplumber
     except ImportError:
+        print("  (pdfplumber가 없어 풀이 자리 검사를 건너뜀: pip install pdfplumber)")
         return 0
+    bad = 0
     rows: list[tuple[str, float]] = []
     with pdfplumber.open(pdf) as doc:
         if len(doc.pages) != len(nos):
             print(f"  ! 쪽 수 {len(doc.pages)} ≠ 문제 수 {len(nos)}. 어느 문제가 한 쪽을 넘쳤다")
             return 1
         for no, page in zip(nos, doc.pages):
-            head = [w for w in page.extract_words() if w["text"].startswith(LEFT[:2])]
-            if not head:
+            box = [r for r in page.rects
+                   if abs(r["bottom"] - BOTTOM) < 1 and r["width"] > 100 and r["height"] > GRID]
+            if not box:
+                print(f"  ! {no}: 두 단 풀이 자리가 없다. 문제 글이나 그림이 한 쪽을 넘쳤다")
+                bad += 1
                 continue
-            line_top = (head[0]["top"] + head[0]["bottom"]) / 2 - GRID / 2
-            m = round((line_top - 83) / GRID)
-            rows.append((no, (754 - 105 - GRID * m) / GRID))
+            rows.append((no, max(r["height"] for r in box) / GRID))
     if not rows:
-        return 0
+        return bad or 1
     no, r = min(rows, key=lambda t: t[1])
     print(f"  풀이 자리: 가장 좁은 쪽 {no} {r:.1f}칸")
     if r < MIN_ROWS:
         print(f"  ! {no}: 풀이 자리 {r:.1f}칸. {MIN_ROWS}칸은 두라(그림 units를 줄이거나 문제 글을 줄인다)")
-        return 1
-    return 0
+        bad += 1
+    return bad
 
 
 def main() -> int:
@@ -168,7 +190,16 @@ def main() -> int:
         print(f"입력 파일이 없다: {src}", file=sys.stderr)
         return 1
     out_dir = src.parent
-    data = yaml.safe_load(src.read_text(encoding="utf-8")) or {}
+    try:
+        data = yaml.safe_load(src.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as e:
+        mark = getattr(e, "problem_mark", None)
+        where = f" ({mark.line + 1}째 줄)" if mark else ""
+        print(f"{src.name}을 읽을 수 없다{where}. ': '가 든 글은 따옴표로 감싸라.",
+              file=sys.stderr)
+        print(e, file=sys.stderr)
+        return 1
+    check(data.get("problems") or [])
 
     env = dict(os.environ, PYTHONIOENCODING="utf-8",
                PYTHONPATH=os.pathsep.join(p for p in (str(HERE), os.environ.get("PYTHONPATH")) if p))
