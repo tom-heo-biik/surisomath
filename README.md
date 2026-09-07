@@ -10,7 +10,7 @@
 HTML로 쓰고 WeasyPrint로 PDF를 뽑는다.
 
 ```
-skills/surisomath-a4/
+.claude/skills/surisomath-a4/
 ├─ SKILL.md
 └─ templates/
    ├─ base.html      복사해서 쓰는 빈 뼈대
@@ -25,10 +25,31 @@ skills/surisomath-a4/
 pip install weasyprint pdfplumber matplotlib
 winget install tschoonj.GTKForWindows        # Windows에서만
 
-python skills/surisomath-a4/templates/render.py 문서.html --check
+python .claude/skills/surisomath-a4/templates/render.py 문서.html --check
 ```
 
 `--check`는 렌더한 PDF의 모든 글줄이 22pt 그리드 위에 있는지 실제로 재서 알려 준다.
+
+### surisomath-grind
+
+서술형 학습지 '연마(硏磨)' 양식. surisomath-a4 위에 얹는다. 문제 한 개가 한 쪽이고,
+아래 두 단(원석 풀이·보석 풀이)은 학생이 손으로 채운다. 문제는 `problems.yaml`에
+데이터로 적고, 그림·HTML·PDF·그리드 검사를 명령 하나로 뽑는다.
+
+```
+.claude/skills/surisomath-grind/
+├─ SKILL.md
+└─ templates/
+   ├─ grind.css        base.css 위에 얹는 연마 스타일
+   ├─ grind_figure.py  문제 그림 도우미(캔버스·점선 곡선 치수·음영·직각 표시)
+   ├─ build.py         problems.yaml → 그림 → HTML → PDF → --check
+   ├─ symbol.svg       소제목 앞 심볼(22pt)
+   └─ sample/          견본 단원. 새 단원은 이 폴더를 복사해 출발한다
+```
+
+```
+python .claude/skills/surisomath-grind/templates/build.py build/연마_원의둘레와넓이/problems.yaml
+```
 
 ## 서체
 
@@ -37,7 +58,7 @@ python skills/surisomath-a4/templates/render.py 문서.html --check
 
 | 서체 | 무게 | 자리 | 쓰임 |
 |---|---|---|---|
-| KoPubWorld 바탕체 | 300·500·700 | `skills/surisomath-a4/templates/fonts/` | 문서·인쇄물 본문 |
+| KoPubWorld 바탕체 | 300·500·700 | `.claude/skills/surisomath-a4/templates/fonts/` | 문서·인쇄물 본문 |
 | Pretendard | 300·400·500·600·700 | `assets/fonts/` | 화면용 산세리프 |
 | 학교안심 상장 R | 단일 | `assets/fonts/` | 상장 |
 

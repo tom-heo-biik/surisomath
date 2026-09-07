@@ -1,0 +1,70 @@
+/* ==========================================================================
+   수리소 수학학원 연마(硏磨) 학습지 양식
+   surisomath-a4/templates/base.css 위에 얹는다. 판형·여백·그리드·서체는 그쪽 것.
+   --------------------------------------------------------------------------
+   문제 한 개가 한 쪽이다. 본문 영역 475×682pt(31칸)를 세로 플렉스로 잡아
+   시리즈 줄·번호·문제·그림은 위에 두고, 남은 높이를 두 단 풀이 자리가 채운다.
+
+   쪽의 세로 짜임(본문 영역 위 끝 기준)
+     0~11    빈 반 칸
+     11~33   시리즈 이름(왼쪽)·정답(오른쪽 끝) — 캡션 글자, 본문 위상
+     33~44   빈 반 칸
+     44~66   문제 번호 — typo-4, 제목 위상
+     77~     문제 글, 그림
+     ...     원석 풀이·보석 풀이 소제목 줄 (선 없음)
+     ...~682 두 단 풀이 자리, 세로선 세 개
+
+   위에 반 칸을 비우는 까닭: 첫 줄의 캡션 글자는 다른 캡션·표와 같은 본문
+   위상(11 + 22k)에 있어야 한다. 그 아래 반 칸을 더 띄워 번호를 제목 위상(22k)에
+   되돌린다. 11 + 22 + 11 + 22 + 11 = 77.
+   ========================================================================== */
+
+section.problem {
+  box-sizing: border-box; height: 682pt; padding-top: 11pt; margin: 0;
+  break-after: page; position: relative;
+  display: flex; flex-direction: column;
+}
+section.problem > * { flex: none; }
+
+/* 문제 번호 001, 002, … — 가장 센 위계 typo-4(20pt/700/-0.05em).
+   줄 높이·아래 여백은 h2 그대로라 위상은 변하지 않는다. 왼끝에 맞춘다. */
+section.problem h2 {
+  font-size: 20pt; font-weight: 700; letter-spacing: -0.05em; text-align: left;
+}
+
+/* 첫 줄: 왼쪽에 시리즈 이름(캡션 서체·검정), 오른쪽 끝에 정답(캡션 서체·회색) */
+section.problem p.series {
+  margin: 0 0 11pt; font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
+  line-height: 22pt; color: var(--neutral-1000);
+}
+section.problem p.answer {
+  position: absolute; top: 11pt; right: 0; margin: 0;
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: 22pt;
+  color: var(--c-caption); text-align: right;
+}
+
+/* 두 단 풀이 자리 */
+section.problem .cols { flex: 1; display: flex; margin: 0; min-height: 0; }
+section.problem .cols.head { flex: none; }     /* 소제목 줄. 선은 이 줄 아래서 시작한다 */
+
+/* 두 단은 왼쪽 끝·가운데·오른쪽 끝 세 세로선으로 나눈다. 선은 검정 0.4pt,
+   글은 선에서 8pt. 단 너비를 237·238pt로 못 박는 까닭: 반반(237.5)으로 나누면
+   가운데 선이 픽셀 경계에 걸쳐 화면에서 회색으로 보인다. 정수 좌표(297pt)에
+   두면 세 선이 같은 진하기로 찍힌다. 소제목 줄은 같은 상자에 선만 투명하게
+   두어 글 자리를 아래 단과 똑같이 맞춘다. */
+section.problem .cols > div {
+  flex: none; box-sizing: border-box; width: 237pt; min-width: 0;
+  padding: 0 8pt;
+  border-left: 0.4pt solid var(--neutral-1000);
+}
+section.problem .cols > div + div {
+  width: 238pt;
+  border-right: 0.4pt solid var(--neutral-1000);
+}
+section.problem .cols.head > div { border-color: transparent; padding-left: 4pt; }
+
+/* 소제목 앞 심볼. 높이 22pt(한 칸). 선(투명)에서 4pt, 글은 심볼에서 4pt.
+   글은 span으로 감싼다. 플렉스 상자는 자식 사이 공백을 버려서 어절 span 사이의
+   띄어쓰기가 사라진다. */
+section.problem .cols.head h3 { display: flex; align-items: center; }
+section.problem .cols.head h3 img { height: 22pt; width: auto; margin-right: 4pt; }

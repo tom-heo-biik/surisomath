@@ -1,0 +1,31 @@
+# 연마(硏磨) 학습지 견본. 새 단원을 만들 때 이 폴더를 복사해 출발한다.
+#
+#   series   시리즈 이름. 생략하면 연마(硏磨)
+#   unit     단원 이름. 문서 제목에 쓴다
+#   file     출력 파일 이름(확장자 없이). 생략하면 수리소_연마_<unit에서 공백 뺀 것>
+#   problems 문제 목록. 순서대로 001, 002, … 번호가 붙는다. no 로 직접 줄 수도 있다
+#     text    문제 글 한 문단. 단위는 숫자에 붙인다(17cm, 6m 28cm). 원주율은 적지 않는다
+#     figure  figures/ 안의 그림 파일. figures.py 가 그린다
+#     units   그림 블록 높이. 22pt 의 칸 수. figure 가 있으면 필수
+#     alt     그림 설명(선택)
+#     answer  정답. "정답: " 뒤에 그대로 붙는다. 단위까지 쓴다
+
+series: 연마(硏磨)
+unit: 견본
+file: 수리소_연마_견본
+
+problems:
+  - text: 한 변의 길이가 12cm인 정사각형의 둘레는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오.
+    answer: 48cm
+
+  - text: 반지름이 5cm인 원의 넓이는 몇 cm²인지 풀이 과정을 쓰고, 답을 구하시오.
+    figure: circle.svg
+    units: 5
+    alt: 반지름 5cm인 원
+    answer: 78.5cm²
+
+  - text: 색칠한 부분의 넓이는 몇 cm²인지 풀이 과정을 쓰고, 답을 구하시오.
+    figure: square.svg
+    units: 6
+    alt: 한 변이 10cm인 정사각형 안에 반지름 5cm인 사분원을 색칠한 그림
+    answer: 19.625cm²
