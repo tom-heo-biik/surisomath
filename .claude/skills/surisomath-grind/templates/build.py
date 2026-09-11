@@ -132,11 +132,11 @@ def inline_style(h: float, d: float, size: float) -> str:
     """수식 img를 글줄 베이스라인에 앉히는 style.
 
     글줄 상자(행간 22pt)는 베이스라인 위 ascent + 반행간, 아래 descent + 반행간까지
-    받는다(12pt: 위 14.4pt·아래 7.6pt). 인라인 img는 여백 상자로 글줄 높이를 셈하므로,
-    잉크가 그보다 크면(TeX 규격 분수: 위 16.5pt·아래 8.2pt) 넘는 만큼 음수 여백을
-    줘 글줄 상자를 22pt에 붙든다. 잉크는 그대로 다 찍힌다 — 위아래 줄의 글자는
-    글줄 상자 끝까지 오지 않아 3pt쯤 떨어진다. vertical-align은 여백 상자 바닥
-    기준이라 아래 여백만큼 덜 내린다."""
+    받는다(12pt: 위 14.4pt·아래 7.6pt). 보통 분수(dfrac)는 이 안에 들게 배치되어
+    있다(grind_figure.FRAC_NUM). 인라인 img는 여백 상자로 글줄 높이를 셈하므로,
+    겹분수처럼 잉크가 그보다 큰 수식은 넘는 만큼 음수 여백을 줘 글줄 상자를 22pt에
+    붙든다. 잉크는 그대로 다 찍히고 옆 줄과 겹칠 수 있다 — check_overlap이 본다.
+    vertical-align은 여백 상자 바닥 기준이라 아래 여백만큼 덜 내린다."""
     half = (GRID - (KOPUB_ASC + KOPUB_DESC) * size) / 2
     room_up, room_down = KOPUB_ASC * size + half, KOPUB_DESC * size + half
     mt = max(0.0, (h - d) - room_up + 0.05)
@@ -280,9 +280,10 @@ def report_space(pdf: Path, nos: list[str]) -> int:
 def check_overlap(boxes: list, nos: list[str]) -> int:
     """글줄에 끼운 수식(img.mi)끼리 겹치면 경고한다.
 
-    TeX 규격 분수는 25.8pt라 22pt 행간에 두 줄 연속으로 놓이면 위 줄의 분모와
-    아래 줄의 분자가 겹친다. 같은 줄의 수식은 나란히 있어 안 겹치므로, 겹침은
-    곧 잇단 줄의 분수다. render.py --boxes 가 준 레이아웃 상자로 본다."""
+    보통 분수는 22pt 글줄 안에 들게 배치되어 잇단 줄에 있어도 안 겹친다. 겹분수나
+    큰 괄호처럼 상자를 넘는 수식이 잇단 줄에 오면 위 줄의 아래쪽과 아래 줄의
+    위쪽이 겹친다. 같은 줄의 수식은 나란히 있어 안 겹치므로, 겹침은 곧 잇단 줄의
+    큰 수식이다. render.py --boxes 가 준 레이아웃 상자로 본다."""
     bad = 0
     for no, page in zip(nos, boxes):
         ms = [b for b in page if "mi" in b["class"].split()]
@@ -294,7 +295,7 @@ def check_overlap(boxes: list, nos: list[str]) -> int:
                 if dx > 0.2 and dy > 0.2:
                     hit = True
         if hit:
-            print(f"  ! {no}: 잇단 줄의 분수가 겹친다. 분수 줄 사이에 분수 없는 줄을 두라")
+            print(f"  ! {no}: 잇단 줄의 수식이 겹친다. 글줄보다 큰 수식(겹분수·큰 괄호)이면 줄을 바꾸거나 식을 풀어 쓰라")
             bad += 1
     return bad
 

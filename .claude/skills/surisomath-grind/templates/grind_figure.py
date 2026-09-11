@@ -26,6 +26,7 @@ y 범위가 배율을 정한다(배율 = units×22 ÷ y 범위). x 범위는 sav
 from __future__ import annotations
 
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -60,6 +61,16 @@ PAD = 2.0              # 길이 글 양옆에 비우는 점선 길이(pt)
 SLACK = 22.0           # 위아래 여백이 이보다 크면 그림이 블록에 비해 작다
 
 OUT = None             # setup()이 단원 폴더의 figures/ 로 잡는다
+
+# dfrac에서 분자 기준선을 올리는 양과 분모 기준선을 내리는 양(em). 22pt 글줄 상자
+# (KoPub 12pt: 베이스라인 위 14.4pt·아래 7.6pt)에 분수가 통째로 들도록 잡은 값이다.
+# 12pt에서 b/x가 위 13.8pt·아래 4.8pt, 20/100이 위 13.3pt·아래 6.9pt, 가장 큰 b/y가
+# 22pt. TeX 디스플레이 규격(num1 0.677·denom1 0.686em)은 25.8pt라 22pt 행간에서
+# 잇단 줄의 분수가 3.8pt 겹친다. 환경 변수 GRIND_FRAC="0.68,0.69"처럼 주면 다른
+# 값을 시험할 수 있다
+FRAC_NUM, FRAC_DEN = (float(s) for s in os.environ.get("GRIND_FRAC", "0.46,0.40").split(","))
+FRAC_RULE = 0.04       # 분수 가로줄 두께(em). TeX 규격. mathtext의 밑줄 두께(0.075em)는 굵고,
+                       # 최소 간격(3θ)까지 부풀려 분수가 22pt를 넘게 만든다
 
 
 def warn(msg: str) -> None:
@@ -205,11 +216,11 @@ def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
     Text.get_window_extent는 글꼴 상자를 돌려줘 실제 잉크보다 위아래로 3pt쯤
     크다. 그 값으로 앉히면 수식이 베이스라인 위에 떠 보인다.
 
-    분수는 \\dfrac을 쓴다. 배치는 _tex_fraction()이 TeX 규격으로 바꿔 두어 12pt에서
-    위 16.5pt·아래 8.2pt다. KoPub 12pt 글줄 상자(위 14.4pt·아래 7.6pt)를 넘지만
-    build.py가 img에 음수 여백을 줘 글줄 상자는 22pt 그대로고, 잉크는 위아래 줄의
-    글자와 3pt쯤 떨어진다. \\frac은 분자·분모가 7할로 줄어 교과서와 다르다.
-    mathtext에는 \\tfrac이 없다."""
+    분수는 \\dfrac을 쓴다. 배치는 _tex_fraction()이 바꿔 두어 12pt에서 b/x가 위 13.8pt·
+    아래 4.8pt, 가장 큰 b/y가 22pt로 KoPub 12pt 글줄 상자(위 14.4pt·아래 7.6pt) 안에
+    든다. 그래서 분수 줄이 잇달아도 안 겹친다. 상자를 넘는 수식(겹분수,
+    큰 괄호)은 build.py가 img에 음수 여백을 줘 글줄만은 22pt로 지킨다. \\frac은
+    분자·분모가 7할로 줄어 교과서와 다르다. mathtext에는 \\tfrac이 없다."""
     from matplotlib.font_manager import FontProperties
     from matplotlib.patches import PathPatch
     from matplotlib.textpath import TextPath
@@ -234,13 +245,16 @@ def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
 
 
 def _tex_fraction() -> None:
-    """mathtext의 분수 배치를 TeX 규격으로 바꿔 끼운다.
+    """mathtext의 분수 배치를 TeX 방식으로 바꿔 끼운다.
 
     matplotlib은 분자·분모를 가로줄에서 선 두께의 두 배(1pt)만 띄워 분수가 납작하다.
-    TeX은 디스플레이 스타일(dfrac)에서 분자 기준선을 0.677em 올리고 분모 기준선을
-    0.686em 내리며(cmsy fontdimen num1·denom1) 가로줄과 최소 3θ를 띄운다. 텍스트
-    스타일(frac)은 num2·denom2에 최소 θ다. 가로줄은 = 의 한가운데(축 높이)에 둔다.
-    12pt dfrac이 위 16.5pt·아래 8.2pt로 교과서의 분수처럼 선다.
+    TeX처럼 분자 기준선을 올리고 분모 기준선을 내리되(디스플레이 스타일 dfrac은
+    FRAC_NUM·FRAC_DEN, 텍스트 스타일 frac은 cmsy num2·denom2), 가로줄과 최소 3θ
+    (frac은 θ)를 띄우고 가로줄을 = 의 한가운데(축 높이)에 둔다. 올리고 내리는 양은
+    TeX 디스플레이 값이 아니라 22pt 글줄 안에 드는 값이다(FRAC_NUM 주석). 12pt에서
+    분자와 가로줄 사이 2.3pt, 가로줄과 분모 사이 2.4pt — 교과서 본문 속 분수처럼 선다.
+    가로줄 두께도 TeX 규격(FRAC_RULE)이다. mathtext의 밑줄 두께로 3θ를 띄우면 키 큰
+    분모(숫자, b)가 22pt를 넘긴다.
 
     matplotlib 3.10의 Parser._genfrac을 바꾼다. 안의 상자 클래스가 없는 판에서는
     그대로 둔다."""
@@ -256,8 +270,9 @@ def _tex_fraction() -> None:
 
     def _genfrac(self, ldelim, rdelim, rule, style, num, den):
         state = self.get_state()
-        theta = state.get_current_underline_thickness()
-        t = theta if rule is None else rule
+        em = state.fontsize * state.dpi / 72.0
+        theta = FRAC_RULE * em                        # 가로줄 두께. TeX 규격 0.04em
+        t = 0.0 if rule == 0 else theta               # binom처럼 줄이 없으면 0
         for _ in range(style.value):
             num.shrink()
             den.shrink()
@@ -265,19 +280,18 @@ def _tex_fraction() -> None:
         width = max(num.width, den.width)
         cnum.hpack(width, "exactly")
         cden.hpack(width, "exactly")
-        em = state.fontsize * state.dpi / 72.0
         m = state.fontset.get_metrics(state.font, matplotlib.rcParams["mathtext.default"],
                                       "=", state.fontsize, state.dpi)
         axis = (m.ymax + m.ymin) / 2                  # = 의 한가운데
         if style.value == 0:                          # 디스플레이 스타일(dfrac)
-            u, v, phi = 0.676508 * em, 0.685951 * em, 3 * theta
+            u, v, phi = FRAC_NUM * em, FRAC_DEN * em, 3 * theta
         else:                                         # 텍스트 스타일(frac)
             u, v, phi = 0.393732 * em, 0.344841 * em, theta
         gap_num = max(u - cnum.depth - (axis + t / 2), phi)
         gap_den = max((axis - t / 2) - (cden.height - v), phi)
-        vlist = Vlist([cnum, Vbox(0, gap_num), Hrule(state, rule), Vbox(0, gap_den), cden])
+        vlist = Vlist([cnum, Vbox(0, gap_num), Hrule(state, t), Vbox(0, gap_den), cden])
         vlist.shift_amount = cden.height + gap_den + t / 2 - axis
-        result = [Hlist([vlist, Hbox(theta * 2.0)])]
+        result = [Hlist([vlist, Hbox(0.12 * em)])]    # 뒤 여백. TeX nulldelimiterspace
         if ldelim or rdelim:
             return self._auto_sized_delimiter(ldelim or ".", result, rdelim or ".")
         return result
