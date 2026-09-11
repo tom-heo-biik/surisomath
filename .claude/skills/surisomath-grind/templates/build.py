@@ -329,6 +329,15 @@ def main() -> int:
 
     env = dict(os.environ, PYTHONIOENCODING="utf-8",
                PYTHONPATH=os.pathsep.join(p for p in (str(HERE), os.environ.get("PYTHONPATH")) if p))
+    # PDF 안의 만든 날짜를 고정한다. WeasyPrint는 SOURCE_DATE_EPOCH를 따른다. 안 고정하면
+    # 같은 입력으로 다시 빌드해도 PDF가 바이트 단위로 달라져 git이 매번 바뀐 것으로 본다.
+    # 날짜 폴더(2026.09.12)면 그 날짜, 아니면 problems.yaml의 수정 시각
+    date = re.fullmatch(r"(\d{4})\.(\d{2})\.(\d{2})", out_dir.name)
+    if date:
+        import calendar
+        env["SOURCE_DATE_EPOCH"] = str(calendar.timegm((int(date[1]), int(date[2]), int(date[3]), 0, 0, 0)))
+    else:
+        env["SOURCE_DATE_EPOCH"] = str(int(src.stat().st_mtime))
     warnings = 0
     figures_py = out_dir / "figures.py"
     if figures_py.is_file() and not args.no_figures:

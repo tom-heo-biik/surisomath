@@ -135,7 +135,7 @@ problems.md: 사용자가 쓰는 문제 원문. `## 001` 아래 지문 한 문�
 problems.yaml: 빌드 입력. problems.md의 지문을 그대로 옮기고 answer, 그림이 있으면 figure·units·alt를 더한다. series·unit·file은 적지 않는다 — build.py가 폴더 이름에서 제목 '연마(硏磨) 2026. 9. 12.'과 파일 이름 수리소_연마_2026.09.12를 만든다
 figures.py: 그 학습지 그림만. 도우미 import 경로는 build.py가 잡아 주므로 고칠 줄이 없다. 그림이 없으면 두지 않는다
 figures/: 빌드가 만든 SVG(그림 p*.svg, 수식 m*·a*.svg). symbol.svg도 여기 복사된다. 같은 그림은 다시 빌드해도 바이트 단위로 같다
-수리소_연마_<YYYY.MM.DD>.html, .pdf: 빌드 결과. 고칠 것은 yaml과 figures.py다
+수리소_연마_<YYYY.MM.DD>.html, .pdf: 빌드 결과. 고칠 것은 yaml과 figures.py다. PDF 안의 만든 날짜는 폴더의 날짜로 고정해(SOURCE_DATE_EPOCH) 같은 입력이면 PDF도 바이트 단위로 같다 — 다시 빌드해도 git이 바뀐 것으로 보지 않는다
 
 
 ## 작업 순서
