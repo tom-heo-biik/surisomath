@@ -112,7 +112,13 @@ def rich(s: str, prefix: str, fig_dir: Path, size: float, color: str) -> str:
                 continue
             i = int(piece)
             name = f"{prefix}_{i + 1}.svg"
-            w, h, d = g.inline(maths[i], fig_dir / name, size=size, color=color)
+            try:
+                w, h, d = g.inline(maths[i], fig_dir / name, size=size, color=color)
+            except ValueError as e:      # mathtext 문법 오류. 역추적 대신 어느 수식인지 말한다
+                hint = str(e).strip().splitlines()[-1]
+                raise SystemExit(f"{prefix}: 수식 ${maths[i]}$ 를 그릴 수 없다. {hint}\n"
+                                 "  mathtext 문법이다: ≤ \\leq, ≥ \\geq, ≠ \\neq, × \\times, "
+                                 "분수 \\dfrac{a}{b}. \\le·\\ge·\\tfrac은 없다") from None
             parts.append(f'<img class="mi" src="figures/{name}" alt="{html.escape(maths[i])}" '
                          f'style="{inline_style(h, d, size)}">')
         out.append('<span class="w">' + "".join(parts) + "</span>")
