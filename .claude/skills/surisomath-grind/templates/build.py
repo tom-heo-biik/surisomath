@@ -105,9 +105,29 @@ def rich(s: str, prefix: str, fig_dir: Path, size: float, color: str) -> str:
             name = f"{prefix}_{i + 1}.svg"
             w, h, d = g.inline(maths[i], fig_dir / name, size=size, color=color)
             parts.append(f'<img class="mi" src="figures/{name}" alt="{html.escape(maths[i])}" '
-                         f'style="height:{h:.2f}pt;vertical-align:{-d:.2f}pt">')
+                         f'style="{inline_style(h, d, size)}">')
         out.append('<span class="w">' + "".join(parts) + "</span>")
     return " ".join(out)
+
+
+KOPUB_ASC, KOPUB_DESC = 1.05, 0.49     # KoPub 바탕 hhea ascent·descent(em). 글줄 상자가 이걸로 선다
+
+
+def inline_style(h: float, d: float, size: float) -> str:
+    """수식 img를 글줄 베이스라인에 앉히는 style.
+
+    글줄 상자(행간 22pt)는 베이스라인 위 ascent + 반행간, 아래 descent + 반행간까지
+    받는다(12pt: 위 14.4pt·아래 7.6pt). 인라인 img는 여백 상자로 글줄 높이를 셈하므로,
+    잉크가 그보다 크면(TeX 규격 분수: 위 16.5pt·아래 8.2pt) 넘는 만큼 음수 여백을
+    줘 글줄 상자를 22pt에 붙든다. 잉크는 그대로 다 찍힌다 — 위아래 줄의 글자는
+    글줄 상자 끝까지 오지 않아 3pt쯤 떨어진다. vertical-align은 여백 상자 바닥
+    기준이라 아래 여백만큼 덜 내린다."""
+    half = (GRID - (KOPUB_ASC + KOPUB_DESC) * size) / 2
+    room_up, room_down = KOPUB_ASC * size + half, KOPUB_DESC * size + half
+    mt = max(0.0, (h - d) - room_up + 0.05)
+    mb = max(0.0, d - room_down + 0.05)
+    return (f"height:{h:.2f}pt;vertical-align:{-(d - mb):.2f}pt;"
+            f"margin:{-mt:.2f}pt 0 {-mb:.2f}pt")
 
 
 def problem_html(no: str, p: dict, series: str, fig_dir: Path) -> str:

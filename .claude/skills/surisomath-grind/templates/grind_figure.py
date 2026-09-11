@@ -205,9 +205,11 @@ def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
     Text.get_window_extent는 글꼴 상자를 돌려줘 실제 잉크보다 위아래로 3pt쯤
     크다. 그 값으로 앉히면 수식이 베이스라인 위에 떠 보인다.
 
-    분수는 \\dfrac을 쓴다. 12pt에서 위 13.6pt·아래 5.1pt라 KoPub 12pt 글줄 상자
-    (위 14.4pt·아래 7.6pt) 안에 든다. \\frac은 분자·분모가 7할로 줄어 교과서와
-    다르다. mathtext에는 \\tfrac이 없다."""
+    분수는 \\dfrac을 쓴다. 배치는 _tex_fraction()이 TeX 규격으로 바꿔 두어 12pt에서
+    위 16.5pt·아래 8.2pt다. KoPub 12pt 글줄 상자(위 14.4pt·아래 7.6pt)를 넘지만
+    build.py가 img에 음수 여백을 줘 글줄 상자는 22pt 그대로고, 잉크는 위아래 줄의
+    글자와 3pt쯤 떨어진다. \\frac은 분자·분모가 7할로 줄어 교과서와 다르다.
+    mathtext에는 \\tfrac이 없다."""
     from matplotlib.font_manager import FontProperties
     from matplotlib.patches import PathPatch
     from matplotlib.textpath import TextPath
@@ -229,6 +231,62 @@ def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
     f.savefig(path, format="svg", transparent=True, metadata={"Date": None})
     plt.close(f)
     return W, H, D
+
+
+def _tex_fraction() -> None:
+    """mathtext의 분수 배치를 TeX 규격으로 바꿔 끼운다.
+
+    matplotlib은 분자·분모를 가로줄에서 선 두께의 두 배(1pt)만 띄워 분수가 납작하다.
+    TeX은 디스플레이 스타일(dfrac)에서 분자 기준선을 0.677em 올리고 분모 기준선을
+    0.686em 내리며(cmsy fontdimen num1·denom1) 가로줄과 최소 3θ를 띄운다. 텍스트
+    스타일(frac)은 num2·denom2에 최소 θ다. 가로줄은 = 의 한가운데(축 높이)에 둔다.
+    12pt dfrac이 위 16.5pt·아래 8.2pt로 교과서의 분수처럼 선다.
+
+    matplotlib 3.10의 Parser._genfrac을 바꾼다. 안의 상자 클래스가 없는 판에서는
+    그대로 둔다."""
+    import matplotlib._mathtext as mt
+
+    if getattr(mt.Parser._genfrac, "_tex", False):
+        return
+    try:
+        HCentered, Vlist, Vbox, Hrule, Hlist, Hbox = (
+            mt.HCentered, mt.Vlist, mt.Vbox, mt.Hrule, mt.Hlist, mt.Hbox)
+    except AttributeError:
+        return
+
+    def _genfrac(self, ldelim, rdelim, rule, style, num, den):
+        state = self.get_state()
+        theta = state.get_current_underline_thickness()
+        t = theta if rule is None else rule
+        for _ in range(style.value):
+            num.shrink()
+            den.shrink()
+        cnum, cden = HCentered([num]), HCentered([den])
+        width = max(num.width, den.width)
+        cnum.hpack(width, "exactly")
+        cden.hpack(width, "exactly")
+        em = state.fontsize * state.dpi / 72.0
+        m = state.fontset.get_metrics(state.font, matplotlib.rcParams["mathtext.default"],
+                                      "=", state.fontsize, state.dpi)
+        axis = (m.ymax + m.ymin) / 2                  # = 의 한가운데
+        if style.value == 0:                          # 디스플레이 스타일(dfrac)
+            u, v, phi = 0.676508 * em, 0.685951 * em, 3 * theta
+        else:                                         # 텍스트 스타일(frac)
+            u, v, phi = 0.393732 * em, 0.344841 * em, theta
+        gap_num = max(u - cnum.depth - (axis + t / 2), phi)
+        gap_den = max((axis - t / 2) - (cden.height - v), phi)
+        vlist = Vlist([cnum, Vbox(0, gap_num), Hrule(state, rule), Vbox(0, gap_den), cden])
+        vlist.shift_amount = cden.height + gap_den + t / 2 - axis
+        result = [Hlist([vlist, Hbox(theta * 2.0)])]
+        if ldelim or rdelim:
+            return self._auto_sized_delimiter(ldelim or ".", result, rdelim or ".")
+        return result
+
+    _genfrac._tex = True
+    mt.Parser._genfrac = _genfrac
+
+
+_tex_fraction()
 
 
 # ── 기본 도형 ───────────────────────────────────────────────────────────
