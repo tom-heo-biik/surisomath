@@ -12,8 +12,11 @@
      units×22pt인지 확인한다. base.css와 grind.css는 저장소 안 상대 경로로 링크한다.
   4. 문제 글과 정답의 $…$는 Computer Modern 수식 SVG로 바꿔 figures/ 에 둔다
      (본문 12pt 검정, 정답 10pt 회색). 수식이 든 어절은 통째로 nowrap이다.
-  5. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
-  6. 쪽마다 두 단 상자를 재서 풀이 자리가 몇 칸인지 알려 준다. 12칸 아래면 경고.
+  5. solution이 있는 문제는 학생 쪽 뒤에 선생님 풀이 쪽을 같은 차례로 붙인다. 양식은
+     같고 왼 단 소제목이 '선생님 풀이', 그 단에 풀이 글(줄마다 한 칸), 오른 단은 '메모'.
+  6. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
+  7. 쪽마다 두 단 상자를 재서 풀이 자리가 몇 칸인지 알려 준다. 12칸 아래면 경고.
+     풀이 글이 단 바닥을 넘어도, 잇단 줄의 분수가 겹쳐도(render.py --boxes) 경고.
 
 경고가 하나라도 있으면 종료 코드가 1이다. PDF는 그래도 나온다.
 
@@ -27,6 +30,9 @@ problems.yaml
       answer: 5바퀴           # 정답. "정답: " 뒤에 그대로 붙는다
     - text: 점 $(-4,\\,3)$을 지나는 반비례 그래프 $y=\\dfrac{a}{x}\\ (a\\neq 0)$가 …
       answer: $a=-12$        # $…$는 수식(matplotlib mathtext). 조사는 붙여 쓴다
+      solution: |            # 선생님 풀이. 줄마다 한 칸. 빈 줄은 한 칸을 비운다. 있으면 뒤에 선생님 쪽이 붙는다
+        $y=\\dfrac{a}{x}$에 $x=-4$, $y=3$을 대입하면 …
+        따라서 구하는 점은 12개이다.
     - "no": "004"             # 번호. 키까지 따옴표로. YAML은 no를 거짓으로 읽는다
       text: …
       figure: p2.svg          # figures/ 안의 그림 파일
@@ -38,11 +44,13 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import os
 import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import yaml
@@ -57,7 +65,8 @@ GRIND_CSS = HERE / "grind.css"
 SYMBOL = HERE / "symbol.svg"
 
 DEFAULT_SERIES = "연마(硏磨)"
-LEFT, RIGHT = "원석 풀이", "보석 풀이"
+LEFT, RIGHT = "원석 풀이", "보석 풀이"          # 학생 쪽 두 단 소제목
+TEACHER, MEMO = "선생님 풀이", "메모"           # 선생님 풀이 쪽 두 단 소제목
 GRID = 22.0
 BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 두 단 상자가 여기서 끝난다
 MIN_ROWS = 12          # 풀이 자리 최소 칸 수
@@ -130,9 +139,24 @@ def inline_style(h: float, d: float, size: float) -> str:
             f"margin:{-mt:.2f}pt 0 {-mb:.2f}pt")
 
 
-def problem_html(no: str, p: dict, series: str, fig_dir: Path) -> str:
+def solution_html(no: str, text: str, fig_dir: Path) -> str:
+    """선생님 풀이. 줄마다 p 하나(문단 간격 없음), 빈 줄은 한 칸을 비운다."""
+    out = []
+    for i, line in enumerate(str(text).strip("\n").split("\n"), 1):
+        if not line.strip():
+            out.append('      <p class="gap"></p>')
+        else:
+            out.append(f'      <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, 12.0, g.INK)}</p>')
+    return '    <div class="solution">\n' + "\n".join(out) + "\n    </div>\n"
+
+
+def problem_html(no: str, p: dict, series: str, fig_dir: Path, teacher: bool = False) -> str:
+    """문제 한 쪽. teacher면 선생님 풀이 쪽 — 같은 양식에 왼 단 소제목이 '선생님 풀이'고
+    그 단에 solution이 들어간다. 오른 단은 '메모'로 비워 둔다."""
     text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
     answer = rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)
+    left, right = (TEACHER, MEMO) if teacher else (LEFT, RIGHT)
+    inner = solution_html(no, p["solution"], fig_dir) if teacher else ""
     fig = ""
     if p.get("figure"):
         if "units" not in p:
@@ -156,11 +180,11 @@ def problem_html(no: str, p: dict, series: str, fig_dir: Path) -> str:
         f'  <p>{text}</p>\n'
         f'{fig}'
         '  <div class="cols head">\n'
-        f'    <div><h3><img src="figures/symbol.svg" alt=""><span>{LEFT}</span></h3></div>\n'
-        f'    <div><h3><img src="figures/symbol.svg" alt=""><span>{RIGHT}</span></h3></div>\n'
+        f'    <div><h3><img src="figures/symbol.svg" alt=""><span>{left}</span></h3></div>\n'
+        f'    <div><h3><img src="figures/symbol.svg" alt=""><span>{right}</span></h3></div>\n'
         '  </div>\n'
         '  <div class="cols">\n'
-        '    <div></div>\n'
+        f'    <div>\n{inner}    </div>\n'
         '    <div></div>\n'
         '  </div>\n'
         '</section>\n'
@@ -193,8 +217,11 @@ def build_html(data: dict, out_dir: Path) -> str:
     if not problems:
         raise SystemExit("problems가 비어 있다")
 
-    body = [problem_html(no, p, series, out_dir / "figures")
-            for no, p in zip(numbers(problems), problems)]
+    nos = numbers(problems)
+    body = [problem_html(no, p, series, out_dir / "figures") for no, p in zip(nos, problems)]
+    # 선생님 풀이 쪽은 학생 쪽이 다 끝난 뒤에 같은 차례로 붙는다
+    body += [problem_html(no, p, series, out_dir / "figures", teacher=True)
+             for no, p in zip(nos, problems) if p.get("solution")]
     return (
         '<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
         f'<title>{html.escape(title)}</title>\n'
@@ -230,6 +257,10 @@ def report_space(pdf: Path, nos: list[str]) -> int:
                 bad += 1
                 continue
             rows.append((no, max(r["height"] for r in box) / GRID))
+            # 선생님 풀이가 단 바닥을 넘으면 글자가 본문 영역 아래로 나간다(쪽번호 10pt는 뺀다)
+            if any(c["bottom"] > BOTTOM + 0.5 and c["size"] > 10.5 for c in page.chars):
+                print(f"  ! {no}: 풀이 글이 두 단 바닥을 넘는다. 줄을 줄여라")
+                bad += 1
     if not rows:
         return bad or 1
     no, r = min(rows, key=lambda t: t[1])
@@ -237,6 +268,28 @@ def report_space(pdf: Path, nos: list[str]) -> int:
     if r < MIN_ROWS:
         print(f"  ! {no}: 풀이 자리 {r:.1f}칸. {MIN_ROWS}칸은 두라(그림 units를 줄이거나 문제 글을 줄인다)")
         bad += 1
+    return bad
+
+
+def check_overlap(boxes: list, nos: list[str]) -> int:
+    """글줄에 끼운 수식(img.mi)끼리 겹치면 경고한다.
+
+    TeX 규격 분수는 25.8pt라 22pt 행간에 두 줄 연속으로 놓이면 위 줄의 분모와
+    아래 줄의 분자가 겹친다. 같은 줄의 수식은 나란히 있어 안 겹치므로, 겹침은
+    곧 잇단 줄의 분수다. render.py --boxes 가 준 레이아웃 상자로 본다."""
+    bad = 0
+    for no, page in zip(nos, boxes):
+        ms = [b for b in page if "mi" in b["class"].split()]
+        hit = False
+        for i, a in enumerate(ms):
+            for b in ms[i + 1:]:
+                dx = min(a["x"] + a["w"], b["x"] + b["w"]) - max(a["x"], b["x"])
+                dy = min(a["y"] + a["h"], b["y"] + b["h"]) - max(a["y"], b["y"])
+                if dx > 0.2 and dy > 0.2:
+                    hit = True
+        if hit:
+            print(f"  ! {no}: 잇단 줄의 분수가 겹친다. 분수 줄 사이에 분수 없는 줄을 두라")
+            bad += 1
     return bad
 
 
@@ -291,13 +344,24 @@ def main() -> int:
     out_html.write_text(build_html(data, out_dir), encoding="utf-8")
     print(out_html, flush=True)
 
-    cmd = [sys.executable, str(RENDER), str(out_html)]
+    fd, tmp = tempfile.mkstemp(suffix=".json", prefix="grind_boxes_")
+    os.close(fd)                       # 열어 둔 채면 Windows에서 지울 수 없다
+    boxes_json = Path(tmp)
+    cmd = [sys.executable, str(RENDER), str(out_html), "--boxes", str(boxes_json)]
     if not args.no_check:
         cmd.append("--check")
-    r = subprocess.run(cmd, cwd=str(out_dir), env=env)
-    if r.returncode:
-        return r.returncode
-    warnings += report_space(out_html.with_suffix(".pdf"), numbers(data.get("problems") or []))
+    try:
+        r = subprocess.run(cmd, cwd=str(out_dir), env=env)
+        if r.returncode:
+            return r.returncode
+        boxes = json.loads(boxes_json.read_text(encoding="utf-8"))
+    finally:
+        boxes_json.unlink(missing_ok=True)
+    problems = data.get("problems") or []
+    nos = numbers(problems)
+    nos += [no for no, p in zip(nos, problems) if p.get("solution")]   # 선생님 풀이 쪽
+    warnings += check_overlap(boxes, nos)
+    warnings += report_space(out_html.with_suffix(".pdf"), nos)
     if warnings:
         print(f"  경고 {warnings}개. 위의 ! 줄을 보라")
     return 1 if warnings else 0

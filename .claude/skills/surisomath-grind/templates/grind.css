@@ -49,6 +49,12 @@ section.problem p.answer {
    그보다 큰 수식은 줄을 밀어 그리드가 깨진다 — --check가 잡는다. */
 section.problem img.mi { width: auto; }
 
+/* 선생님 풀이 쪽 — 왼 단에 풀이 글이 들어간다(소제목 '선생님 풀이'·'메모'). 줄마다
+   p 하나, 문단 간격 없이 한 줄 = 한 칸. 단의 위 끝이 본문 위상(11 + 22k)에 있어
+   글줄이 본문과 같은 그리드에 앉는다. 빈 줄은 p.gap으로 한 칸을 비운다. */
+section.problem .solution p { margin: 0; }
+section.problem .solution p.gap { height: 22pt; }
+
 /* 두 단 풀이 자리 */
 section.problem .cols { flex: 1; display: flex; margin: 0; min-height: 0; }
 section.problem .cols.head { flex: none; }     /* 소제목 줄. 선은 이 줄 아래서 시작한다 */

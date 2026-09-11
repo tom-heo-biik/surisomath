@@ -249,12 +249,36 @@ def check_fonts(pdf_path: Path) -> int:
 
 # --- 진입점 -----------------------------------------------------------------
 
+def image_boxes(doc) -> list:
+    """쪽마다 img 요소의 내용 상자(pt, 쪽 왼쪽 위 기준)와 class를 모은다.
+
+    글줄에 끼워 넣은 이미지(본문 안 수식)가 서로 겹치는지는 PDF만 봐서는 알기
+    어렵다. 레이아웃 결과에서 바로 뽑아 부르는 쪽(--boxes)이 살피게 한다.
+    WeasyPrint의 레이아웃 단위는 CSS px(96/in)라 pt로 바꾼다."""
+    k = 72 / 96
+    pages = []
+    for page in doc.pages:
+        boxes = []
+        for box in page._page_box.descendants():
+            if getattr(box, "element_tag", None) != "img" or not hasattr(box, "content_box_x"):
+                continue
+            el = getattr(box, "element", None)
+            boxes.append({"x": box.content_box_x() * k, "y": box.content_box_y() * k,
+                          "w": box.width * k, "h": box.height * k,
+                          "class": (el.get("class") or "") if el is not None else ""})
+        pages.append(boxes)
+    return pages
+
+
 def main() -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")     # Windows 콘솔(cp949)에서 —, ≠ 가 안 깨지게
     ap = argparse.ArgumentParser(description="수리소 수학학원 문서 양식 렌더러")
     ap.add_argument("source", type=Path, help="입력 HTML")
     ap.add_argument("-o", "--output", type=Path, help="출력 PDF (기본: 같은 이름 .pdf)")
     ap.add_argument("--check", action="store_true", help="렌더 후 베이스라인 그리드 검사")
     ap.add_argument("--no-wrap", action="store_true", help="어절 nowrap 처리를 끈다")
+    ap.add_argument("--boxes", type=Path, help="img 상자 위치를 이 JSON 파일에 적는다(쪽별 목록)")
     args = ap.parse_args()
 
     src = args.source.resolve()
@@ -281,6 +305,9 @@ def main() -> int:
     doc = weasyprint.HTML(string=html_str, base_url=str(src)).render(
         stylesheets=sheets, font_config=font_config)
     doc.write_pdf(str(out))
+    if args.boxes:
+        import json
+        args.boxes.write_text(json.dumps(image_boxes(doc), ensure_ascii=False), encoding="utf-8")
 
     print(f"{out}  ({len(doc.pages)}쪽)")
     bad = check_fonts(out)
