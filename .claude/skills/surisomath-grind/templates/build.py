@@ -160,7 +160,9 @@ def problem_html(no: str, p: dict, series: str, fig_dir: Path, teacher: bool = F
     """문제 한 쪽. teacher면 선생님 풀이 쪽 — 같은 양식에 왼 단 소제목이 '선생님 풀이'고
     그 단에 solution이 들어간다. 오른 단은 '메모'로 비워 둔다."""
     text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
-    answer = rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)
+    # 정답은 선생님 풀이 쪽에만 적는다. 학생 쪽 첫 줄은 시리즈 이름뿐이다
+    answer = (f'  <p class="answer">정답: {rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)}</p>\n'
+              if teacher else "")
     left, right = (TEACHER, MEMO) if teacher else (LEFT, RIGHT)
     inner = solution_html(no, p["solution"], fig_dir) if teacher else ""
     fig = ""
@@ -182,7 +184,7 @@ def problem_html(no: str, p: dict, series: str, fig_dir: Path, teacher: bool = F
         '<section class="problem">\n'
         f'  <p class="series">{html.escape(series)}</p>\n'
         f'  <h2>{no}</h2>\n'
-        f'  <p class="answer">정답: {answer}</p>\n'
+        f'{answer}'
         f'  <p>{text}</p>\n'
         f'{fig}'
         '  <div class="cols head">\n'

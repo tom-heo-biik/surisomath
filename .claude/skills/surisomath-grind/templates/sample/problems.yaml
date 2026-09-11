@@ -19,6 +19,10 @@ file: 수리소_연마_견본
 problems:
   - text: 한 변의 길이가 12cm인 정사각형의 둘레는 몇 cm인지 풀이 과정을 쓰고, 답을 구하시오.
     answer: 48cm
+    solution: |
+      정사각형은 네 변의 길이가 모두 같으므로
+      둘레는 $12	imes4=48$(cm)이다.
+      따라서 정사각형의 둘레는 48cm이다.
 
   - text: 반지름이 5cm인 원의 넓이는 몇 cm²인지 풀이 과정을 쓰고, 답을 구하시오.
     figure: circle.svg
