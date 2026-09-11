@@ -332,6 +332,10 @@ def main() -> int:
     fig_dir = out_dir / "figures"
     fig_dir.mkdir(exist_ok=True)
     shutil.copyfile(SYMBOL, fig_dir / "symbol.svg")
+    # 수식 SVG(m·a·s + 번호)는 빌드마다 다시 그린다. 글이 짧아져 안 쓰게 된 것을 지운다
+    for old in fig_dir.glob("*.svg"):
+        if re.fullmatch(r"[mas]\d{3}(_\d+)+\.svg", old.name):
+            old.unlink()
 
     # 제목과 파일 이름. 정본 폴더(build/연마/YYYY.MM.DD/)면 날짜에서 만든다 —
     # 제목 '2026. 9. 12.'(a4 날짜 표기), 파일 수리소_연마_2026.09.12
