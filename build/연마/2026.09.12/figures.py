@@ -160,7 +160,42 @@ def p2():
     g.save(f, "p2.svg")
 
 
+# ── 003 — 점 (-4, 3)을 지나는 반비례 그래프 ─────────────────────────────
+# a<0이라 제2·4사분면. 축 반길이 7이면 가지 끝이 축에서 1.7(0.24R)에 붙는다.
+# 6쪽 풀이가 16줄이라 그림은 6칸(132pt)이어야 들어간다 — 좌표 한 칸이 7.5pt로 작아
+# 8 대신 7을 써서 점 (-4, 3)이 원점에서 떨어져 보이게 한다.
+
+def p3():
+    a, P = -12.0, (-4.0, 3.0)
+    R = 7.0
+    f, ax = g.canvas(6, -8.5, 10.3)
+    arrow(ax, (-R - 0.6, 0), (R + 0.8, 0))
+    arrow(ax, (0, -R - 0.6), (0, R + 0.8))
+    g.label(ax, R + 1.1, 0, "$x$", ha="left")
+    g.label(ax, 0, R + 1.1, "$y$", va="bottom")
+    g.label(ax, 0.35, -0.35, "O", ha="left", va="top")     # 원점 오른쪽 아래. 왼쪽 아래는 -4 글자와 붙는다
+
+    # y = a/x. 제2사분면 (-x, 12/x), 제4사분면 (x, -12/x). x는 1.5~8
+    xs = [-a / R + (R + a / R) * i / 80 for i in range(81)]
+    ax.plot([-x for x in xs], [-a / x for x in xs], color=g.INK, linewidth=g.STRING,
+            solid_capstyle="round")
+    ax.plot(xs, [a / x for x in xs], color=g.INK, linewidth=g.STRING, solid_capstyle="round")
+
+    # 점 (-4, 3)과 두 축까지의 점선, 좌표
+    g.dashed(ax, P, (P[0], 0))
+    g.dashed(ax, P, (0, P[1]))
+    g.dot(ax, P)
+    g.label(ax, P[0], -0.4, "$-4$", va="top")
+    g.label(ax, 0.4, P[1], "3", ha="left")
+
+    # 그래프 이름. 제2사분면 가지 위 끝의 왼쪽
+    g.label(ax, -2.4, R - 0.5, r"$y=\dfrac{a}{x}$", ha="right")
+
+    g.save(f, "p3.svg")
+
+
 if __name__ == "__main__":
     print("figures/")
     p1()
     p2()
+    p3()
