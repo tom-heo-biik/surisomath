@@ -48,7 +48,7 @@ def tick_x(ax, x, y, s):
 
 # ── 001 — 도수분포다각형과 상자 그림 ─────────────────────────────────────
 # 중1 교과서·문제집 그림의 관례를 따른다.
-#   다각형: 모눈 위에 그린다. 계급 한 칸 = 도수 한 칸인 정사각 격자. 원점은 0이고
+#   다각형: 모눈 위에 그린다. 계급 한 칸 = 도수 한 칸인 격자(가로 18pt·세로 16pt). 원점은 0이고
 #           y축 바로 오른쪽 첫 칸이 첫 계급 앞의 빈 계급(40~50)이라 다각형이 그 칸
 #           한가운데(45)에서 x축을 딛고 시작해 마지막 계급 뒤 빈 칸 한가운데(105)에서
 #           끝난다. 계급 경계는 격자선 위에 있고 첫 계급 경계부터 숫자를 적는다.
@@ -59,16 +59,17 @@ CLASSES = [50, 60, 70, 80, 90, 100]      # 계급 경계(점)
 FREQ = [2, 4, 6, 6, 2]                   # 도수(명). 합 20
 FIVE = (52, 66, 75, 84, 96)              # 최솟값·Q1·중앙값·Q3·최댓값
 
-CELL = 18.0                              # 모눈 한 칸(pt). 계급 하나·도수 1명. 15pt면 50~100 숫자가 붙는다
-AX = 24.0                                # 점수 축 높이(pt). 아래 눈금 글자 자리
+CW, RH = 18.0, 16.0                      # 모눈 한 칸의 가로·세로(pt). 가로는 계급 하나, 세로는 도수 1명.
+                                         # 가로 15pt면 50~100 숫자가 붙고, 세로 18pt면 그림이 너무 길다
+AX = 20.0                                # 점수 축 높이(pt). 아래 눈금 글자 자리
 NX, NY = 7, 7                            # 모눈 칸 수(가로·세로)
-BX0, BW = 215.0, 24.0                    # 상자 그림: 50점의 x(pt), 10점의 너비(pt)
-NL = AX + 54.0                           # 상자 그림의 수직선 높이. 다각형 그림의 세로 한가운데에 맞춘 값
+BX0, BW = 215.0, 30.0                    # 상자 그림: 50점의 x(pt), 10점의 너비(pt). 다각형 칸(18pt)보다 넓게 — 좁으면 상자가 짧아 보인다
+NL = AX + 47.0                           # 상자 그림의 수직선 높이. 다각형 그림(글자 포함)의 세로 한가운데에 맞춘 값
 
 
 def px(score):
     """다각형의 x. y축(x=0)이 40점 자리다 — 첫 칸이 빈 계급 40~50."""
-    return (score - 40) / 10 * CELL
+    return (score - 40) / 10 * CW
 
 
 def bx(score):
@@ -77,33 +78,33 @@ def bx(score):
 
 
 def p1():
-    f, ax = g.canvas(8, 0, 176)          # 1단위 = 1pt
+    f, ax = g.canvas(7, 0, 154)          # 1단위 = 1pt
 
     # 모눈. 회색 실선 0.4pt. 축은 검정으로 그 위에 긋는다
     for i in range(NX + 1):
-        ax.plot([i * CELL] * 2, [AX, AX + NY * CELL], color=GRAY, linewidth=g.AUX, zorder=0)
+        ax.plot([i * CW] * 2, [AX, AX + NY * RH], color=GRAY, linewidth=g.AUX, zorder=0)
     for j in range(NY + 1):
-        ax.plot([0, NX * CELL], [AX + j * CELL] * 2, color=GRAY, linewidth=g.AUX, zorder=0)
-    arrow(ax, (0, AX), (NX * CELL + 12, AX))
-    arrow(ax, (0, AX), (0, AX + NY * CELL + 12))
+        ax.plot([0, NX * CW], [AX + j * RH] * 2, color=GRAY, linewidth=g.AUX, zorder=0)
+    arrow(ax, (0, AX), (NX * CW + 12, AX))
+    arrow(ax, (0, AX), (0, AX + NY * RH + 12))
     g.label(ax, -3, AX - 3, "0", ha="right", va="top")
-    g.label(ax, NX * CELL + 16, AX, "(점)", ha="left")
-    g.label(ax, -4, AX + NY * CELL + 12, "(명)", ha="right")
+    g.label(ax, NX * CW + 16, AX, "(점)", ha="left")
+    g.label(ax, -4, AX + NY * RH + 12, "(명)", ha="right")
     for n in (2, 4, 6):
-        g.label(ax, -4, AX + n * CELL, str(n), ha="right")
+        g.label(ax, -4, AX + n * RH, str(n), ha="right")
     for c in CLASSES:
         g.label(ax, px(c), AX - 4, str(c), va="top")
     mids = [45] + [c + 5 for c in CLASSES[:-1]] + [105]
     ys = [0] + FREQ + [0]
-    ax.plot([px(m) for m in mids], [AX + y * CELL for y in ys], color=g.INK,
+    ax.plot([px(m) for m in mids], [AX + y * RH for y in ys], color=g.INK,
             linewidth=g.STRING, solid_joinstyle="round", solid_capstyle="round")
     for m, y in zip(mids, ys):
-        g.dot(ax, (px(m), AX + y * CELL))
+        g.dot(ax, (px(m), AX + y * RH))
 
     # 상자 그림 — 수직선 y=NL. 상자는 그 위 10~26pt, 다섯 값은 상자 위에 적는다
     B0, B1 = NL + 10, NL + 26
-    arrow(ax, (bx(45), NL), (bx(110) + 12, NL))
-    g.label(ax, bx(110) + 16, NL, "(점)", ha="left")
+    arrow(ax, (bx(45), NL), (bx(105), NL))          # 100 뒤 꼬리는 짧게. 길면 상자가 왼쪽에 몰려 보인다
+    g.label(ax, bx(105) + 4, NL, "(점)", ha="left")
     for c in CLASSES:
         tick_x(ax, bx(c), NL, str(c))
     lo, q1, med, q3, hi = FIVE

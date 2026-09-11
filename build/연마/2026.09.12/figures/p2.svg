@@ -620,7 +620,7 @@ z
    </g>
    <g id="text_8">
     <!-- $y=\dfrac{b}{x}$ -->
-    <g transform="translate(122.72858 67.117148) scale(0.1 -0.1)">
+    <g transform="translate(122.72858 64.117148) scale(0.1 -0.1)">
      <defs>
       <path id="Cmmi10-62" d="M 1106 -72 
 Q 719 -72 503 231 
@@ -662,15 +662,15 @@ Q 900 97 1119 97
 z
 " transform="scale(0.015625)"/>
      </defs>
-     <use xlink:href="#Cmmi10-79" transform="translate(0 0.984375)"/>
-     <use xlink:href="#Cmr10-3d" transform="translate(66.582031 0.984375)"/>
-     <use xlink:href="#Cmmi10-62" transform="translate(168.826172 39.609375)"/>
-     <use xlink:href="#Cmmi10-78" transform="translate(161.826172 -36.953125)"/>
-     <path d="M 161.826172 13.484375 
-L 161.826172 19.734375 
-L 218.90625 19.734375 
-L 218.90625 13.484375 
-L 161.826172 13.484375 
+     <use xlink:href="#Cmmi10-79" transform="translate(0 0.958575)"/>
+     <use xlink:href="#Cmr10-3d" transform="translate(66.582031 0.958575)"/>
+     <use xlink:href="#Cmmi10-62" transform="translate(168.826172 68.609375)"/>
+     <use xlink:href="#Cmmi10-78" transform="translate(161.826172 -67.636525)"/>
+     <path d="M 161.826172 16.583575 
+L 161.826172 22.833575 
+L 218.90625 22.833575 
+L 218.90625 16.583575 
+L 161.826172 16.583575 
 z
 "/>
     </g>
