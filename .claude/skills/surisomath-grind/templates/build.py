@@ -10,18 +10,23 @@
   2. 심볼(symbol.svg)을 figures/ 에 복사한다.
   3. problems.yaml을 읽어 문제 한 개 = 한 쪽인 HTML을 쓴다. 그림마다 SVG 높이가
      units×22pt인지 확인한다. base.css와 grind.css는 저장소 안 상대 경로로 링크한다.
-  4. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
-  5. 쪽마다 두 단 상자를 재서 풀이 자리가 몇 칸인지 알려 준다. 12칸 아래면 경고.
+  4. 문제 글과 정답의 $…$는 Computer Modern 수식 SVG로 바꿔 figures/ 에 둔다
+     (본문 12pt 검정, 정답 10pt 회색). 수식이 든 어절은 통째로 nowrap이다.
+  5. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
+  6. 쪽마다 두 단 상자를 재서 풀이 자리가 몇 칸인지 알려 준다. 12칸 아래면 경고.
 
 경고가 하나라도 있으면 종료 코드가 1이다. PDF는 그래도 나온다.
 
 problems.yaml
   series: 연마(硏磨)          # 생략하면 연마(硏磨)
-  unit: 원의 둘레와 넓이       # 문서 제목(<title>)에 쓴다
-  file: 수리소_연마_원의둘레와넓이   # 출력 파일 이름. 생략하면 수리소_연마_<unit에서 공백 뺀 것>
+  unit: 2026. 9. 12.          # 문서 제목(<title>)에 쓴다. 생략하면 폴더 이름 2026.09.12를 2026. 9. 12.로
+  file: 수리소_연마_2026.09.12   # 출력 파일 이름. 생략하면 수리소_연마_<폴더 이름>
+                              # 정본 폴더(build/연마/<날짜>/)에서는 세 줄 다 생략한다
   problems:
     - text: 지름이 17cm인 …    # 문제 글. 한 문단. ": "가 들어가면 따옴표로 감싼다
       answer: 5바퀴           # 정답. "정답: " 뒤에 그대로 붙는다
+    - text: 점 $(-4,\\,3)$을 지나는 반비례 그래프 $y=\\dfrac{a}{x}\\ (a\\neq 0)$가 …
+      answer: $a=-12$        # $…$는 수식(matplotlib mathtext). 조사는 붙여 쓴다
     - "no": "004"             # 번호. 키까지 따옴표로. YAML은 no를 거짓으로 읽는다
       text: …
       figure: p2.svg          # figures/ 안의 그림 파일
@@ -43,6 +48,8 @@ from pathlib import Path
 import yaml
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import grind_figure as g  # noqa: E402  본문 안 수식을 그린다
 A4 = HERE.parents[1] / "surisomath-a4" / "templates"
 RENDER = A4 / "render.py"
 BASE_CSS = A4 / "base.css"
@@ -54,6 +61,8 @@ LEFT, RIGHT = "원석 풀이", "보석 풀이"
 GRID = 22.0
 BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 두 단 상자가 여기서 끝난다
 MIN_ROWS = 12          # 풀이 자리 최소 칸 수
+CAPTION = "#636363"    # neutral-500. 정답 줄의 수식 색
+MATH = re.compile(r"\$([^$]+)\$")
 
 
 def rel(target: Path, start: Path) -> str:
@@ -66,9 +75,44 @@ def svg_height(path: Path) -> float | None:
     return float(m.group(1)) if m else None
 
 
+def rich(s: str, prefix: str, fig_dir: Path, size: float, color: str) -> str:
+    """글을 HTML로. $…$는 수식 SVG(img)로 바꾼다.
+
+    수식을 먼저 떼어 내고 나서 어절(공백으로 나뉜 토막)을 나눈다. 수식 안의
+    띄어쓰기("$y=ax\\ (a\\neq 0)$")가 어절을 가르면 안 되기 때문이다. 수식이 든
+    어절은 span.w로 감싸 안의 글·수식이 한 덩어리로 줄 바꿈되게 한다 —
+    "$y=ax$와"에서 조사 '와'가 다음 줄로 떨어지지 않는다. render.py는 class w인
+    요소를 건드리지 않는다. 수식이 없는 어절은 그대로 두고 render.py가 nowrap을
+    건다."""
+    maths: list[str] = []
+    NUL = chr(0)                        # 수식 자리표. 글에 나올 리 없는 글자
+
+    def stash(m: re.Match) -> str:
+        maths.append(m.group(1))
+        return f"{NUL}{len(maths) - 1}{NUL}"
+
+    out = []
+    for tok in MATH.sub(stash, s).split():
+        if NUL not in tok:
+            out.append(html.escape(tok))
+            continue
+        parts = []
+        for j, piece in enumerate(tok.split(NUL)):
+            if j % 2 == 0:              # 홀수째 조각이 수식 번호다
+                parts.append(html.escape(piece))
+                continue
+            i = int(piece)
+            name = f"{prefix}_{i + 1}.svg"
+            w, h, d = g.inline(maths[i], fig_dir / name, size=size, color=color)
+            parts.append(f'<img class="mi" src="figures/{name}" alt="{html.escape(maths[i])}" '
+                         f'style="height:{h:.2f}pt;vertical-align:{-d:.2f}pt">')
+        out.append('<span class="w">' + "".join(parts) + "</span>")
+    return " ".join(out)
+
+
 def problem_html(no: str, p: dict, series: str, fig_dir: Path) -> str:
-    text = html.escape(str(p["text"]).strip())
-    answer = html.escape(str(p["answer"]).strip())
+    text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
+    answer = rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)
     fig = ""
     if p.get("figure"):
         if "units" not in p:
@@ -216,8 +260,13 @@ def main() -> int:
     fig_dir.mkdir(exist_ok=True)
     shutil.copyfile(SYMBOL, fig_dir / "symbol.svg")
 
-    unit = str(data.get("unit") or "").replace(" ", "")
-    name = data.get("file") or f"수리소_연마_{unit}"
+    # 제목과 파일 이름. 정본 폴더(build/연마/YYYY.MM.DD/)면 날짜에서 만든다 —
+    # 제목 '2026. 9. 12.'(a4 날짜 표기), 파일 수리소_연마_2026.09.12
+    date = re.fullmatch(r"(\d{4})\.(\d{2})\.(\d{2})", out_dir.name)
+    if not data.get("unit") and date:
+        data["unit"] = f"{int(date[1])}. {int(date[2])}. {int(date[3])}."
+    stem = out_dir.name if date else str(data.get("unit") or "").replace(" ", "")
+    name = data.get("file") or f"수리소_연마_{stem}"
     out_html = out_dir / f"{name}.html"
     out_html.write_text(build_html(data, out_dir), encoding="utf-8")
     print(out_html, flush=True)

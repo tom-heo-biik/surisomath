@@ -20,6 +20,8 @@ y 범위가 배율을 정한다(배율 = units×22 ÷ y 범위). x 범위는 sav
 
 글자는 패스로 변환되므로 결과 SVG는 폰트 설치 없이 그대로 렌더된다. 생성 시각을
 빼고 해시 소금을 고정해, 같은 그림은 다시 빌드해도 바이트 단위로 같다.
+
+본문 안 수식은 inline()이 그린다. build.py가 problems.yaml의 $…$를 찾아 부른다.
 """
 from __future__ import annotations
 
@@ -188,6 +190,45 @@ def save(f, name: str) -> Path:
     f.savefig(path, format="svg", transparent=True, metadata={"Date": None})
     plt.close(f)
     return path
+
+
+# ── 본문 안 수식 ────────────────────────────────────────────────────────
+
+def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
+           pad: float = 0.5) -> tuple[float, float, float]:
+    """수식 한 토막($ 없이)을 Computer Modern로 그려 SVG로 저장한다. 상자는 잉크에
+    pad pt 여백을 두고 딱 맞춘다. (너비, 높이, 깊이)를 pt로 돌려준다. 깊이는
+    베이스라인이 상자 바닥에서 얼마나 위인지다 — HTML에서 img에 height와
+    vertical-align: -깊이 를 주면 글줄의 베이스라인에 앉는다.
+
+    글자와 선 두께처럼 배율이 없는 그림이라 TextPath로 잉크 경계를 잰다.
+    Text.get_window_extent는 글꼴 상자를 돌려줘 실제 잉크보다 위아래로 3pt쯤
+    크다. 그 값으로 앉히면 수식이 베이스라인 위에 떠 보인다.
+
+    분수는 \\dfrac을 쓴다. 12pt에서 위 13.6pt·아래 5.1pt라 KoPub 12pt 글줄 상자
+    (위 14.4pt·아래 7.6pt) 안에 든다. \\frac은 분자·분모가 7할로 줄어 교과서와
+    다르다. mathtext에는 \\tfrac이 없다."""
+    from matplotlib.font_manager import FontProperties
+    from matplotlib.patches import PathPatch
+    from matplotlib.textpath import TextPath
+
+    prop = FontProperties(size=size)
+    s = f"${tex}$"
+    x0, y0, x1, y1 = TextPath((0, 0), s, size=size, prop=prop).get_extents().extents
+    W, H = x1 - x0 + 2 * pad, y1 - y0 + 2 * pad
+    D = pad - y0
+    f = plt.figure(figsize=(W * PT, H * PT))
+    f.patch.set_alpha(0)
+    ax = f.add_axes((0, 0, 1, 1))
+    ax.axis("off")
+    ax.set_aspect("equal")
+    ax.set_xlim(0, W)
+    ax.set_ylim(0, H)
+    ax.add_patch(PathPatch(TextPath((pad - x0, D), s, size=size, prop=prop),
+                           facecolor=color, edgecolor="none", linewidth=0))
+    f.savefig(path, format="svg", transparent=True, metadata={"Date": None})
+    plt.close(f)
+    return W, H, D
 
 
 # ── 기본 도형 ───────────────────────────────────────────────────────────

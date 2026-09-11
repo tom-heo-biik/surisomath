@@ -43,6 +43,12 @@ section.problem p.answer {
   color: var(--c-caption); text-align: right;
 }
 
+/* 본문 안 수식. build.py가 $…$를 Computer Modern SVG로 바꿔 넣는다. 높이와
+   vertical-align(베이스라인 깊이)은 수식마다 잉크로 재서 img에 직접 적는다.
+   글줄 상자(KoPub 12pt·행간 22pt)는 베이스라인 위 14.4pt·아래 7.6pt까지 받는다.
+   그보다 큰 수식은 줄을 밀어 그리드가 깨진다 — --check가 잡는다. */
+section.problem img.mi { width: auto; }
+
 /* 두 단 풀이 자리 */
 section.problem .cols { flex: 1; display: flex; margin: 0; min-height: 0; }
 section.problem .cols.head { flex: none; }     /* 소제목 줄. 선은 이 줄 아래서 시작한다 */
