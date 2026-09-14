@@ -3,6 +3,7 @@
 
     python build.py 단원폴더/problems.yaml              → 같은 폴더에 HTML과 PDF
     python build.py 단원폴더/problems.yaml --no-figures   그림은 다시 그리지 않는다
+    python build.py 단원폴더/problems.yaml --no-check     그리드 검사를 건너뛴다
 
 하는 일
   1. 단원 폴더에 figures.py가 있으면 실행해 figures/ 에 SVG를 뽑는다. grind_figure를
@@ -14,9 +15,11 @@
   5. solution이 있는 문제가 하나라도 있으면 학생 쪽 뒤에 선생님 쪽을 같은 짝으로 붙인다.
      풀 자리 첫 줄에 정답, 그 아래 풀이. solution이 없는 문제는 그 단이 빈다.
   6. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
-  7. 풀 자리의 위 끝(div.work.box)을 레이아웃에서 받아 단마다 남은 칸을 알려 준다. 단을
-     넘치면, 풀 자리가 8칸 아래면, 정답 줄이 단보다 넓으면, 풀이가 단 바닥을 넘으면,
-     잇단 줄의 수식이 겹치면 경고.
+  7. 풀 자리의 위 끝(학생 쪽 div.work.box.n<번호>, 선생님 쪽 .t<번호>)을 받아 단마다 남은 칸을
+     알려 주고, 밀린 문제를 짚는다. 넘친 내용을 WeasyPrint는 바닥 아래로 흘리지 않고 쪽을
+     쪼개므로 상자가 있어야 할 쪽보다 뒤에 있으면 그 문제가 단을 넘친 것이다. 풀 자리가
+     8칸 아래면, 정답 줄이나 1열 선지가 단보다 넓으면, 머리줄이 이름 칸과 겹치면,
+     잇단 줄의 수식이 겹치면(단마다 따로 본다) 경고.
 
 경고가 하나라도 있으면 종료 코드가 1이다. PDF는 그래도 나온다.
 
@@ -25,14 +28,15 @@ problems.yaml
   grade: 중3                       # 생략하면 학년 폴더 이름
   unit: 삼각비                      # 생략하면 단원 폴더 이름
   file: 수리소_시험대비_…            # 생략하면 수리소_시험대비_2026_2학기중간_중3_삼각비
-  date: 2026.09.01                 # PDF의 만든 날짜. 생략하면 학기 첫날(1학기 3. 1., 2학기 9. 1.)
+  date: 2026.09.01                 # PDF의 만든 날짜. 생략하면 학기 첫날(1학기 3. 1., 2학기 9. 1.).
+                                   # 폴더 꼴이 안 맞으면 yaml 수정 시각 — 그때는 PDF가 재현되지 않는다
   problems:
     - text: 다음 그림과 같이 …       # 지문. 표기 규칙은 SKILL.md. ": "가 들어가면 따옴표로 감싼다
       figure: p1.svg               # figures/ 안의 그림. units는 없다 — SVG 높이가 칸 수를 정한다
       alt: …                       # 그림 설명. PDF에는 안 찍힌다
       choices:                     # 있으면 객관식. 다섯 개
         - $\\dfrac{80}{\\tan 52^{\\circ}+\\tan 35^{\\circ}}$
-      answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지
+      answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지. solution이 없어도 필수
       solution: |                  # 선생님 풀이. 줄마다 한 칸. 빈 줄은 한 칸을 비운다
         주어진 그림에서 …
     - "no": "004"                  # 번호를 직접 줄 때. 키까지 따옴표로(YAML은 no를 거짓으로 읽는다)
@@ -68,7 +72,9 @@ import grind_figure as g  # noqa: E402  본문 안 수식을 그린다
 
 def _grind_build():
     """연마 build.py를 모듈로 읽는다(__main__ 가드가 있다). 수식 조판(rich)·상대 경로·
-    SVG 높이·수식 겹침 검사를 빌려 쓴다. 같은 코드를 복사하지 않는다."""
+    SVG 높이·수식 겹침 검사를 빌려 쓴다. 같은 코드를 복사하지 않는다.
+
+    gb는 sys.modules에 안 오르므로 연마 build.py에 모듈 수준 부작용을 더하지 말 것."""
     spec = importlib.util.spec_from_file_location("grind_build", GRIND / "build.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -84,13 +90,19 @@ BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 풀 자리가 여�
 COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁은 쪽으로 잰다
 MARK_W = 22.0          # 선지 마커 칸(a4의 ol --pad)
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
-CAPTION = "#636363"    # neutral-500. 정답 줄
-MATH = re.compile(r"\$([^$]+)\$")
+CAPTION = gb.CAPTION   # neutral-500. 정답 줄
+MATH = gb.MATH
 FOLDER = re.compile(r"(\d{4})(\d)학기(중간|기말)")
 _KOPUB = None
 
 
 # ── 너비 재기 ───────────────────────────────────────────────────────────
+
+def svg_width(path: Path) -> float | None:
+    """SVG의 width(pt). 높이는 연마의 svg_height가 읽는다."""
+    m = re.search(r'<svg[^>]*\swidth="([\d.]+)pt"', path.read_text(encoding="utf-8")[:4000])
+    return float(m.group(1)) if m else None
+
 
 def kopub_width(s: str, size: float) -> float:
     """KoPub 바탕 Light로 조판한 글의 너비(pt). 자간은 a4 규격(12pt -0.03em, 10pt -0.02em)."""
@@ -165,11 +177,6 @@ def meta(data: dict, out_dir: Path) -> dict:
 
 # ── HTML ────────────────────────────────────────────────────────────────
 
-def svg_width(path: Path) -> float | None:
-    m = re.search(r'<svg[^>]*\swidth="([\d.]+)pt"', path.read_text(encoding="utf-8")[:4000])
-    return float(m.group(1)) if m else None
-
-
 def figure_html(no: str, p: dict, fig_dir: Path) -> str:
     if not p.get("figure"):
         return ""
@@ -222,7 +229,7 @@ def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
             f'      <p>{text}</p>\n'
             f'{figure_html(no, p, fig_dir)}'
             f'{choices_html(no, p, fig_dir)}'
-            f'      <div class="work box">\n{work}      </div>\n'
+            f'      <div class="work box {"t" if teacher else "n"}{no}">\n{work}      </div>\n'
             '    </div>\n')
 
 
@@ -240,8 +247,7 @@ def page_html(pair: list, head: str, name: bool, fig_dir: Path, teacher: bool) -
             '</section>\n')
 
 
-def numbers(problems: list) -> list[str]:
-    return [str(p.get("no") or f"{i:03d}") for i, p in enumerate(problems, 1)]
+numbers = gb.numbers    # 001, 002, … 또는 yaml이 준 no
 
 
 def pages(problems: list) -> list[list]:
@@ -273,7 +279,8 @@ def build_html(data: dict, m: dict, out_dir: Path) -> tuple[str, list[str], int]
 # ── 검사 ────────────────────────────────────────────────────────────────
 
 def check(problems: list) -> int:
-    """yaml에서 흔히 나는 잘못을 문제 번호와 함께 알려 준다. 정답 줄이 단보다 넓으면 경고."""
+    """yaml에서 흔히 나는 잘못을 문제 번호와 함께 알려 준다. 정답 줄이나 1열 선지가
+    단보다 넓으면 경고."""
     if not problems:
         raise SystemExit("problems가 비어 있다")
     bad = 0
@@ -282,13 +289,20 @@ def check(problems: list) -> int:
             raise SystemExit(f"{i}번째 문제가 표가 아니다. '- text: …' 꼴로 적어라")
         # YAML 1.1은 따옴표 없는 no를 거짓으로 읽는다. 조용히 번호가 밀리므로 여기서 잡는다
         if False in p:
-            raise SystemExit(f'{i}번째 문제: no를 "no": "{p[False]}" 로 적어라. '
+            raise SystemExit(f'{i}번째 문제: no는 키와 값을 모두 따옴표로 — "no": "004"처럼 적어라. '
                              "따옴표가 없으면 YAML이 거짓으로 읽어 번호가 무시된다")
         for key in ("text", "answer"):
             if key not in p:
                 raise SystemExit(f"{i}번째 문제에 {key}가 없다")
+        if "choices" in p and not isinstance(p["choices"], list):
+            raise SystemExit(f"{i}번째 문제: choices는 목록('- …' 다섯 줄)이어야 한다")
         if "choices" in p and len(p["choices"] or []) != 5:
             raise SystemExit(f"{i}번째 문제: 선지는 다섯 개여야 한다")
+        if p.get("choices") and choice_cols(p["choices"]) == 1:
+            for k, c in enumerate(p["choices"], 1):
+                if MARK_W + width_of(str(c).strip()) > COL_W:
+                    print(f"  ! {i}번째 문제: 선지 {k}이 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
+                    bad += 1
         if p.get("solution"):
             w = width_of("정답: " + str(p["answer"]).strip(), 10.0)
             if w > COL_W:
@@ -297,45 +311,68 @@ def check(problems: list) -> int:
     return bad
 
 
-def report(pdf: Path, boxes: list, labels: list[str], n_student: int) -> int:
-    """학생 쪽마다 풀 자리 위 끝(div.work.box)을 받아 남은 칸을 잰다. 단을 넘치면 경고.
-    선생님 쪽은 풀이 글이 단 바닥을 넘는지 본다(글자가 본문 영역 아래로 나간다.
-    쪽번호 10pt는 뺀다). 내용이 있는 요소는 글줄 상자까지 같은 class로 나오므로
-    x마다 맨 위 상자(블록 상자) 하나만 남긴다."""
+def overlap_by_column(boxes: list, labels: list[str]) -> int:
+    """잇단 줄 수식 겹침을 단마다 따로 본다. 한 쪽에 문제가 둘이라 쪽 단위면 어느 문제인지 모른다."""
     bad = 0
+    for label, page in zip(labels, boxes):
+        head = "선생님 " if label.startswith("선생님") else ""
+        for no, (x0, x1) in zip(label.split(" ", 1)[-1].split("·"), ((0, 297), (297, 595))):
+            bad += check_overlap([[b for b in page if x0 <= b["x"] < x1]], [head + no])
+    return bad
+
+
+def report(boxes: list, labels: list[str], n_student: int) -> int:
+    """풀 자리 상자(학생 쪽 div.work.box.n<번호>, 선생님 쪽 .t<번호>)로 잰다. 넘친 내용을
+    WeasyPrint는 바닥 아래로 흘리지 않고 다음 쪽으로 쪼개므로, 상자가 있어야 할 쪽보다 뒤
+    쪽에 있으면 그 문제의 블록이 단을 넘친 것이고, 같은 상자가 두 쪽에 걸쳐 있으면 그 안의
+    풀이 글이 단 바닥을 넘은 것이다. 학생 쪽은 단마다 남은 칸 수를 알려 주고 8칸 아래면
+    경고한다. 내용이 있는 요소는 글줄 상자까지 같은 class로 나오므로 쪽·이름표마다 맨 위
+    상자(블록 상자) 하나만 본다.
+
+    이름표에 n·t를 두는 까닭은 같은 문제 번호가 학생 쪽과 선생님 쪽에 둘 다 있어서다.
+    번호만으로 키를 삼으면 학생 쪽 001 다음 쪽에 놓인 선생님 쪽 001을 '쪽을 넘어 이어진
+    상자'로 잘못 읽어 shift가 어긋난다."""
+    bad = 0
+    found: dict[tuple[int, str], dict] = {}          # (쪽, 이름표) → 상자
+    for i, page in enumerate(boxes):
+        for b in sorted(page, key=lambda b: b["y"]):
+            cls = b["class"].split()
+            if "work" not in cls:
+                continue
+            tag = next((c for c in cls if c[:1] in "nt" and len(c) > 1), None)
+            if tag is not None and (i, tag) not in found:
+                found[(i, tag)] = b
     if len(boxes) != len(labels):
-        print(f"  ! 쪽 수 {len(boxes)} ≠ {len(labels)}. 어느 문제가 한 쪽을 넘쳤다")
-        return 1
-    rows = []
-    for label, page in zip(labels[:n_student], boxes):
-        seen, works = set(), []
-        for b in sorted((b for b in page if "work" in b["class"].split()),
-                        key=lambda b: (b["x"], b["y"])):
-            if round(b["x"]) not in seen:
-                seen.add(round(b["x"]))
-                works.append(b)
-        for no, b in zip(label.split("·"), works):
-            r = (BOTTOM - b["y"]) / GRID
-            if r < 0:
-                print(f"  ! {no}: 문제 블록이 단 바닥을 {-r:.1f}칸 넘는다. 그림을 줄이거나 선지를 보라")
+        print(f"  ! 쪽 수 {len(boxes)} ≠ {len(labels)}. 어느 문제가 한 쪽을 넘쳤다 — 아래 줄이 짚는다")
+        bad += 1
+    shift = 0                                        # 앞에서 밀린 쪽 수
+    rows: list[tuple[str, float]] = []
+    for i, label in enumerate(labels):
+        teacher = i >= n_student
+        for no in label.split(" ", 1)[-1].split("·"):
+            tag = ("t" if teacher else "n") + no
+            j = next((k for k in range(i + shift, len(boxes)) if (k, tag) in found), None)
+            if j is None:
+                print(f"  ! {no}: 풀 자리 상자를 못 찾았다. HTML 구조를 보라")
                 bad += 1
-            rows.append((no, r))
+                continue
+            if j > i + shift:
+                print(f"  ! {no}: 문제 블록이 단을 넘쳐 다음 쪽으로 밀렸다. 그림을 줄이거나 선지를 보라")
+                bad += 1
+                shift = j - i
+            if (j + 1, tag) in found:                # 같은 상자가 다음 쪽에 이어진다
+                print(f"  ! {no}: 풀이 글이 단 바닥을 넘어 다음 쪽으로 이어진다. 줄을 줄여라")
+                bad += 1
+                shift += 1
+            if not teacher:
+                rows.append((no, (BOTTOM - found[(j, tag)]["y"]) / GRID))
     if rows:
         no, r = min(rows, key=lambda t: t[1])
         print(f"  풀 자리: 가장 좁은 단 {no} {r:.1f}칸")
-        if 0 <= r < MIN_ROWS:
-            print(f"  ! {no}: 풀 자리 {r:.1f}칸. {MIN_ROWS}칸은 두라")
-            bad += 1
-    if len(labels) > n_student:
-        import pdfplumber
-        with pdfplumber.open(pdf) as doc:
-            for label, page in zip(labels[n_student:], doc.pages[n_student:]):
-                nos = label.split(" ", 1)[1].split("·")
-                for no, (x0, x1) in zip(nos, ((0, 297), (297, 595))):
-                    if any(c["bottom"] > BOTTOM + 0.5 and c["size"] > 10.5 and x0 <= c["x0"] < x1
-                           for c in page.chars):
-                        print(f"  ! {no}: 풀이 글이 단 바닥을 넘는다. 줄을 줄여라")
-                        bad += 1
+        for no, r in rows:
+            if r < MIN_ROWS:
+                print(f"  ! {no}: 풀 자리 {r:.1f}칸. {MIN_ROWS}칸은 두라")
+                bad += 1
     return bad
 
 
@@ -366,6 +403,9 @@ def main() -> int:
     problems = data.get("problems") or []
     warnings = check(problems)
     m = meta(data, out_dir)
+    if width_of(m["head"], 10.0) > 475 - 120:       # 첫 쪽 오른쪽 끝의 "이름" 글과 90pt 빈 자리
+        print(f"  ! 머리줄 '{m['head']}'이 길어 이름 칸과 겹친다. yaml의 exam·unit을 줄여라")
+        warnings += 1
 
     env = dict(os.environ, PYTHONIOENCODING="utf-8",
                PYTHONPATH=os.pathsep.join(p for p in (str(GRIND), os.environ.get("PYTHONPATH")) if p))
@@ -382,12 +422,13 @@ def main() -> int:
         warnings += sum(1 for line in r.stdout.splitlines() if line.lstrip().startswith("!"))
     fig_dir = out_dir / "figures"
     fig_dir.mkdir(exist_ok=True)
-    # 수식 SVG(m 지문 · c 선지 · a 정답 · s 풀이 + 번호)는 빌드마다 다시 그린다
-    for old in fig_dir.glob("*.svg"):
-        if re.fullmatch(r"[macs]\d{3}(_\d+)+\.svg", old.name):
-            old.unlink()
 
     doc, labels, n_student = build_html(data, m, out_dir)
+    # 수식 SVG(m 지문 · c 선지 · a 정답 · s 풀이)는 빌드마다 다시 그린다. 이번에 안 쓴 것을 지운다
+    kept = set(re.findall(r'src="figures/([^"]+)"', doc))
+    for old in fig_dir.glob("*.svg"):
+        if old.name[0] in "macs" and "_" in old.name and old.name not in kept:
+            old.unlink()
     out_html = out_dir / f"{m['file']}.html"
     out_html.write_text(doc, encoding="utf-8")
     print(out_html, flush=True)
@@ -401,12 +442,14 @@ def main() -> int:
     try:
         r = subprocess.run(cmd, cwd=str(out_dir), env=env)
         if r.returncode:
-            return r.returncode
+            warnings += 1              # 그리드·서체 검사가 어긋났다. 아래 검사가 까닭을 짚도록 마저 돌린다
+        if not boxes_json.exists() or boxes_json.stat().st_size == 0:
+            return r.returncode or 1   # 렌더 자체가 터졌다
         boxes = json.loads(boxes_json.read_text(encoding="utf-8"))
     finally:
         boxes_json.unlink(missing_ok=True)
-    warnings += check_overlap(boxes, labels)
-    warnings += report(out_html.with_suffix(".pdf"), boxes, labels, n_student)
+    warnings += overlap_by_column(boxes, labels)
+    warnings += report(boxes, labels, n_student)
     if warnings:
         print(f"  경고 {warnings}개. 위의 ! 줄을 보라")
     return 1 if warnings else 0
