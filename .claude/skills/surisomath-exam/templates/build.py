@@ -301,7 +301,7 @@ def check(problems: list) -> int:
         if p.get("choices") and choice_cols(p["choices"]) == 1:
             for k, c in enumerate(p["choices"], 1):
                 if MARK_W + width_of(str(c).strip()) > COL_W:
-                    print(f"  ! {i}번째 문제: 선지 {k}이 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
+                    print(f"  ! {i}번째 문제: 선지 {k}가 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
                     bad += 1
         if p.get("solution"):
             w = width_of("정답: " + str(p["answer"]).strip(), 10.0)
@@ -350,18 +350,20 @@ def report(boxes: list, labels: list[str], n_student: int) -> int:
     for i, label in enumerate(labels):
         teacher = i >= n_student
         for no in label.split(" ", 1)[-1].split("·"):
+            who = ("선생님 " if teacher else "") + no
             tag = ("t" if teacher else "n") + no
             j = next((k for k in range(i + shift, len(boxes)) if (k, tag) in found), None)
             if j is None:
-                print(f"  ! {no}: 풀 자리 상자를 못 찾았다. HTML 구조를 보라")
+                print(f"  ! {who}: 풀 자리 상자를 못 찾았다. HTML 구조를 보라")
                 bad += 1
                 continue
             if j > i + shift:
-                print(f"  ! {no}: 문제 블록이 단을 넘쳐 다음 쪽으로 밀렸다. 그림을 줄이거나 선지를 보라")
+                print(f"  ! {who}: 문제 블록이 단을 넘쳐 다음 쪽으로 밀렸다. 그림을 줄이거나 선지를 보라")
                 bad += 1
                 shift = j - i
+                continue                             # 이어진 쪽에서 잰 y는 뜻이 없다. 칸 수에 넣지 않는다
             if (j + 1, tag) in found:                # 같은 상자가 다음 쪽에 이어진다
-                print(f"  ! {no}: 풀이 글이 단 바닥을 넘어 다음 쪽으로 이어진다. 줄을 줄여라")
+                print(f"  ! {who}: 풀이 글이 단 바닥을 넘어 다음 쪽으로 이어진다. 줄을 줄여라")
                 bad += 1
                 shift += 1
             if not teacher:
@@ -424,10 +426,13 @@ def main() -> int:
     fig_dir.mkdir(exist_ok=True)
 
     doc, labels, n_student = build_html(data, m, out_dir)
-    # 수식 SVG(m 지문 · c 선지 · a 정답 · s 풀이)는 빌드마다 다시 그린다. 이번에 안 쓴 것을 지운다
+    # 수식 SVG(m 지문 · c 선지 · a 정답 · s 풀이 + 번호)는 빌드마다 다시 그린다. 이번에 안 쓴 것을
+    # 지운다. figures.py가 그린 그림(p*.svg 등)은 건드리지 않는다
     kept = set(re.findall(r'src="figures/([^"]+)"', doc))
+    mine = tuple(f"{c}{no}_" for no in numbers(problems) for c in "macs")
     for old in fig_dir.glob("*.svg"):
-        if old.name[0] in "macs" and "_" in old.name and old.name not in kept:
+        if ((old.name.startswith(mine) or re.fullmatch(r"[macs]\d{3}(_\d+)+\.svg", old.name))
+                and old.name not in kept):
             old.unlink()
     out_html = out_dir / f"{m['file']}.html"
     out_html.write_text(doc, encoding="utf-8")
