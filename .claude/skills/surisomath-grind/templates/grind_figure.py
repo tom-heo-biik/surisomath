@@ -54,7 +54,7 @@ DOT = 2.4              # 점 지름(pt)
 TINT = 0.10            # 색칠한 부분
 LABEL = 10.0           # 그림 글자 크기(pt)
 DASH = (0, (2, 2))     # 점선. matplotlib이 선 두께를 곱하므로 0.4pt 선에서 0.8pt 등간격이 된다
-DASHDOT = (6.0, 2.0, 1.0, 2.0)   # 일점쇄선(pt): 긴 획 6, 빈 2, 점 1, 빈 2. 회전축
+DASHDOT = (6, 2, 1, 2) # 일점쇄선(pt): 긴 획 6, 빈 2, 점 1, 빈 2. 회전축
 TICK = 5.0             # 같은 길이 표시 획의 길이(pt)
 MARK = 5.5             # 직각 표시 한 변(pt)
 MARGIN = 4.0           # 잉크에서 캔버스 가장자리까지 최소(pt). 잘리지 않게
@@ -155,7 +155,7 @@ def _ink_bbox(f, ax):
     return x0, y0, x1, y1
 
 
-def save(f, name: str) -> Path:
+def save(f, filename: str) -> Path:
     """x 범위를 잉크 기준 좌우 대칭으로 잡아 SVG로 저장한다. 위아래 여백이 모자라거나
     지나치게 남으면 y 범위를 얼마로 바꾸면 되는지 알려 준다."""
     if OUT is None:
@@ -172,7 +172,7 @@ def save(f, name: str) -> Path:
     cx = X0 + (bx0 + bx1) / 2 / W * (X1 - X0)
     w = bx1 - bx0 + 2 * MARGIN
     if w > WIDTH:
-        warn(f"{name}: 그림 너비 {w:.0f}pt가 본문 너비 {WIDTH:.0f}pt를 넘는다. "
+        warn(f"{filename}: 그림 너비 {w:.0f}pt가 본문 너비 {WIDTH:.0f}pt를 넘는다. "
              "y 범위를 넓혀 배율을 줄여라")
         w = WIDTH
     f.set_size_inches(w * PT, H * PT)
@@ -192,14 +192,14 @@ def save(f, name: str) -> Path:
         how = "모자란다" if gap < MARGIN else "남는다"
         if shape > 0 and room > 0:
             span = shape * H / room
-            warn(f"{name}: 위아래 여백 {gap:.1f}pt. {how}. "
+            warn(f"{filename}: 위아래 여백 {gap:.1f}pt. {how}. "
                  f"y 범위를 ({cy - span / 2:.2f}, {cy + span / 2:.2f})로 잡아라")
         else:
-            warn(f"{name}: 위아래 여백 {gap:.1f}pt. {how}. 글자와 선만으로 "
+            warn(f"{filename}: 위아래 여백 {gap:.1f}pt. {how}. 글자와 선만으로 "
                  f"{fixed:.0f}pt를 차지한다. units를 {'키워라' if gap < MARGIN else '줄여라'}")
 
-    print(f"  {name}  ({w:.0f}×{H:.0f}pt)")
-    path = OUT / name
+    print(f"  {filename}  ({w:.0f}×{H:.0f}pt)")
+    path = OUT / filename
     f.savefig(path, format="svg", transparent=True, metadata={"Date": None})
     plt.close(f)
     return path
@@ -485,25 +485,32 @@ def angle(ax, v, p, q, text="", r=12.0, ticks=0, lw=AUX, pad=3.0):
     """각 표시. 꼭짓점 v에서 p 방향부터 q 방향까지(반시계) 반지름 r pt의 호를 긋고,
     글을 각 안쪽 이등분선 위, 호에서 pad pt 떨어진 자리에 앉힌다. 각도 글은
     '$35^{\\circ}$'처럼 수식으로 준다(cmr10에는 °가 없다). ticks가 n이면 호를 가로지르는
-    짧은 획 n개 — 같은 각 표시(각의 이등분선). 글 없이 호만 그리려면 text=""."""
+    짧은 획 n개(획 사이 2pt) — 같은 각 표시(각의 이등분선). 글 없이 호만 그리려면 text="".
+    글 자리(글이 없으면 호 한가운데)를 돌려준다. 좁은 각에서 글이 변에 끼면 text=""로
+    두고 그 자리에서 g.leader로 글을 밖에 뺀다."""
     t1 = math.degrees(math.atan2(p[1] - v[1], p[0] - v[0]))
     t2 = math.degrees(math.atan2(q[1] - v[1], q[0] - v[0]))
     while t2 <= t1:
         t2 += 360.0
+    if t2 - t1 > 180.0:
+        warn(f"각 {t2 - t1:.0f}°: p→q 반시계가 우각이다. p와 q를 바꿔라")
     R = pt(ax, r)
-    ax.add_patch(Arc(v, 2 * R, 2 * R, angle=0, theta1=t1, theta2=t2, linewidth=lw, color=INK))
+    arc(ax, v, R, t1, t2, lw=lw)
     m = math.radians((t1 + t2) / 2)
     ux, uy = math.cos(m), math.sin(m)
     s = pt(ax, 2.0)
     for i in range(ticks):
-        a = m + math.radians(6.0) * (i - (ticks - 1) / 2)
+        a = m + (2.0 / r) * (i - (ticks - 1) / 2)
         cx, cy = math.cos(a), math.sin(a)
         seg(ax, (v[0] + (R - s) * cx, v[1] + (R - s) * cy),
             (v[0] + (R + s) * cx, v[1] + (R + s) * cy), lw=lw)
     if text:
         w, h = text_size(ax, text)
         d = r + pad + (abs(ux) * w + abs(uy) * h) / 2
-        label(ax, v[0] + pt(ax, d) * ux, v[1] + pt(ax, d) * uy, text)
+        tx, ty = v[0] + pt(ax, d) * ux, v[1] + pt(ax, d) * uy
+        label(ax, tx, ty, text)
+        return tx, ty
+    return v[0] + R * ux, v[1] + R * uy
 
 
 def tick(ax, p, q, n=1, lw=AUX):
@@ -531,5 +538,6 @@ def axis(ax, p, q, text="", lw=AUX):
 
 def name(ax, p, s, dx=0.0, dy=0.0, ha="center", va="center"):
     """점 이름·변의 길이 글. p에서 (dx, dy) pt 떨어진 자리에 10pt 정체로 앉힌다.
-    변의 길이는 교과서처럼 변 옆에 바로 적는다 — 그려진 변에는 dim(점선 곡선)을 쓰지 않는다."""
+    시험대비처럼 변의 길이를 교과서식으로 변 옆에 적을 때 쓴다. 연마의 길이 표시는
+    dim 그대로다. 점을 세로로 맞출 땐 va="baseline"."""
     label(ax, p[0] + pt(ax, dx), p[1] + pt(ax, dy), s, ha=ha, va=va)
