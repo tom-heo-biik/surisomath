@@ -1,0 +1,146 @@
+# 시험대비 · 2026학년도 2학기 중간고사 · 중3 · 삼각비 — problems.md 열 문제. 지문은 problems.md
+# 문장 그대로다. 표기만 조판했다(SKILL.md 표기 규칙): 선분 AB → \overline{\mathrm{AB}},
+# 각 → \angle, 삼각형 → \triangle\!, 사각형 → □, 각도 → ^{\circ}, 루트 → \sqrt.
+# 머리줄·파일 이름·PDF 날짜는 build.py가 폴더 이름에서 만든다.
+
+problems:
+  - text: 다음 그림과 같이 80m 떨어진 두 지점 $\mathrm{A}$, $\mathrm{B}$에서 산꼭대기를 올려다 본 각의 크기가 각각 $35^{\circ}$, $52^{\circ}$였을 때, 산의 높이 $\overline{\mathrm{CH}}$를 구하는 식은? (단, 눈의 높이는 무시한다.)
+    figure: p1.svg
+    alt: 각 CAH가 35°, 각 CBH가 52°, 각 CHA가 직각인 그림
+    choices:
+      - $\dfrac{80}{\tan 52^{\circ}+\tan 35^{\circ}}$
+      - $\dfrac{80}{\tan 52^{\circ}-\tan 35^{\circ}}$
+      - $\dfrac{80}{\tan 52^{\circ}+\tan 38^{\circ}}$
+      - $\dfrac{80}{\tan 55^{\circ}-\tan 38^{\circ}}$
+      - $\dfrac{80}{\tan 55^{\circ}-\tan 35^{\circ}}$
+    answer: ④
+    solution: |
+      주어진 그림에서
+      $\overline{\mathrm{AH}}=\overline{\mathrm{CH}}\tan 55^{\circ}$,
+      $\overline{\mathrm{BH}}=\overline{\mathrm{CH}}\tan 38^{\circ}$이므로
+      $\overline{\mathrm{AB}}=\overline{\mathrm{AH}}-\overline{\mathrm{BH}}$에서
+      $80=\overline{\mathrm{CH}}(\tan 55^{\circ}-\tan 38^{\circ})$이다.
+      따라서 $\overline{\mathrm{CH}}=\dfrac{80}{\tan 55^{\circ}-\tan 38^{\circ}}$이다.
+
+  - text: 다음 그림과 같이 2m 떨어진 두 지점 $\mathrm{B}$, $\mathrm{C}$에서 기구를 올려다 본 각의 크기가 $40^{\circ}$, $62^{\circ}$일 때, 지상부터 기구가 있는 곳까지의 높이를 삼각비로 나타내시오.
+    figure: p2.svg
+    alt: 각 ABH가 40°, 각 ACH가 62°, 각 AHC가 직각인 그림
+    answer: $\dfrac{2}{\tan 50^{\circ}-\tan 28^{\circ}}$m
+    solution: |
+      주어진 그림에서
+      $\overline{\mathrm{BH}}=\overline{\mathrm{AH}}\tan 50^{\circ}$,
+      $\overline{\mathrm{CH}}=\overline{\mathrm{AH}}\tan 28^{\circ}$이므로
+      $\overline{\mathrm{BC}}=\overline{\mathrm{BH}}-\overline{\mathrm{CH}}$에서
+      $2=\overline{\mathrm{AH}}(\tan 50^{\circ}-\tan 28^{\circ})$이다.
+      따라서 지상부터 기구가 있는 곳까지의
+      높이는 $\dfrac{2}{\tan 50^{\circ}-\tan 28^{\circ}}$m이다.
+
+  - text: $\triangle\!\mathrm{ABC}$에서 $\angle\mathrm{A}=60^{\circ}$이고 $\overline{\mathrm{AD}}$는 $\angle\mathrm{A}$의 이등분선일 때, $\overline{\mathrm{AD}}$의 길이를 구하시오.
+    figure: p3.svg
+    alt: 선분 AB의 길이는 10, 선분 AC의 길이는 8
+    answer: $\dfrac{40\sqrt{3}}{9}$
+    solution: |
+      $\overline{\mathrm{AD}}=x$라 하자.
+      $\triangle\!\mathrm{ABC}=\triangle\!\mathrm{ABD}+\triangle\!\mathrm{ACD}$이고
+      $\angle\mathrm{BAD}=\angle\mathrm{CAD}=30^{\circ}$이므로
+      세 삼각형의 넓이를 삼각비로 나타내면
+      $20\sqrt{3}=\dfrac{9}{2}x$이다.
+      따라서 $\overline{\mathrm{AD}}=\dfrac{40\sqrt{3}}{9}$이다.
+
+  - text: $□\mathrm{ABCD}$는 한 변의 길이가 4cm인 정사각형이다. $\overline{\mathrm{BC}}$, $\overline{\mathrm{CD}}$의 중점을 각각 $\mathrm{M}$, $\mathrm{N}$이라 하고 $\angle\mathrm{MAN}=x$라 할 때, $\sin x$의 값을 구하시오.
+    figure: p4.svg
+    alt: 문제의 조건대로 그려진 정사각형. 문제의 조건이 모두 표기되어 있음
+    answer: $\dfrac{3}{5}$
+    solution: |
+      주어진 그림에서
+      $\overline{\mathrm{AM}}=\overline{\mathrm{AN}}=2\sqrt{5}$(cm)이고
+      $\triangle\!\mathrm{AMN}$의 넓이는 정사각형에서
+      세 직각삼각형을 뺀 6cm²이다.
+      한편
+      $\triangle\!\mathrm{AMN}=\dfrac{1}{2}\times\overline{\mathrm{AM}}\times\overline{\mathrm{AN}}\times\sin x$
+      이므로 $10\sin x=6$이다.
+      따라서 $\sin x=\dfrac{3}{5}$이다.
+
+  - text: 다음 그림과 같이 바다 위의 한 지점 $\mathrm{A}$에서 성산일출봉의 꼭대기 지점 $\mathrm{C}$를 올려다 본 각의 크기가 $27^{\circ}$이고, 지점 $\mathrm{A}$에서 산 쪽으로 124m 나아간 지점 $\mathrm{B}$에서 다시 지점 $\mathrm{C}$를 올려다 본 각의 크기가 $38^{\circ}$라고 한다. 성산일출봉의 높이는 해발 몇 m인지 구하시오. (단, $\tan 63^{\circ}=1.96$, $\tan 52^{\circ}=1.28$로 계산하고, 계산 결과는 소수점 아래 셋째 자리에서 반올림한다.)
+    figure: p5.svg
+    alt: 각 CAH가 27°, 각 CBH가 38°, 각 CHB가 직각인 그림
+    answer: 182.35m
+    solution: |
+      주어진 그림에서
+      $\overline{\mathrm{AH}}=\overline{\mathrm{CH}}\tan 63^{\circ}$,
+      $\overline{\mathrm{BH}}=\overline{\mathrm{CH}}\tan 52^{\circ}$이므로
+      $\overline{\mathrm{AB}}=\overline{\mathrm{AH}}-\overline{\mathrm{BH}}$에서
+      $124=\overline{\mathrm{CH}}(\tan 63^{\circ}-\tan 52^{\circ})$이다.
+      따라서 성산일출봉의 높이는
+      해발 $\dfrac{124}{0.68}=182.35$(m)이다.
+
+  - text: $\overline{\mathrm{AB}}=8$cm, $\overline{\mathrm{AC}}=6$cm, $\angle\mathrm{BAC}=60^{\circ}$인 $\triangle\!\mathrm{ABC}$에서 $\angle\mathrm{BAC}$의 이등분선이 $\overline{\mathrm{BC}}$와 만나는 점을 $\mathrm{D}$라 할 때, $\overline{\mathrm{AD}}$의 길이를 구하시오.
+    figure: p6.svg
+    alt: 선분 AB의 길이는 8cm, 선분 AC의 길이는 6cm
+    answer: $\dfrac{24\sqrt{3}}{7}$cm
+    solution: |
+      $\overline{\mathrm{AD}}=x$라 하자.
+      $\triangle\!\mathrm{ABC}=\triangle\!\mathrm{ABD}+\triangle\!\mathrm{ACD}$이고
+      $\angle\mathrm{BAD}=\angle\mathrm{CAD}=30^{\circ}$이므로
+      세 삼각형의 넓이를 삼각비로 나타내면
+      $12\sqrt{3}=\dfrac{7}{2}x$이다.
+      따라서 $\overline{\mathrm{AD}}=\dfrac{24\sqrt{3}}{7}$cm이다.
+
+  - text: 다음 그림과 같이 직각삼각형 $\mathrm{ABC}$ $\overline{\mathrm{AB}}$의 길이를 30% 줄이고 $\overline{\mathrm{BC}}$의 길이는 40% 늘여서 새로운 $\triangle\!\mathrm{A}'\mathrm{BC}'$으로 만들었다. $\triangle\!\mathrm{A}'\mathrm{BC}'$의 넓이는 $\triangle\!\mathrm{ABC}$의 넓이에 비해 얼마나 변하였는지 구하시오.
+    figure: p7.svg
+    alt: 직각삼각형 ABC는 연하게 색칠되어 있음. 새로운 삼각형 A'BC'은 점선으로 그려져 있음
+    answer: 2% 감소
+    solution: |
+      $\angle\mathrm{B}$는 두 삼각형에 공통이고
+      $\overline{\mathrm{A}'\mathrm{B}}=0.7\,\overline{\mathrm{AB}}$,
+      $\overline{\mathrm{BC}'}=1.4\,\overline{\mathrm{BC}}$이므로
+      $\triangle\!\mathrm{A}'\mathrm{BC}'=\dfrac{1}{2}\times\overline{\mathrm{A}'\mathrm{B}}\times\overline{\mathrm{BC}'}\times\sin\mathrm{B}$
+      $=0.7\times1.4\times\triangle\!\mathrm{ABC}$
+      $=0.98\triangle\!\mathrm{ABC}$이다.
+      따라서 $\triangle\!\mathrm{A}'\mathrm{BC}'$의 넓이는
+      $\triangle\!\mathrm{ABC}$의 넓이보다 2% 줄어든다.
+
+  - text: 다음 그림과 같이 직각삼각형 $\mathrm{ABC}$은 직선 $l$을 축으로 1회전한다. 이때 생기는 입체도형의 부피를 구하시오.
+    figure: p8.svg
+    alt: 직선 l은 수직. 점 A는 직선 l 위에 있고 선분 AC이 직선 l과 이루는 각도 30°. 선분 AC는 오른쪽 아래로 향하고 있음. 각 ACB는 60° 각 ABC는 직각. 선분 AB는 2루트3.
+    answer: $\dfrac{8\sqrt{3}}{3}\pi$
+    solution: |
+      주어진 그림에서
+      $\overline{\mathrm{BC}}=\overline{\mathrm{AB}}\tan 30^{\circ}=2$이다.
+      회전체는 밑면의 반지름의 길이가 2,
+      높이가 $2\sqrt{3}$인 원뿔이다.
+      따라서 구하는 입체도형의 부피는
+      $\dfrac{1}{3}\times\pi\times2^2\times2\sqrt{3}=\dfrac{8\sqrt{3}}{3}\pi$이다.
+
+  - text: 다음 그림과 같이 $□\mathrm{ABCD}$는 가로와 세로의 길이가 각각 6, 4인 직사각형이고 두 점 $\mathrm{E}$, $\mathrm{F}$는 각각 $\overline{\mathrm{AD}}$, $\overline{\mathrm{CD}}$의 중점이다. $\sin x^{\circ}+\cos x^{\circ}$의 값을 구하시오.
+    figure: p9.svg
+    alt: 지문 조건대로 그림 그려져 있고, 각 EBF가 x°. 그리고 선분 EB, 선분 BF, 선분 EF가 그려져 있음. 그리고 중점 표시로 길이가 같다는 표시가 있음.
+    answer: $\dfrac{11\sqrt{10}}{25}$
+    solution: |
+      주어진 그림에서
+      $\overline{\mathrm{BE}}=5$, $\overline{\mathrm{BF}}=2\sqrt{10}$이고
+      $\triangle\!\mathrm{EBF}$의 넓이는 직사각형에서
+      세 직각삼각형을 뺀 9이다.
+      한편
+      $\triangle\!\mathrm{EBF}=\dfrac{1}{2}\times\overline{\mathrm{BE}}\times\overline{\mathrm{BF}}\times\sin x^{\circ}$
+      이므로 $\sin x^{\circ}=\dfrac{9\sqrt{10}}{50}$이다.
+      $\sin^2 x^{\circ}+\cos^2 x^{\circ}=1$이고
+      $0^{\circ}<x^{\circ}<90^{\circ}$이므로
+      $\cos x^{\circ}=\dfrac{13\sqrt{10}}{50}$이다.
+      따라서 $\sin x^{\circ}+\cos x^{\circ}=\dfrac{11\sqrt{10}}{25}$이다.
+
+  - text: $0^{\circ}<x<45^{\circ}$일 때, $\sqrt{(\sin x-\cos x)^2}-\sqrt{(\cos x-\sin x)^2}$을 간단히 하면?
+    choices:
+      - $0$
+      - $2\sin x$
+      - $2\cos x$
+      - $2\sin x-2\cos x$
+      - $2\cos x-2\sin x$
+    answer: ①
+    solution: |
+      $0^{\circ}<x<45^{\circ}$에서 $\sin x<\cos x$이므로
+      $\sin x-\cos x<0$, $\cos x-\sin x>0$이다.
+      그러므로
+      $\sqrt{(\sin x-\cos x)^2}=\cos x-\sin x$,
+      $\sqrt{(\cos x-\sin x)^2}=\cos x-\sin x$이다.
+      따라서 주어진 식을 간단히 하면 $0$이다.
