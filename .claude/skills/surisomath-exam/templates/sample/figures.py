@@ -15,7 +15,7 @@ g.setup(__file__)
 
 
 def p2():
-    """∠B = 90°, ∠A = 30°, AC = 10인 직각삼각형. 길이는 교과서처럼 변 옆에 적는다."""
+    """∠B = 90°, ∠A = 30°, AC = 10인 직각삼각형. 길이는 연마와 같이 점선 곡선(g.dim)으로 단다."""
     A = (0.0, 0.0)
     B = (10 * math.cos(math.radians(30)), 0.0)
     C = (B[0], 5.0)
@@ -26,7 +26,7 @@ def p2():
     g.name(ax, A, "A", dx=-4, dy=-4, ha="right", va="top")
     g.name(ax, B, "B", dx=4, dy=-4, ha="left", va="top")
     g.name(ax, C, "C", dx=4, dy=4, ha="left", va="bottom")
-    g.name(ax, ((A[0] + C[0]) / 2, (A[1] + C[1]) / 2), "10", dx=-5, dy=4, ha="right", va="bottom")
+    g.dim(ax, A, C, "10", side=1, trim=4)
     g.save(f, "p2.svg")
 
 

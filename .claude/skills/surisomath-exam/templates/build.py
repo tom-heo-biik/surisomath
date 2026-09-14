@@ -13,8 +13,8 @@
   3. 지문·선지·정답·풀이의 $…$는 연마 build.py의 rich()가 Computer Modern SVG로 그린다.
   4. 선지는 너비를 재서 5열·3열·1열을 고른다(수능·모의고사 관례). 분수처럼 키 큰 선지가 두 줄
      이상 쌓이면 항목마다 두 칸을 주고 둘씩 들면 2열.
-  5. solution이 있는 문제가 하나라도 있으면 학생 쪽 뒤에 선생님 쪽을 같은 짝으로 붙인다.
-     풀 자리 첫 줄에 정답, 그 아래 풀이. solution이 없는 문제는 그 단이 빈다.
+  5. 학생 쪽 뒤에 선생님 쪽을 같은 짝으로 붙인다. 풀 자리 첫 줄에 정답, solution이 있으면
+     그 아래 풀이. 없으면 정답 줄만(정답표).
   6. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
   7. 풀 자리의 위 끝(학생 쪽 div.work.box.n<번호>, 선생님 쪽 .t<번호>)을 받아 가장 좁은 단의
      남은 칸을 알려 주고, 밀린 문제를 짚는다. 넘친 내용을 WeasyPrint는 바닥 아래로 흘리지 않고 쪽을
@@ -37,8 +37,8 @@ problems.yaml
       alt: …                       # 그림 설명. PDF에는 안 찍힌다
       choices:                     # 있으면 객관식. 다섯 개
         - $\\dfrac{80}{\\tan 52^{\\circ}+\\tan 35^{\\circ}}$
-      answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지. solution이 없어도 필수
-      solution: |                  # 선생님 풀이. 줄마다 한 칸. 빈 줄은 한 칸을 비운다
+      answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지. 필수 — 선생님 쪽 정답 줄
+      solution: |                  # 선생님 풀이(선택). 줄마다 한 칸. 빈 줄은 한 칸을 비운다
         주어진 그림에서 …
     - "no": "004"                  # 번호를 직접 줄 때. 키까지 따옴표로(YAML은 no를 거짓으로 읽는다)
 """
@@ -89,7 +89,7 @@ SERIES = "시험대비"
 GRID = 22.0
 BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 풀 자리가 여기서 끝난다
 COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁은 쪽으로 잰다
-MARK_W = 22.0          # 선지 마커 칸(a4의 ol --pad)
+MARK_W = 14.8          # 선지 마커 칸(exam.css의 ol.n7 --pad). ① 10.8pt + 4pt
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
 TALL = 16.0            # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸 간격
 CAPTION = gb.CAPTION   # neutral-500. 정답 줄
@@ -234,12 +234,13 @@ def choices_html(no: str, p: dict, fig_dir: Path) -> str:
 
 
 def work_html(no: str, p: dict, fig_dir: Path) -> str:
-    """선생님 쪽 풀 자리. 첫 줄 정답(10pt 회색), 그 아래 풀이 한 줄 = 한 칸. 빈 줄은 p.gap."""
-    if not p.get("solution"):
-        return ""
+    """선생님 쪽 풀 자리. 첫 줄 정답(10pt 회색). solution이 있으면 그 아래 풀이 한 줄 = 한 칸,
+    빈 줄은 p.gap. 없으면 정답 줄만 — 답만 적는 정답표다."""
     out = [f'        <p class="answer">정답: '
            f'{rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)}</p>']
-    for i, line in enumerate(str(p["solution"]).strip("\n").split("\n"), 1):
+    for i, line in enumerate(str(p.get("solution") or "").strip("\n").split("\n"), 1):
+        if not line and i == 1:
+            break
         if not line.strip():
             out.append('        <p class="gap"></p>')
         else:
@@ -290,7 +291,7 @@ def build_html(data: dict, m: dict, out_dir: Path) -> tuple[str, list[str], int]
         body.append(page_html(pair, m["head"], i == 0, fig_dir, teacher=False))
         labels.append("·".join(no for no, _ in pair))
     n_student = len(body)
-    if any(p.get("solution") for p in problems):
+    if problems:                       # 선생님 쪽은 늘 붙는다. answer가 필수라 정답 줄은 늘 있다
         for pair in pages(problems):
             body.append(page_html(pair, m["head"], False, fig_dir, teacher=True))
             labels.append("선생님 " + "·".join(no for no, _ in pair))
@@ -330,11 +331,10 @@ def check(problems: list) -> int:
                 if MARK_W + width_of(str(c).strip()) > COL_W:
                     print(f"  ! {no}번째 문제: 선지 {k}번이 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
                     bad += 1
-        if p.get("solution"):
-            w = width_of("정답: " + str(p["answer"]).strip(), 10.0)
-            if w > COL_W:
-                print(f"  ! {no}번째 문제: 정답 줄 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. 짧게 써라")
-                bad += 1
+        w = width_of("정답: " + str(p["answer"]).strip(), 10.0)
+        if w > COL_W:
+            print(f"  ! {no}번째 문제: 정답 줄 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. 짧게 써라")
+            bad += 1
     return bad
 
 

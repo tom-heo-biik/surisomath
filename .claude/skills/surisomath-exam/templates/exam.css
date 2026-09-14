@@ -61,13 +61,18 @@ section.exam h2 {
 /* 본문 안 수식. build.py가 $…$를 Computer Modern SVG로 바꿔 넣는다(연마와 같다) */
 section.exam img.mi { width: auto; }
 
-/* 선지 — 수능·모의고사 관례의 5열·3열·2열·1열. build.py가 너비를 재서 c5·c3·c1을 고른다.
-   칸 너비가 같아 ④가 ① 아래 온다. 항목 한 줄이 한 칸(22pt). 마커 칸은 base.css의 ol --pad */
-section.exam ol.n7 { display: flex; flex-wrap: wrap; }
+/* 선지 — 수능·모의고사 관례의 5열·3열·2열·1열. build.py가 너비를 재서 c5·c3·c2·c1을 고른다.
+   칸 너비가 같아 ④가 ① 아래 온다. 항목 한 줄이 한 칸(22pt).
+   마커 칸은 a4의 22pt 대신 14.8pt — ①(KoPub 12pt, 10.8pt) 뒤에 4pt만 비우고 글이 시작한다.
+   build.py의 MARK_W와 같은 값이다 */
+section.exam ol.n7 { display: flex; flex-wrap: wrap; --pad: 14.8pt; }
 section.exam ol.n7 > li { flex: none; box-sizing: border-box; width: 100%; }
-section.exam ol.n7.c5 > li { width: 20%; }
-section.exam ol.n7.c3 > li { width: 33.333%; }
-section.exam ol.n7.c2 > li { width: 50%; }
+/* 20%·50%는 다섯·둘을 더하면 단 너비와 정확히 같다. WeasyPrint가 항목 너비에서 padding을
+   뺐다 더하는 사이 1e-13쯤 넘쳐 줄을 바꾸는 일이 있다(--pad 14.8pt에서 실제로 났다).
+   0.01%(0.02pt)를 덜어 두면 안 난다. 열이 어긋나는 크기는 아니다 */
+section.exam ol.n7.c5 > li { width: 19.99%; }
+section.exam ol.n7.c3 > li { width: 33.33%; }
+section.exam ol.n7.c2 > li { width: 49.99%; }
 /* 키 큰 선지(분수처럼 글줄에 꽉 차는 수식)가 두 줄 이상 쌓이면 잇단 줄의 분수가 닿는다.
    항목마다 두 칸 — 글줄은 위 칸에, 아래 칸은 비운다. 글줄 상자는 22pt 그대로라 위상이 안 바뀐다 */
 section.exam ol.n7.tall > li { padding-bottom: 22pt; }
