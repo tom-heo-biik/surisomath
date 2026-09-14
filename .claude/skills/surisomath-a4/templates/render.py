@@ -250,22 +250,25 @@ def check_fonts(pdf_path: Path) -> int:
 # --- 진입점 -----------------------------------------------------------------
 
 def image_boxes(doc) -> list:
-    """쪽마다 img 요소의 내용 상자(pt, 쪽 왼쪽 위 기준)와 class를 모은다.
+    """쪽마다 img 요소와 class에 box가 든 요소의 내용 상자(pt, 쪽 왼쪽 위 기준)와 class를 모은다.
 
     글줄에 끼워 넣은 이미지(본문 안 수식)가 서로 겹치는지는 PDF만 봐서는 알기
-    어렵다. 레이아웃 결과에서 바로 뽑아 부르는 쪽(--boxes)이 살피게 한다.
-    WeasyPrint의 레이아웃 단위는 CSS px(96/in)라 pt로 바꾼다."""
+    어렵다. 레이아웃 결과에서 바로 뽑아 부르는 쪽(--boxes)이 살피게 한다. class에
+    box를 단 블록 요소의 위 끝을 알면 그 아래 남은 자리를 잴 수 있다(시험대비의
+    풀 자리 div.work.box). WeasyPrint의 레이아웃 단위는 CSS px(96/in)라 pt로 바꾼다."""
     k = 72 / 96
     pages = []
     for page in doc.pages:
         boxes = []
         for box in page._page_box.descendants():
-            if getattr(box, "element_tag", None) != "img" or not hasattr(box, "content_box_x"):
+            if not hasattr(box, "content_box_x"):
                 continue
             el = getattr(box, "element", None)
+            cls = (el.get("class") or "") if el is not None else ""
+            if getattr(box, "element_tag", None) != "img" and "box" not in cls.split():
+                continue
             boxes.append({"x": box.content_box_x() * k, "y": box.content_box_y() * k,
-                          "w": box.width * k, "h": box.height * k,
-                          "class": (el.get("class") or "") if el is not None else ""})
+                          "w": box.width * k, "h": box.height * k, "class": cls})
         pages.append(boxes)
     return pages
 
