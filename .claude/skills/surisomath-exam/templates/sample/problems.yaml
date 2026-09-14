@@ -1,0 +1,56 @@
+# 시험대비 견본. 새 단원을 만들 때 이 폴더의 problems.yaml과 figures.py를 복사해 출발한다.
+#
+#   exam · grade · unit · file · date  정본 폴더(build/시험대비/<시험>/<학년>/<단원>/)에서는 다섯 줄 다
+#                                      지운다. build.py가 폴더 이름에서 만든다. 견본은 폴더 꼴이 달라 적었다
+#   problems  순서대로 001, 002, … 번호가 붙는다. 번호를 직접 주려면 "no": "004" — 키까지 따옴표로
+#     text     지문. problems.md 문장 그대로, 표기만 조판한다(SKILL.md 표기 규칙)
+#     figure   figures/ 안의 그림. figures.py가 그린다. units는 적지 않는다 — SVG 높이가 칸 수다
+#     alt      그림 설명. PDF에는 안 찍힌다
+#     choices  있으면 객관식. 다섯 개. 열 수는 build.py가 너비로 정한다(001은 5열, 003은 3열)
+#     answer   정답. 객관식은 번호만("④"), 서술형은 단위까지
+#     solution 선생님 풀이. 줄마다 한 칸. 있으면 뒤에 선생님 쪽이 붙는다
+#   견본이 지키는 것: 5열·3열 선지, 그림 있는 서술형, 홀수 짝(셋째 문제의 오른 단은 빈다).
+#   견본을 다시 빌드해 git status가 비어 있으면 build.py·exam.css·render.py가 그대로라는 뜻이다
+
+exam: 견본
+grade: 중3
+unit: 삼각비
+file: 수리소_시험대비_견본
+date: 2026.09.14
+
+problems:
+  - text: $\sin 30^{\circ}+\cos 60^{\circ}$의 값은?
+    choices:
+      - $0$
+      - $\dfrac{1}{2}$
+      - $1$
+      - $\dfrac{3}{2}$
+      - $2$
+    answer: ③
+    solution: |
+      $\sin 30^{\circ}=\dfrac{1}{2}$, $\cos 60^{\circ}=\dfrac{1}{2}$이므로
+      $\sin 30^{\circ}+\cos 60^{\circ}=1$이다.
+      따라서 구하는 값은 $1$이다.
+
+  - text: 다음 그림과 같이 $\angle\mathrm{B}=90^{\circ}$, $\angle\mathrm{A}=30^{\circ}$, $\overline{\mathrm{AC}}=10$인 직각삼각형 $\mathrm{ABC}$에서 $\overline{\mathrm{BC}}$의 길이를 구하시오.
+    figure: p2.svg
+    alt: 각 B가 직각, 각 A가 30°, 빗변 AC의 길이가 10인 직각삼각형
+    answer: 5
+    solution: |
+      주어진 그림에서
+      $\overline{\mathrm{BC}}=\overline{\mathrm{AC}}\sin 30^{\circ}$이다.
+      따라서 $\overline{\mathrm{BC}}=5$이다.
+
+  - text: 한 변의 길이가 2인 정사각형의 대각선의 길이는?
+    choices:
+      - $\sqrt{2}$
+      - $\sqrt{3}$
+      - $2\sqrt{2}$
+      - $2\sqrt{3}$
+      - $3\sqrt{2}$
+    answer: ③
+    solution: |
+      대각선은 한 변의 길이가 2인
+      직각이등변삼각형의 빗변이므로
+      길이는 $\sqrt{2^2+2^2}=2\sqrt{2}$이다.
+      따라서 대각선의 길이는 $2\sqrt{2}$이다.
