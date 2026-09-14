@@ -255,7 +255,10 @@ def image_boxes(doc) -> list:
     글줄에 끼워 넣은 이미지(본문 안 수식)가 서로 겹치는지는 PDF만 봐서는 알기
     어렵다. 레이아웃 결과에서 바로 뽑아 부르는 쪽(--boxes)이 살피게 한다. class에
     box를 단 블록 요소의 위 끝을 알면 그 아래 남은 자리를 잴 수 있다(시험대비의
-    풀 자리 div.work.box). WeasyPrint의 레이아웃 단위는 CSS px(96/in)라 pt로 바꾼다."""
+    풀 자리 div.work.box). WeasyPrint의 레이아웃 단위는 CSS px(96/in)라 pt로 바꾼다.
+
+    빈 요소는 상자 하나지만, 내용이 있으면 블록 상자 아래 글줄 상자·글 상자도
+    같은 class를 물려받아 여럿이 나온다. 부르는 쪽이 x로 추려 쓴다."""
     k = 72 / 96
     pages = []
     for page in doc.pages:
@@ -281,7 +284,7 @@ def main() -> int:
     ap.add_argument("-o", "--output", type=Path, help="출력 PDF (기본: 같은 이름 .pdf)")
     ap.add_argument("--check", action="store_true", help="렌더 후 베이스라인 그리드 검사")
     ap.add_argument("--no-wrap", action="store_true", help="어절 nowrap 처리를 끈다")
-    ap.add_argument("--boxes", type=Path, help="img 상자 위치를 이 JSON 파일에 적는다(쪽별 목록)")
+    ap.add_argument("--boxes", type=Path, help="img·class box 요소의 상자 위치를 이 JSON 파일에 적는다(쪽별 목록)")
     args = ap.parse_args()
 
     src = args.source.resolve()
