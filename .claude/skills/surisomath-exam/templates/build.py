@@ -1,0 +1,416 @@
+# -*- coding: utf-8 -*-
+"""시험대비 학습지 빌드 — problems.yaml 하나로 그림·수식·HTML·PDF·검사까지.
+
+    python build.py 단원폴더/problems.yaml              → 같은 폴더에 HTML과 PDF
+    python build.py 단원폴더/problems.yaml --no-figures   그림은 다시 그리지 않는다
+
+하는 일
+  1. 단원 폴더에 figures.py가 있으면 실행해 figures/ 에 SVG를 뽑는다. grind_figure를
+     찾도록 연마 templates 폴더를 PYTHONPATH에 넣어 준다.
+  2. problems.yaml을 읽어 한 쪽에 문제 둘(두 단, 단마다 하나)인 HTML을 쓴다. 그림은 SVG
+     높이가 22의 배수인지, 너비가 단 글 너비(229pt) 안인지 본다. 칸 수는 높이가 정한다.
+  3. 지문·선지·정답·풀이의 $…$는 연마 build.py의 rich()가 Computer Modern SVG로 그린다.
+  4. 선지는 너비를 재서 5열·3열·1열을 고른다(수능·모의고사 관례).
+  5. solution이 있는 문제가 하나라도 있으면 학생 쪽 뒤에 선생님 쪽을 같은 짝으로 붙인다.
+     풀 자리 첫 줄에 정답, 그 아래 풀이. solution이 없는 문제는 그 단이 빈다.
+  6. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
+  7. 풀 자리의 위 끝(div.work.box)을 레이아웃에서 받아 단마다 남은 칸을 알려 준다. 단을
+     넘치면, 풀 자리가 8칸 아래면, 정답 줄이 단보다 넓으면, 풀이가 단 바닥을 넘으면,
+     잇단 줄의 수식이 겹치면 경고.
+
+경고가 하나라도 있으면 종료 코드가 1이다. PDF는 그래도 나온다.
+
+problems.yaml
+  exam: 2026학년도 2학기 중간고사   # 생략하면 시험 폴더 이름(20262학기중간)에서 만든다
+  grade: 중3                       # 생략하면 학년 폴더 이름
+  unit: 삼각비                      # 생략하면 단원 폴더 이름
+  file: 수리소_시험대비_…            # 생략하면 수리소_시험대비_2026_2학기중간_중3_삼각비
+  date: 2026.09.01                 # PDF의 만든 날짜. 생략하면 학기 첫날(1학기 3. 1., 2학기 9. 1.)
+  problems:
+    - text: 다음 그림과 같이 …       # 지문. 표기 규칙은 SKILL.md. ": "가 들어가면 따옴표로 감싼다
+      figure: p1.svg               # figures/ 안의 그림. units는 없다 — SVG 높이가 칸 수를 정한다
+      alt: …                       # 그림 설명. PDF에는 안 찍힌다
+      choices:                     # 있으면 객관식. 다섯 개
+        - $\\dfrac{80}{\\tan 52^{\\circ}+\\tan 35^{\\circ}}$
+      answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지
+      solution: |                  # 선생님 풀이. 줄마다 한 칸. 빈 줄은 한 칸을 비운다
+        주어진 그림에서 …
+    - "no": "004"                  # 번호를 직접 줄 때. 키까지 따옴표로(YAML은 no를 거짓으로 읽는다)
+"""
+from __future__ import annotations
+
+import argparse
+import calendar
+import html
+import importlib.util
+import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import yaml
+
+HERE = Path(__file__).resolve().parent
+SKILLS = HERE.parents[1]
+A4 = SKILLS / "surisomath-a4" / "templates"
+GRIND = SKILLS / "surisomath-grind" / "templates"
+RENDER = A4 / "render.py"
+BASE_CSS = A4 / "base.css"
+EXAM_CSS = HERE / "exam.css"
+KOPUB = A4 / "fonts" / "KoPubWorld-Batang-Light.otf"
+
+sys.path.insert(0, str(GRIND))
+import grind_figure as g  # noqa: E402  본문 안 수식을 그린다
+
+
+def _grind_build():
+    """연마 build.py를 모듈로 읽는다(__main__ 가드가 있다). 수식 조판(rich)·상대 경로·
+    SVG 높이·수식 겹침 검사를 빌려 쓴다. 같은 코드를 복사하지 않는다."""
+    spec = importlib.util.spec_from_file_location("grind_build", GRIND / "build.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+gb = _grind_build()
+rich, rel, svg_height, check_overlap = gb.rich, gb.rel, gb.svg_height, gb.check_overlap
+
+SERIES = "시험대비"
+GRID = 22.0
+BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 풀 자리가 여기서 끝난다
+COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁은 쪽으로 잰다
+MARK_W = 22.0          # 선지 마커 칸(a4의 ol --pad)
+MIN_ROWS = 8           # 풀 자리 최소 칸 수
+CAPTION = "#636363"    # neutral-500. 정답 줄
+MATH = re.compile(r"\$([^$]+)\$")
+FOLDER = re.compile(r"(\d{4})(\d)학기(중간|기말)")
+_KOPUB = None
+
+
+# ── 너비 재기 ───────────────────────────────────────────────────────────
+
+def kopub_width(s: str, size: float) -> float:
+    """KoPub 바탕 Light로 조판한 글의 너비(pt). 자간은 a4 규격(12pt -0.03em, 10pt -0.02em)."""
+    global _KOPUB
+    if _KOPUB is None:
+        from fontTools.ttLib import TTFont
+        f = TTFont(str(KOPUB))
+        _KOPUB = (f.getBestCmap(), f["hmtx"], f["head"].unitsPerEm)
+    cmap, hmtx, upem = _KOPUB
+    track = -0.02 if size < 12 else -0.03
+    w = 0.0
+    for ch in s:
+        gid = cmap.get(ord(ch))
+        w += (hmtx[gid][0] if gid else upem / 2) / upem * size + track * size
+    return w
+
+
+def width_of(s: str, size: float = 12.0) -> float:
+    """조판한 글의 너비(pt). $…$는 Computer Modern 잉크 너비, 나머지는 KoPub 폭."""
+    from matplotlib.font_manager import FontProperties
+    from matplotlib.textpath import TextPath
+    w = 0.0
+    for i, piece in enumerate(MATH.split(s)):
+        if not piece:
+            continue
+        if i % 2:                                   # 홀수째 조각이 수식이다
+            x0, _, x1, _ = TextPath((0, 0), f"${piece}$", size=size,
+                                    prop=FontProperties(size=size)).get_extents().extents
+            w += float(x1 - x0) + 1.0
+        else:
+            w += kopub_width(piece, size)
+    return w
+
+
+def choice_cols(choices: list) -> int:
+    """선지 열 수. 다섯이 한 줄에 들면 5열, 셋씩 들면 3열, 아니면 1열. 칸 너비가 같아
+    ④가 ① 아래 온다. 한 칸 = 마커 칸 22pt + 글 너비."""
+    widths = [MARK_W + width_of(str(c).strip()) for c in choices]
+    for n in (5, 3):
+        if all(w <= COL_W / n for w in widths):
+            return n
+    return 1
+
+
+# ── 제목 · 파일 이름 · 날짜 ─────────────────────────────────────────────
+
+def meta(data: dict, out_dir: Path) -> dict:
+    """머리줄·파일 이름·PDF 날짜. 폴더 build/시험대비/<시험>/<학년>/<단원>/ 에서 만들고
+    yaml의 exam·grade·unit·file·date가 있으면 그것이 이긴다."""
+    m = FOLDER.fullmatch(out_dir.parents[1].name) if len(out_dir.parents) > 1 else None
+    exam = data.get("exam") or (m and f"{m[1]}학년도 {m[2]}학기 {m[3]}고사")
+    grade = data.get("grade") or (m and out_dir.parent.name)
+    unit = data.get("unit") or (m and out_dir.name)
+    if not (exam and grade and unit):
+        raise SystemExit("폴더가 build/시험대비/<YYYY><N>학기<중간|기말>/<학년>/<단원>/ 꼴이 아니다. "
+                         "problems.yaml에 exam·grade·unit을 적어라")
+    if m:
+        stem = f"수리소_시험대비_{m[1]}_{m[2]}학기{m[3]}_{grade}_{unit}"
+        epoch = calendar.timegm((int(m[1]), 3 if m[2] == "1" else 9, 1, 0, 0, 0))
+    else:
+        stem = f"수리소_시험대비_{exam}_{grade}_{unit}".replace(" ", "")
+        epoch = None
+    if data.get("date"):
+        d = re.fullmatch(r"(\d{4})\.(\d{1,2})\.(\d{1,2})", str(data["date"]).strip())
+        if not d:
+            raise SystemExit(f"date는 YYYY.MM.DD 꼴로 적어라: {data['date']}")
+        epoch = calendar.timegm((int(d[1]), int(d[2]), int(d[3]), 0, 0, 0))
+    return {"exam": str(exam), "grade": str(grade), "unit": str(unit),
+            "file": str(data.get("file") or stem), "epoch": epoch,
+            "head": f"{SERIES} · {exam} · {grade} · {unit}"}
+
+
+# ── HTML ────────────────────────────────────────────────────────────────
+
+def svg_width(path: Path) -> float | None:
+    m = re.search(r'<svg[^>]*\swidth="([\d.]+)pt"', path.read_text(encoding="utf-8")[:4000])
+    return float(m.group(1)) if m else None
+
+
+def figure_html(no: str, p: dict, fig_dir: Path) -> str:
+    if not p.get("figure"):
+        return ""
+    svg = fig_dir / str(p["figure"])
+    if not svg.is_file():
+        raise SystemExit(f"{no}: 그림 파일이 없다: {svg}")
+    h, w = svg_height(svg), svg_width(svg)
+    if h is None or w is None:
+        raise SystemExit(f"{no}: {svg.name}의 크기를 읽을 수 없다. grind_figure.save()로 만든 SVG여야 한다")
+    units = round(h / GRID)
+    if abs(h - units * GRID) > 0.05:
+        raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt가 22의 배수가 아니다. g.canvas의 units를 보라")
+    if w > COL_W:
+        raise SystemExit(f"{no}: {svg.name} 너비 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. "
+                         f"y 범위를 {w / COL_W:.2f}배 넓혀 배율을 줄여라")
+    alt = html.escape(str(p.get("alt", "")))
+    return (f'      <div class="figure" style="--u:{units}">'
+            f'<img src="figures/{svg.name}" alt="{alt}"></div>\n')
+
+
+def choices_html(no: str, p: dict, fig_dir: Path) -> str:
+    choices = p.get("choices")
+    if not choices:
+        return ""
+    cols = choice_cols(choices)
+    items = "".join(f'        <li>{rich(str(c).strip(), f"c{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
+                    for k, c in enumerate(choices, 1))
+    return f'      <ol class="n7 c{cols}">\n{items}      </ol>\n'
+
+
+def work_html(no: str, p: dict, fig_dir: Path) -> str:
+    """선생님 쪽 풀 자리. 첫 줄 정답(10pt 회색), 그 아래 풀이 한 줄 = 한 칸. 빈 줄은 p.gap."""
+    if not p.get("solution"):
+        return ""
+    out = [f'        <p class="answer">정답: '
+           f'{rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)}</p>']
+    for i, line in enumerate(str(p["solution"]).strip("\n").split("\n"), 1):
+        if not line.strip():
+            out.append('        <p class="gap"></p>')
+        else:
+            out.append(f'        <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, 12.0, g.INK)}</p>')
+    return "\n".join(out) + "\n"
+
+
+def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
+    text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
+    work = work_html(no, p, fig_dir) if teacher else ""
+    return ('    <div class="col">\n'
+            f'      <h2>{no}</h2>\n'
+            f'      <p>{text}</p>\n'
+            f'{figure_html(no, p, fig_dir)}'
+            f'{choices_html(no, p, fig_dir)}'
+            f'      <div class="work box">\n{work}      </div>\n'
+            '    </div>\n')
+
+
+def page_html(pair: list, head: str, name: bool, fig_dir: Path, teacher: bool) -> str:
+    cols = "".join(problem_html(no, p, fig_dir, teacher) for no, p in pair)
+    if len(pair) == 1:                          # 마지막 쪽에 문제가 하나면 오른 단은 비운다
+        cols += '    <div class="col"></div>\n'
+    name_html = '  <p class="name">이름<span class="blank"></span></p>\n' if name else ""
+    return ('<section class="exam">\n'
+            f'  <p class="series">{html.escape(head)}</p>\n'
+            f'{name_html}'
+            '  <div class="cols">\n'
+            f'{cols}'
+            '  </div>\n'
+            '</section>\n')
+
+
+def numbers(problems: list) -> list[str]:
+    return [str(p.get("no") or f"{i:03d}") for i, p in enumerate(problems, 1)]
+
+
+def pages(problems: list) -> list[list]:
+    items = list(zip(numbers(problems), problems))
+    return [items[i:i + 2] for i in range(0, len(items), 2)]
+
+
+def build_html(data: dict, m: dict, out_dir: Path) -> tuple[str, list[str], int]:
+    """HTML 전체, 쪽마다 붙일 이름표(경고에 쓴다), 학생 쪽 수."""
+    problems = data.get("problems") or []
+    fig_dir = out_dir / "figures"
+    body, labels = [], []
+    for i, pair in enumerate(pages(problems)):
+        body.append(page_html(pair, m["head"], i == 0, fig_dir, teacher=False))
+        labels.append("·".join(no for no, _ in pair))
+    n_student = len(body)
+    if any(p.get("solution") for p in problems):
+        for pair in pages(problems):
+            body.append(page_html(pair, m["head"], False, fig_dir, teacher=True))
+            labels.append("선생님 " + "·".join(no for no, _ in pair))
+    doc = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
+           f'<title>{html.escape(m["head"])}</title>\n'
+           f'<link rel="stylesheet" href="{rel(BASE_CSS, out_dir)}">\n'
+           f'<link rel="stylesheet" href="{rel(EXAM_CSS, out_dir)}">\n'
+           '</head>\n<body>\n\n' + "\n".join(body) + '\n</body>\n</html>\n')
+    return doc, labels, n_student
+
+
+# ── 검사 ────────────────────────────────────────────────────────────────
+
+def check(problems: list) -> int:
+    """yaml에서 흔히 나는 잘못을 문제 번호와 함께 알려 준다. 정답 줄이 단보다 넓으면 경고."""
+    if not problems:
+        raise SystemExit("problems가 비어 있다")
+    bad = 0
+    for i, p in enumerate(problems, 1):
+        if not isinstance(p, dict):
+            raise SystemExit(f"{i}번째 문제가 표가 아니다. '- text: …' 꼴로 적어라")
+        # YAML 1.1은 따옴표 없는 no를 거짓으로 읽는다. 조용히 번호가 밀리므로 여기서 잡는다
+        if False in p:
+            raise SystemExit(f'{i}번째 문제: no를 "no": "{p[False]}" 로 적어라. '
+                             "따옴표가 없으면 YAML이 거짓으로 읽어 번호가 무시된다")
+        for key in ("text", "answer"):
+            if key not in p:
+                raise SystemExit(f"{i}번째 문제에 {key}가 없다")
+        if "choices" in p and len(p["choices"] or []) != 5:
+            raise SystemExit(f"{i}번째 문제: 선지는 다섯 개여야 한다")
+        if p.get("solution"):
+            w = width_of("정답: " + str(p["answer"]).strip(), 10.0)
+            if w > COL_W:
+                print(f"  ! {i}번째 문제: 정답 줄 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. 짧게 써라")
+                bad += 1
+    return bad
+
+
+def report(pdf: Path, boxes: list, labels: list[str], n_student: int) -> int:
+    """학생 쪽마다 풀 자리 위 끝(div.work.box)을 받아 남은 칸을 잰다. 단을 넘치면 경고.
+    선생님 쪽은 풀이 글이 단 바닥을 넘는지 본다(글자가 본문 영역 아래로 나간다.
+    쪽번호 10pt는 뺀다). 내용이 있는 요소는 글줄 상자까지 같은 class로 나오므로
+    x마다 맨 위 상자(블록 상자) 하나만 남긴다."""
+    bad = 0
+    if len(boxes) != len(labels):
+        print(f"  ! 쪽 수 {len(boxes)} ≠ {len(labels)}. 어느 문제가 한 쪽을 넘쳤다")
+        return 1
+    rows = []
+    for label, page in zip(labels[:n_student], boxes):
+        seen, works = set(), []
+        for b in sorted((b for b in page if "work" in b["class"].split()),
+                        key=lambda b: (b["x"], b["y"])):
+            if round(b["x"]) not in seen:
+                seen.add(round(b["x"]))
+                works.append(b)
+        for no, b in zip(label.split("·"), works):
+            r = (BOTTOM - b["y"]) / GRID
+            if r < 0:
+                print(f"  ! {no}: 문제 블록이 단 바닥을 {-r:.1f}칸 넘는다. 그림을 줄이거나 선지를 보라")
+                bad += 1
+            rows.append((no, r))
+    if rows:
+        no, r = min(rows, key=lambda t: t[1])
+        print(f"  풀 자리: 가장 좁은 단 {no} {r:.1f}칸")
+        if 0 <= r < MIN_ROWS:
+            print(f"  ! {no}: 풀 자리 {r:.1f}칸. {MIN_ROWS}칸은 두라")
+            bad += 1
+    if len(labels) > n_student:
+        import pdfplumber
+        with pdfplumber.open(pdf) as doc:
+            for label, page in zip(labels[n_student:], doc.pages[n_student:]):
+                nos = label.split(" ", 1)[1].split("·")
+                for no, (x0, x1) in zip(nos, ((0, 297), (297, 595))):
+                    if any(c["bottom"] > BOTTOM + 0.5 and c["size"] > 10.5 and x0 <= c["x0"] < x1
+                           for c in page.chars):
+                        print(f"  ! {no}: 풀이 글이 단 바닥을 넘는다. 줄을 줄여라")
+                        bad += 1
+    return bad
+
+
+# ── 빌드 ────────────────────────────────────────────────────────────────
+
+def main() -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")     # Windows 콘솔에서 한글이 깨지지 않게
+    ap = argparse.ArgumentParser(description="시험대비 학습지 빌드")
+    ap.add_argument("source", type=Path, help="problems.yaml")
+    ap.add_argument("--no-figures", action="store_true", help="figures.py를 실행하지 않는다")
+    ap.add_argument("--no-check", action="store_true", help="그리드 검사를 건너뛴다")
+    args = ap.parse_args()
+
+    src = args.source.resolve()
+    if not src.is_file():
+        print(f"입력 파일이 없다: {src}", file=sys.stderr)
+        return 1
+    out_dir = src.parent
+    try:
+        data = yaml.safe_load(src.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as e:
+        mark = getattr(e, "problem_mark", None)
+        where = f" ({mark.line + 1}째 줄)" if mark else ""
+        print(f"{src.name}을 읽을 수 없다{where}. ': '가 든 글은 따옴표로 감싸라.", file=sys.stderr)
+        print(e, file=sys.stderr)
+        return 1
+    problems = data.get("problems") or []
+    warnings = check(problems)
+    m = meta(data, out_dir)
+
+    env = dict(os.environ, PYTHONIOENCODING="utf-8",
+               PYTHONPATH=os.pathsep.join(p for p in (str(GRIND), os.environ.get("PYTHONPATH")) if p))
+    # PDF 안의 만든 날짜를 고정한다(WeasyPrint는 SOURCE_DATE_EPOCH를 따른다). 학기 첫날이거나
+    # yaml의 date. 둘 다 없으면 yaml의 수정 시각
+    env["SOURCE_DATE_EPOCH"] = str(m["epoch"] if m["epoch"] is not None else int(src.stat().st_mtime))
+    figures_py = out_dir / "figures.py"
+    if figures_py.is_file() and not args.no_figures:
+        r = subprocess.run([sys.executable, str(figures_py)], cwd=str(out_dir), env=env,
+                           stdout=subprocess.PIPE, stderr=None, text=True, encoding="utf-8")
+        print(r.stdout, end="", flush=True)
+        if r.returncode:
+            return r.returncode
+        warnings += sum(1 for line in r.stdout.splitlines() if line.lstrip().startswith("!"))
+    fig_dir = out_dir / "figures"
+    fig_dir.mkdir(exist_ok=True)
+    # 수식 SVG(m 지문 · c 선지 · a 정답 · s 풀이 + 번호)는 빌드마다 다시 그린다
+    for old in fig_dir.glob("*.svg"):
+        if re.fullmatch(r"[macs]\d{3}(_\d+)+\.svg", old.name):
+            old.unlink()
+
+    doc, labels, n_student = build_html(data, m, out_dir)
+    out_html = out_dir / f"{m['file']}.html"
+    out_html.write_text(doc, encoding="utf-8")
+    print(out_html, flush=True)
+
+    fd, tmp = tempfile.mkstemp(suffix=".json", prefix="exam_boxes_")
+    os.close(fd)                       # 열어 둔 채면 Windows에서 지울 수 없다
+    boxes_json = Path(tmp)
+    cmd = [sys.executable, str(RENDER), str(out_html), "--boxes", str(boxes_json)]
+    if not args.no_check:
+        cmd.append("--check")
+    try:
+        r = subprocess.run(cmd, cwd=str(out_dir), env=env)
+        if r.returncode:
+            return r.returncode
+        boxes = json.loads(boxes_json.read_text(encoding="utf-8"))
+    finally:
+        boxes_json.unlink(missing_ok=True)
+    warnings += check_overlap(boxes, labels)
+    warnings += report(out_html.with_suffix(".pdf"), boxes, labels, n_student)
+    if warnings:
+        print(f"  경고 {warnings}개. 위의 ! 줄을 보라")
+    return 1 if warnings else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
