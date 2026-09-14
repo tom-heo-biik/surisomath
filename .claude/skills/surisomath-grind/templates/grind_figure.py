@@ -54,6 +54,8 @@ DOT = 2.4              # 점 지름(pt)
 TINT = 0.10            # 색칠한 부분
 LABEL = 10.0           # 그림 글자 크기(pt)
 DASH = (0, (2, 2))     # 점선. matplotlib이 선 두께를 곱하므로 0.4pt 선에서 0.8pt 등간격이 된다
+DASHDOT = (6.0, 2.0, 1.0, 2.0)   # 일점쇄선(pt): 긴 획 6, 빈 2, 점 1, 빈 2. 회전축
+TICK = 5.0             # 같은 길이 표시 획의 길이(pt)
 MARK = 5.5             # 직각 표시 한 변(pt)
 MARGIN = 4.0           # 잉크에서 캔버스 가장자리까지 최소(pt). 잘리지 않게
 LEADER = 22.0          # 지시선 길이(pt)
@@ -306,9 +308,12 @@ _tex_fraction()
 # ── 기본 도형 ───────────────────────────────────────────────────────────
 # 색칠을 먼저 하고 선을 나중에 긋는다. 순서가 곧 위아래다.
 
-def seg(ax, p, q, lw=EDGE):
-    ax.plot([p[0], q[0]], [p[1], q[1]], color=INK, linewidth=lw,
-            solid_capstyle="round")
+def seg(ax, p, q, lw=EDGE, dashed=False):
+    """선분. dashed면 점선 도형의 변 — 대시 2pt 간격 2pt. matplotlib이 대시 길이에
+    선 두께를 곱하므로 나눠서 준다."""
+    style = (dict(linestyle=(0, (2 / lw, 2 / lw)), dash_capstyle="butt") if dashed
+             else dict(solid_capstyle="round"))
+    ax.plot([p[0], q[0]], [p[1], q[1]], color=INK, linewidth=lw, **style)
 
 
 def dashed(ax, p, q, lw=AUX):
@@ -363,10 +368,11 @@ def right_angle(ax, corner, dx, dy, s=None):
     corner_mark(ax, corner, (dx, 0), (0, dy), s)
 
 
-def poly(ax, pts, lw=EDGE):
-    """꼭짓점 목록으로 닫힌 다각형(삼각형 등)을 그린다. 목록을 그대로 돌려준다."""
+def poly(ax, pts, lw=EDGE, dashed=False):
+    """꼭짓점 목록으로 닫힌 다각형(삼각형 등)을 그린다. dashed면 점선 도형(007의 A'BC').
+    목록을 그대로 돌려준다."""
     for i in range(len(pts)):
-        seg(ax, pts[i], pts[(i + 1) % len(pts)], lw=lw)
+        seg(ax, pts[i], pts[(i + 1) % len(pts)], lw=lw, dashed=dashed)
     return list(pts)
 
 
@@ -471,3 +477,59 @@ def leader(ax, p, text, dx=3, dy=2, length=LEADER):
     va = "bottom" if dy > 0 else "top" if dy < 0 else "center"
     label(ax, t[0], t[1], text, ha=ha, va=va)
     return q
+
+
+# ── 각 · 같은 길이 · 회전축 · 이름 ──────────────────────────────────────
+
+def angle(ax, v, p, q, text="", r=12.0, ticks=0, lw=AUX, pad=3.0):
+    """각 표시. 꼭짓점 v에서 p 방향부터 q 방향까지(반시계) 반지름 r pt의 호를 긋고,
+    글을 각 안쪽 이등분선 위, 호에서 pad pt 떨어진 자리에 앉힌다. 각도 글은
+    '$35^{\\circ}$'처럼 수식으로 준다(cmr10에는 °가 없다). ticks가 n이면 호를 가로지르는
+    짧은 획 n개 — 같은 각 표시(각의 이등분선). 글 없이 호만 그리려면 text=""."""
+    t1 = math.degrees(math.atan2(p[1] - v[1], p[0] - v[0]))
+    t2 = math.degrees(math.atan2(q[1] - v[1], q[0] - v[0]))
+    while t2 <= t1:
+        t2 += 360.0
+    R = pt(ax, r)
+    ax.add_patch(Arc(v, 2 * R, 2 * R, angle=0, theta1=t1, theta2=t2, linewidth=lw, color=INK))
+    m = math.radians((t1 + t2) / 2)
+    ux, uy = math.cos(m), math.sin(m)
+    s = pt(ax, 2.0)
+    for i in range(ticks):
+        a = m + math.radians(6.0) * (i - (ticks - 1) / 2)
+        cx, cy = math.cos(a), math.sin(a)
+        seg(ax, (v[0] + (R - s) * cx, v[1] + (R - s) * cy),
+            (v[0] + (R + s) * cx, v[1] + (R + s) * cy), lw=lw)
+    if text:
+        w, h = text_size(ax, text)
+        d = r + pad + (abs(ux) * w + abs(uy) * h) / 2
+        label(ax, v[0] + pt(ax, d) * ux, v[1] + pt(ax, d) * uy, text)
+
+
+def tick(ax, p, q, n=1, lw=AUX):
+    """같은 길이 표시. 선분 pq 한가운데에 선분과 직각인 짧은 획(TICK pt) n개, 획 사이 2pt.
+    한 쌍은 n=1, 다른 쌍은 n=2로 구분한다(중점 표시)."""
+    dx, dy = q[0] - p[0], q[1] - p[1]
+    L = math.hypot(dx, dy)
+    ux, uy = dx / L, dy / L
+    nx, ny = -uy, ux
+    half, step = pt(ax, TICK) / 2, pt(ax, 2.0)
+    mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
+    for i in range(n):
+        k = (i - (n - 1) / 2) * step
+        cx, cy = mx + ux * k, my + uy * k
+        seg(ax, (cx - nx * half, cy - ny * half), (cx + nx * half, cy + ny * half), lw=lw)
+
+
+def axis(ax, p, q, text="", lw=AUX):
+    """회전축. 교과서대로 일점쇄선 0.4pt. text(축 이름 '$l$')는 q 끝의 오른쪽 3pt."""
+    ax.plot([p[0], q[0]], [p[1], q[1]], color=INK, linewidth=lw,
+            linestyle=(0, tuple(d / lw for d in DASHDOT)), dash_capstyle="butt")
+    if text:
+        label(ax, q[0] + pt(ax, 3.0), q[1], text, ha="left", va="center")
+
+
+def name(ax, p, s, dx=0.0, dy=0.0, ha="center", va="center"):
+    """점 이름·변의 길이 글. p에서 (dx, dy) pt 떨어진 자리에 10pt 정체로 앉힌다.
+    변의 길이는 교과서처럼 변 옆에 바로 적는다 — 그려진 변에는 dim(점선 곡선)을 쓰지 않는다."""
+    label(ax, p[0] + pt(ax, dx), p[1] + pt(ax, dy), s, ha=ha, va=va)

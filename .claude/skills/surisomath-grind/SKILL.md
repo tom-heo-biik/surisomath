@@ -100,6 +100,11 @@ x 범위: 정하지 않는다. save()가 잉크에 맞춰 좌우 대칭으로 �
 길이 표시 방향(side): 진행 방향의 왼쪽이 +1. 도형 둘레를 반시계로 돌 때 바깥쪽은 -1
 길이 표시 물림(trim): 꼭짓점에 선이 몰릴 때 양끝을 안쪽으로 물린다. pt로 준다(trim=3이면 양끝 3pt)
 지시선: 0.4pt, 길이 22pt, 기본 방향 오른쪽 위. 글은 선 끝에서 3pt. 글이 현의 8할을 넘으면(dim이 경고한다) 글을 빼고 g.leader로 밖에 둔다
+각 표시: `g.angle(ax, v, p, q, "$35^{\circ}$", r=12)`. 꼭짓점 v에서 p 방향부터 q 방향까지 반시계로 0.4pt 호, 글은 각 안쪽 이등분선 위. 각도 글은 수식으로(`^{\circ}` 중괄호 필수). `ticks=1`이면 호를 가로지르는 획 — 같은 각 표시
+같은 길이 표시: `g.tick(ax, p, q, n=1)`. 선분 한가운데에 직각인 5pt 획 n개. 다른 쌍은 n=2
+점선 도형: `g.poly(ax, pts, dashed=True)`·`g.seg(ax, p, q, dashed=True)`. 0.7pt, 대시 2pt 간격 2pt. 길이 표시의 점선(0.4pt)과 다르다
+회전축: `g.axis(ax, p, q, "$l$")`. 교과서대로 일점쇄선 0.4pt. 이름은 q 끝 오른쪽
+점 이름·변의 길이 글: `g.name(ax, p, "A", dx=-4, dy=-4, ha="right", va="top")`. p에서 pt로 띄운 자리. 그려진 변의 길이는 교과서처럼 변 옆에 이것으로 적고, dim(점선 곡선)은 그려지지 않은 길이(반지름 등)에 쓴다
 
 
 ## 두 단 풀이 자리
@@ -161,6 +166,7 @@ figures.py 뼈대: `import grind_figure as g` → `g.setup(__file__)` → 그림
 높이: `g.foot(ax, A, B, C)` — A에서 변 BC에 내린 높이를 긋고 발에 직각 표시를 한다. 발의 좌표를 돌려준다
 길이 표시: `g.dim(ax, (0, 0), (12, 0), "12cm", side=-1, gap=1.6)`
 지시선: `apex = g.dim(ax, p, q, "", gap=0.9)` 뒤에 `g.leader(ax, apex, "2cm")`
+각·같은 길이·점선 도형·회전축·이름: `g.angle` `g.tick` `g.poly(…, dashed=True)` `g.axis` `g.name` — 그림 절 참고
 색칠: 호가 낀 경계는 `g.shade(ax, g.arc_pts(...) + [...])`, 부채꼴은 `g.wedge`
 쪽 뼈대(HTML을 손으로 만들 때): `section.problem` 안에 `p.series` · `h2`(번호) · `p.answer` · `p`(문제 글) · `div.figure[style="--u:n"]` · `div.cols.head` · `div.cols`
 소제목 글: build.py가 span으로 감싼다. 플렉스 상자는 자식 사이 공백을 버려 어절 span 사이의 띄어쓰기가 사라진다. HTML을 손으로 만들 때도 같다
