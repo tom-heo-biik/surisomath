@@ -61,12 +61,16 @@ section.exam h2 {
 /* 본문 안 수식. build.py가 $…$를 Computer Modern SVG로 바꿔 넣는다(연마와 같다) */
 section.exam img.mi { width: auto; }
 
-/* 선지 — 수능·모의고사 관례의 5열·3열·1열. build.py가 너비를 재서 c5·c3·c1을 고른다.
+/* 선지 — 수능·모의고사 관례의 5열·3열·2열·1열. build.py가 너비를 재서 c5·c3·c1을 고른다.
    칸 너비가 같아 ④가 ① 아래 온다. 항목 한 줄이 한 칸(22pt). 마커 칸은 base.css의 ol --pad */
 section.exam ol.n7 { display: flex; flex-wrap: wrap; }
 section.exam ol.n7 > li { flex: none; box-sizing: border-box; width: 100%; }
 section.exam ol.n7.c5 > li { width: 20%; }
 section.exam ol.n7.c3 > li { width: 33.333%; }
+section.exam ol.n7.c2 > li { width: 50%; }
+/* 키 큰 선지(분수처럼 글줄에 꽉 차는 수식)가 두 줄 이상 쌓이면 잇단 줄의 분수가 닿는다.
+   항목마다 두 칸 — 글줄은 위 칸에, 아래 칸은 비운다. 글줄 상자는 22pt 그대로라 위상이 안 바뀐다 */
+section.exam ol.n7.tall > li { padding-bottom: 22pt; }
 
 /* 풀 자리 — 학생 쪽은 빈 종이. 선생님 쪽은 첫 줄에 정답(캡션 서체·회색), 그 아래 풀이.
    줄마다 p 하나, 문단 간격 없이 한 줄 = 한 칸. 빈 줄은 p.gap. 풀 자리 위 끝은 본문 위상이라

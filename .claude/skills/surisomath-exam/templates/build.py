@@ -11,7 +11,8 @@
   2. problems.yaml을 읽어 한 쪽에 문제 둘(두 단, 단마다 하나)인 HTML을 쓴다. 그림은 SVG
      높이가 22의 배수인지, 너비가 단 글 너비(229pt) 안인지 본다. 칸 수는 높이가 정한다.
   3. 지문·선지·정답·풀이의 $…$는 연마 build.py의 rich()가 Computer Modern SVG로 그린다.
-  4. 선지는 너비를 재서 5열·3열·1열을 고른다(수능·모의고사 관례).
+  4. 선지는 너비를 재서 5열·3열·1열을 고른다(수능·모의고사 관례). 분수처럼 키 큰 선지가 두 줄
+     이상 쌓이면 항목마다 두 칸을 주고 둘씩 들면 2열.
   5. solution이 있는 문제가 하나라도 있으면 학생 쪽 뒤에 선생님 쪽을 같은 짝으로 붙인다.
      풀 자리 첫 줄에 정답, 그 아래 풀이. solution이 없는 문제는 그 단이 빈다.
   6. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
@@ -90,6 +91,7 @@ BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 풀 자리가 여�
 COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁은 쪽으로 잰다
 MARK_W = 22.0          # 선지 마커 칸(a4의 ol --pad)
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
+TALL = 16.0            # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸 간격
 CAPTION = gb.CAPTION   # neutral-500. 정답 줄
 MATH = gb.MATH
 FOLDER = re.compile(r"(\d{4})(\d)학기(중간|기말)")
@@ -137,14 +139,38 @@ def width_of(s: str, size: float = 12.0) -> float:
     return w
 
 
-def choice_cols(choices: list) -> int:
-    """선지 열 수. 다섯이 한 줄에 들면 5열, 셋씩 들면 3열, 아니면 1열. 칸 너비가 같아
-    ④가 ① 아래 온다. 한 칸 = 마커 칸 22pt + 글 너비."""
+def height_of(s: str, size: float = 12.0) -> float:
+    """조판한 글 안 수식의 잉크 높이(pt). 글자 조각은 0 — 글줄에 꽉 차는 것은 분수뿐이다."""
+    from matplotlib.font_manager import FontProperties
+    from matplotlib.textpath import TextPath
+    h = 0.0
+    for i, piece in enumerate(MATH.split(s)):
+        if not piece or not i % 2:                  # 홀수째 조각이 수식이다
+            continue
+        _, y0, _, y1 = TextPath((0, 0), f"${piece}$", size=size,
+                                prop=FontProperties(size=size)).get_extents().extents
+        h = max(h, float(y1 - y0))
+    return h
+
+
+def choice_layout(choices: list) -> tuple[int, bool]:
+    """(열 수, 두 칸 간격 여부). 다섯이 한 줄에 들면 5열, 셋씩 들면 3열, 아니면 1열 — 수능·모의고사
+    관례. 칸 너비가 같아 ④가 ① 아래 온다. 한 칸 = 마커 칸 22pt + 글 너비.
+    분수처럼 글줄에 꽉 차는 수식(잉크 높이 TALL 초과)이 든 선지가 두 줄 이상 쌓이면 잇단 줄의
+    분수가 닿으므로 항목마다 두 칸을 주고, 그때는 둘씩 들면 2열로 줄 수를 아낀다."""
     widths = [MARK_W + width_of(str(c).strip()) for c in choices]
-    for n in (5, 3):
+    tall = max(height_of(str(c).strip()) for c in choices) > TALL
+    for n in (5, 3, 2, 1):
+        if n == 2 and not tall:
+            continue
         if all(w <= COL_W / n for w in widths):
-            return n
-    return 1
+            rows = -(-len(choices) // n)
+            return n, tall and rows > 1
+    return 1, tall
+
+
+def choice_cols(choices: list) -> int:
+    return choice_layout(choices)[0]
 
 
 # ── 제목 · 파일 이름 · 날짜 ─────────────────────────────────────────────
@@ -201,10 +227,10 @@ def choices_html(no: str, p: dict, fig_dir: Path) -> str:
     choices = p.get("choices")
     if not choices:
         return ""
-    cols = choice_cols(choices)
+    cols, tall = choice_layout(choices)
     items = "".join(f'        <li>{rich(str(c).strip(), f"c{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
                     for k, c in enumerate(choices, 1))
-    return f'      <ol class="n7 c{cols}">\n{items}      </ol>\n'
+    return f'      <ol class="n7 c{cols}{" tall" if tall else ""}">\n{items}      </ol>\n'
 
 
 def work_html(no: str, p: dict, fig_dir: Path) -> str:
@@ -291,22 +317,23 @@ def check(problems: list) -> int:
         if False in p:
             raise SystemExit(f'{i}번째 문제: no는 키와 값을 모두 따옴표로 — "no": "004"처럼 적어라. '
                              "따옴표가 없으면 YAML이 거짓으로 읽어 번호가 무시된다")
+        no = str(p.get("no") or f"{i:03d}")
         for key in ("text", "answer"):
             if key not in p:
-                raise SystemExit(f"{i}번째 문제에 {key}가 없다")
+                raise SystemExit(f"{no}번째 문제에 {key}가 없다")
         if "choices" in p and not isinstance(p["choices"], list):
-            raise SystemExit(f"{i}번째 문제: choices는 목록('- …' 다섯 줄)이어야 한다")
+            raise SystemExit(f"{no}번째 문제: choices는 목록('- …' 다섯 줄)이어야 한다")
         if "choices" in p and len(p["choices"] or []) != 5:
-            raise SystemExit(f"{i}번째 문제: 선지는 다섯 개여야 한다")
-        if p.get("choices") and choice_cols(p["choices"]) == 1:
+            raise SystemExit(f"{no}번째 문제: 선지는 다섯 개여야 한다")
+        if p.get("choices") and choice_layout(p["choices"])[0] == 1:
             for k, c in enumerate(p["choices"], 1):
                 if MARK_W + width_of(str(c).strip()) > COL_W:
-                    print(f"  ! {i}번째 문제: 선지 {k}가 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
+                    print(f"  ! {no}번째 문제: 선지 {k}번이 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
                     bad += 1
         if p.get("solution"):
             w = width_of("정답: " + str(p["answer"]).strip(), 10.0)
             if w > COL_W:
-                print(f"  ! {i}번째 문제: 정답 줄 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. 짧게 써라")
+                print(f"  ! {no}번째 문제: 정답 줄 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. 짧게 써라")
                 bad += 1
     return bad
 

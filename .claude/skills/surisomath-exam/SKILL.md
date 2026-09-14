@@ -45,7 +45,7 @@ description: "수리소 수학학원의 실전 모의 학습지 '시험대비' �
 번호: 001부터 problems.yaml 차례대로. typo-4, 단 왼끝. 순서는 바꾸지 않는다
 지문: typo-1, 한 문단. problems.md 문장을 한 글자도 바꾸지 않는다. 바꾸는 것은 표기뿐이다
 그림: 지문 아래 단 가운데. a4의 `.figure` 블록. units는 yaml에 적지 않는다 — SVG 높이가 칸 수다(22의 배수가 아니면 멈춘다). 너비 229pt 안. 넘으면 build.py가 y 범위를 몇 배 넓히라고 알려 준다
-선지: `<ol class="n7">`(① ② ③ ④ ⑤, 마커 칸 22pt). build.py가 선지마다 너비(마커 22pt + 글)를 재서 다섯 모두 45.8pt(단 글 너비 ÷ 5) 안이면 5열 한 줄, 76.3pt(÷ 3) 안이면 3열(①②③ / ④⑤, ④는 ① 아래), 아니면 1열 다섯 줄. 수능·모의고사 관례다. 1열에서 항목 하나가 단을 넘으면 경고한다
+선지: `<ol class="n7">`(① ② ③ ④ ⑤, 마커 칸 22pt). build.py가 선지마다 너비(마커 22pt + 글)를 재서 다섯 모두 45.8pt(단 글 너비 ÷ 5) 안이면 5열 한 줄, 76.3pt(÷ 3) 안이면 3열(①②③ / ④⑤, ④는 ① 아래), 아니면 1열 다섯 줄. 수능·모의고사 관례다. 1열에서 항목 하나가 단을 넘으면 경고한다. 분수처럼 글줄에 꽉 차는 수식(잉크 높이 16pt 초과)이 든 선지가 두 줄 이상 쌓이면 항목마다 두 칸(44pt, 글줄은 위 칸)을 주고, 둘씩 114.5pt(÷ 2) 안에 들면 2열(①② / ③④ / ⑤). 한 줄에 다 드는 5열은 그대로 한 칸
 넣지 않는 것: 답 칸, 배점, [서술형] 표시. 문제 글에 없는 것은 넣지 않는다
 
 
@@ -90,7 +90,7 @@ solution이 없는 문제: 그 단의 풀 자리가 비고 정답도 안 찍힌�
 templates/exam.css: base.css 위에 얹는 시험대비 스타일. 위 규격의 구현
 templates/build.py: problems.yaml 하나로 그림 → 수식 → HTML → PDF → 검사. 연마 build.py를 모듈로 읽어 rich()를 쓴다
 templates/sample/: 견본 세 문제(객관식 5열, 그림 있는 서술형, 객관식 3열 — 홀수 짝). 새 단원은 이 폴더의 problems.yaml과 figures.py를 복사해 출발한다. 실제 학습지의 정본은 build/시험대비/20262학기중간/중3/삼각비/
-견본은 회귀 검사다: build.py·exam.css·render.py·grind_figure.py를 고친 뒤 견본을 다시 빌드해 `git status --short .claude/skills/surisomath-exam/templates/sample/`가 비어 있으면 양식이 그대로라는 뜻이다
+견본은 회귀 검사다: build.py·exam.css·render.py·grind_figure.py를 고친 뒤 견본을 다시 빌드해 종료 코드가 0이고 `git status --short .claude/skills/surisomath-exam/templates/sample/`가 비어 있으면 양식이 그대로라는 뜻이다
 
 
 ## 단원 폴더
