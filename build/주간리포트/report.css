@@ -1,93 +1,103 @@
 /* ==========================================================================
    수리소 주간 리포트 — base.css 위에 얹는 양식 스타일
-   손으로 채우는 빈 양식. 세로 배치(칸 = 22pt, 본문 위 72pt 기준):
-     0 제목 · 1 프로필 · 2 빈 칸(바닥에 표 윗선) · 3~20 요일 표(6행 × 3칸)
-     21 빈 칸 · 22 소제목 · 23~28 손글씨 괘선(33pt × 4) · 29~30 여백
+   손으로 채우는 빈 양식. 칸을 다 두른 공문서 서식 꼴이다.
+   세로 배치(칸 = 22pt, 본문 위 72pt 기준):
+     0 제목 · 1 빈 칸(바닥선이 서식 윗선) · 2 프로필 행 · 3~20 요일 행(6행 × 3칸)
+     21 학부모님 말씀 머리행 · 22~27 학부모님 말씀 상자 · 28~30 여백
+   체크박스 글줄만 일부러 그리드를 벗어난다. 네 개를 3칸(66pt)에 세우느라 간격이
+   16.5pt다. --check가 이 줄들을 짚지만, 그 밖의 글줄은 전부 그리드 위다.
    ========================================================================== */
 
 /* 한 장짜리 양식 — 쪽번호 없음 */
 @page { @bottom-center { content: none; } }
 
+:root { --c-frame: var(--neutral-1000); }   /* 서식 선. 공문서처럼 검정 */
+
 /* 플렉스 상자는 자식 사이 공백을 버리므로 글은 전부 span으로 감싼다(연마와 같다).
    자식은 baseline이 아니라 위끝으로 맞춘다. 크기가 다른 글을 baseline으로 맞추면
-   한쪽 줄상자가 밀려 그리드를 벗어난다. 22pt 줄상자를 같은 줄에 나란히 두면
-   각 크기의 글줄이 제 자리(그 크기의 그리드 잔여값)에 앉는다. */
+   한쪽 줄상자가 밀려 그리드를 벗어난다.
+   10pt 글은 담는 상자에 font-size를 준다. 12pt 상자 안에 10pt span만 두면 줄상자의
+   기준이 12pt라 베이스라인이 0.57pt 내려앉는다(--check가 잡는다). */
 
 /* --- 제목 줄 ------------------------------------------------------------- */
 .head { display: flex; justify-content: space-between; align-items: flex-start; height: 22pt; }
 .head h1 { display: flex; align-items: center; margin: 0; text-align: left; }
 .head h1 img { height: 22pt; width: auto; margin-right: 4pt; }   /* 심볼 22pt, 글과 4pt */
-.head .period { margin: 0; white-space: nowrap; }
+.head .period { margin: 0; white-space: nowrap; padding-right: 8pt; }
 
-/* --- 프로필 줄 ----------------------------------------------------------- */
-.profile { display: flex; margin: 0; }
-.profile span { flex: 1 1 0; }
+/* 서식 윗선은 제목 아래 빈 칸의 바닥에 긋는다. 첫 행에 border-top을 주면 그 행의
+   글줄이 선 두께만큼 내려앉으므로, 선은 언제나 위 상자의 바닥에서 안쪽으로 뺀다. */
+.rule-top { height: 22pt; box-sizing: border-box; border-bottom: 0.4pt solid var(--c-frame); }
 
-/* --- 요일 표 ------------------------------------------------------------- */
-/* 표 윗선은 빈 칸(2번 칸)의 바닥에 긋는다. 첫 행에 border-top을 주면 그 행의 글줄이
-   선 두께만큼 내려앉아 다른 행과 어긋난다. 선은 언제나 칸의 바닥에서 안쪽으로 뺀다. */
-.rule-top { height: 22pt; box-sizing: border-box; border-bottom: 0.4pt solid var(--c-rule); }
-
-.days { margin: 0 0 22pt; }
-.days .row {
-  display: flex;
-  align-items: flex-start;
-  height: 66pt;                    /* 3칸. 아래선은 이 안에서 뺀다 */
+/* --- 서식 --------------------------------------------------------------- */
+/* 좌우 테두리는 서식 전체에, 가로선은 행마다 바닥에, 세로선은 칸의 오른쪽에 긋는다.
+   전부 상자 안쪽에서 뺀다(box-sizing). 마지막 칸은 오른쪽 선이 없다(테두리가 겸한다) */
+.form {
   box-sizing: border-box;
-  border-bottom: 0.4pt solid var(--c-rule);
+  border-left:  0.4pt solid var(--c-frame);
+  border-right: 0.4pt solid var(--c-frame);
 }
-.days .day    { width: 60pt; }
-.days .write  { flex: 1 1 0; margin: 0 16pt; position: relative; align-self: stretch; }
-.days .checks { width: 155pt; }
-
-/* 요일 열 — 첫 줄 요일(typo-2), 둘째 줄 날짜(typo-1). 달·날 다 비운다 */
-.days .day b    { display: block; font-weight: 500; }
-.days .day .date { display: block; white-space: nowrap; }
-
-/* 손글씨 열 — 33pt 두 줄. 가운데 선 하나만 긋고 둘째 줄 바닥은 행 아래선이 겸한다 */
-.days .write::after {
-  content: "";
-  position: absolute; left: 0; right: 0; top: 33pt;
-  border-top: 0.4pt solid var(--c-rule);
+/* 칸은 행 높이로 늘린다(stretch). 빈 칸은 높이가 0이라 오른쪽 선이 안 보인다.
+   글줄은 어차피 칸 위끝에서 시작하니 그리드엔 영향이 없다 */
+.row {
+  display: flex; align-items: stretch;
+  box-sizing: border-box;
+  border-bottom: 0.4pt solid var(--c-frame);
 }
+.c { box-sizing: border-box; padding-left: 8pt; border-right: 0.4pt solid var(--c-frame); }
+.row > .c:last-child { border-right: 0; }
 
-/* 체크박스 열 — 첫 줄 출결 넷, 둘째 줄 숙제 셋. typo-0 */
-.days .checks p { margin: 0; font-size: 10pt; letter-spacing: -0.02em; white-space: nowrap; }
-.days .checks label { margin-right: 10pt; }
-.days .checks label:last-child { margin-right: 0; }
-.days .checks i {
+/* 열 너비. 이름표(이름·학교·학년·출결·숙제)는 32pt, 빈 칸은 남는 폭을 나눠 갖는다.
+   요일 행: 요일 36 | 출결 32 | 상자 48 | 숙제 32 | 상자 58 | 선생님 손글씨(약 268pt) */
+.c.day   { width: 36pt; }
+.c.label { width: 32pt; font-size: 10pt; letter-spacing: -0.02em; }
+.c.att   { width: 48pt; }
+.c.hw    { width: 58pt; }
+.c.write { flex: 1 1 0; }
+.c.fill  { flex: 1 1 0; }
+
+/* 행 높이 */
+.row.profile, .row.phead { height: 22pt; }
+.row.day-row { height: 66pt; }                 /* 3칸 */
+.row.pbox    { height: 132pt; }                /* 6칸 */
+
+/* 요일 행의 요일·출결·숙제 이름표는 가운데 줄(둘째 칸)에 — 그리드 위다 */
+.row.day-row .c.day, .row.day-row .c.label { padding-top: 22pt; }
+
+/* 요일 칸 — typo-2 */
+.c.day { font-weight: 500; }
+
+/* 체크박스 — 한 줄에 하나, 글 뒤에 상자. typo-0. 간격 16.5pt(66pt에 넷). 숙제 셋은 세로 가운데 */
+.c p { margin: 0; font-size: 10pt; letter-spacing: -0.02em; white-space: nowrap; line-height: 16.5pt; }
+.c.hw { padding-top: 8pt; }
+.c i {
   display: inline-block;
   width: 8pt; height: 8pt;
   box-sizing: border-box;
   border: 0.4pt solid var(--neutral-1000);
-  margin-right: 3pt;
+  margin-left: 3pt;               /* 상자는 글 오른쪽에 */
   vertical-align: -0.5pt;          /* 글자 바닥에 맞춘다. 줄상자 안이라 그리드엔 영향 없다 */
 }
 
-/* --- 학부모님 말씀 ------------------------------------------------------- */
-.parent { margin: 0; }
-.parent h3 { display: flex; align-items: flex-start; }
-.parent h3 .note {
+/* 학부모님 말씀 머리행 — 소제목(typo-2)과 안내(typo-0). 둘 다 플렉스 자식이라 제 크기의 줄상자를 갖는다 */
+.row.phead .c { display: flex; align-items: flex-start; }
+.row.phead .h { font-weight: 500; }
+.row.phead .note {
   margin-left: 8pt;
   font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
   color: var(--c-caption);
 }
 
-/* 괘선 네 줄, 33pt 간격. 선은 각 줄의 바닥에서 안쪽으로 뺀다 */
-.lines > div {
-  height: 33pt;
-  box-sizing: border-box;
-  border-bottom: 0.4pt solid var(--c-rule);
-}
-
-/* 마지막 줄의 "확인" — 글줄이 그리드(28번 칸)에 앉도록 위 11pt를 비운다.
-   선 위에 바로 놓이므로 밑줄은 따로 긋지 않는다. 선이 서명란이다 */
-.lines .sign {
+/* 학부모님 말씀 상자 — 줄 없는 빈 네모. "확인"은 상자 오른쪽 아래(27번 칸)에.
+   행 안쪽 높이가 131.6pt라 마지막 줄상자는 21.6pt로 줄인다(base.css의 표와 같은 보정).
+   22pt 그대로 두면 0.4pt가 행을 넘친다 */
+.row.pbox .c {
   display: flex; justify-content: flex-end; align-items: flex-start;
-  padding-top: 11pt;
+  padding-top: 110pt; padding-right: 8pt;
   font-size: 10pt; letter-spacing: -0.02em;
+  line-height: 21.6pt;
 }
-.lines .sign .blank { display: inline-block; width: 60pt; }
+.row.pbox .blank { display: inline-block; width: 60pt; }
 
 /* 펜으로 채울 빈 자리. &nbsp;는 render.py의 어절 처리(\s)에 잡혀 보통 공백으로 접히므로
    너비를 가진 inline-block으로 둔다. 연 두 자리 16pt, 월·일 14pt */
