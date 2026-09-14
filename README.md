@@ -51,6 +51,29 @@ python .claude/skills/surisomath-a4/templates/render.py 문서.html --check
 python .claude/skills/surisomath-grind/templates/build.py build/연마_원의둘레와넓이/problems.yaml
 ```
 
+### surisomath-exam
+
+실전 모의 학습지 '시험대비' 양식. surisomath-a4 위에 얹고 연마의 그림 도우미와 수식 조판을
+빌려 쓴다. 한 쪽에 문제 둘(두 단), 문제 아래는 학생이 손으로 푸는 빈 자리. 선생님 쪽에는
+정답 줄과 풀이가 같은 자리에 붙는다. 낱말로 쓴 도형 표기(선분 AB, 각 A, 삼각형 ABC)를
+교과서 기호로 조판한다.
+
+```
+.claude/skills/surisomath-exam/
+├─ SKILL.md
+└─ templates/
+   ├─ exam.css      base.css 위에 얹는 시험대비 스타일(두 단·세로선·머리줄·이름 칸·선지 열)
+   ├─ build.py      problems.yaml → 그림 → HTML → PDF → 검사. 연마 build.py의 rich()를 모듈로 쓴다
+   └─ sample/       견본 세 문제. 새 단원은 이 폴더를 복사해 출발한다
+```
+
+```
+python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/삼각비/problems.yaml
+```
+
+단원 폴더는 `build/시험대비/<시험>/<학년>/<단원>/`. 시험 폴더 이름(`20262학기중간`)에서 머리줄과
+파일 이름을 만든다.
+
 ## 서체
 
 셋 다 저장소에 담아 두었다. 스킬과 빌드 스크립트가 담아 둔 파일을 직접 읽으므로
