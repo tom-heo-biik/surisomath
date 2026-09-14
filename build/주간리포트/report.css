@@ -2,8 +2,8 @@
    수리소 주간 리포트 — base.css 위에 얹는 양식 스타일
    손으로 채우는 빈 양식. 칸을 다 두른 공문서 서식 꼴이다.
    세로 배치(칸 = 22pt, 본문 위 72pt 기준):
-     0 제목(바닥선이 서식 윗선) · 1 프로필 행 · 2~25 요일 행(6행 × 4칸)
-     26~30 학부모님 말씀 상자(첫 줄이 소제목, 마지막 줄이 확인)
+     0 제목 · 1 안내·날짜 줄(바닥선이 서식 윗선) · 2 프로필 행 · 3~26 요일 행(6행 × 4칸)
+     27~30 학부모님 말씀 상자(첫 줄이 소제목, 마지막 줄이 확인)
    31칸을 다 쓴다. 체크박스 글줄도 22pt 간격이라 모든 글줄이 그리드 위다.
    ========================================================================== */
 
@@ -19,15 +19,22 @@
    기준이 12pt라 베이스라인이 0.57pt 내려앉는다(--check가 잡는다). */
 
 /* --- 제목 줄 ------------------------------------------------------------- */
-/* 바닥선이 서식의 윗선이다. 첫 행에 border-top을 주면 그 행의 글줄이 선 두께만큼
+.head { display: flex; align-items: flex-start; height: 22pt; }
+.head h1 { display: flex; align-items: center; margin: 0; text-align: left; }
+.head h1 img { height: 22pt; width: auto; margin-right: 4pt; }   /* 심볼 22pt, 글과 4pt */
+
+/* --- 안내·날짜 줄 ------------------------------------------------------- */
+/* 왼쪽에 회수 안내(typo-0, neutral-500), 오른쪽 끝에 날짜 빈 칸(typo-1).
+   바닥선이 서식의 윗선이다. 첫 행에 border-top을 주면 그 행의 글줄이 선 두께만큼
    내려앉으므로, 선은 언제나 위 상자의 바닥에서 안쪽으로 뺀다. */
-.head {
-  display: flex; align-items: flex-start;
+.lead {
+  display: flex; justify-content: space-between; align-items: flex-start;
   height: 22pt; box-sizing: border-box;
   border-bottom: 0.4pt solid var(--c-frame);
 }
-.head h1 { display: flex; align-items: center; margin: 0; text-align: left; }
-.head h1 img { height: 22pt; width: auto; margin-right: 4pt; }   /* 심볼 22pt, 글과 4pt */
+.lead p { margin: 0; white-space: nowrap; }
+.lead .note { font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; color: var(--c-caption); }
+.lead .date { padding-right: 8pt; }
 
 /* --- 서식 --------------------------------------------------------------- */
 /* 좌우 테두리는 서식 전체에, 가로선은 행마다 바닥에, 세로선은 칸의 오른쪽에 긋는다.
@@ -59,7 +66,7 @@
 /* 행 높이 */
 .row.profile { height: 22pt; }
 .row.day-row { height: 88pt; }                 /* 4칸. 출결 네 줄 */
-.row.pbox    { height: 110pt; }                /* 5칸 */
+.row.pbox    { height: 88pt; }                 /* 4칸 */
 
 /* 요일 행의 요일·출결·숙제 이름표는 둘째 칸에. 숙제 세 줄의 가운데이고 출결 네 줄에선
    가운데에 가장 가까운 칸이다. 88pt의 한가운데(44pt)는 반 칸 위라 쓰지 않는다 */
@@ -80,21 +87,16 @@
   vertical-align: -0.5pt;          /* 글자 바닥에 맞춘다. 줄상자 안이라 그리드엔 영향 없다 */
 }
 
-/* 학부모님 말씀 상자 — 줄 없는 빈 네모 110pt. 첫 줄(26번 칸)에 소제목(typo-2)과 안내(typo-0),
-   마지막 줄(30번 칸) 오른쪽에 "확인". 둘 다 플렉스 자식이라 제 크기의 줄상자를 갖는다.
-   행 안쪽 높이가 109.6pt라 마지막 줄상자는 21.6pt로 줄인다(base.css의 표와 같은 보정).
+/* 학부모님 말씀 상자 — 줄 없는 빈 네모 88pt. 첫 줄(27번 칸)에 소제목(typo-2),
+   마지막 줄(30번 칸) 오른쪽에 "확인".
+   행 안쪽 높이가 87.6pt라 마지막 줄상자는 21.6pt로 줄인다(base.css의 표와 같은 보정).
    22pt 그대로 두면 0.4pt가 행을 넘친다 */
 .row.pbox .c { padding-right: 8pt; }
 .row.pbox .phead { display: flex; align-items: flex-start; }
 .row.pbox .h { font-weight: 500; }
-.row.pbox .note {
-  margin-left: 8pt;
-  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
-  color: var(--c-caption);
-}
 .row.pbox .sign {
   display: flex; justify-content: flex-end; align-items: flex-start;
-  margin-top: 66pt;                /* 소제목 줄 22 + 66 = 88pt. 곧 30번 칸 */
+  margin-top: 44pt;                /* 소제목 줄 22 + 44 = 66pt. 곧 30번 칸 */
   font-size: 10pt; letter-spacing: -0.02em;
   line-height: 21.6pt;
 }
