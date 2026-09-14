@@ -49,8 +49,8 @@
 
 /* 열 너비. 이름표(이름·학교·학년·출결·숙제)는 32pt, 빈 칸은 남는 폭을 나눠 갖는다.
    요일 행: 요일 36 | 출결 32 | 상자 48 | 숙제 32 | 상자 58 | 선생님 손글씨(약 268pt) */
-.c.day   { width: 36pt; }
-.c.label { width: 32pt; font-size: 10pt; letter-spacing: -0.02em; }
+.c.day   { width: 36pt; text-align: center; padding-left: 0; }
+.c.label { width: 32pt; font-size: 10pt; letter-spacing: -0.02em; text-align: center; padding-left: 0; }
 .c.att   { width: 48pt; }
 .c.hw    { width: 58pt; }
 .c.write { flex: 1 1 0; }
@@ -67,9 +67,9 @@
 /* 요일 칸 — typo-2 */
 .c.day { font-weight: 500; }
 
-/* 체크박스 — 한 줄에 하나, 글 뒤에 상자. typo-0. 간격 16.5pt(66pt에 넷). 숙제 셋은 세로 가운데 */
+/* 체크박스 — 한 줄에 하나, 글 뒤에 상자. typo-0. 간격 16.5pt(66pt에 넷).
+   출결과 숙제는 같은 줄에서 시작해 출석·훌륭함, 지각·적당함, 조퇴·부족함이 가로로 맞는다 */
 .c p { margin: 0; font-size: 10pt; letter-spacing: -0.02em; white-space: nowrap; line-height: 16.5pt; }
-.c.hw { padding-top: 8pt; }
 .c i {
   display: inline-block;
   width: 8pt; height: 8pt;
