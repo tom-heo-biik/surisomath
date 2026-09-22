@@ -442,6 +442,25 @@ def report(boxes: list, labels: list[str], n_student: int) -> int:
     return bad
 
 
+# ── 눈으로 보기 ─────────────────────────────────────────────────────────
+
+def pngs(pdf: Path, problems: list, out: Path) -> None:
+    """쪽 PNG(p01.png …, 110dpi)와 그림이 있는 문제의 단 크롭(f001.png …, 200dpi). 어느 쪽 어느
+    단에 어느 문제가 있는지는 번호에서 정해지므로 크롭은 기계가 자른다 — 사람은 보기만 한다."""
+    import fitz
+    out.mkdir(parents=True, exist_ok=True)
+    d = fitz.open(str(pdf))
+    for p in d:
+        p.get_pixmap(dpi=110).save(str(out / f"p{p.number + 1:02d}.png"))
+    for i, (no, p) in enumerate(zip(numbers(problems), problems)):
+        if not p.get("figure"):
+            continue
+        page = d[i // 2]
+        x0, x1 = (60, 297) if i % 2 == 0 else (297, 535)
+        page.get_pixmap(dpi=200, clip=fitz.Rect(x0, 120, x1, 700)).save(str(out / f"f{no}.png"))
+    print(f"  PNG: {out}  (쪽 {len(d)}장, 그림 크롭 {sum(1 for p in problems if p.get('figure'))}장)")
+
+
 # ── 빌드 ────────────────────────────────────────────────────────────────
 
 def main() -> int:
@@ -451,6 +470,8 @@ def main() -> int:
     ap.add_argument("source", type=Path, help="problems.yaml")
     ap.add_argument("--no-figures", action="store_true", help="figures.py를 실행하지 않는다")
     ap.add_argument("--no-check", action="store_true", help="그리드 검사를 건너뛴다")
+    ap.add_argument("--png", type=Path, metavar="DIR",
+                    help="쪽마다 PNG(110dpi)와 그림 있는 문제의 단 크롭(200dpi)을 DIR에 뽑는다. 눈으로 볼 때")
     args = ap.parse_args()
 
     src = args.source.resolve()
@@ -519,6 +540,8 @@ def main() -> int:
         boxes_json.unlink(missing_ok=True)
     warnings += overlap_by_column(boxes, labels)
     warnings += report(boxes, labels, n_student)
+    if args.png:
+        pngs(out_dir / f"{m['file']}.pdf", problems, args.png)
     if warnings:
         print(f"  경고 {warnings}개. 위의 ! 줄을 보라")
     return 1 if warnings else 0

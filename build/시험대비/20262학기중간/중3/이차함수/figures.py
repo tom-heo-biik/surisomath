@@ -198,9 +198,10 @@ def p7():
     curve(ax, up, -1.75, 1.75)
     curve(ax, down, -1.75, 1.75)
     g.poly(ax, [A, B, C, D])
-    g.name(ax, A, "A", dy=4, va="bottom")
+    # A·C는 y축 위의 점이라 바로 위·아래에 두면 축이 글자를 지난다(겹침 검사가 잡았다). 왼쪽 위·왼쪽 아래로
+    g.name(ax, A, "A", dx=-4, dy=3, ha="right", va="bottom")
     g.name(ax, B, "B", dx=-9, dy=2, ha="right", va="bottom")
-    g.name(ax, C, "C", dy=-4, va="top")
+    g.name(ax, C, "C", dx=-4, dy=-3, ha="right", va="top")
     g.name(ax, D, "D", dx=9, dy=2, ha="left", va="bottom")
     g.name(ax, (1.75, up(1.75)), "$y=ax^2-b$", dx=4, ha="left")
     g.name(ax, (1.75, down(1.75)), "$y=-ax^2+b$", dx=4, ha="left")

@@ -155,9 +155,51 @@ def _ink_bbox(f, ax):
     return x0, y0, x1, y1
 
 
+LABEL_TOL = 1.5        # 글자 상자를 안쪽으로 이만큼(pt) 줄인 뒤 선·다른 글자와 겹치는지 본다.
+                       # 각도 글이 좁은 각의 두 변에 스치는 것은 봐주고, 선이 글자 한가운데를
+                       # 지나는 것만 잡는다
+
+
+def _check_labels(f, ax, filename: str) -> int:
+    """글자가 선(Line2D)이나 다른 글자와 겹치면 경고한다. 이차함수 그림에서 점 이름이 곡선
+    위에 앉거나 곡선 이름끼리 겹친 것을 눈으로만 잡았다 — 이건 기계가 잴 수 있는 일이다.
+    호(Arc)·색칠·화살촉 같은 패치는 보지 않는다. 각도 글은 호 안에 있고 색칠은 글 뒤에 깔린다."""
+    r = f.canvas.get_renderer()
+    k = 72 / f.dpi
+    boxes = []
+    for t in ax.texts:
+        if not t.get_visible() or not t.get_text():
+            continue
+        bb = t.get_window_extent(r)
+        x0, y0, x1, y1 = bb.x0 * k + LABEL_TOL, bb.y0 * k + LABEL_TOL, bb.x1 * k - LABEL_TOL, bb.y1 * k - LABEL_TOL
+        if x1 > x0 and y1 > y0:
+            boxes.append((t.get_text(), x0, y0, x1, y1))
+    bad = 0
+    for i, (s, a0, b0, a1, b1) in enumerate(boxes):
+        for u, c0, d0, c1, d1 in boxes[i + 1:]:
+            if a0 < c1 and c0 < a1 and b0 < d1 and d0 < b1:
+                warn(f"{filename}: 글 '{s}'와 '{u}'가 겹친다. 한쪽을 옮겨라")
+                bad += 1
+    for line in ax.lines:
+        if not line.get_visible() or line.get_linestyle() in ("None", "none", " ", ""):
+            continue                                    # 점(marker)만 있는 것
+        verts = line.get_transform().transform_path(line.get_path()).vertices
+        pts = []
+        for (px, py), (qx, qy) in zip(verts[:-1], verts[1:]):
+            px, py, qx, qy = px * k, py * k, qx * k, qy * k
+            n = max(1, int(math.hypot(qx - px, qy - py) / 0.5))   # 0.5pt마다 한 점
+            pts.extend((px + (qx - px) * j / n, py + (qy - py) * j / n) for j in range(n + 1))
+        for s, a0, b0, a1, b1 in boxes:
+            if any(a0 <= x <= a1 and b0 <= y <= b1 for x, y in pts):
+                warn(f"{filename}: 글 '{s}'를 선이 지난다. 글을 옮기거나 선을 잘라라")
+                bad += 1
+    return bad
+
+
 def save(f, filename: str) -> Path:
     """x 범위를 잉크 기준 좌우 대칭으로 잡아 SVG로 저장한다. 위아래 여백이 모자라거나
-    지나치게 남으면 y 범위를 얼마로 바꾸면 되는지 알려 준다."""
+    지나치게 남으면 y 범위를 얼마로 바꾸면 되는지 알려 준다. 글자가 선이나 다른 글자와
+    겹치면 경고한다(_check_labels)."""
     if OUT is None:
         raise RuntimeError("g.setup(__file__)을 먼저 불러라. 출력 폴더가 정해지지 않았다")
     ax = f.axes[0]
@@ -167,6 +209,7 @@ def save(f, filename: str) -> Path:
     Y0, Y1 = ax.get_ylim()
     W = f.get_size_inches()[0] * 72
     bx0, by0, bx1, by1 = _ink_bbox(f, ax)
+    _check_labels(f, ax, filename)
 
     # x — 잉크 너비에 좌우 MARGIN을 더한 만큼으로 캔버스를 좁히고 잉크를 가운데 둔다
     cx = X0 + (bx0 + bx1) / 2 / W * (X1 - X0)

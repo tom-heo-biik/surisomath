@@ -63,16 +63,18 @@ python .claude/skills/surisomath-grind/templates/build.py build/연마_원의둘
 ├─ SKILL.md
 └─ templates/
    ├─ exam.css      base.css 위에 얹는 시험대비 스타일(두 단·세로선·머리줄·이름 칸·선지 열)
-   ├─ build.py      problems.yaml → 그림 → HTML → PDF → 검사. 연마 build.py의 rich()를 모듈로 쓴다
+   ├─ build.py      problems.yaml → 그림 → HTML → PDF → 검사. 연마 build.py의 rich()를 모듈로 쓴다. --png DIR이면 쪽·그림 크롭 PNG
+   ├─ photos.py     선생님이 보낸 문제 사진을 수리소_시험대비_…_001.jpg로 바꾸고 읽기용 축소본을 뽑는다
    └─ sample/       견본 세 문제. 새 단원은 이 폴더를 복사해 출발한다
 ```
 
 ```
-python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/삼각비/problems.yaml
+python .claude/skills/surisomath-exam/templates/photos.py build/시험대비/20262학기중간/중3/이차함수
+python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/이차함수/problems.yaml --png out
 ```
 
 단원 폴더는 `build/시험대비/<시험>/<학년>/<단원>/`. 시험 폴더 이름(`20262학기중간`)에서 머리줄과
-파일 이름을 만든다.
+파일 이름을 만든다. 정본은 삼각비(도형 그림)와 이차함수(좌표평면 그림, 보기·조건 상자, 평가원 문형).
 
 ### surisomath-assess
 
