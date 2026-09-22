@@ -77,6 +77,26 @@ section.exam ol.n7.c2 > li { width: 49.99%; }
    항목마다 두 칸 — 글줄은 위 칸에, 아래 칸은 비운다. 글줄 상자는 22pt 그대로라 위상이 안 바뀐다 */
 section.exam ol.n7.tall > li { padding-bottom: 22pt; }
 
+/* 보기 상자 — 첫 줄 "보기"(typo-2 굵기), 그 아래 ㄱ. ㄴ. ㄷ. 항목. 글은 안쪽 8pt.
+   테두리 0.4pt는 ::before가 상자 가장자리에 걸쳐 그린다 — 테두리를 상자 자체에 주면
+   글줄이 0.4pt 내려가 그리드(허용 0.25pt)를 벗어난다. 상자 높이 = (1 + 항목 줄 수) 칸 */
+section.exam .notes { position: relative; margin: 0 0 22pt; padding: 0 8pt; }
+section.exam .notes::before {
+  content: ""; position: absolute; top: -0.2pt; bottom: -0.2pt; left: 0; right: 0;
+  border: 0.4pt solid var(--neutral-1000);
+}
+section.exam .notes p.head { margin: 0; font-weight: 500; }
+section.exam ol.bogi { margin: 0; --pad: 22pt; }
+@counter-style ko-jamo {
+  system: fixed 1;
+  symbols: "\3131" "\3134" "\3137" "\3139" "\3141" "\3142" "\3145";
+  suffix: "";
+}
+section.exam ol.bogi > li::before { content: counter(item, ko-jamo) "."; }
+/* 조건 상자(평가원 꼴) — 머리글 없이 (가) (나) 항목만. 마커 칸은 a4 괄호형과 같은 33pt */
+section.exam ol.cond { margin: 0; --pad: 33pt; }
+section.exam ol.cond > li::before { content: "(" counter(item, ko-hangul) ")"; }
+
 /* 풀 자리 — 학생 쪽은 빈 종이. 선생님 쪽은 첫 줄에 정답(캡션 서체·회색), 그 아래 풀이.
    줄마다 p 하나, 문단 간격 없이 한 줄 = 한 칸. 빈 줄은 p.gap. 풀 자리 위 끝은 본문 위상이라
    10pt 정답 줄이 머리줄과 같은 그리드 잔여값에 앉는다 */

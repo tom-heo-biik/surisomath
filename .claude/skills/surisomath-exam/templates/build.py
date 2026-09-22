@@ -35,6 +35,11 @@ problems.yaml
     - text: 다음 그림과 같이 …       # 지문. 표기 규칙은 SKILL.md. ": "가 들어가면 따옴표로 감싼다
       figure: p1.svg               # figures/ 안의 그림. units는 없다 — SVG 높이가 칸 수를 정한다
       alt: …                       # 그림 설명. PDF에는 안 찍힌다
+      conditions:                  # 있으면 조건 상자(평가원 꼴). (가) (나) 항목. 지문 뒤, 그림 앞
+        - $f(0)=1$
+      after: $f(4)$의 값을 구하시오.  # 조건 상자 뒤에 오는 문단
+      notes:                       # 있으면 보기 상자. ㄱ. ㄴ. ㄷ. 항목. 그림 뒤, 선지 앞
+        - 점 $(1,\\,1)$을 지난다.
       choices:                     # 있으면 객관식. 다섯 개
         - $\\dfrac{80}{\\tan 52^{\\circ}+\\tan 35^{\\circ}}$
       answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지. 필수 — 선생님 쪽 정답 줄
@@ -223,6 +228,36 @@ def figure_html(no: str, p: dict, fig_dir: Path) -> str:
             f'<img src="figures/{svg.name}" alt="{alt}"></div>\n')
 
 
+def conditions_html(no: str, p: dict, fig_dir: Path) -> str:
+    """조건 상자(평가원 꼴). "다음 조건을 만족시킨다." 뒤에 (가) (나) 항목만 든 상자, 그 아래
+    after 문단("f(4)의 값을 구하시오."). 머리글은 없다. 지문 바로 뒤, 그림 앞에 온다."""
+    conds = p.get("conditions")
+    out = ""
+    if conds:
+        if not isinstance(conds, list):
+            raise SystemExit(f"{no}: conditions는 목록('- …')이어야 한다")
+        items = "".join(f'          <li>{rich(str(c).strip(), f"k{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
+                        for k, c in enumerate(conds, 1))
+        out += f'      <div class="notes cond">\n        <ol class="cond">\n{items}        </ol>\n      </div>\n'
+    if p.get("after"):
+        out += f'      <p>{rich(str(p["after"]).strip(), f"e{no}", fig_dir, 12.0, g.INK)}</p>\n'
+    return out
+
+
+def notes_html(no: str, p: dict, fig_dir: Path) -> str:
+    """보기 상자. 첫 줄 "보기", 그 아래 ㄱ. ㄴ. ㄷ. 항목. 테두리는 ::before가 그려 글줄 위상을
+    건드리지 않는다(exam.css). 그림 뒤, 선지 앞에 온다."""
+    notes = p.get("notes")
+    if not notes:
+        return ""
+    if not isinstance(notes, list):
+        raise SystemExit(f"{no}: notes는 목록('- …')이어야 한다")
+    items = "".join(f'          <li>{rich(str(c).strip(), f"b{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
+                    for k, c in enumerate(notes, 1))
+    return ('      <div class="notes">\n        <p class="head">보기</p>\n'
+            f'        <ol class="bogi">\n{items}        </ol>\n      </div>\n')
+
+
 def choices_html(no: str, p: dict, fig_dir: Path) -> str:
     choices = p.get("choices")
     if not choices:
@@ -254,7 +289,9 @@ def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
     return ('    <div class="col">\n'
             f'      <h2>{no}</h2>\n'
             f'      <p>{text}</p>\n'
+            f'{conditions_html(no, p, fig_dir)}'
             f'{figure_html(no, p, fig_dir)}'
+            f'{notes_html(no, p, fig_dir)}'
             f'{choices_html(no, p, fig_dir)}'
             f'      <div class="work box {"t" if teacher else "n"}{no}">\n{work}      </div>\n'
             '    </div>\n')
@@ -453,12 +490,12 @@ def main() -> int:
     fig_dir.mkdir(exist_ok=True)
 
     doc, labels, n_student = build_html(data, m, out_dir)
-    # 수식 SVG(m 지문 · c 선지 · a 정답 · s 풀이 + 번호)는 빌드마다 다시 그린다. 이번에 안 쓴 것을
-    # 지운다. figures.py가 그린 그림(p*.svg 등)은 건드리지 않는다
+    # 수식 SVG(m 지문 · k 조건 · e 뒷문장 · b 보기 · c 선지 · a 정답 · s 풀이 + 번호)는 빌드마다 다시
+    # 그린다. 이번에 안 쓴 것을 지운다. figures.py가 그린 그림(p*.svg 등)은 건드리지 않는다
     kept = set(re.findall(r'src="figures/([^"]+)"', doc))
-    mine = tuple(f"{c}{no}_" for no in numbers(problems) for c in "macs")
+    mine = tuple(f"{c}{no}_" for no in numbers(problems) for c in "mkebacs")
     for old in fig_dir.glob("*.svg"):
-        if ((old.name.startswith(mine) or re.fullmatch(r"[macs]\d{3}(_\d+)+\.svg", old.name))
+        if ((old.name.startswith(mine) or re.fullmatch(r"[mkebacs]\d{3}(_\d+)+\.svg", old.name))
                 and old.name not in kept):
             old.unlink()
     out_html = out_dir / f"{m['file']}.html"
