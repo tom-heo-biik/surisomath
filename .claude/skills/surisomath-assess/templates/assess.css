@@ -1,0 +1,94 @@
+/* ==========================================================================
+   수리소 수학학원 수행평가 학습지 양식
+   surisomath-a4/templates/base.css 위에 얹는다. 판형·여백·그리드·서체는 그쪽 것.
+   --------------------------------------------------------------------------
+   문제 한 개가 한 쪽이다. 본문 영역 475×682pt(31칸)를 세로 플렉스로 잡아 머리줄·번호·
+   지문·그림(또는 표)을 위에 두고, 남은 높이가 학생이 손으로 쓰는 빈 자리다. 단은 하나,
+   선은 없다 — 학교 수행평가 답안지처럼 빈 종이다.
+
+   쪽의 세로 짜임(본문 영역 위 끝 기준)
+     0~11    빈 반 칸
+     11~33   머리줄(시리즈 · 학년도 학기 · 학교 · 학년 · 날짜). 첫 쪽 오른쪽 끝에 이름 칸 — 캡션 글자, 본문 위상
+     33~44   빈 반 칸
+     44~66   문제 번호 — typo-4, 제목 위상
+     77~     지문, 그림 또는 표, 빈 자리
+   반 칸을 두 번 비우는 까닭은 연마·시험대비와 같다. 11 + 22 + 11 + 22 + 11 = 77.
+   ========================================================================== */
+
+section.assess {
+  box-sizing: border-box; height: 682pt; padding-top: 11pt; margin: 0;
+  break-after: page; position: relative;
+  display: flex; flex-direction: column;
+}
+section.assess > * { flex: none; }
+
+/* 머리줄 — 캡션 서체지만 검정 */
+section.assess p.series {
+  margin: 0 0 11pt; font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
+  line-height: 22pt; color: var(--neutral-1000);
+}
+
+/* 이름 칸 — 첫 쪽 머리줄 오른쪽 끝. 시험대비와 같다. 빈 자리는 너비를 가진
+   inline-block(&nbsp;는 render.py의 어절 처리에 접힌다). 높이 0인 상자의 아래 선이라
+   글줄 상자를 안 키운다 */
+section.assess p.name {
+  position: absolute; top: 11pt; right: 0; margin: 0;
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: 22pt;
+}
+section.assess p.name .blank {
+  display: inline-block; width: 90pt; height: 0; margin-left: 4pt;
+  border-bottom: 0.4pt solid var(--neutral-1000); vertical-align: -2pt;
+}
+
+/* 문제 번호 001, 002, … — typo-4. 줄 높이·아래 여백은 h2 그대로라 위상은 변하지 않는다 */
+section.assess h2 {
+  font-size: 20pt; font-weight: 700; letter-spacing: -0.05em; text-align: left;
+}
+
+/* 본문 안 수식. build.py가 $…$를 Computer Modern SVG로 바꿔 넣는다(연마와 같다) */
+section.assess img.mi { width: auto; }
+
+/* 정답 — 선생님 쪽 머리줄 오른쪽 끝. 연마와 같다(캡션 서체·회색·오른끝맞추기). 학생 쪽 첫 줄은
+   머리줄(과 첫 쪽의 이름 칸)뿐이다 */
+section.assess p.answer {
+  position: absolute; top: 11pt; right: 0; margin: 0;
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: 22pt;
+  color: var(--c-caption); text-align: right;
+}
+
+/* 빈 자리 — 남은 높이를 다 가진다. 선도 소제목도 없다. 선생님 쪽은 여기 위부터 풀이 글 —
+   줄마다 p 하나, 문단 간격 없이 한 줄 = 한 칸, 빈 줄은 p.gap. 위 끝이 본문 위상이라 글줄이
+   본문과 같은 그리드에 앉는다 */
+section.assess .work { flex: 1; margin: 0; }
+section.assess .work p { margin: 0; }
+section.assess .work p.gap { height: 22pt; }
+
+/* 통계 표 — 중1 교과서의 도수분포표·상대도수의 분포표 꼴. a4의 표 규격(typo-0, 행 22pt,
+   가로선 0.4pt, 배경 없음) 위에 얹는다.
+     제목  caption. 표 위 가운데, 10pt/500 검정. 학교가 학생에게 요구하는 표의 제목
+           (자료/통계_작성_주의사항.pdf)이라 문서 캡션(회색·왼끝·아래)과 달리 표의 일부다
+     열    같은 너비. table-layout: fixed에 너비를 안 주면 열이 균등하게 나뉜다
+     글    가운데. 계급·도수가 격자 안에 놓이는 교과서 관례라 a4의 왼끝·숫자 오른끝 대신이다
+     세로선 셀마다 좌우 0.4pt. a4 스펙(선은 가로만)의 수행평가 예외다 — 학생이 손으로 그리는
+           도수분포표가 격자라 문제의 표도 격자로 보여 준다(선생님 지시). collapse라 행 높이는 안 변한다
+     위선  caption이 첫 자식이라 base.css의 thead:first-child 선택자가 안 잡힌다. 여기서 건다
+     첨자  계급 첫 값의 이상·미만. 6pt, 줄 높이 0에 relative로 올려 글줄 상자를 안 키운다 */
+section.assess table.stat { table-layout: fixed; }
+section.assess table.stat th,
+section.assess table.stat td {
+  border-left: 0.4pt solid var(--c-rule); border-right: 0.4pt solid var(--c-rule);
+}
+section.assess table.stat caption {
+  caption-side: top; text-align: center; margin: 0; padding: 0;
+  height: 22pt; line-height: 22pt;
+  font-size: 10pt; font-weight: 500; letter-spacing: -0.02em; color: var(--neutral-1000);
+}
+section.assess table.stat th,
+section.assess table.stat td { text-align: center; padding: 0 8pt; }
+section.assess table.stat tr.first > * { --top: 0.4pt; }   /* build.py가 표의 첫 행에 first를 단다 */
+section.assess table.stat sup {
+  font-size: 6pt; line-height: 0; position: relative; top: -0.6em;
+  vertical-align: baseline; letter-spacing: -0.02em;
+}
+/* 답 칸({답: 9}) — 학생 쪽은 빈 칸, 선생님 쪽은 정답 줄과 같은 회색 값 */
+section.assess table.stat .ans { color: var(--c-caption); }

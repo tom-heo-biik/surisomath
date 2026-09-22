@@ -74,6 +74,28 @@ python .claude/skills/surisomath-exam/templates/build.py build/시험대비/2026
 단원 폴더는 `build/시험대비/<시험>/<학년>/<단원>/`. 시험 폴더 이름(`20262학기중간`)에서 머리줄과
 파일 이름을 만든다.
 
+### surisomath-assess
+
+학교 수행평가 대비 학습지 '수행평가' 양식. surisomath-a4 위에 얹고 연마의 그림 도우미와 수식 조판,
+시험대비의 너비 재기를 빌려 쓴다. 문제 한 개가 한 쪽, 단은 하나, 문제 아래는 학생이 손으로 쓰는
+빈 종이다. 선생님 쪽이 같은 차례로 뒤에 붙고 정답은 머리줄 오른쪽 끝, 풀이는 빈 자리에 들어간다.
+중1 통계의 도수분포표는 격자 표로 조판하고, 답 칸은 학생 쪽에서 비고 선생님 쪽에서 회색으로 찍힌다.
+
+```
+.claude/skills/surisomath-assess/
+├─ SKILL.md
+└─ templates/
+   ├─ assess.css    base.css 위에 얹는 수행평가 스타일(머리줄·이름 칸·격자 표·이상/미만 위첨자)
+   └─ build.py      problems.yaml → 그림 → 수식 → 표 → HTML → PDF → 검사. 시험대비·연마 build.py를 모듈로 쓴다
+```
+
+```
+python .claude/skills/surisomath-assess/templates/build.py build/수행평가/20262학기/수지중학교/중1/2026.09.17/problems.yaml
+```
+
+학습지 폴더는 `build/수행평가/<학기>/<학교>/<학년>/<날짜>/`. 폴더 이름에서 머리줄
+"수행평가 · 2026학년도 2학기 · 수지중학교 · 중1 · 2026. 9. 17."과 파일 이름을 만든다. 정본은 그 폴더다.
+
 ## 서체
 
 셋 다 저장소에 담아 두었다. 스킬과 빌드 스크립트가 담아 둔 파일을 직접 읽으므로
