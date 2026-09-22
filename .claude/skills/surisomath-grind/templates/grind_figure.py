@@ -161,9 +161,11 @@ LABEL_TOL = 1.5        # 글자 상자를 안쪽으로 이만큼(pt) 줄인 뒤 
 
 
 def _check_labels(f, ax, filename: str) -> int:
-    """글자가 선(Line2D)이나 다른 글자와 겹치면 경고한다. 이차함수 그림에서 점 이름이 곡선
-    위에 앉거나 곡선 이름끼리 겹친 것을 눈으로만 잡았다 — 이건 기계가 잴 수 있는 일이다.
-    호(Arc)·색칠·화살촉 같은 패치는 보지 않는다. 각도 글은 호 안에 있고 색칠은 글 뒤에 깔린다."""
+    """글자가 선(Line2D)·테두리가 보이는 패치(원·호)·다른 글자와 겹치면 경고한다. 이차함수
+    그림에서 점 이름이 곡선 위에 앉거나 곡선 이름끼리 겹친 것을 눈으로만 잡았다 — 이건 기계가
+    잴 수 있는 일이다. 원은 Circle 패치라 선만 보던 때는 놓쳤다(원과직선 019의 O₂ 이름 위로
+    큰 원의 둘레가, 020의 13cm 위로 원 O'의 둘레가 지났다). 색칠·화살촉처럼 테두리가 없는
+    패치는 보지 않는다 — 색칠은 글 뒤에 깔린다. 각도 글은 호에서 pad만큼 떨어져 있어 안 걸린다."""
     r = f.canvas.get_renderer()
     k = 72 / f.dpi
     boxes = []
@@ -180,18 +182,30 @@ def _check_labels(f, ax, filename: str) -> int:
             if a0 < c1 and c0 < a1 and b0 < d1 and d0 < b1:
                 warn(f"{filename}: 글 '{s}'와 '{u}'가 겹친다. 한쪽을 옮겨라")
                 bad += 1
+    strokes = []                                        # (종류, 꺾은선 목록) — 선과 테두리가 보이는 패치
     for line in ax.lines:
         if not line.get_visible() or line.get_linestyle() in ("None", "none", " ", ""):
             continue                                    # 점(marker)만 있는 것
-        verts = line.get_transform().transform_path(line.get_path()).vertices
+        strokes.append(("선", [line.get_transform().transform_path(line.get_path()).vertices]))
+    for p in ax.patches:
+        if not p.get_visible() or not (p.get_linewidth() or 0):
+            continue
+        ec = p.get_edgecolor()
+        if ec is None or (len(ec) == 4 and ec[3] == 0):
+            continue                                    # 색칠·화살촉 — 테두리가 없다
+        path = p.get_transform().transform_path(p.get_path())
+        strokes.append(("원", path.to_polygons(closed_only=False)))   # 원·호를 꺾은선으로 편다
+    for kind, polys in strokes:
         pts = []
-        for (px, py), (qx, qy) in zip(verts[:-1], verts[1:]):
-            px, py, qx, qy = px * k, py * k, qx * k, qy * k
-            n = max(1, int(math.hypot(qx - px, qy - py) / 0.5))   # 0.5pt마다 한 점
-            pts.extend((px + (qx - px) * j / n, py + (qy - py) * j / n) for j in range(n + 1))
+        for verts in polys:
+            for (px, py), (qx, qy) in zip(verts[:-1], verts[1:]):
+                px, py, qx, qy = px * k, py * k, qx * k, qy * k
+                n = max(1, int(math.hypot(qx - px, qy - py) / 0.5))   # 0.5pt마다 한 점
+                pts.extend((px + (qx - px) * j / n, py + (qy - py) * j / n) for j in range(n + 1))
         for s, a0, b0, a1, b1 in boxes:
             if any(a0 <= x <= a1 and b0 <= y <= b1 for x, y in pts):
-                warn(f"{filename}: 글 '{s}'를 선이 지난다. 글을 옮기거나 선을 잘라라")
+                hint = "글을 옮기거나 선을 잘라라" if kind == "선" else "글을 옮겨라"
+                warn(f"{filename}: 글 '{s}'를 {kind}이 지난다. {hint}")
                 bad += 1
     return bad
 
