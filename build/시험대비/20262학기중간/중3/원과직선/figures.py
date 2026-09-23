@@ -7,7 +7,7 @@
     python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/원과직선/problems.yaml
 
 원은 g.circle, 현·접선은 g.seg, 중심은 g.dot, 길이는 연마와 같이 점선 곡선(g.dim), 직각은
-corner_mark, 같은 각은 호에 획(ticks=1). 길이 곡선은 책처럼 꼭짓점에서 꼭짓점까지 잇는다(trim 없음 —
+corner_mark, 같은 각은 점(ticks=1). 길이 곡선은 책처럼 꼭짓점에서 꼭짓점까지 잇는다(trim 없음 —
 양끝을 물리면 선분 끝과 이어지지 않은 느낌이라 선생님이 되돌렸다, 2026-09-23). 그림은 단 글 너비(229pt) 안에 들어야 하고 y 범위가
 배율을 정한다. 점의 자리는 책 그림(사진)을 그대로 따른다.
 
@@ -455,7 +455,7 @@ def p14():
     g.circle(ax, O, 4.0)
     g.circle(ax, O2, 4.0)
     g.poly(ax, [E, O, F, O2])
-    g.dim(ax, O, E, "4", side=1)
+    g.dim(ax, O, E, "4", side=1)                                    # 반지름 OE·O'F는 변으로 그어져 있다. 길이는 책처럼 점선 호
     g.dim(ax, O2, F, "4", side=1)
     center(ax, O, "O", dx=-5, ha="right")
     center(ax, O2, "$\\mathrm{O}'$", dx=5, ha="left")
@@ -604,14 +604,18 @@ def p20():
     g.seg(ax, O, O2, lw=g.AUX)
     g.seg(ax, O, T, lw=g.AUX)
     g.seg(ax, O2, T2, lw=g.AUX)
-    # 13cm: dim이 곡선 가운데(OO'의 중점 위)에 글을 두면 원 O'의 둘레가 글을 지난다 — 중점이 둘레에서
-    # 2밖에 안 떨어져 있다. 책처럼 곡선은 글 없이 긋고 글은 O' 쪽(t = 0.66), 선분 위 9pt에 따로 둔다
-    g.dim(ax, O, O2, "", side=1, gap=g.pt(ax, 26))
-    n = (-5 / 13, 12 / 13)                                          # OO'의 왼쪽 법선
-    q = lerp(O, O2, 0.66)
-    g.name(ax, (q[0] + g.pt(ax, 9) * n[0], q[1] + g.pt(ax, 9) * n[1]), "13cm")
-    g.dim(ax, O2, T2, "8cm", side=1)
-    g.leader(ax, mid(O, T), "3cm", dx=-1, dy=-1)
+    # 13cm: 책처럼 OO' 아래쪽에 납작한 점선 호, 글은 그 호 위(중점 아래). 위쪽으로 크게 부풀리면 원 O'과
+    # 접선 사이를 가로질러 어수선하다(2026-09-23 선생님·독립 검토 지적)
+    # 13cm: 책처럼 OO' 위쪽에 낮은 점선 호, 글은 호 위 O' 쪽(t = 0.62). 중점 위에 글을 두면 원 O'의 둘레
+    # (t ≈ 0.385에서 OO'를 지난다)에 걸린다. 반지름 8cm·3cm는 선분(0.4pt)을 긋고 책처럼 점선 호에 글 —
+    # "반지름은 직선으로"(2026-09-23)는 선분을 그으라는 뜻이지 호를 빼라는 뜻이 아니었다
+    g.dim(ax, O, O2, "", side=1, gap=g.pt(ax, 8))
+    n = (-5 / 13, 12 / 13)                                          # OO'의 왼쪽(위) 법선
+    q = lerp(O, O2, 0.62)
+    g.name(ax, (q[0] + g.pt(ax, 16) * n[0], q[1] + g.pt(ax, 16) * n[1]), "13cm")
+    g.dim(ax, O2, T2, "8cm", side=1)                                # O'T' 오른쪽(원 O' 안)
+    apex = g.dim(ax, O, T, "", side=-1, gap=g.pt(ax, 5))            # OT 왼쪽. 원 O가 작아 글은 지시선으로 밖에
+    g.leader(ax, apex, "3cm", dx=-1, dy=-1)
     center(ax, O, "O", dx=-4, ha="right")
     center(ax, O2, "$\\mathrm{O}'$", dx=3, dy=4, ha="left", va="bottom")
     g.name(ax, A, "A", dx=-4, dy=2, ha="right", va="bottom")

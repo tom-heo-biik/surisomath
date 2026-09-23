@@ -885,7 +885,7 @@ z
    </g>
    <g id="text_8">
     <!-- 2 -->
-    <g transform="translate(51.318138 108.15386) scale(0.1 -0.1)">
+    <g transform="translate(55.318138 108.15386) scale(0.1 -0.1)">
      <defs>
       <path id="Cmr10-32" d="M 319 0 
 L 319 172 
@@ -934,7 +934,7 @@ z
    </g>
    <g id="text_9">
     <!-- 3 -->
-    <g transform="translate(69.695227 108.15386) scale(0.1 -0.1)">
+    <g transform="translate(73.695227 108.15386) scale(0.1 -0.1)">
      <defs>
       <path id="Cmr10-33" d="M 609 494 
 Q 759 275 1012 169 
@@ -1000,7 +1000,7 @@ z
    </g>
    <g id="text_10">
     <!-- 4 -->
-    <g transform="translate(88.072315 108.15386) scale(0.1 -0.1)">
+    <g transform="translate(92.072315 108.15386) scale(0.1 -0.1)">
      <defs>
       <path id="Cmr10-34" d="M 178 1056 
 L 178 1281 
@@ -1041,3 +1041,4 @@ z
   </clipPath>
  </defs>
 </svg>
+<!-- names: O -->

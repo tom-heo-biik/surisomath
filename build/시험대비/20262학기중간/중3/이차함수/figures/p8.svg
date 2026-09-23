@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="157.306829pt" height="132pt" viewBox="0 0 157.306829 132" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="142.904262pt" height="132pt" viewBox="0 0 142.904262 132" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -21,8 +21,8 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 132 
-L 157.306829 132 
-L 157.306829 0 
+L 142.904262 132 
+L 142.904262 0 
 L 0 0 
 L 0 132 
 z
@@ -34,24 +34,24 @@ z
 L 112.178996 75.220887 
 L 112.178996 79.420887 
 z
-" clip-path="url(#p978ea6bc9b)"/>
+" clip-path="url(#p1342a75d87)"/>
    </g>
    <g id="patch_3">
     <path d="M 39.625904 9.549592 
 L 37.525904 15.549592 
 L 41.725904 15.549592 
 z
-" clip-path="url(#p978ea6bc9b)"/>
+" clip-path="url(#p1342a75d87)"/>
    </g>
    <g id="line2d_1">
     <path d="M 4.2 77.320887 
 L 112.178996 77.320887 
-" clip-path="url(#p978ea6bc9b)" style="fill: none; stroke: #000000; stroke-width: 0.4; stroke-linecap: round"/>
+" clip-path="url(#p1342a75d87)" style="fill: none; stroke: #000000; stroke-width: 0.4; stroke-linecap: round"/>
    </g>
    <g id="line2d_2">
     <path d="M 39.625904 126.609102 
 L 39.625904 15.549592 
-" clip-path="url(#p978ea6bc9b)" style="fill: none; stroke: #000000; stroke-width: 0.4; stroke-linecap: round"/>
+" clip-path="url(#p1342a75d87)" style="fill: none; stroke: #000000; stroke-width: 0.4; stroke-linecap: round"/>
    </g>
    <g id="line2d_3">
     <path d="M 12.671412 14.747958 
@@ -175,17 +175,17 @@ L 65.232672 19.347068
 L 65.681914 17.840237 
 L 66.131155 16.307201 
 L 66.580397 14.747958 
-" clip-path="url(#p978ea6bc9b)" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" clip-path="url(#p1342a75d87)" style="fill: none; stroke: #000000; stroke-linecap: round"/>
    </g>
    <g id="line2d_4">
     <path d="M 10.361027 121.988331 
 L 110.477713 21.871645 
-" clip-path="url(#p978ea6bc9b)" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" clip-path="url(#p1342a75d87)" style="fill: none; stroke: #000000; stroke-linecap: round"/>
    </g>
    <g id="line2d_5">
     <path d="M 50.407701 54.371062 
 L 77.978296 54.371062 
-" clip-path="url(#p978ea6bc9b)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linecap: round"/>
+" clip-path="url(#p1342a75d87)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linecap: round"/>
    </g>
    <g id="text_1">
     <!-- $x$ -->
@@ -599,7 +599,7 @@ z
    </g>
    <g id="text_7">
     <!-- $y=x-1$ -->
-    <g transform="translate(114.477713 24.210708) scale(0.1 -0.1)">
+    <g transform="translate(100.075146 48.052337) scale(0.1 -0.1)">
      <defs>
       <path id="Cmsy10-a1" d="M 653 1472 
 Q 600 1472 565 1512 
@@ -636,20 +636,21 @@ C -0.623496 1.07356 -0.318244 1.2 0 1.2
 z
 "/>
     </defs>
-    <g clip-path="url(#p978ea6bc9b)">
+    <g clip-path="url(#p1342a75d87)">
      <use xlink:href="#m576663cfbb" x="50.407701" y="54.371062"/>
     </g>
    </g>
    <g id="line2d_7">
-    <g clip-path="url(#p978ea6bc9b)">
+    <g clip-path="url(#p1342a75d87)">
      <use xlink:href="#m576663cfbb" x="77.978296" y="54.371062"/>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p978ea6bc9b">
-   <rect x="0" y="0" width="157.306829" height="132"/>
+  <clipPath id="p1342a75d87">
+   <rect x="0" y="0" width="142.904262" height="132"/>
   </clipPath>
  </defs>
 </svg>
+<!-- names: O P Q -->

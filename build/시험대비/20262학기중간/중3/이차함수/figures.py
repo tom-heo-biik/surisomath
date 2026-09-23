@@ -226,7 +226,9 @@ def p8():
     g.name(ax, P, "P", dx=-2, dy=5, ha="right", va="bottom")
     g.name(ax, Q, "Q", dx=4, dy=-3, ha="left", va="top")
     g.name(ax, (1.75, f(1.75)), "$y=x^2+1$", dx=4, ha="left")
-    g.name(ax, (4.6, line(4.6)), "$y=x-1$", dx=4, ha="left")
+    # 직선 이름은 오른쪽 끝(y ≈ 3.6)에 두면 포물선 이름(y ≈ 4.06)과 한 줄로 붙어 읽힌다 — 책처럼
+    # P·Q보다 조금 위, 직선 중간 높이의 오른쪽 아래에 둔다(독립 검토 지적)
+    g.name(ax, (3.6, line(3.6)), "$y=x-1$", dx=5, dy=-4, ha="left", va="top")
     g.save(fig, "p8.svg")
 
 
@@ -364,8 +366,8 @@ def p19():
         curve(ax, fn, xl, xr)
         g.name(ax, (xr, top), text, dx=-3, dy=3, ha="right", va="bottom")
     g.name(ax, (0.85, 0.0), "1", dy=-4, va="top")
-    for n in (2, 3, 4):
-        g.name(ax, (float(n), 0.0), str(n), dy=-4, va="top")
+    for n in (2, 3, 4):                            # 교점 바로 아래는 곡선이 지나니 책처럼 오른쪽으로 비켜
+        g.name(ax, (float(n), 0.0), str(n), dx=4, dy=-4, va="top")
     g.save(fig, "p19.svg")
 
 
@@ -386,7 +388,7 @@ def p20():
     g.seg(ax, (-2.4, 1.0), (5.0, 1.0))
     g.name(ax, A, "A", dx=4, dy=3, ha="left", va="bottom")
     g.name(ax, P, "P", dx=-2, dy=-4, ha="right", va="top")
-    g.name(ax, (0.04, 2.1), "Q", ha="left")
+    g.name(ax, (0.09, 2.1), "Q", ha="left")
     g.name(ax, R, "R", dx=3, dy=-3, ha="left", va="top")
     g.name(ax, S, "S", dx=-3, dy=-3, ha="right", va="top")
     g.name(ax, (-2.1, f(-2.1)), "$y=f(x)$", dx=-4, ha="right")
