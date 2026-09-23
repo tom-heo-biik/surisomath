@@ -1,65 +1,241 @@
-# 시험대비 · 2026학년도 2학기 중간고사 · 중3 · 삼각비 — problems.md 열 문제. 지문은 problems.md
-# 문장 그대로다. 표기만 조판했다(SKILL.md 표기 규칙): 선분 AB → \overline{\mathrm{AB}},
-# 각 → \angle, 삼각형 → \triangle\!, 사각형 → □, 각도 → ^{\circ}, 루트 → \sqrt.
-# 머리줄·파일 이름·PDF 날짜는 build.py가 폴더 이름에서 만든다.
+# 시험대비 · 2026학년도 2학기 중간고사 · 중3 · 삼각비 — problems.md 서른 문제. 지문은 problems.md
+# 문장 그대로다(평가원 문형으로 퇴고한 것). 표기만 조판했다(SKILL.md 표기 규칙): 문장 안의 도형은
+# 낱말(선분 AB, 삼각형 ABC, 각 A — 이름만 \mathrm), 등식·비·부등호 안은 기호(\overline{\mathrm{AB}}=4,
+# \angle\mathrm{BRQ}=x, \overline{\mathrm{OE}}:\overline{\mathrm{EC}}=2:1). 점 이름 정체, 변수 이탤릭,
+# 루트 \sqrt, 분수 \dfrac, 프라임 \mathrm{O}', 첨자 x_{24}. 삼각비의 표는 table(head·rows), 011의
+# 소문항은 subs. 머리줄·파일 이름·PDF 날짜는 build.py가 폴더 이름에서 만든다.
+# 정답은 답만 적는 정답표다(선생님 방침). 풀이는 넣지 않았다.
 
 problems:
-  - text: 다음 그림과 같이 80m 떨어진 두 지점 $\mathrm{A}$, $\mathrm{B}$에서 산꼭대기를 올려다 본 각의 크기가 각각 $35^{\circ}$, $52^{\circ}$였을 때, 산의 높이 $\overline{\mathrm{CH}}$를 구하는 식은? (단, 눈의 높이는 무시한다.)
+  - text: 그림은 기원전 3세기경 아리스타르코스가 반달이 뜬 날 지구, 달, 태양 사이의 거리를 구하기 위해 측정한 결과이다. 지구에서 달과 태양을 바라본 각의 크기는 $88^{\circ}$, 달에서 지구와 태양을 바라본 각의 크기는 $90^{\circ}$이고, 지구와 태양 사이의 거리는 지구와 달 사이의 거리의 $k$배이다. 주어진 삼각비의 표를 이용하여 $k$의 값을 소수점 아래 첫째 자리에서 반올림하여 구하시오.
     figure: p1.svg
-    alt: 각 CAH가 35°, 각 CBH가 52°, 각 CHA가 직각인 그림
+    alt: 지구(왼쪽 위), 달(지구 바로 아래), 태양(오른쪽 멀리)을 이은 직각삼각형. 지구에서 88°, 달에서 직각
+    table:
+      head: ['각도', '$\sin$', '$\cos$', '$\tan$']
+      rows:
+        - ['$1^{\circ}$', '0.0175', '0.9998', '0.0175']
+        - ['$2^{\circ}$', '0.0349', '0.9994', '0.0349']
+        - ['$3^{\circ}$', '0.0523', '0.9986', '0.0524']
+    answer: $29$
+
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=4$cm, $\overline{\mathrm{AD}}=8$cm인 직사각형 모양의 색종이 $\mathrm{ABCD}$를 두 변 $\mathrm{AD}$, $\mathrm{BC}$ 위의 점 $\mathrm{R}$, $\mathrm{Q}$를 잇는 선분 $\mathrm{RQ}$를 접는 선으로 하여 점 $\mathrm{D}$가 점 $\mathrm{B}$에, 점 $\mathrm{C}$가 점 $\mathrm{P}$에 오도록 접었다. $\angle\mathrm{BRQ}=x$라 할 때, $\sin x$의 값은?
+    figure: p2.svg
+    alt: 직사각형 ABCD(A 왼쪽 위). R은 AD 위, Q는 BC 위. 접힌 모양 A-B-P-Q-R 실선, 접기 전 R-D-C-Q와 B-Q 점선. 8cm는 A~D 위, 4cm는 A~B 왼쪽. x는 R
     choices:
-      - $\dfrac{80}{\tan 52^{\circ}+\tan 35^{\circ}}$
-      - $\dfrac{80}{\tan 52^{\circ}-\tan 35^{\circ}}$
-      - $\dfrac{80}{\tan 52^{\circ}+\tan 38^{\circ}}$
-      - $\dfrac{80}{\tan 55^{\circ}-\tan 38^{\circ}}$
-      - $\dfrac{80}{\tan 55^{\circ}-\tan 35^{\circ}}$
+      - $\dfrac{\sqrt{5}}{5}$
+      - $\dfrac{1}{2}$
+      - $\dfrac{\sqrt{3}}{2}$
+      - $\dfrac{2\sqrt{5}}{5}$
+      - $\dfrac{2\sqrt{6}}{5}$
     answer: ④
 
-  - text: 다음 그림과 같이 2m 떨어진 두 지점 $\mathrm{B}$, $\mathrm{C}$에서 기구를 올려다 본 각의 크기가 $40^{\circ}$, $62^{\circ}$일 때, 지상부터 기구가 있는 곳까지의 높이를 삼각비로 나타내시오.
-    figure: p2.svg
-    alt: 각 ABH가 40°, 각 ACH가 62°, 각 AHC가 직각인 그림
-    answer: $\dfrac{2}{\tan 50^{\circ}-\tan 28^{\circ}}$m
-
-  - text: $\triangle\!\mathrm{ABC}$에서 $\angle\mathrm{A}=60^{\circ}$이고 $\overline{\mathrm{AD}}$는 $\angle\mathrm{A}$의 이등분선일 때, $\overline{\mathrm{AD}}$의 길이를 구하시오.
+  - text: 그림과 같이 $\angle\mathrm{ACB}=\angle\mathrm{AED}=90^{\circ}$인 두 직각삼각형 $\mathrm{ABC}$, $\mathrm{ADE}$에서 점 $\mathrm{B}$는 선분 $\mathrm{CD}$ 위의 점이고, 점 $\mathrm{E}$는 선분 $\mathrm{AB}$의 연장선 위의 점이다. $\overline{\mathrm{BC}}=\overline{\mathrm{BD}}=6$, $\angle\mathrm{BAC}=x$, $\angle\mathrm{DAE}=y$이고 $\sin x=\dfrac{1}{3}$일 때, $\cos y$의 값을 구하시오.
     figure: p3.svg
-    alt: 선분 AB의 길이는 10, 선분 AC의 길이는 8
-    answer: $\dfrac{40\sqrt{3}}{9}$
+    alt: A 위 오른쪽, C 바로 아래(직각), B는 C 왼쪽 6, D는 B 왼쪽 6. E는 AB 연장선 위 B 아래(직각). 6은 BC 아래. A에 y(왼쪽)·x(오른쪽)
+    answer: $\dfrac{5\sqrt{3}}{9}$
 
-  - text: $□\mathrm{ABCD}$는 한 변의 길이가 4cm인 정사각형이다. $\overline{\mathrm{BC}}$, $\overline{\mathrm{CD}}$의 중점을 각각 $\mathrm{M}$, $\mathrm{N}$이라 하고 $\angle\mathrm{MAN}=x$라 할 때, $\sin x$의 값을 구하시오.
+  - text: 그림과 같이 좌표평면 위의 세 점 $\mathrm{A}(6,\,6)$, $\mathrm{B}(-2,\,2)$, $\mathrm{C}(2,\,{-1})$에 대하여 $\angle\mathrm{ABC}=x$라 할 때, $\sin x+\cos x$의 값은? (단, O는 원점이다.)
     figure: p4.svg
-    alt: 문제의 조건대로 그려진 정사각형. 문제의 조건이 모두 표기되어 있음
+    alt: 좌표평면 위 삼각형 ABC. A(6, 6), B(−2, 2), C(2, −1)에서 두 축으로 점선과 숫자. x는 B의 각에 지시선
+    choices:
+      - $\dfrac{2\sqrt{5}}{10}$
+      - $\dfrac{3\sqrt{5}}{10}$
+      - $\dfrac{2\sqrt{5}}{5}$
+      - $\dfrac{3\sqrt{5}}{5}$
+      - $\dfrac{2\sqrt{5}}{3}$
+    answer: ④
+
+  - text: 그림과 같이 $\angle\mathrm{C}=90^{\circ}$, $\overline{\mathrm{AC}}=\sqrt{2}$인 직각삼각형 $\mathrm{ABC}$에서 $\overline{\mathrm{BD}}=\overline{\mathrm{DE}}=\overline{\mathrm{EF}}=\overline{\mathrm{FC}}=1$이 되도록 변 $\mathrm{BC}$ 위에 세 점 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$를 정하였다. $\angle\mathrm{ABD}=x$, $\angle\mathrm{AEF}=y$라 할 때, $\tan(x+y)$의 값을 구하시오.
+    figure: p5.svg
+    alt: B 왼쪽 끝, D, E, F, C 차례로, A는 C 위(직각). AB, AD, AE, AF. 네 선분에 같은 길이 표시. √2는 AC 오른쪽, 1은 FC 아래. x는 B, y는 E
+    answer: $\sqrt{2}$
+
+  - text: 그림과 같이 한 변의 길이가 2인 정사각형 $\mathrm{OABC}$의 꼭짓점 $\mathrm{O}$를 중심으로 하고 선분 $\mathrm{OA}$를 반지름으로 하는 사분원 $\mathrm{AOC}$가 있다. 정사각형의 두 변 $\mathrm{AB}$, $\mathrm{BC}$와 사분원의 호 $\mathrm{AC}$에 접하는 원 $\mathrm{O}'$의 반지름의 길이를 구하시오.
+    figure: p6.svg
+    alt: 정사각형 A 왼쪽 위, O 오른쪽 위, B 왼쪽 아래, C 오른쪽 아래. 호 AC가 B 쪽으로 볼록. 귀퉁이 B와 호 사이의 작은 원 O'. 2는 AO 위
+    answer: $6-4\sqrt{2}$
+
+  - text: 그림과 같이 $\angle\mathrm{A}=30^{\circ}$, $\angle\mathrm{B}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$의 빗변 $\mathrm{AC}$ 위에 두 반원 $\mathrm{O}$, $\mathrm{O}'$의 지름이 놓여 있다. 두 반원은 모두 변 $\mathrm{AB}$에 접하면서 서로 외접하고, 반원 $\mathrm{O}'$은 변 $\mathrm{BC}$에 접한다. 두 반원 $\mathrm{O}$, $\mathrm{O}'$의 반지름의 길이를 각각 $r$, $r'$이라 할 때, $\dfrac{r'}{r}$의 값을 구하시오. (단, 두 반원 $\mathrm{O}$, $\mathrm{O}'$과 변 $\mathrm{AB}$의 접점은 각각 $\mathrm{D}$, $\mathrm{E}$이다.)
+    figure: p7.svg
+    alt: A 위, B 왼쪽 아래(직각), C 오른쪽 아래. 빗변 AC 위에 지름을 둔 반원 둘이 AB 쪽으로 볼록. 작은 반원 O는 AB와 D에서, 큰 반원 O'은 AB와 E에서 접하고 BC에도 접한다. 30°는 A. r은 D~O, r'은 E~O'
+    answer: $3$
+
+  - text: $0^{\circ}<A<B<90^{\circ}$일 때, 이차방정식 $2x^2-x-1=0$의 한 근이 $\tan B$의 값과 같다. $\sqrt{(\cos A-\sin A)^2}-\sqrt{(\cos A+\sin A)^2}$을 간단히 한 것은?
+    choices:
+      - $-2\sin A$
+      - $-2\cos A$
+      - $0$
+      - $2\sin A$
+      - $2\cos A$
+    answer: ①
+
+  - text: 그림은 도로의 수평 거리에 대한 수직 거리의 비율, 즉 도로의 기울어진 정도를 나타낸 도로 표지판이다. 이 도로가 수평면에 대하여 기울어진 각의 크기는 몇 도인지 주어진 삼각비의 표를 이용하여 구하시오.
+    figure: p9.svg
+    alt: 삼각형 표지판 안에 오르막 경사(수평선 위의 오른쪽으로 올라가는 빗변, 아래 색칠)와 10%
+    table:
+      head: ['각도', '$\sin$', '$\cos$', '$\tan$']
+      rows:
+        - ['$4^{\circ}$', '0.06', '0.99', '0.06']
+        - ['$6^{\circ}$', '0.10', '0.99', '0.10']
+        - ['$8^{\circ}$', '0.13', '0.99', '0.14']
+        - ['$10^{\circ}$', '0.17', '0.98', '0.17']
+        - ['$12^{\circ}$', '0.20', '0.97', '0.21']
+    answer: $6^{\circ}$
+
+  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 꼭짓점 $\mathrm{A}$에서 변 $\mathrm{BC}$의 연장선에 내린 수선의 발을 $\mathrm{H}$라 하자. $\angle\mathrm{ABC}=28^{\circ}$, $\angle\mathrm{ACH}=42^{\circ}$, $\overline{\mathrm{BC}}=100$m일 때, 삼각형 $\mathrm{ABC}$의 높이인 선분 $\mathrm{AH}$의 길이를 주어진 삼각비의 표를 이용하여 소수점 아래 첫째 자리에서 반올림하여 구하시오.
+    figure: p10.svg
+    alt: B 왼쪽, C 오른쪽, H 더 오른쪽, A는 H 위. 28°는 B, 42°는 C(바깥각 ACH). 100m는 BC 아래. H에 직각
+    table:
+      head: ['각도', '$\sin$', '$\cos$', '$\tan$']
+      rows:
+        - ['$28^{\circ}$', '0.4695', '0.8829', '0.5317']
+        - ['$42^{\circ}$', '0.6691', '0.7431', '0.9004']
+        - ['$48^{\circ}$', '0.7431', '0.6691', '1.1106']
+        - ['$62^{\circ}$', '0.8829', '0.4695', '1.8807']
+    answer: 130m
+
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}$, $\angle\mathrm{A}=36^{\circ}$, $\overline{\mathrm{BC}}=2$인 이등변삼각형 $\mathrm{ABC}$에서 각 $\mathrm{B}$의 이등분선이 변 $\mathrm{AC}$와 만나는 점을 $\mathrm{D}$라 하자. 다음 물음에 답하시오.
+    figure: p11.svg
+    alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 AC 위. BD. 36°는 A. B의 두 각에 같은 각 표시. 2는 BC 아래
+    subs:
+      - 선분 $\mathrm{CD}$의 길이를 구하시오.
+      - $\cos 36^{\circ}$의 값을 구하시오.
+      - $\sin 18^{\circ}$의 값을 구하시오.
+    answer: (1) $\sqrt{5}-1$ (2) $\dfrac{\sqrt{5}+1}{4}$ (3) $\dfrac{\sqrt{5}-1}{4}$
+
+  - text: 그림과 같이 $\angle\mathrm{B}=\angle\mathrm{D}=90^{\circ}$, $\overline{\mathrm{AD}}=6$, $\overline{\mathrm{CD}}=12$인 사각형 $\mathrm{ABCD}$의 꼭짓점 $\mathrm{D}$에서 변 $\mathrm{BC}$에 내린 수선의 발을 $\mathrm{H}$라 하자. 선분 $\mathrm{AC}$는 각 $\mathrm{C}$의 이등분선이고 두 선분 $\mathrm{AC}$, $\mathrm{DH}$의 교점을 $\mathrm{E}$라 하자. $\angle\mathrm{CDH}=x$라 할 때, $\sin x$의 값을 구하시오.
+    figure: p12.svg
+    alt: B 왼쪽 아래, C 오른쪽 아래, A는 B 위, D는 위 오른쪽, H는 D 아래 BC 위. AC, DH, 교점 E. 직각 B, D, H. C의 두 각 같은 표시. 6은 AD 위, 12는 CD 오른쪽. x는 D
     answer: $\dfrac{3}{5}$
 
-  - text: 다음 그림과 같이 바다 위의 한 지점 $\mathrm{A}$에서 성산일출봉의 꼭대기 지점 $\mathrm{C}$를 올려다 본 각의 크기가 $27^{\circ}$이고, 지점 $\mathrm{A}$에서 산 쪽으로 124m 나아간 지점 $\mathrm{B}$에서 다시 지점 $\mathrm{C}$를 올려다 본 각의 크기가 $38^{\circ}$라고 한다. 성산일출봉의 높이는 해발 몇 m인지 구하시오. (단, $\tan 63^{\circ}=1.96$, $\tan 52^{\circ}=1.28$로 계산하고, 계산 결과는 소수점 아래 셋째 자리에서 반올림한다.)
-    figure: p5.svg
-    alt: 각 CAH가 27°, 각 CBH가 38°, 각 CHB가 직각인 그림
-    answer: 182.35m
+  - text: 그림과 같이 모든 모서리의 길이가 1인 정사각뿔 $\mathrm{V}$-$\mathrm{ABCD}$의 모서리 $\mathrm{VC}$ 위를 움직이는 점 $\mathrm{P}$가 있다. $\angle\mathrm{PDB}=x$라 할 때, $\cos x$의 최댓값을 $M$, 최솟값을 $m$이라 하자. $Mm$의 값을 구하시오.
+    figure: p13.svg
+    alt: 정사각뿔 V-ABCD. V 위, A 왼쪽, B 앞, C 오른쪽, D 뒤. 숨은 모서리 VD, DA, DC와 대각선 DB는 점선, DP는 실선. P는 VC 위. x는 D. 1은 VA 왼쪽
+    answer: $\dfrac{\sqrt{3}}{3}$
 
-  - text: $\overline{\mathrm{AB}}=8$cm, $\overline{\mathrm{AC}}=6$cm, $\angle\mathrm{BAC}=60^{\circ}$인 $\triangle\!\mathrm{ABC}$에서 $\angle\mathrm{BAC}$의 이등분선이 $\overline{\mathrm{BC}}$와 만나는 점을 $\mathrm{D}$라 할 때, $\overline{\mathrm{AD}}$의 길이를 구하시오.
-    figure: p6.svg
-    alt: 선분 AB의 길이는 8cm, 선분 AC의 길이는 6cm
-    answer: $\dfrac{24\sqrt{3}}{7}$cm
+  - text: 그림과 같이 길이가 1cm인 선분 $\mathrm{AB}$에 길이가 1cm인 선분을 계속해서 수직으로 붙여 직각삼각형 $\mathrm{ACB}$, $\mathrm{ADC}$, $\mathrm{AED}$, …를 만든다. $n$번째로 만든 직각삼각형에서 $\angle\mathrm{A}=x_n$이라 할 때, $\sin x_{24}\times\cos x_{24}$의 값을 구하시오.
+    figure: p14.svg
+    alt: 테오도로스 나선. A 아래 가운데, B 왼쪽, C, D, E, F, G, H가 시계 방향. 직각 표시 B~G. 1cm는 AB 아래와 바깥 여섯 변. A의 각 x₁~x₆
+    answer: $\dfrac{2\sqrt{6}}{25}$
 
-  - text: 다음 그림과 같이 직각삼각형 $\mathrm{ABC}$ $\overline{\mathrm{AB}}$의 길이를 30% 줄이고 $\overline{\mathrm{BC}}$의 길이는 40% 늘여서 새로운 $\triangle\!\mathrm{A}'\mathrm{BC}'$으로 만들었다. $\triangle\!\mathrm{A}'\mathrm{BC}'$의 넓이는 $\triangle\!\mathrm{ABC}$의 넓이에 비해 얼마나 변하였는지 구하시오.
-    figure: p7.svg
-    alt: 직각삼각형 ABC는 연하게 색칠되어 있음. 새로운 삼각형 A'BC'은 점선으로 그려져 있음
-    answer: 2% 감소
+  - text: 그림과 같이 정삼각형 $\mathrm{ABC}$의 두 변 $\mathrm{BC}$, $\mathrm{AC}$ 위의 두 점 $\mathrm{D}$, $\mathrm{E}$에 대하여 $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이다. 두 선분 $\mathrm{BE}$, $\mathrm{AD}$의 교점을 $\mathrm{P}$, $\angle\mathrm{BPD}=\alpha$라 할 때, $\sin\alpha$의 값을 구하시오.
+    figure: p15.svg
+    alt: 정삼각형 A 위, B 왼쪽 아래, C 오른쪽 아래. E는 AC 위 A 가까이, D는 BC 위 C 가까이(같은 길이 두 획). BE, AD, 교점 P. α는 P 아래
+    answer: $\dfrac{\sqrt{3}}{2}$
 
-  - text: 다음 그림과 같이 직각삼각형 $\mathrm{ABC}$은 직선 $l$을 축으로 1회전한다. 이때 생기는 입체도형의 부피를 구하시오.
-    figure: p8.svg
-    alt: 직선 l은 수직. 점 A는 직선 l 위에 있고 선분 AC이 직선 l과 이루는 각도 30°. 선분 AC는 오른쪽 아래로 향하고 있음. 각 ACB는 60° 각 ABC는 직각. 선분 AB는 2루트3.
-    answer: $\dfrac{20\sqrt{3}}{3}\pi$
-
-  - text: 다음 그림과 같이 $□\mathrm{ABCD}$는 가로와 세로의 길이가 각각 6, 4인 직사각형이고 두 점 $\mathrm{E}$, $\mathrm{F}$는 각각 $\overline{\mathrm{AD}}$, $\overline{\mathrm{CD}}$의 중점이다. $\sin x^{\circ}+\cos x^{\circ}$의 값을 구하시오.
-    figure: p9.svg
-    alt: 지문 조건대로 그림 그려져 있고, 각 EBF가 x°. 그리고 선분 EB, 선분 BF, 선분 EF가 그려져 있음. 그리고 중점 표시로 길이가 같다는 표시가 있음.
-    answer: $\dfrac{11\sqrt{10}}{25}$
-
-  - text: $0^{\circ}<x<45^{\circ}$일 때, $\sqrt{(\sin x-\cos x)^2}-\sqrt{(\cos x-\sin x)^2}$을 간단히 하면?
+  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 $\angle\mathrm{BCA}=\angle\mathrm{AED}=90^{\circ}$, $\angle\mathrm{AEC}=60^{\circ}$이다. $\overline{\mathrm{AE}}=\overline{\mathrm{ED}}$, $\overline{\mathrm{EC}}=1$일 때, 선분 $\mathrm{AB}$의 길이는?
+    figure: p16.svg
+    alt: B 왼쪽 끝, C 오른쪽 끝(직각), A는 C 위. E는 BC 위 C 가까이, D는 AB 위. AE, ED(같은 길이 두 획). E에 직각(AED), 60°(AEC). 1은 EC 아래
     choices:
-      - $0$
-      - $2\sin x$
-      - $2\cos x$
-      - $2\sin x-2\cos x$
-      - $2\cos x-2\sin x$
-    answer: ①
+      - $3\sqrt{2}+\sqrt{3}$
+      - $4\sqrt{2}+2\sqrt{6}$
+      - $6\sqrt{2}$
+      - $3\sqrt{2}+\sqrt{6}$
+      - $2\sqrt{2}+2\sqrt{3}$
+    answer: ④
+
+  - text: 그림과 같이 반지름의 길이가 4이고 중심각의 크기가 $90^{\circ}$인 부채꼴 $\mathrm{OAB}$의 호 $\mathrm{AB}$를 삼등분하는 두 점 중 점 $\mathrm{B}$에 가까운 점을 $\mathrm{P}$라 하자. 세 선분 $\mathrm{OA}$, $\mathrm{OB}$, $\mathrm{AP}$에 모두 접하는 원의 반지름의 길이는?
+    figure: p17.svg
+    alt: 부채꼴 O 왼쪽 아래(직각), A 오른쪽, B 위. P는 호 위 B 가까이. 선분 AP. OA, OB, AP에 접하는 원
+    choices:
+      - $\sqrt{2}$
+      - $2\sqrt{3}-2$
+      - $\sqrt{3}$
+      - $2\sqrt{2}-1$
+      - $2\sqrt{3}-1$
+    answer: ②
+
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{BC}}=\overline{\mathrm{AD}}=6$, $\angle\mathrm{BAD}=90^{\circ}$인 사각형 $\mathrm{ABCD}$에서 $\angle\mathrm{CBD}+\angle\mathrm{CDB}=45^{\circ}$일 때, 선분 $\mathrm{CD}$의 길이는?
+    figure: p18.svg
+    alt: A 위(직각), B 왼쪽, D 오른쪽, C 아래(BD 아래). 대각선 BD. AB, AD, BC 같은 길이(두 획). 6은 AD 바깥
+    choices:
+      - $3\sqrt{2}$
+      - $3\sqrt{6}$
+      - $3\sqrt{6}-3\sqrt{2}$
+      - $3\sqrt{6}+3\sqrt{2}$
+      - $3\sqrt{6}+3\sqrt{3}$
+    answer: ③
+
+  - text: 그림과 같이 $\angle\mathrm{B}=90^{\circ}$, $\angle\mathrm{CAB}=30^{\circ}$, $\overline{\mathrm{BC}}=4$인 직각삼각형 $\mathrm{ABC}$의 빗변 $\mathrm{AC}$ 위를 움직이는 점 $\mathrm{P}$에 대하여 $\overline{\mathrm{AP}}^2+\overline{\mathrm{BP}}^2$의 최솟값을 구하시오.
+    figure: p19.svg
+    alt: A 왼쪽, B 오른쪽 아래(직각), C 오른쪽 위. P는 AC 위. BP. 30°는 A. 4는 BC 오른쪽
+    answer: $30$
+
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=6$, $\angle\mathrm{B}=30^{\circ}$인 이등변삼각형 $\mathrm{ABC}$에서 밑변 $\mathrm{BC}$를 삼등분하는 두 점 중 점 $\mathrm{B}$에 가까운 점을 $\mathrm{D}$라 할 때, 선분 $\mathrm{AD}$의 길이를 구하시오.
+    figure: p20.svg
+    alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 BC 위 B 쪽 삼등분점. AD. 30°는 B. AB, AC 같은 길이(두 획). 6은 AB 바깥
+    answer: $2\sqrt{3}$
+
+  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 두 변 $\mathrm{AB}$, $\mathrm{AC}$의 중점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하자. $\angle\mathrm{A}=45^{\circ}$, $\angle\mathrm{AED}=60^{\circ}$, $\overline{\mathrm{BC}}=16$일 때, 선분 $\mathrm{BD}$의 길이는?
+    figure: p21.svg
+    alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 AB 중점, E는 AC 중점, DE. 45°는 A, 60°는 E. 16은 BC 아래
+    choices:
+      - $\sqrt{6}$
+      - $2\sqrt{6}$
+      - $3\sqrt{6}$
+      - $4\sqrt{6}$
+      - $5\sqrt{6}$
+    answer: ④
+
+  - text: 그림과 같이 정삼각형 $\mathrm{ABC}$에서 변 $\mathrm{AC}$의 중점을 $\mathrm{D}$, 선분 $\mathrm{BD}$의 중점을 $\mathrm{E}$라 하자. $\angle\mathrm{BCE}=x$라 할 때, $\sin x$의 값을 구하시오.
+    figure: p22.svg
+    alt: 정삼각형 A 위, B 왼쪽 아래, C 오른쪽 아래. D는 AC 중점(두 획), E는 BD 중점(한 획). BD, CE. x는 C
+    answer: $\dfrac{\sqrt{21}}{14}$
+
+  - text: 그림과 같이 반지름의 길이가 12인 원의 중심 $\mathrm{O}$에서 두 지름 $\mathrm{AB}$, $\mathrm{CD}$가 서로 수직으로 만난다. 선분 $\mathrm{OC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{OE}}:\overline{\mathrm{EC}}=2:1$이고, 반직선 $\mathrm{AE}$가 원과 만나는 점을 $\mathrm{F}$라 할 때, 선분 $\mathrm{AF}$의 길이는?
+    figure: p23.svg
+    alt: 원 O. 지름 AB 가로, CD 세로. E는 OC 위. A에서 E를 지나 원 위의 F까지. 반지름 OF. O에 직각. 12는 AO 아래
+    choices:
+      - $\dfrac{24\sqrt{13}}{13}$
+      - $\dfrac{36\sqrt{13}}{13}$
+      - $\dfrac{48\sqrt{13}}{13}$
+      - $\dfrac{60\sqrt{13}}{13}$
+      - $\dfrac{72\sqrt{13}}{13}$
+    answer: ⑤
+
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=12$, $\overline{\mathrm{AC}}=8\sqrt{2}$, $\angle\mathrm{A}=75^{\circ}$인 삼각형 $\mathrm{ABC}$가 있다. $\angle\mathrm{BAD}=45^{\circ}$, $\angle\mathrm{DAC}=30^{\circ}$가 되도록 변 $\mathrm{BC}$ 위에 점 $\mathrm{D}$를 잡을 때, $\dfrac{\overline{\mathrm{BD}}}{\overline{\mathrm{DC}}}$의 값은?
+    figure: p24.svg
+    alt: A 위, B 왼쪽 아래, C 오른쪽 아래, D는 BC 위. AD. 12는 AB 바깥, 8√2는 AC 바깥. 45°(AB~AD), 30°(AD~AC, 지시선)
+    choices:
+      - $\dfrac{9}{8}$
+      - $\dfrac{5}{4}$
+      - $\dfrac{11}{8}$
+      - $\dfrac{3}{2}$
+      - $\dfrac{13}{8}$
+    answer: ④
+
+  - text: 그림과 같이 $\angle\mathrm{XOY}=60^{\circ}$, $\overline{\mathrm{OA}}=6$cm일 때, 반직선 $\mathrm{OX}$, 반직선 $\mathrm{OY}$ 위의 두 점 $\mathrm{P}$, $\mathrm{Q}$에 대하여 삼각형 $\mathrm{APQ}$의 둘레의 길이는 $l$cm 이상이다. $l$의 값을 구하시오. (단, 점 $\mathrm{A}$는 각 $\mathrm{XOY}$의 내부에 있다.)
+    figure: p25.svg
+    alt: O 왼쪽 아래. 반직선 OX(60° 위 오른쪽), OY(가로). A는 각의 안. P는 OX 위, Q는 OY 위. 삼각형 APQ. 60°는 O. OA는 점선 직선, 6cm는 그 옆
+    answer: $6\sqrt{3}$
+
+  - text: 그림과 같이 반지름의 길이가 6m인 원 모양을 따라 시계 반대 방향으로 돌아가는 관람차가 있다. 이 관람차가 지면에 가장 가깝게 내려왔을 때의 지면으로부터의 높이는 2m이고, 관람차는 12분에 한 바퀴를 돈다. 관람차의 기둥의 아래끝 지점을 $\mathrm{P}$, 관람차가 제일 높이 올라간 지점을 $\mathrm{A}$, 지점 $\mathrm{A}$에 도달한 지 4분 후의 위치를 $\mathrm{Q}$라 하자. 지점 $\mathrm{P}$에서 지점 $\mathrm{Q}$를 올려다본 각의 크기를 $x^{\circ}$라 할 때, $\tan x^{\circ}$의 값을 구하시오. (단, 관람차의 크기는 고려하지 않는다.)
+    figure: p26.svg
+    alt: 원(반지름 6, 중심 높이 8)과 지면. P는 중심 아래 지면 위, 기둥. A는 꼭대기, Q는 A에서 반시계 120°(왼쪽 아래). PQ. x°는 P. 6m는 왼쪽 반지름, 2m는 원 아래 끝~지면
+    answer: $\dfrac{5\sqrt{3}}{9}$
+
+  - text: 그림과 같이 평행사변형 $\mathrm{ABCD}$에서 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 중점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하고, 두 선분 $\mathrm{DE}$, $\mathrm{DF}$가 대각선 $\mathrm{AC}$와 만나는 점을 각각 $\mathrm{G}$, $\mathrm{H}$라 하자. $\overline{\mathrm{DG}}=6$, $\overline{\mathrm{DH}}=5$, $\angle\mathrm{EDF}=30^{\circ}$일 때, 사각형 $\mathrm{EFHG}$의 넓이를 구하시오.
+    figure: p27.svg
+    alt: 평행사변형 A 왼쪽 위, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽 위. E(AB 중점), F(BC 중점). AC, DE, DF. G, H는 AC 위. EFHG 색칠. 6은 D~G, 5는 D~H. 30°는 D
+    answer: $\dfrac{75}{8}$
+
+  - text: 그림과 같이 $\angle\mathrm{B}=40^{\circ}$인 삼각형 $\mathrm{ABC}$에서 각 $\mathrm{A}$의 이등분선이 변 $\mathrm{BC}$와 만나는 점을 $\mathrm{D}$라 하면 $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}+\overline{\mathrm{CD}}$가 성립한다. $\overline{\mathrm{AB}}=a$, $\overline{\mathrm{AC}}=b$일 때, 삼각형 $\mathrm{ABC}$의 넓이를 $a$, $b$를 사용하여 나타내시오.
+    figure: p28.svg
+    alt: B 왼쪽, C 오른쪽, A 위(오른쪽 치우침). D는 BC 위. AD. 40°는 B. A의 두 각 같은 표시. a는 AB 바깥, b는 AC 바깥
+    answer: $\dfrac{\sqrt{3}}{4}ab$
+
+  - text: 그림과 같이 선분 $\mathrm{AB}$를 지름으로 하고 반지름의 길이가 3인 원 $\mathrm{O}$에 내접하는 사각형 $\mathrm{ABCD}$가 있다. $\angle\mathrm{B}=30^{\circ}$, $\overline{\mathrm{AD}}=\overline{\mathrm{DC}}$일 때, 사각형 $\mathrm{ABCD}$의 넓이는?
+    figure: p29.svg
+    alt: 원 O. 지름 AB 가로. C는 왼쪽 위, D는 호 AC 가운데. 사각형 ABCD 색칠. AD·DC 같은 길이(한 획). 30°는 B. 3은 A~O 아래
+    choices:
+      - $\dfrac{9+18\sqrt{3}}{2}$
+      - $\dfrac{18+9\sqrt{3}}{2}$
+      - $\dfrac{18+9\sqrt{6}}{4}$
+      - $\dfrac{9+18\sqrt{3}}{4}$
+      - $\dfrac{18+9\sqrt{3}}{4}$
+    answer: ⑤
+
+  - text: 그림과 같이 한 변의 길이가 10cm인 정사각형 $\mathrm{ABCD}$를 점 $\mathrm{A}$를 중심으로 시계 반대 방향으로 $34^{\circ}$만큼 회전시켜 정사각형 $\mathrm{AB}'\mathrm{C}'\mathrm{D}'$을 만들었다. 두 정사각형이 겹쳐지는 부분의 넓이를 구하시오. (단, $\tan 28^{\circ}=0.5317$로 계산한다.)
+    figure: p30.svg
+    alt: 정사각형 ABCD(A 왼쪽 아래)와 34° 회전한 AB'C'D'. E는 B'C'과 DC의 교점. 겹친 부분 AB'ED 색칠. 34°는 A. 귀퉁이 직각 표시. 10cm는 AB 아래
+    answer: 53.17cm²
