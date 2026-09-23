@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.88625pt" height="6.4375pt" viewBox="0 0 5.88625 6.4375" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 6.4375 
+L 5.88625 6.4375 
+L 5.88625 0 
+L 0 0 
+L 0 6.4375 
+z
+" style="fill: none; opacity: 0"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 1.10375 5.598125 
+Q 1.10375 5.526875 1.115 5.49125 
+L 2.01125 1.911875 
+Q 2.099375 1.578125 2.099375 1.325 
+Q 2.099375 0.809375 1.74875 0.809375 
+Q 1.37375 0.809375 1.191875 1.259375 
+Q 1.01 1.7075 0.839375 2.391875 
+Q 0.839375 2.4275 0.80375 2.448125 
+Q 0.77 2.46875 0.74 2.46875 
+L 0.599375 2.46875 
+Q 0.558125 2.46875 0.528125 2.425625 
+Q 0.5 2.380625 0.5 2.345 
+Q 0.629375 1.82375 0.749375 1.461875 
+Q 0.869375 1.098125 1.124375 0.8 
+Q 1.379375 0.5 1.76 0.5 
+Q 2.17625 0.5 2.489375 0.74 
+Q 2.8025 0.98 2.879375 1.371875 
+Q 3.183125 0.974375 3.573125 0.738125 
+Q 3.963125 0.5 4.42625 0.5 
+Q 4.806875 0.5 5.095625 0.723125 
+Q 5.38625 0.944375 5.38625 1.325 
+Q 5.38625 1.630625 5.195 1.8575 
+Q 5.005625 2.0825 4.68875 2.0825 
+Q 4.495625 2.0825 4.364375 1.9625 
+Q 4.233125 1.840625 4.233125 1.6475 
+Q 4.233125 1.385 4.42625 1.176875 
+Q 4.619375 0.96875 4.870625 0.96875 
+Q 4.6775 0.809375 4.401875 0.809375 
+Q 3.88625 0.809375 3.505625 1.176875 
+Q 3.125 1.5425 2.819375 2.105 
+L 1.964375 5.538125 
+Q 1.923125 5.703125 1.77875 5.819375 
+Q 1.63625 5.9375 1.46 5.9375 
+Q 1.31375 5.9375 1.20875 5.84375 
+Q 1.10375 5.75 1.10375 5.598125 
+z
+" clip-path="url(#p572dadd6ac)"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p572dadd6ac">
+   <rect x="0" y="0" width="5.88625" height="6.4375"/>
+  </clipPath>
+ </defs>
+</svg>
