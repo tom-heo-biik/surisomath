@@ -210,10 +210,100 @@ def _check_labels(f, ax, filename: str) -> int:
     return bad
 
 
+def _stroke_points(ax, k: float) -> list:
+    """선(Line2D)과 테두리가 보이는 패치(원·호)를 0.5pt 간격의 점으로 편다(pt, 캔버스 기준)."""
+    polys = []
+    for line in ax.lines:
+        if not line.get_visible() or line.get_linestyle() in ("None", "none", " ", ""):
+            continue
+        polys.append(line.get_transform().transform_path(line.get_path()).vertices)
+    for p in ax.patches:
+        if not p.get_visible() or not (p.get_linewidth() or 0):
+            continue
+        ec = p.get_edgecolor()
+        if ec is None or (len(ec) == 4 and ec[3] == 0):
+            continue
+        polys.extend(p.get_transform().transform_path(p.get_path()).to_polygons(closed_only=False))
+    pts = []
+    for verts in polys:
+        for (px, py), (qx, qy) in zip(verts[:-1], verts[1:]):
+            px, py, qx, qy = px * k, py * k, qx * k, qy * k
+            n = max(1, int(math.hypot(qx - px, qy - py) / 0.5))
+            pts.extend((px + (qx - px) * j / n, py + (qy - py) * j / n) for j in range(n + 1))
+    return pts
+
+
+SHADE_TOL = 0.8        # 색칠 경계의 표본점이 이 거리(pt) 안에 선이 없으면 "선 없는 변"이다
+SHADE_MIN = 3.0        # 이보다 짧은 변은 보지 않는다(곡선 경계의 잔 토막, 기둥 꼭대기)
+
+
+def _check_shades(f, ax, filename: str) -> int:
+    """색칠한 부분(테두리 없는 반투명 패치)의 변마다 실제로 선이 그어져 있는지 잰다. 삼각비2 027에서
+    사각형 EFHG를 칠하고 변 EF를 안 그어 색칠 경계 한 변이 비었는데 눈 검토가 놓쳤다(2026-09-23
+    선생님 지적). gid가 "noedge"인 패치(지면 띠 같은 장식)는 보지 않는다."""
+    k = 72 / f.dpi
+    strokes = None
+    bad = 0
+    for p in ax.patches:
+        if not p.get_visible() or p.get_gid() == "noedge":
+            continue
+        fc = p.get_facecolor()
+        if fc is None or len(fc) < 4 or fc[3] == 0 or fc[3] >= 0.99:
+            continue                                    # 색칠은 반투명 틴트. 화살촉·검은 쐐기는 불투명
+        ec = p.get_edgecolor()
+        if ec is not None and len(ec) == 4 and ec[3] > 0 and (p.get_linewidth() or 0):
+            continue                                    # 제 테두리가 있다
+        if strokes is None:
+            strokes = _stroke_points(ax, k)
+        for verts in p.get_transform().transform_path(p.get_path()).to_polygons():
+            for (px, py), (qx, qy) in zip(verts, list(verts[1:]) + [verts[0]]):
+                px, py, qx, qy = px * k, py * k, qx * k, qy * k
+                L = math.hypot(qx - px, qy - py)
+                if L < SHADE_MIN:
+                    continue
+                for j in range(1, 6):                   # 변 안쪽 다섯 점
+                    x, y = px + (qx - px) * j / 6, py + (qy - py) * j / 6
+                    if not any(abs(x - sx) <= SHADE_TOL and abs(y - sy) <= SHADE_TOL for sx, sy in strokes):
+                        warn(f"{filename}: 색칠한 부분의 변(({px:.0f}, {py:.0f})~({qx:.0f}, {qy:.0f})pt)에 "
+                             "선이 없다. 경계를 그어라")
+                        bad += 1
+                        break
+                else:
+                    continue
+                break
+    return bad
+
+
+def _names(texts: list) -> list:
+    """그림 글자 목록에서 점 이름(대문자, 프라임·첨자 포함)만 뽑는다. 'A', "$\\mathrm{O}'$", "$\\mathrm{O}_2$" →
+    A, O', O2. 한글·숫자·소문자 변수·각도는 뺀다."""
+    import re
+    out = []
+    for s in texts:
+        s = s.strip()
+        if re.fullmatch(r"[A-Z]'?", s):
+            out.append(s)
+            continue
+        for m in NAME_RX.finditer(s):
+            letters, suffix = m.group(1), (m.group(3) or ("'" if m.group(2) == "'" else ""))
+            if suffix.isalpha():                        # \mathrm{A}_n — 수열 이름(정사각형 Aₙ)이지 점이 아니다
+                continue
+            if suffix:                                  # \mathrm{AB}' → A, B'
+                out.extend(letters[:-1])
+                out.append(letters[-1] + suffix)
+            else:
+                out.extend(letters)
+    return out
+
+
+NAME_RX = __import__("re").compile(r"\\mathrm\{([A-Z]+)\}('|_\{?([0-9a-z])\}?)?")   # 점 이름: 대문자, 프라임, 첨자
+
+
 def save(f, filename: str) -> Path:
     """x 범위를 잉크 기준 좌우 대칭으로 잡아 SVG로 저장한다. 위아래 여백이 모자라거나
     지나치게 남으면 y 범위를 얼마로 바꾸면 되는지 알려 준다. 글자가 선이나 다른 글자와
-    겹치면 경고한다(_check_labels)."""
+    겹치면(_check_labels), 색칠한 부분의 변에 선이 없으면(_check_shades) 경고한다. 그림의 점
+    이름 목록을 SVG 끝에 주석(<!-- names: … -->)으로 남겨 build.py가 지문의 점 이름과 맞춰 본다."""
     if OUT is None:
         raise RuntimeError("g.setup(__file__)을 먼저 불러라. 출력 폴더가 정해지지 않았다")
     ax = f.axes[0]
@@ -224,6 +314,8 @@ def save(f, filename: str) -> Path:
     W = f.get_size_inches()[0] * 72
     bx0, by0, bx1, by1 = _ink_bbox(f, ax)
     _check_labels(f, ax, filename)
+    _check_shades(f, ax, filename)
+    names = _names([t.get_text() for t in ax.texts if t.get_visible()])
 
     # x — 잉크 너비에 좌우 MARGIN을 더한 만큼으로 캔버스를 좁히고 잉크를 가운데 둔다
     cx = X0 + (bx0 + bx1) / 2 / W * (X1 - X0)
@@ -259,6 +351,8 @@ def save(f, filename: str) -> Path:
     path = OUT / filename
     f.savefig(path, format="svg", transparent=True, metadata={"Date": None})
     plt.close(f)
+    with open(path, "a", encoding="utf-8") as fh:
+        fh.write(f"<!-- names: {' '.join(sorted(set(names)))} -->\n")
     return path
 
 
@@ -541,10 +635,11 @@ def leader(ax, p, text, dx=3, dy=2, length=LEADER):
 def angle(ax, v, p, q, text="", r=12.0, ticks=0, lw=AUX, pad=3.0):
     """각 표시. 꼭짓점 v에서 p 방향부터 q 방향까지(반시계) 반지름 r pt의 호를 긋고,
     글을 각 안쪽 이등분선 위, 호에서 pad pt 떨어진 자리에 앉힌다. 각도 글은
-    '$35^{\\circ}$'처럼 수식으로 준다(cmr10에는 °가 없다). ticks가 n이면 호를 가로지르는
-    짧은 획 n개(획 사이 2pt) — 같은 각 표시(각의 이등분선). 글 없이 호만 그리려면 text="".
-    글 자리(글이 없으면 호 한가운데)를 돌려준다. 좁은 각에서 글이 변에 끼면 text=""로
-    두고 그 자리에서 g.leader로 글을 밖에 뺀다."""
+    '$35^{\\circ}$'처럼 수식으로 준다(cmr10에는 °가 없다). ticks는 같은 각 표시 — 교과서처럼 호 없이
+    이등분선 위 r pt 자리에 ticks=1이면 점(•) 하나, ticks=2이면 × 하나를 찍는다(같은 각이 두 쌍이면
+    한 쌍은 점, 다른 쌍은 ×. 2026-09-23 선생님 지시 — 호에 획을 긋던 것을 바꿨다). 글 없이 호만
+    그리려면 text="". 글 자리(글이 없으면 호 한가운데)를 돌려준다. 좁은 각에서 글이 변에 끼면
+    text=""로 두고 그 자리에서 g.leader로 글을 밖에 뺀다."""
     t1 = math.degrees(math.atan2(p[1] - v[1], p[0] - v[0]))
     t2 = math.degrees(math.atan2(q[1] - v[1], q[0] - v[0]))
     while t2 <= t1:
@@ -552,15 +647,18 @@ def angle(ax, v, p, q, text="", r=12.0, ticks=0, lw=AUX, pad=3.0):
     if t2 - t1 > 180.0:
         warn(f"각 {t2 - t1:.0f}°: p→q 반시계가 우각이다. p와 q를 바꿔라")
     R = pt(ax, r)
-    arc(ax, v, R, t1, t2, lw=lw)
     m = math.radians((t1 + t2) / 2)
     ux, uy = math.cos(m), math.sin(m)
-    s = pt(ax, 2.0)
-    for i in range(ticks):
-        a = m + (2.0 / r) * (i - (ticks - 1) / 2)
-        cx, cy = math.cos(a), math.sin(a)
-        seg(ax, (v[0] + (R - s) * cx, v[1] + (R - s) * cy),
-            (v[0] + (R + s) * cx, v[1] + (R + s) * cy), lw=lw)
+    if ticks:
+        cx, cy = v[0] + R * ux, v[1] + R * uy
+        if ticks == 1:                                  # 점: 지름 2.2pt
+            ax.add_patch(Circle((cx, cy), pt(ax, 1.1), facecolor=INK, edgecolor="none"))
+        else:                                           # ×: 3pt 획 둘
+            s = pt(ax, 1.5)
+            seg(ax, (cx - s, cy - s), (cx + s, cy + s), lw=lw)
+            seg(ax, (cx - s, cy + s), (cx + s, cy - s), lw=lw)
+        return cx, cy
+    arc(ax, v, R, t1, t2, lw=lw)
     if text:
         w, h = text_size(ax, text)
         d = r + pad + (abs(ux) * w + abs(uy) * h) / 2

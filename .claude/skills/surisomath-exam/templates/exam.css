@@ -97,6 +97,21 @@ section.exam ol.bogi > li::before { content: counter(item, ko-jamo) "."; }
 section.exam ol.cond { margin: 0; --pad: 33pt; }
 section.exam ol.cond > li::before { content: "(" counter(item, ko-hangul) ")"; }
 
+/* 삼각비의 표 — 수행평가 통계 표와 같은 격자(교과서의 삼각비의 표가 격자다). a4의 표 규격
+   (typo-0, 행 22pt, 선 0.4pt, 배경 없음) 위에 세로선을 더한다. 열은 같은 너비, 글은 가운데.
+   위선은 build.py가 첫 행에 단 first에 건다(thead:first-child 선택자와 같은 값이라 두 번 걸려도
+   0.4pt 그대로다). 표 아래 한 칸은 base.css의 table margin */
+section.exam table.stat { table-layout: fixed; }
+section.exam table.stat th,
+section.exam table.stat td {
+  text-align: center; padding: 0 8pt;
+  border-left: 0.4pt solid var(--c-rule); border-right: 0.4pt solid var(--c-rule);
+}
+section.exam table.stat tr.first > * { --top: 0.4pt; }
+
+/* 소문항 (1) (2) (3) — a4 괄호형 ol.n5(마커 칸 33pt). 한 항목이 한 칸 */
+section.exam ol.sub { margin: 0 0 22pt; }
+
 /* 풀 자리 — 학생 쪽은 빈 종이. 선생님 쪽은 첫 줄에 정답(캡션 서체·회색), 그 아래 풀이.
    줄마다 p 하나, 문단 간격 없이 한 줄 = 한 칸. 빈 줄은 p.gap. 풀 자리 위 끝은 본문 위상이라
    10pt 정답 줄이 머리줄과 같은 그리드 잔여값에 앉는다 */

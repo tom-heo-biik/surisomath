@@ -38,8 +38,14 @@ problems.yaml
       conditions:                  # 있으면 조건 상자(평가원 꼴). (가) (나) 항목. 지문 뒤, 그림 앞
         - $f(0)=1$
       after: $f(4)$의 값을 구하시오.  # 조건 상자 뒤에 오는 문단
+      table:                       # 있으면 삼각비의 표(격자). 그림 뒤, 보기 상자 앞. 칸은 작은따옴표로
+        head: ['각도', '$\\sin$', '$\\cos$', '$\\tan$']
+        rows:
+          - ['$1^{\\circ}$', '0.0175', '0.9998', '0.0175']
       notes:                       # 있으면 보기 상자. ㄱ. ㄴ. ㄷ. 항목. 그림 뒤, 선지 앞
         - 점 $(1,\\,1)$을 지난다.
+      subs:                        # 있으면 소문항 (1) (2) (3). 표 뒤, 선지 앞. 한 항목이 한 줄
+        - 선분 $\\mathrm{CD}$의 길이를 구하시오.
       choices:                     # 있으면 객관식. 다섯 개
         - $\\dfrac{80}{\\tan 52^{\\circ}+\\tan 35^{\\circ}}$
       answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지. 필수 — 선생님 쪽 정답 줄
@@ -95,6 +101,7 @@ GRID = 22.0
 BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 풀 자리가 여기서 끝난다
 COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁은 쪽으로 잰다
 MARK_W = 14.8          # 선지 마커 칸(exam.css의 ol.n7 --pad). ① 10.8pt + 4pt
+SUB_W = 33.0           # 소문항 (1) 마커 칸(a4 괄호형 ol.n5 --pad)
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
 TALL = 16.0            # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸 간격
 CAPTION = gb.CAPTION   # neutral-500. 정답 줄
@@ -224,8 +231,43 @@ def figure_html(no: str, p: dict, fig_dir: Path) -> str:
         raise SystemExit(f"{no}: {svg.name} 너비 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. "
                          f"y 범위를 {w / COL_W:.2f}배 넓혀 배율을 줄여라")
     alt = html.escape(str(p.get("alt", "")))
+    check_names(no, p, svg)
     return (f'      <div class="figure" style="--u:{units}">'
             f'<img src="figures/{svg.name}" alt="{alt}"></div>\n')
+
+
+NAME_WARNINGS = 0
+
+
+def text_names(p: dict) -> set:
+    """지문·조건·뒷문장·보기·소문항에 나오는 점 이름(\\mathrm{…}의 대문자, 프라임·첨자 포함).
+    "(단, O는 원점이다.)"의 O도 이름이다."""
+    fields = [p.get("text", ""), p.get("after", "")]
+    for key in ("conditions", "notes", "subs"):
+        fields += [str(x) for x in (p.get(key) or [])]
+    names = set(g._names(fields))
+    if any("O는 원점" in str(t) for t in fields):
+        names.add("O")
+    return names
+
+
+def check_names(no: str, p: dict, svg: Path) -> None:
+    """그림의 점 이름(grind_figure.save가 SVG 끝에 남긴 <!-- names: … -->)과 지문의 점 이름을 맞춰 본다.
+    지문에 있는데 그림에 없으면 경고 — 이름을 빠뜨렸거나 지문이 그림에 없는 점을 부른다. 그림에만 있는
+    이름은 알려만 준다(014의 F·G·H처럼 "…"로 이어지는 그림도 있다)."""
+    global NAME_WARNINGS
+    m = re.search(r"<!-- names: ([^>]*) -->", svg.read_text(encoding="utf-8")[-2000:])
+    if not m:
+        return
+    fig = set(m.group(1).split())
+    want = text_names(p)
+    missing = sorted(want - fig)
+    extra = sorted(fig - want)
+    if missing:
+        print(f"  ! {no}: 지문의 점 {', '.join(missing)}이(가) 그림에 없다. 이름을 넣거나 지문을 보라")
+        NAME_WARNINGS += 1
+    if extra:
+        print(f"  {no}: 그림에만 있는 이름 {', '.join(extra)} — 지문이 부르지 않는 점이면 빼라")
 
 
 def conditions_html(no: str, p: dict, fig_dir: Path) -> str:
@@ -256,6 +298,54 @@ def notes_html(no: str, p: dict, fig_dir: Path) -> str:
                     for k, c in enumerate(notes, 1))
     return ('      <div class="notes">\n        <p class="head">보기</p>\n'
             f'        <ol class="bogi">\n{items}        </ol>\n      </div>\n')
+
+
+def table_html(no: str, p: dict, fig_dir: Path) -> str:
+    """삼각비의 표. yaml의 table(head 머리 행 · rows 몸 행 목록)을 수행평가 통계 표와 같은
+    격자(table.stat)로 조판한다 — 교과서의 삼각비의 표가 격자다. typo-0, 행 22pt, 선 0.4pt.
+    칸 안 $…$는 10pt 수식. 그림 뒤, 보기 상자 앞에 온다. 높이 = (머리 행 + 몸 행) 칸, 아래 한 칸."""
+    t = p.get("table")
+    if not t:
+        return ""
+    if not isinstance(t, dict) or not isinstance(t.get("rows"), list) or not t["rows"]:
+        raise SystemExit(f"{no}: table은 head·rows(행 목록)를 가진 표여야 한다")
+    head, rows = t.get("head"), t["rows"]
+    ncol = len(head) if head else len(rows[0])
+    for r in ([head] if head else []) + rows:
+        if not isinstance(r, list) or len(r) != ncol:
+            raise SystemExit(f"{no}: 표의 행마다 칸 수가 {ncol}로 같아야 한다: {r}")
+    k = 0
+
+    def cell(c, tag):
+        nonlocal k
+        k += 1
+        s = "" if c is None else str(c).strip()
+        return f"<{tag}>{rich(s, f't{no}_{k}', fig_dir, 10.0, g.INK) if s else ''}</{tag}>"
+
+    out = ['      <table class="stat">']
+    first = ' class="first"'
+    if head:
+        out.append(f"        <thead><tr{first}>" + "".join(cell(c, "th") for c in head) + "</tr></thead>")
+        first = ""
+    out.append("        <tbody>")
+    for r in rows:
+        out.append(f"          <tr{first}>" + "".join(cell(c, "td") for c in r) + "</tr>")
+        first = ""
+    out.append("        </tbody>\n      </table>\n")
+    return "\n".join(out)
+
+
+def subs_html(no: str, p: dict, fig_dir: Path) -> str:
+    """소문항 (1) (2) (3). yaml의 subs(목록). a4의 괄호형 순서 표기(ol.n5, 마커 칸 33pt).
+    한 항목이 한 줄에 들어야 한다 — 넘으면 경고. 표 뒤, 선지 앞에 온다."""
+    subs = p.get("subs")
+    if not subs:
+        return ""
+    if not isinstance(subs, list):
+        raise SystemExit(f"{no}: subs는 목록('- …')이어야 한다")
+    items = "".join(f'        <li>{rich(str(c).strip(), f"q{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
+                    for k, c in enumerate(subs, 1))
+    return f'      <ol class="n5 sub">\n{items}      </ol>\n'
 
 
 def choices_html(no: str, p: dict, fig_dir: Path) -> str:
@@ -291,7 +381,9 @@ def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
             f'      <p>{text}</p>\n'
             f'{conditions_html(no, p, fig_dir)}'
             f'{figure_html(no, p, fig_dir)}'
+            f'{table_html(no, p, fig_dir)}'
             f'{notes_html(no, p, fig_dir)}'
+            f'{subs_html(no, p, fig_dir)}'
             f'{choices_html(no, p, fig_dir)}'
             f'      <div class="work box {"t" if teacher else "n"}{no}">\n{work}      </div>\n'
             '    </div>\n')
@@ -372,6 +464,10 @@ def check(problems: list) -> int:
         if w > COL_W:
             print(f"  ! {no}번째 문제: 정답 줄 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. 짧게 써라")
             bad += 1
+        for k, s in enumerate(p.get("subs") or [], 1):
+            if SUB_W + width_of(str(s).strip()) > COL_W:
+                print(f"  ! {no}번째 문제: 소문항 ({k})이 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
+                bad += 1
     return bad
 
 
@@ -511,12 +607,13 @@ def main() -> int:
     fig_dir.mkdir(exist_ok=True)
 
     doc, labels, n_student = build_html(data, m, out_dir)
+    warnings += NAME_WARNINGS
     # 수식 SVG(m 지문 · k 조건 · e 뒷문장 · b 보기 · c 선지 · a 정답 · s 풀이 + 번호)는 빌드마다 다시
     # 그린다. 이번에 안 쓴 것을 지운다. figures.py가 그린 그림(p*.svg 등)은 건드리지 않는다
     kept = set(re.findall(r'src="figures/([^"]+)"', doc))
-    mine = tuple(f"{c}{no}_" for no in numbers(problems) for c in "mkebacs")
+    mine = tuple(f"{c}{no}_" for no in numbers(problems) for c in "mkebacstq")
     for old in fig_dir.glob("*.svg"):
-        if ((old.name.startswith(mine) or re.fullmatch(r"[mkebacs]\d{3}(_\d+)+\.svg", old.name))
+        if ((old.name.startswith(mine) or re.fullmatch(r"[mkebacstq]\d{3}(_\d+)+\.svg", old.name))
                 and old.name not in kept):
             old.unlink()
     out_html = out_dir / f"{m['file']}.html"

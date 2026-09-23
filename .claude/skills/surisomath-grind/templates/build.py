@@ -72,6 +72,11 @@ BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 두 단 상자가 �
 MIN_ROWS = 12          # 풀이 자리 최소 칸 수
 CAPTION = "#636363"    # neutral-500. 정답 줄의 수식 색
 MATH = re.compile(r"\$([^$]+)\$")
+# 뒤에 오는 수식(이름)과 한 어절로 묶는 명사. "원 O", "두 원 O₁, O₂", "선분 AB", "각 A", "점 P" — 줄 끝에서
+# 명사와 이름이 갈라지면 평가원 조판이 아니다. "(단,"도 뒤의 수식과 묶는다("(단," 홀로 남기 방지)
+BIND_NOUNS = {"원", "점", "현", "선분", "변", "삼각형", "사각형", "각", "호", "중심", "직선", "반직선", "지름",
+              "반지름", "꼭짓점", "반원", "부채꼴", "정사각형", "직사각형", "정삼각형", "이등변삼각형",
+              "직각삼각형", "평행사변형", "모서리", "정사각뿔", "원기둥", "함수", "이차함수", "그래프", "지점"}
 
 
 def rel(target: Path, start: Path) -> str:
@@ -100,8 +105,21 @@ def rich(s: str, prefix: str, fig_dir: Path, size: float, color: str) -> str:
         maths.append(m.group(1))
         return f"{NUL}{len(maths) - 1}{NUL}"
 
+    # 명사 + 이름("원 O", "선분 AB", "점 P")과 "(단, …"의 첫 토막은 한 어절로 묶어 줄 끝에서 갈라지지
+    # 않게 한다 — 평가원 조판 관례(2026-09-23 독립 검토가 원과직선 005·010·012·017·019에서 잡았다)
+    toks, i = [], 0
+    raw = MATH.sub(stash, s).split()
+    while i < len(raw):
+        tok = raw[i]
+        while (i + 1 < len(raw) and NUL not in tok.split()[-1]
+               and (tok.split()[-1] in BIND_NOUNS or tok.split()[-1] == "(단,")
+               and raw[i + 1].startswith(NUL)):
+            tok = tok + " " + raw[i + 1]
+            i += 1
+        toks.append(tok)
+        i += 1
     out = []
-    for tok in MATH.sub(stash, s).split():
+    for tok in toks:
         if NUL not in tok:
             out.append(html.escape(tok))
             continue
