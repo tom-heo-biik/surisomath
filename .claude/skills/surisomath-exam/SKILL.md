@@ -177,6 +177,7 @@ text에 ": "가 들어가면 따옴표로 감싼다. 수식의 역슬래시는 �
 figures.py 뼈대: `import grind_figure as g` → `g.setup(__file__)` → 그림 함수들 → `if __name__ == "__main__":`에서 부른다. 연마와 같다
 사진 읽기: photos.py의 축소본(긴 변 1400px)을 Read로 본다. 원본(600KB~1MB)은 무겁다
 PDF 보기: `build.py … --png DIR`. 손으로 뽑으려면 `python -c "import fitz; d=fitz.open('…pdf'); [p.get_pixmap(dpi=110).save(f'{p.number}.png') for p in d]"`
+인쇄: `python lib/print_pdf.py <PDF>=학생쪽부수/선생님쪽부수 --plan`으로 보고 `--go`. 몇 쪽만이면 `--pages 1-2`. 100%·양면 긴 쪽·품질 높게, 색 없는 장은 흑백. README의 학습지 인쇄
 
 
 ## 참고

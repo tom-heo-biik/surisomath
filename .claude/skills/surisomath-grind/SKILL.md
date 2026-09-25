@@ -172,6 +172,7 @@ figures.py 뼈대: `import grind_figure as g` → `g.setup(__file__)` → 그림
 쪽 뼈대(HTML을 손으로 만들 때): `section.problem` 안에 `p.series` · `h2`(번호) · `p.answer` · `p`(문제 글) · `div.figure[style="--u:n"]` · `div.cols.head` · `div.cols`
 소제목 글: build.py가 span으로 감싼다. 플렉스 상자는 자식 사이 공백을 버려 어절 span 사이의 띄어쓰기가 사라진다. HTML을 손으로 만들 때도 같다
 PDF 보기: `python -c "import fitz; d=fitz.open('…pdf'); [p.get_pixmap(dpi=110).save(f'{p.number}.png') for p in d]"`
+인쇄: `python lib/print_pdf.py <PDF>=학생쪽부수/선생님쪽부수 --plan`으로 보고 `--go`. 몇 쪽만이면 `--pages 1-2`. 100%·양면 긴 쪽·품질 높게, 색 없는 장은 흑백. README의 학습지 인쇄
 
 
 ## 참고
