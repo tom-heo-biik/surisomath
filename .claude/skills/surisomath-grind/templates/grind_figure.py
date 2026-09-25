@@ -349,9 +349,10 @@ def save(f, filename: str) -> Path:
 
     print(f"  {filename}  ({w:.0f}×{H:.0f}pt)")
     path = OUT / filename
-    f.savefig(path, format="svg", transparent=True, metadata={"Date": None})
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        f.savefig(fh, format="svg", transparent=True, metadata={"Date": None})
     plt.close(f)
-    with open(path, "a", encoding="utf-8") as fh:
+    with open(path, "a", encoding="utf-8", newline="\n") as fh:
         fh.write(f"<!-- names: {' '.join(sorted(set(names)))} -->\n")
     return path
 
@@ -392,7 +393,8 @@ def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
     ax.set_ylim(0, H)
     ax.add_patch(PathPatch(TextPath((pad - x0, D), s, size=size, prop=prop),
                            facecolor=color, edgecolor="none", linewidth=0))
-    f.savefig(path, format="svg", transparent=True, metadata={"Date": None})
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        f.savefig(fh, format="svg", transparent=True, metadata={"Date": None})
     plt.close(f)
     return W, H, D
 

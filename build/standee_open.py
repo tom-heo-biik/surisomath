@@ -245,7 +245,7 @@ def main() -> None:
     # 웹·편집용 SVG. 그림은 PDF와 같고 색만 RGB다 (SVG는 CMYK가 없다)
     svg = ROOT / "자료" / f"{name}.svg"
     m = re.search(r"<svg .*</svg>", html, re.S)
-    svg.write_text('<?xml version="1.0" encoding="UTF-8"?>\n' + m.group(0), encoding="utf-8")
+    svg.write_text('<?xml version="1.0" encoding="UTF-8"?>\n' + m.group(0), encoding="utf-8", newline="\n")
     print(f"{svg.relative_to(ROOT)}  {svg.stat().st_size / 1024:.0f}KB  (SVG · RGB)")
 
 

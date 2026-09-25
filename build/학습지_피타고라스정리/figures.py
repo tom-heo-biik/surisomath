@@ -72,7 +72,8 @@ def label(ax, x, y, s, ha="center", va="center", size=LABEL, rotation=0):
 
 
 def save(f, name):
-    f.savefig(OUT / name, format="svg", transparent=True)
+    with open(OUT / name, "w", encoding="utf-8", newline="\n") as fh:
+        f.savefig(fh, format="svg", transparent=True)
     plt.close(f)
     print(f"  {name}")
 
@@ -100,7 +101,7 @@ def logo():
         + place(d_wm, wx, wy, s2, (W - w2) / 2, SYM_H + GAP)
         + "</g></svg>"
     )
-    (OUT / "logo.svg").write_text(svg, encoding="utf-8")
+    (OUT / "logo.svg").write_text(svg, encoding="utf-8", newline="\n")
     print(f"  logo.svg  ({W:.0f}×{H:.0f}pt)")
 
 

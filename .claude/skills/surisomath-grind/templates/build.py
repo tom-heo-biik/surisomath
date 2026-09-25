@@ -381,7 +381,7 @@ def main() -> int:
     stem = out_dir.name if date else str(data.get("unit") or "").replace(" ", "")
     name = data.get("file") or f"수리소_연마_{stem}"
     out_html = out_dir / f"{name}.html"
-    out_html.write_text(build_html(data, out_dir), encoding="utf-8")
+    out_html.write_text(build_html(data, out_dir), encoding="utf-8", newline="\n")
     print(out_html, flush=True)
 
     fd, tmp = tempfile.mkstemp(suffix=".json", prefix="grind_boxes_")

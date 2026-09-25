@@ -69,7 +69,8 @@ def equation(tex: str, out: str, units: int = 2, size: float = 12.0,
     fig = _figure(units, width_pt)
     fig.text(0.5, 0.5, f"${tex}$", ha="center", va="center",
              fontsize=size, color=INK)
-    fig.savefig(out, format="svg", transparent=True)
+    with open(out, "w", encoding="utf-8", newline="\n") as fh:
+        fig.savefig(fh, format="svg", transparent=True)
     plt.close(fig)
     return out
 
@@ -103,7 +104,8 @@ def graph(series: dict, out: str, units: int = 8, size: float = 12.0,
     if len(series) > 1:
         ax.legend(fontsize=size, frameon=False, labelcolor=INK)
 
-    fig.savefig(out, format="svg", transparent=True)
+    with open(out, "w", encoding="utf-8", newline="\n") as fh:
+        fig.savefig(fh, format="svg", transparent=True)
     plt.close(fig)
     return out
 

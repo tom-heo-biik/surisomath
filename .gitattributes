@@ -1,0 +1,12 @@
+# 줄 끝은 LF 하나로 맞춘다. 저장소 안도 받아 놓은 작업 트리도 LF다.
+# Git for Windows가 기본으로 켜 두는 core.autocrlf=true(받을 때 CRLF로 바꿈)보다 이 줄이 앞선다.
+# 다른 기계나 다른 설정으로 받아도 같다. 빌드 스크립트도 LF로 쓴다.
+* text=auto eol=lf
+
+# 이진 파일은 짐작에 맡기지 않고 적어 둔다
+*.pdf binary
+*.jpg binary
+*.png binary
+*.gif binary
+*.otf binary
+*.ttf binary

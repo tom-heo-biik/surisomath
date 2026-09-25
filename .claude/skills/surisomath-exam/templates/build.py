@@ -617,7 +617,7 @@ def main() -> int:
                 and old.name not in kept):
             old.unlink()
     out_html = out_dir / f"{m['file']}.html"
-    out_html.write_text(doc, encoding="utf-8")
+    out_html.write_text(doc, encoding="utf-8", newline="\n")
     print(out_html, flush=True)
 
     fd, tmp = tempfile.mkstemp(suffix=".json", prefix="exam_boxes_")

@@ -115,4 +115,4 @@ if __name__ == "__main__":
     for name, (src, kw) in targets.items():
         d, box = trace(str(src), **kw)
         print(f"{name:14s} 경계 {box}  패스 {len(d):,}자  조각 {d.count('M'):,}개")
-        (out / f"{name}.svg").write_text(svg(str(src), fill="#000000", **kw), encoding="utf-8")
+        (out / f"{name}.svg").write_text(svg(str(src), fill="#000000", **kw), encoding="utf-8", newline="\n")
