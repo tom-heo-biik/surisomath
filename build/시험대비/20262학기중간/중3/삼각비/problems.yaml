@@ -18,7 +18,7 @@ problems:
         - ['$3^{\circ}$', '0.0523', '0.9986', '0.0524']
     answer: $29$
 
-  - text: 그림과 같이 $\overline{\mathrm{AB}}=4$cm, $\overline{\mathrm{AD}}=8$cm인 직사각형 $\mathrm{ABCD}$ 모양의 종이를 두 변 $\mathrm{AD}$, $\mathrm{BC}$ 위의 두 점 $\mathrm{R}$, $\mathrm{Q}$를 잇는 선분 $\mathrm{RQ}$를 접는 선으로 하여 점 $\mathrm{D}$가 점 $\mathrm{B}$에 오도록 접었다. 점 $\mathrm{C}$가 옮겨진 점을 $\mathrm{P}$, $\angle\mathrm{BRQ}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값은?
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=4$cm, $\overline{\mathrm{AD}}=8$cm인 직사각형 $\mathrm{ABCD}$ 모양의 종이를 점 $\mathrm{D}$가 점 $\mathrm{B}$에 오도록 접었다. 접는 선이 두 변 $\mathrm{AD}$, $\mathrm{BC}$와 만나는 점을 각각 $\mathrm{R}$, $\mathrm{Q}$라 하고, 점 $\mathrm{C}$가 옮겨진 점을 $\mathrm{P}$라 하자. $\angle\mathrm{BRQ}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값은?
     figure: p2.svg
     alt: 직사각형 ABCD(A 왼쪽 위). R은 AD 위, Q는 BC 위. 접힌 모양 A-B-P-Q-R 실선, 접기 전 R-D-C-Q와 B-Q 점선. 8cm는 A~D 위, 4cm는 A~B 왼쪽. θ°는 R
     choices:
