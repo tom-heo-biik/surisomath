@@ -216,7 +216,7 @@ def p4():
 def p5():
     C, A = (0.0, 0.0), (0.0, R2)
     F, E, D, B = (-1.0, 0.0), (-2.0, 0.0), (-3.0, 0.0), (-4.0, 0.0)
-    fig, ax = g.canvas(5, -0.8, 1.9)
+    fig, ax = g.canvas(5, -1.05, 1.9)
     g.poly(ax, [A, B, C])
     for p in (D, E, F):
         g.seg(ax, A, p)
@@ -224,7 +224,8 @@ def p5():
     for p, q in ((B, D), (D, E), (E, F), (F, C)):
         g.tick(ax, p, q)
     g.dim(ax, A, C, "$\\sqrt{2}$", side=1)
-    g.dim(ax, F, C, "1", side=-1)
+    # BC = 4(선생님 지시 2026-09-26, 책의 FC 아래 1 대신). 곡선이 D, E, F 이름 아래를 지나야 해서 gap 30pt
+    g.dim(ax, B, C, "4", side=-1, gap=g.pt(ax, 30))
     m = g.angle(ax, B, C, A, "", r=12)
     g.leader(ax, m, "$\\theta_1^{\\circ}$", dx=-0.3, dy=1)
     g.angle(ax, E, F, A, "$\\theta_2^{\\circ}$", r=24)  # θ₂°가 넓어 r=12에선 EA와 겹친다
