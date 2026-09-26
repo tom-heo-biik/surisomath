@@ -242,6 +242,9 @@ def figure_html(no: str, p: dict, fig_dir: Path) -> str:
 _nspec = importlib.util.spec_from_file_location("munhang_notation", MUNHANG / "notation.py")
 notation = importlib.util.module_from_spec(_nspec)
 _nspec.loader.exec_module(notation)                     # 표기 검사(surisomath-munhang)
+_sspec = importlib.util.spec_from_file_location("munhang_seal", MUNHANG / "seal.py")
+seal = importlib.util.module_from_spec(_sspec)
+_sspec.loader.exec_module(seal)                         # 확정 문항 봉인 대조(surisomath-munhang)
 
 NAME_WARNINGS = 0
 
@@ -602,6 +605,9 @@ def main() -> int:
         return 1
     problems = data.get("problems") or []
     warnings = check(problems)
+    for msg in seal.check(src, data):                   # 선생님이 확정한 문항의 글이 바뀌었으면 멈춘다
+        print(f"  ! {msg}")
+        warnings += 1
     m = meta(data, out_dir)
     if width_of(m["head"], 10.0) > 475 - 120:       # 첫 쪽 오른쪽 끝의 "이름" 글과 90pt 빈 자리
         print(f"  ! 머리줄 '{m['head']}'이 길어 이름 칸과 겹친다. yaml의 exam·unit을 줄여라")

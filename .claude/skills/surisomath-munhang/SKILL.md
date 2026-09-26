@@ -64,6 +64,14 @@ description: "수리소 수학학원 학습지의 문제 글(문항)을 평가�
 연마 조판 규칙 위에 얹는다: `!=` → `\neq`, `b/x` → `\dfrac{b}{x}`, 점 이름 정체, 변수 이탤릭, 수식 뒤 조사 붙여 쓰기(surisomath-grind SKILL.md). 정답 줄과 선지 열 같은 양식 표기는 양식 SKILL에
 
 
+## 확정 문항 — 봉인
+왜: 선생님이 "완전히 맘에 든다"고 한 문항이 다음 세션의 퇴고에서 다시 변형되면 안 된다(2026-09-26 선생님 요청). 지시문만으로는 못 지키니 기계가 막는다
+어떻게: 단원 폴더의 sealed.json에 번호마다 글의 지문(text·conditions·after·table·notes·subs·choices·answer의 sha1 앞 열두 자리)과 날짜를 적는다. 그림 파일 이름은 안 넣는다 — 그림 손질은 문항을 바꾸지 않는다. 시험대비 build.py가 매번 대조해 봉인된 문항의 글이 바뀌었으면 `!`로 멈춘다(종료 코드 1)
+누가: 봉인은 선생님이 번호를 짚었을 때만 건다 — `python .claude/skills/surisomath-munhang/templates/seal.py <단원>/problems.yaml 003 004`. 풀 때도 선생님이 번호를 짚어야 한다 — `--unseal 003`, 고친 뒤 다시 봉인. 모델이 알아서 걸거나 풀지 않는다. `--check`는 대조, `--list`는 목록
+퇴고·검토에서: 봉인된 문항은 퇴고 대상이 아니고 검토자에게도 "확정 문항은 지적하지 않는다"고 브리핑한다. problems.md 머리에 "확정(날짜): 번호" 줄을 두어 사람도 본다. 봉인 뒤에 표기 규칙이 바뀌어도 봉인 문항은 그대로다 — 규칙을 소급하려면 선생님에게 번호를 받아 푼다
+첫 봉인: 원과직선 003·004(2026-09-26)
+
+
 ## 검토 — 독립 검토자
 언제: 퇴고를 마치고 빌드가 깨끗해진 뒤. 선생님이 "검토"라 하면
 누가: 단원마다 검토자 하나(서브에이전트, 파일을 고치지 않는다). templates/review_brief.md의 틀로 브리핑한다 — 자료(사진 축소본·problems.md·yaml·크롭), 집의 규칙, 오늘 바꾼 것, 네 과제, 보고 형식
@@ -77,6 +85,7 @@ description: "수리소 수학학원 학습지의 문제 글(문항)을 평가�
 ## 파일
 templates/notation.py: 표기 검사. `check(fields) -> list[str]`(경고 글 목록). `python notation.py problems.yaml`로 홀로 돌리면 문제마다 `!` 줄을 찍고 경고가 있으면 종료 코드 1
 templates/review_brief.md: 검토자 브리핑 틀. <…> 자리를 단원에 맞게 채워 Agent에 준다
+templates/seal.py: 확정 문항 봉인. `seal.py <yaml> 003 004` 봉인, `--unseal 003` 풀기, `--check` 대조(어긋나면 종료 코드 1), `--list` 목록. sealed.json은 단원 폴더에
 
 
 ## 이력

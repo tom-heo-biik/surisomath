@@ -67,7 +67,7 @@ description: "수리소 수학학원의 실전 모의 학습지 '시험대비' �
 어디에: problems.md 지문을 고치고 머리에 무엇을 어떻게 바꿨는지 적는다. yaml은 problems.md를 따른다
 조건 상자와 문장: 위 '조건 상자' 줄. 상자는 선생님이 상자로 쓴 문제만
 지문이 길어져 풀 자리가 8칸 아래로 내려가면(삼각비 023이 일곱 줄) 그림을 한 칸 줄인다 — 글을 줄이지 않는다
-검사: build.py가 문제마다 munhang/templates/notation.py의 check()를 불러 표기 경계를 `!`로 잡는다(NAME_WARNINGS에 더한다)
+검사: build.py가 문제마다 munhang/templates/notation.py의 check()를 불러 표기 경계를 `!`로 잡는다(NAME_WARNINGS에 더한다). 단원 폴더에 sealed.json이 있으면 munhang/templates/seal.py로 확정 문항의 글을 대조해 바뀌었으면 `!`로 멈춘다(봉인은 선생님이 번호를 짚었을 때만 — munhang SKILL '확정 문항')
 
 
 ## 표기 규칙
