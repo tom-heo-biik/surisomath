@@ -83,37 +83,37 @@ problems:
       - $9$
     answer: ④
 
-  - text: 그림과 같이 점 $\mathrm{A}$에서 서로 외접하는 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$가 직선 $l$과 각각 두 점 $\mathrm{B}$, $\mathrm{C}$에서 접한다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 4, 1일 때, 삼각형 $\mathrm{ABC}$의 외접원의 반지름의 길이를 구하시오.
+  - text: 그림과 같이 점 $\mathrm{A}$에서 서로 외접하는 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$는 직선 $l$과 각각 두 점 $\mathrm{B}$, $\mathrm{C}$에서 접한다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 4, 1일 때, 삼각형 $\mathrm{ABC}$의 외접원의 반지름의 길이를 구하시오.
     figure: p9.svg
     alt: 가로 직선 l. 큰 원 O₁(반지름 4)이 B에서, 오른쪽의 작은 원 O₂(반지름 1)가 C에서 l에 접한다. 두 원은 A에서 외접. 삼각형 ABC. O₂ 이름은 작은 원 밖 오른쪽 위에 지시선
     answer: $2$
 
-  - text: 그림과 같이 $\angle\mathrm{C}=90^{\circ}$, $\overline{\mathrm{AB}}=13$인 직각삼각형 $\mathrm{ABC}$에 반지름의 길이가 2인 원 $\mathrm{O}$가 내접할 때, 색칠한 부분의 넓이를 구하시오. (단, $\overline{\mathrm{AC}}<\overline{\mathrm{BC}}$)
+  - text: 그림과 같이 원 $\mathrm{O}$는 $\angle\mathrm{C}=90^{\circ}$, $\overline{\mathrm{AB}}=13$인 직각삼각형 $\mathrm{ABC}$에 내접한다. 원 $\mathrm{O}$의 반지름의 길이가 2일 때, 색칠한 부분의 넓이를 구하시오. (단, $\overline{\mathrm{AC}}<\overline{\mathrm{BC}}$)
     figure: p10.svg
     alt: B 왼쪽 아래, C 오른쪽 아래(직각), A 오른쪽 위. 빗변 AB 위에 13이 점선 곡선. 내접원 O. 삼각형에서 원을 뺀 부분이 색칠
     answer: $30-4\pi$
 
-  - text: 그림과 같이 $\overline{\mathrm{AB}}=15$, $\overline{\mathrm{BC}}=18$, $\overline{\mathrm{AC}}=12$인 삼각형 $\mathrm{ABC}$에 내접하는 원 $\mathrm{O}$가 있다. 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 선분 $\mathrm{DE}$가 원 $\mathrm{O}$에 접할 때, 삼각형 $\mathrm{BED}$의 둘레의 길이를 구하시오.
+  - text: 그림과 같이 원 $\mathrm{O}$는 $\overline{\mathrm{AB}}=15$, $\overline{\mathrm{BC}}=18$, $\overline{\mathrm{AC}}=12$인 삼각형 $\mathrm{ABC}$에 내접한다. 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 선분 $\mathrm{DE}$가 원 $\mathrm{O}$에 접할 때, 삼각형 $\mathrm{BED}$의 둘레의 길이를 구하시오.
     figure: p11.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 변 AB 위, E는 변 BC 위, 선분 DE가 원에 접하며 B 쪽 귀퉁이를 자른다. 15(AB)·12(AC)는 바깥, 18(BC)은 아래에 점선 곡선
     answer: $21$
 
-  - text: 그림과 같이 $\angle\mathrm{A}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=2$인 직각이등변삼각형 $\mathrm{ABC}$에 원 $\mathrm{O}$가 내접한다. 원 $\mathrm{O}$가 세 변 $\mathrm{AB}$, $\mathrm{BC}$, $\mathrm{CA}$와 접하는 점을 각각 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$라 할 때, 삼각형 $\mathrm{DEF}$의 넓이를 구하시오.
+  - text: 그림과 같이 원 $\mathrm{O}$는 $\angle\mathrm{A}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=2$인 직각이등변삼각형 $\mathrm{ABC}$에 내접한다. 원 $\mathrm{O}$가 세 변 $\mathrm{AB}$, $\mathrm{BC}$, $\mathrm{CA}$와 접하는 점을 각각 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$라 할 때, 삼각형 $\mathrm{DEF}$의 넓이를 구하시오.
     figure: p12.svg
     alt: A 위(직각), B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 AB 위, E는 BC 위(A 바로 아래), F는 AC 위. 삼각형 DEF 색칠. 2는 AB·AC 바깥에 점선 곡선
     answer: $\sqrt{2}-1$
 
-  - text: 그림과 같이 네 원 $\mathrm{O}_1$, $\mathrm{O}_2$, $\mathrm{O}_3$, $\mathrm{O}_4$가 각각 네 삼각형 $\mathrm{PAB}$, $\mathrm{PBC}$, $\mathrm{PCD}$, $\mathrm{PDE}$에 내접하고, 이웃한 두 원은 서로 접한다. $\overline{\mathrm{PA}}=15$, $\overline{\mathrm{BC}}=8$, $\overline{\mathrm{DE}}=3$일 때, 육각형 $\mathrm{PABCDE}$의 둘레의 길이를 구하시오.
+  - text: 그림과 같이 네 원 $\mathrm{O}_1$, $\mathrm{O}_2$, $\mathrm{O}_3$, $\mathrm{O}_4$는 각각 네 삼각형 $\mathrm{PAB}$, $\mathrm{PBC}$, $\mathrm{PCD}$, $\mathrm{PDE}$에 내접하고, 이웃한 두 원은 서로 접한다. $\overline{\mathrm{PA}}=15$, $\overline{\mathrm{BC}}=8$, $\overline{\mathrm{DE}}=3$일 때, 육각형 $\mathrm{PABCDE}$의 둘레의 길이를 구하시오.
     figure: p13.svg
     alt: P 위. A 왼쪽, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽, E 오른쪽 위인 육각형. 선분 PB, PC, PD가 네 삼각형으로 가르고 삼각형마다 내접원(O₁이 가장 크고 O₄가 가장 작다). 이웃한 두 원은 공통변 위의 한 점에서 접한다. O₄ 이름은 원 밖에 지시선. 15(PA)·3(DE)은 바깥, 8(BC)은 아래에 점선 곡선
     answer: $52$
 
-  - text: 그림과 같이 둘레의 길이가 56인 직사각형 $\mathrm{ABCD}$가 있다. 반지름의 길이가 4인 두 원 $\mathrm{O}$, $\mathrm{O}'$이 각각 두 삼각형 $\mathrm{ABC}$, $\mathrm{ADC}$에 내접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$이 대각선 $\mathrm{AC}$와 접하는 점을 각각 $\mathrm{E}$, $\mathrm{F}$라 할 때, 사각형 $\mathrm{EOFO}'$의 넓이를 구하시오. (단, $\overline{\mathrm{AB}}<\overline{\mathrm{BC}}$)
+  - text: 그림과 같이 반지름의 길이가 4인 두 원 $\mathrm{O}$, $\mathrm{O}'$은 각각 직사각형 $\mathrm{ABCD}$의 대각선 $\mathrm{AC}$로 나뉜 두 삼각형 $\mathrm{ABC}$, $\mathrm{ADC}$에 내접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$이 대각선 $\mathrm{AC}$와 접하는 점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하자. 직사각형 $\mathrm{ABCD}$의 둘레의 길이가 56일 때, 사각형 $\mathrm{EOFO}'$의 넓이를 구하시오. (단, $\overline{\mathrm{AB}}<\overline{\mathrm{BC}}$)
     figure: p14.svg
     alt: 직사각형 ABCD와 대각선 AC. 원 O는 왼쪽 아래 삼각형 ABC에, 원 O'은 오른쪽 위 삼각형 ADC에 내접. E는 원 O와 AC의 접점, F는 원 O'과 AC의 접점. 사각형 EOFO' 색칠. OE, O'F에 4가 점선 곡선
     answer: $16$
 
-  - text: 그림과 같이 직사각형 $\mathrm{ABCD}$의 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 두 원 $\mathrm{O}$, $\mathrm{O}'$이 각각 사각형 $\mathrm{ABED}$와 삼각형 $\mathrm{CDE}$에 내접한다. $\overline{\mathrm{BE}}:\overline{\mathrm{EC}}=1:2$일 때, 두 원 $\mathrm{O}$, $\mathrm{O}'$의 넓이의 비를 가장 간단한 자연수의 비로 나타내시오.
+  - text: 그림과 같이 직사각형 $\mathrm{ABCD}$의 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 두 원 $\mathrm{O}$, $\mathrm{O}'$은 각각 사각형 $\mathrm{ABED}$와 삼각형 $\mathrm{CDE}$에 내접한다. $\overline{\mathrm{BE}}:\overline{\mathrm{EC}}=1:2$일 때, 두 원 $\mathrm{O}$, $\mathrm{O}'$의 넓이의 비를 가장 간단한 자연수의 비로 나타내시오.
     figure: p15.svg
     alt: 직사각형 ABCD. 변 BC 위의 E, 선분 DE. 왼쪽의 큰 원 O가 사각형 ABED에, 오른쪽의 작은 원 O'이 삼각형 CDE에 내접
     answer: $9:4$
@@ -133,7 +133,7 @@ problems:
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. A에서 BC 위의 D로 이등분선, A의 두 각에 같은 각 표시. 6(AB)·8(AC)은 바깥, 7(BC)은 아래에 점선 곡선
     answer: $6$
 
-  - text: 그림과 같이 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$가 서로 다른 두 점 $\mathrm{A}$, $\mathrm{B}$에서 만난다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 8, 6이고 $\overline{\mathrm{O}_1\mathrm{O}_2}=7$일 때, 선분 $\mathrm{AB}$의 길이를 구하시오.
+  - text: 그림과 같이 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$는 서로 다른 두 점 $\mathrm{A}$, $\mathrm{B}$에서 만난다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 8, 6이고 $\overline{\mathrm{O}_1\mathrm{O}_2}=7$일 때, 선분 $\mathrm{AB}$의 길이를 구하시오.
     figure: p19.svg
     alt: 왼쪽의 큰 원 O₁과 오른쪽의 작은 원 O₂(중심이 큰 원 안). 두 교점 A(위), B(아래)를 잇는 세로 현 AB. 선분 O₁O₂ 위에 7이 점선 곡선
     answer: $3\sqrt{15}$

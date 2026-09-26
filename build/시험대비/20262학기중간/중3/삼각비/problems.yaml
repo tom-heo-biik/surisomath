@@ -182,7 +182,7 @@ problems:
     alt: 정삼각형 A 위, B 왼쪽 아래, C 오른쪽 아래. D는 AC 중점(두 획), E는 BD 중점(한 획). BD, CE. θ°는 C
     answer: $\dfrac{\sqrt{21}}{14}$
 
-  - text: 그림과 같이 중심이 $\mathrm{O}$이고 반지름의 길이가 12인 원의 두 지름 $\mathrm{AB}$, $\mathrm{CD}$가 서로 수직이다. 선분 $\mathrm{OC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{OE}}:\overline{\mathrm{EC}}=2:1$이고, 직선 $\mathrm{AE}$가 원과 만나는 점 중 점 $\mathrm{A}$가 아닌 점을 $\mathrm{F}$라 할 때, 선분 $\mathrm{AF}$의 길이는?
+  - text: 그림과 같이 중심이 $\mathrm{O}$이고 반지름의 길이가 12인 원의 두 지름 $\mathrm{AB}$, $\mathrm{CD}$는 서로 수직이다. 선분 $\mathrm{OC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{OE}}:\overline{\mathrm{EC}}=2:1$이고, 직선 $\mathrm{AE}$가 원과 만나는 점 중 점 $\mathrm{A}$가 아닌 점을 $\mathrm{F}$라 할 때, 선분 $\mathrm{AF}$의 길이는?
     figure: p23.svg
     alt: 원 O. 지름 AB 가로, CD 세로. E는 OC 위. A에서 E를 지나 원 위의 F까지. 반지름 OF. O에 직각. 12는 AO 아래
     choices:
