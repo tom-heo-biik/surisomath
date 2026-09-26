@@ -160,34 +160,27 @@ def p2():
     g.save(fig, "p2.svg")
 
 
-# ── 003 — 두 직각삼각형, E는 AB의 연장선 위 ─────────────────────────────
-# C(0, 0), A(0, 12√2), B(−6, 0), D(−12, 0). E는 D에서 직선 AB에 내린 수선의 발(B 너머).
+# ── 003 — 직각삼각형과 빗변 아닌 변의 중점을 잇는 선분 ──────────────────────
+# C(0, 0), A(0, 12√2), D(−6, 0), B(−12, 0). D는 변 BC의 중점. 책의 점 E(B에서 직선 AD에 내린
+# 수선의 발)와 직각삼각형 ADE는 선생님이 뺐다(2026. 9. 26.) — 문제를 세우는 데 필요 없고 푸는 도구라서.
+# 책과 견주면 B와 D의 이름이 맞바뀌어 있다(선생님 지시).
 
 def p3():
-    C, B, D = (0.0, 0.0), (-6.0, 0.0), (-12.0, 0.0)
+    C, D, B = (0.0, 0.0), (-6.0, 0.0), (-12.0, 0.0)
     A = (0.0, 12 * R2)
-    u = unit(A, B)
-    t = (D[0] - A[0]) * u[0] + (D[1] - A[1]) * u[1]
-    E = (A[0] + t * u[0], A[1] + t * u[1])
-    fig, ax = g.canvas(7, -4.91, 20.0)
-    g.seg(ax, A, C)
-    g.seg(ax, C, D)
-    g.seg(ax, A, E)
+    fig, ax = g.canvas(7, -1.5, 19.5)
+    g.poly(ax, [A, B, C])
     g.seg(ax, A, D)
-    g.seg(ax, D, E)
     g.right_angle(ax, C, -1, 1)
-    g.corner_mark(ax, E, unit(E, A), unit(E, D))
-    g.tick(ax, B, C)
-    g.tick(ax, D, B)
-    g.dim(ax, B, C, "6", side=-1)
-    g.angle(ax, A, B, C, "$\\theta_1^{\\circ}$", r=30)
-    m = g.angle(ax, A, D, B, "", r=16)                  # 각이 16°라 θ₂°가 안에 안 든다 — 지시선으로 왼쪽 밖에
+    g.tick(ax, B, D)
+    g.tick(ax, D, C)
+    g.angle(ax, A, D, C, "$\\theta_1^{\\circ}$", r=30)
+    m = g.angle(ax, A, B, D, "", r=16)                  # 각이 16°라 θ₂°가 안에 안 든다 — 지시선으로 왼쪽 밖에
     g.leader(ax, m, "$\\theta_2^{\\circ}$", dx=-1, dy=0.25)
     g.name(ax, A, "A", dy=5, va="bottom")
-    g.name(ax, B, "B", dx=-5, dy=4, ha="right", va="bottom")
+    g.name(ax, B, "B", dx=-5, ha="right")
     g.name(ax, C, "C", dx=5, ha="left")
-    g.name(ax, D, "D", dx=-5, ha="right")
-    g.name(ax, E, "E", dy=-5, va="top")
+    g.name(ax, D, "D", dx=-2, dy=4, ha="right", va="bottom")
     g.save(fig, "p3.svg")
 
 

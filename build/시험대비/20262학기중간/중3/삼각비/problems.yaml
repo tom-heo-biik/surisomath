@@ -29,9 +29,9 @@ problems:
       - $\dfrac{2\sqrt{6}}{5}$
     answer: ④
 
-  - text: 그림과 같이 $\angle\mathrm{ACB}=\angle\mathrm{AED}=90^{\circ}$인 두 직각삼각형 $\mathrm{ABC}$, $\mathrm{ADE}$에서 점 $\mathrm{B}$는 선분 $\mathrm{CD}$ 위에 있고, 점 $\mathrm{E}$는 선분 $\mathrm{AB}$의 연장선 위에 있다. $\angle\mathrm{BAC}=\theta_1^{\circ}$, $\angle\mathrm{DAE}=\theta_2^{\circ}$라 하자. $\overline{\mathrm{BC}}=\overline{\mathrm{BD}}=6$, $\sin\theta_1^{\circ}=\dfrac{1}{3}$일 때, $\cos\theta_2^{\circ}$의 값을 구하시오.
+  - text: 그림과 같이 $\angle\mathrm{C}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$가 있다. 변 $\mathrm{BC}$의 중점을 $\mathrm{D}$라 하고, $\angle\mathrm{DAC}=\theta_1^{\circ}$, $\angle\mathrm{BAD}=\theta_2^{\circ}$라 하자. $\sin\theta_1^{\circ}=\dfrac{1}{3}$일 때, $\cos\theta_2^{\circ}$의 값을 구하시오.
     figure: p3.svg
-    alt: A 위 오른쪽, C 바로 아래(직각), B는 C 왼쪽 6, D는 B 왼쪽 6. E는 AB 연장선 위 B 아래(직각). 6은 BC 아래. A에 θ₂°(왼쪽)·θ₁°(오른쪽)
+    alt: 직각삼각형 ABC. A 위 오른쪽, C 바로 아래(직각), B는 C 왼쪽. D는 BC의 중점(같은 길이 표시), 선분 AD. 길이 표시 없음. A에 θ₂°(왼쪽, AB와 AD 사이)·θ₁°(오른쪽, AD와 AC 사이)
     answer: $\dfrac{5\sqrt{3}}{9}$
 
   - text: 그림과 같이 좌표평면 위의 세 점 $\mathrm{A}(6,\,6)$, $\mathrm{B}(-2,\,2)$, $\mathrm{C}(2,\,{-1})$에 대하여 $\angle\mathrm{ABC}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}+\cos\theta^{\circ}$의 값은? (단, $\mathrm{O}$는 원점이다.)
