@@ -206,7 +206,7 @@ def p4():
     h = 3 * math.sqrt(7)
     A = (M[0] - h * d[0], M[1] - h * d[1])
     B = (M[0] + h * d[0], M[1] + h * d[1])
-    fig, ax = g.canvas(6, -8.87, 9.73)
+    fig, ax = g.canvas(6, -9.70, 9.81)                     # C₁ 이름이 큰 원 아래로 나가 y 범위를 넓혔다
     g.circle(ax, O, 8.0)
     g.circle(ax, O, 6.0)
     g.seg(ax, O, C)
@@ -217,6 +217,9 @@ def p4():
     g.name(ax, A, "A", dx=-3, dy=-4, ha="right", va="top")
     g.name(ax, B, "B", dx=3, dy=3, ha="left", va="bottom")
     g.name(ax, C, "C", dx=-4, dy=3, ha="right", va="bottom")
+    # 두 원의 이름 C₁(큰 원 밖), C₂(작은 원 안) — 오른쪽 아래(2026-09-26 선생님 지적: 큰 원·작은 원은 이름이 아니다)
+    g.name(ax, g.polar(O, 8.0, -60), "$\\mathrm{C}_1$", dx=3, dy=-3, ha="left", va="top")
+    g.name(ax, g.polar(O, 6.0, -60), "$\\mathrm{C}_2$", dx=-2, dy=3, ha="right", va="bottom")
     g.save(fig, "p4.svg")
 
 

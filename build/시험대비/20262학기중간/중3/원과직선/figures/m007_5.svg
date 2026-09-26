@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.70875pt" height="9.1975pt" viewBox="0 0 4.70875 9.1975" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="9.244375pt" height="9.1975pt" viewBox="0 0 9.244375 9.1975" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -21,8 +21,8 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 9.1975 
-L 4.70875 9.1975 
-L 4.70875 0 
+L 9.244375 9.1975 
+L 9.244375 0 
 L 0 0 
 L 0 9.1975 
 z
@@ -32,25 +32,41 @@ z
    <g id="patch_2">
     <path d="M 0.5 8.6975 
 L 0.5 8.275625 
-Q 1.79375 8.275625 1.79375 7.895 
-L 1.79375 1.3025 
-Q 1.79375 0.921875 0.5 0.921875 
+Q 1.735625 8.275625 1.735625 7.895 
+L 1.735625 1.3025 
+Q 1.735625 0.921875 0.5 0.921875 
 L 0.5 0.5 
-L 4.20875 0.5 
-L 4.20875 0.921875 
-Q 2.913125 0.921875 2.913125 1.3025 
-L 2.913125 7.895 
-Q 2.913125 8.275625 4.20875 8.275625 
-L 4.20875 8.6975 
+L 4.0925 0.5 
+L 4.0925 0.921875 
+Q 2.855 0.921875 2.855 1.3025 
+L 2.855 4.22 
+L 6.395 4.22 
+L 6.395 1.3025 
+Q 6.395 0.921875 5.1575 0.921875 
+L 5.1575 0.5 
+L 8.744375 0.5 
+L 8.744375 0.921875 
+Q 7.514375 0.921875 7.514375 1.3025 
+L 7.514375 7.895 
+Q 7.514375 8.275625 8.744375 8.275625 
+L 8.744375 8.6975 
+L 5.1575 8.6975 
+L 5.1575 8.275625 
+Q 6.395 8.275625 6.395 7.895 
+L 6.395 4.641875 
+L 2.855 4.641875 
+L 2.855 7.895 
+Q 2.855 8.275625 4.0925 8.275625 
+L 4.0925 8.6975 
 L 0.5 8.6975 
 z
-" clip-path="url(#pb187ec64b7)"/>
+" clip-path="url(#p02e5cc1849)"/>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pb187ec64b7">
-   <rect x="0" y="0" width="4.70875" height="9.1975"/>
+  <clipPath id="p02e5cc1849">
+   <rect x="0" y="0" width="9.244375" height="9.1975"/>
   </clipPath>
  </defs>
 </svg>

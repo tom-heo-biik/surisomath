@@ -18,7 +18,7 @@ problems:
       - $3$
     answer: ⑤
 
-  - text: 그림과 같이 원의 서로 수직인 두 현 $\mathrm{AB}$, $\mathrm{CD}$가 만나는 점을 $\mathrm{E}$라 하자. $\overline{\mathrm{AE}}=5$, $\overline{\mathrm{EB}}=9$, $\overline{\mathrm{CD}}=16$일 때, 이 원의 넓이는?
+  - text: 그림과 같이 원의 두 현 $\mathrm{AB}$, $\mathrm{CD}$가 점 $\mathrm{E}$에서 서로 수직으로 만난다. $\overline{\mathrm{AE}}=5$, $\overline{\mathrm{EB}}=9$, $\overline{\mathrm{CD}}=16$일 때, 이 원의 넓이는?
     figure: p2.svg
     alt: 원 안에서 현 AB(왼쪽 위→오른쪽 아래)와 현 CD(오른쪽 위→왼쪽 아래)가 위쪽 E에서 직각으로 만난다. AE=5, EB=9, CD=16이 점선 곡선
     choices:
@@ -29,17 +29,17 @@ problems:
       - $70\pi$
     answer: ③
 
-  - text: 그림과 같이 원 $\mathrm{O}$의 세 현 $\mathrm{AB}$, $\mathrm{CD}$, $\mathrm{EF}$가 같은 간격으로 서로 평행하게 있다. $\overline{\mathrm{AB}}=6$cm, $\overline{\mathrm{CD}}=8$cm, $\overline{\mathrm{EF}}=2\sqrt{21}$cm일 때, 원 $\mathrm{O}$의 둘레의 길이를 구하시오.
+  - text: 그림과 같이 원 $\mathrm{O}$의 세 현 $\mathrm{AB}$, $\mathrm{CD}$, $\mathrm{EF}$는 서로 평행하고, 이웃한 두 현 사이의 거리가 같다. $\overline{\mathrm{AB}}=6$cm, $\overline{\mathrm{CD}}=8$cm, $\overline{\mathrm{EF}}=2\sqrt{21}$cm일 때, 원 $\mathrm{O}$의 둘레의 길이를 구하시오.
     figure: p3.svg
     alt: 원의 왼쪽 아래에 오른쪽 아래로 기운 평행한 현 셋. 바깥부터 AB, CD, EF. 왼쪽 위 끝이 위부터 E, C, A, 아래 끝이 왼쪽부터 B, D, F. 중심 O
     answer: $10\pi$cm
 
-  - text: 그림과 같이 중심이 점 $\mathrm{O}$로 일치하고 반지름의 길이가 각각 8, 6인 두 원이 있다. 큰 원의 현 $\mathrm{AC}$가 작은 원에 접하고 $\overline{\mathrm{OC}}\perp\overline{\mathrm{AB}}$일 때, 큰 원의 현 $\mathrm{AB}$의 길이를 구하시오.
+  - text: 그림과 같이 점 $\mathrm{O}$를 중심으로 하는 두 원 $\mathrm{C}_1$, $\mathrm{C}_2$가 있다. 원 $\mathrm{C}_1$의 두 현 $\mathrm{AB}$, $\mathrm{AC}$에 대하여 현 $\mathrm{AC}$는 원 $\mathrm{C}_2$에 접하고 $\overline{\mathrm{OC}}\perp\overline{\mathrm{AB}}$이다. 두 원 $\mathrm{C}_1$, $\mathrm{C}_2$의 반지름의 길이가 각각 8, 6일 때, 선분 $\mathrm{AB}$의 길이를 구하시오.
     figure: p4.svg
-    alt: 동심원 둘. C는 큰 원의 왼쪽 위, A는 왼쪽 아래, B는 오른쪽 위. 현 AC가 작은 원에 접하고, 반지름 OC와 현 AB가 직각으로 만난다
+    alt: 동심원 둘(큰 원 C₁, 작은 원 C₂). C는 큰 원의 왼쪽 위, A는 왼쪽 아래, B는 오른쪽 위. 현 AC가 작은 원에 접하고, 반지름 OC와 현 AB가 직각으로 만난다
     answer: $6\sqrt{7}$
 
-  - text: 그림과 같이 반지름의 길이가 10인 원의 중심 $\mathrm{O}$로부터의 거리가 6인 점 $\mathrm{P}$가 있다. 점 $\mathrm{P}$를 지나고 길이가 정수인 이 원의 현의 개수는?
+  - text: 그림과 같이 중심이 $\mathrm{O}$이고 반지름의 길이가 10인 원의 내부에 $\overline{\mathrm{OP}}=6$인 점 $\mathrm{P}$가 있다. 점 $\mathrm{P}$를 지나고 길이가 정수인 이 원의 현의 개수는?
     figure: p5.svg
     alt: 원, 중심 O, 왼쪽 위 안쪽의 점 P. O에서 P를 지나 원 위까지 그은 반지름. PO 위쪽에 6, 반지름 아래쪽에 10이 점선 곡선
     choices:
@@ -50,7 +50,7 @@ problems:
       - $8$
     answer: ⑤
 
-  - text: 그림과 같이 반지름의 길이가 $\sqrt{13}$인 원의 두 현 $\mathrm{AB}$, $\mathrm{CD}$에 대하여 점 $\mathrm{A}$에서 현 $\mathrm{CD}$에 내린 수선의 발을 $\mathrm{H}$라 하자. $\overline{\mathrm{AB}}:\overline{\mathrm{CD}}=1:\sqrt{3}$이고 $\angle\mathrm{BAH}=90^{\circ}$, $\overline{\mathrm{AH}}=4$일 때, 선분 $\mathrm{BH}$의 길이는?
+  - text: 그림과 같이 원의 두 현 $\mathrm{AB}$, $\mathrm{CD}$에 대하여 점 $\mathrm{A}$에서 현 $\mathrm{CD}$에 내린 수선의 발을 $\mathrm{H}$라 하자. 원의 반지름의 길이가 $\sqrt{13}$이고 $\overline{\mathrm{AB}}:\overline{\mathrm{CD}}=1:\sqrt{3}$, $\angle\mathrm{BAH}=90^{\circ}$, $\overline{\mathrm{AH}}=4$일 때, 선분 $\mathrm{BH}$의 길이는?
     figure: p6.svg
     alt: 원의 위쪽에 가로 현 AB, 그 아래에 더 긴 가로 현 CD. A에서 CD에 내린 수선의 발 H, 선분 BH. A와 H에 직각 표시. AH=4가 왼쪽에 점선 곡선
     choices:
@@ -61,7 +61,7 @@ problems:
       - $6$
     answer: ①
 
-  - text: 그림과 같이 반지름의 길이가 4인 원 $\mathrm{O}$의 중심에서 두 현 $\mathrm{AB}$, $\mathrm{AC}$에 내린 수선의 발을 각각 $\mathrm{H}$, $\mathrm{I}$라 하자. $\overline{\mathrm{OH}}=\overline{\mathrm{OI}}$, $\overset{\frown}{\mathrm{AB}}:\overset{\frown}{\mathrm{BC}}=5:2$일 때, 삼각형 $\mathrm{ACB}$의 넓이는?
+  - text: 그림과 같이 점 $\mathrm{O}$에서 원 $\mathrm{O}$의 두 현 $\mathrm{AB}$, $\mathrm{AC}$에 내린 수선의 발을 각각 $\mathrm{H}$, $\mathrm{I}$라 하자. 원 $\mathrm{O}$의 반지름의 길이가 4이고 $\overline{\mathrm{OH}}=\overline{\mathrm{OI}}$, $\overset{\frown}{\mathrm{AB}}:\overset{\frown}{\mathrm{BC}}=5:2$일 때, 삼각형 $\mathrm{ACB}$의 넓이는?
     figure: p7.svg
     alt: 원 O. A 왼쪽, C 오른쪽(중심 조금 아래의 가로 현 AC), B 오른쪽 위. 삼각형 ABC 색칠. O에서 AB, AC에 내린 수선의 발 H, I에 직각 표시
     choices:
@@ -72,7 +72,7 @@ problems:
       - $15+4\sqrt{3}$
     answer: ①
 
-  - text: 그림과 같이 가로, 세로의 길이가 각각 10, 6인 직사각형 $\mathrm{ABCD}$의 내부에 점 $\mathrm{C}$를 중심으로 하고 선분 $\mathrm{CD}$를 반지름으로 하는 사분원이 있다. 점 $\mathrm{B}$에서 사분원에 그은 접선이 변 $\mathrm{AD}$와 만나는 점을 $\mathrm{E}$라 할 때, 선분 $\mathrm{AE}$의 길이는?
+  - text: 그림과 같이 $\overline{\mathrm{BC}}=10$, $\overline{\mathrm{CD}}=6$인 직사각형 $\mathrm{ABCD}$의 내부에 점 $\mathrm{C}$를 중심으로 하고 선분 $\mathrm{CD}$를 반지름으로 하는 사분원이 있다. 점 $\mathrm{B}$에서 이 사분원에 그은 접선이 변 $\mathrm{AD}$와 만나는 점을 $\mathrm{E}$라 할 때, 선분 $\mathrm{AE}$의 길이는?
     figure: p8.svg
     alt: 직사각형 ABCD(A 왼쪽 위, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽 위). C 중심, D에서 변 BC까지의 사분원. B에서 사분원에 그은 접선이 변 AD 위의 E에서 만난다. 10은 BC 아래, 6은 CD 오른쪽에 점선 곡선
     choices:
@@ -83,7 +83,7 @@ problems:
       - $9$
     answer: ④
 
-  - text: 그림과 같이 점 $\mathrm{A}$에서 외접하는 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$가 각각 두 점 $\mathrm{B}$, $\mathrm{C}$에서 직선 $l$과 접한다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 4, 1일 때, 삼각형 $\mathrm{ABC}$의 외접원의 반지름의 길이를 구하시오.
+  - text: 그림과 같이 점 $\mathrm{A}$에서 서로 외접하는 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$가 직선 $l$과 각각 두 점 $\mathrm{B}$, $\mathrm{C}$에서 접한다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 4, 1일 때, 삼각형 $\mathrm{ABC}$의 외접원의 반지름의 길이를 구하시오.
     figure: p9.svg
     alt: 가로 직선 l. 큰 원 O₁(반지름 4)이 B에서, 오른쪽의 작은 원 O₂(반지름 1)가 C에서 l에 접한다. 두 원은 A에서 외접. 삼각형 ABC. O₂ 이름은 작은 원 밖 오른쪽 위에 지시선
     answer: $2$
@@ -93,12 +93,12 @@ problems:
     alt: B 왼쪽 아래, C 오른쪽 아래(직각), A 오른쪽 위. 빗변 AB 위에 13이 점선 곡선. 내접원 O. 삼각형에서 원을 뺀 부분이 색칠
     answer: $30-4\pi$
 
-  - text: 그림과 같이 $\overline{\mathrm{AB}}=15$, $\overline{\mathrm{BC}}=18$, $\overline{\mathrm{AC}}=12$인 삼각형 $\mathrm{ABC}$에 내접하는 원 $\mathrm{O}$가 있다. 두 변 $\mathrm{AB}$, $\mathrm{BC}$ 위의 두 점 $\mathrm{D}$, $\mathrm{E}$에 대하여 선분 $\mathrm{DE}$가 원 $\mathrm{O}$에 접할 때, 삼각형 $\mathrm{BED}$의 둘레의 길이를 구하시오.
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=15$, $\overline{\mathrm{BC}}=18$, $\overline{\mathrm{AC}}=12$인 삼각형 $\mathrm{ABC}$에 내접하는 원 $\mathrm{O}$가 있다. 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 선분 $\mathrm{DE}$가 원 $\mathrm{O}$에 접할 때, 삼각형 $\mathrm{BED}$의 둘레의 길이를 구하시오.
     figure: p11.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 변 AB 위, E는 변 BC 위, 선분 DE가 원에 접하며 B 쪽 귀퉁이를 자른다. 15(AB)·12(AC)는 바깥, 18(BC)은 아래에 점선 곡선
     answer: $21$
 
-  - text: 그림과 같이 $\angle\mathrm{A}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=2$인 직각이등변삼각형 $\mathrm{ABC}$에 원 $\mathrm{O}$가 내접한다. 원 $\mathrm{O}$와 삼각형 $\mathrm{ABC}$의 각 변의 접점을 각각 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$라 할 때, 삼각형 $\mathrm{DEF}$의 넓이를 구하시오.
+  - text: 그림과 같이 $\angle\mathrm{A}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=2$인 직각이등변삼각형 $\mathrm{ABC}$에 원 $\mathrm{O}$가 내접한다. 원 $\mathrm{O}$가 세 변 $\mathrm{AB}$, $\mathrm{BC}$, $\mathrm{CA}$와 접하는 점을 각각 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$라 할 때, 삼각형 $\mathrm{DEF}$의 넓이를 구하시오.
     figure: p12.svg
     alt: A 위(직각), B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 AB 위, E는 BC 위(A 바로 아래), F는 AC 위. 삼각형 DEF 색칠. 2는 AB·AC 바깥에 점선 곡선
     answer: $\sqrt{2}-1$
@@ -108,7 +108,7 @@ problems:
     alt: P 위. A 왼쪽, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽, E 오른쪽 위인 육각형. 선분 PB, PC, PD가 네 삼각형으로 가르고 삼각형마다 내접원(O₁이 가장 크고 O₄가 가장 작다). 이웃한 두 원은 공통변 위의 한 점에서 접한다. O₄ 이름은 원 밖에 지시선. 15(PA)·3(DE)은 바깥, 8(BC)은 아래에 점선 곡선
     answer: $52$
 
-  - text: 그림과 같이 둘레의 길이가 56인 직사각형 $\mathrm{ABCD}$가 있다. 반지름의 길이가 4인 두 원 $\mathrm{O}$, $\mathrm{O}'$이 각각 삼각형 $\mathrm{ABC}$와 삼각형 $\mathrm{ADC}$에 내접하고, 두 원과 대각선 $\mathrm{AC}$의 접점을 각각 $\mathrm{E}$, $\mathrm{F}$라 할 때, 사각형 $\mathrm{EOFO}'$의 넓이를 구하시오. (단, $\overline{\mathrm{AB}}<\overline{\mathrm{BC}}$)
+  - text: 그림과 같이 둘레의 길이가 56인 직사각형 $\mathrm{ABCD}$가 있다. 반지름의 길이가 4인 두 원 $\mathrm{O}$, $\mathrm{O}'$이 각각 두 삼각형 $\mathrm{ABC}$, $\mathrm{ADC}$에 내접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$이 대각선 $\mathrm{AC}$와 접하는 점을 각각 $\mathrm{E}$, $\mathrm{F}$라 할 때, 사각형 $\mathrm{EOFO}'$의 넓이를 구하시오. (단, $\overline{\mathrm{AB}}<\overline{\mathrm{BC}}$)
     figure: p14.svg
     alt: 직사각형 ABCD와 대각선 AC. 원 O는 왼쪽 아래 삼각형 ABC에, 원 O'은 오른쪽 위 삼각형 ADC에 내접. E는 원 O와 AC의 접점, F는 원 O'과 AC의 접점. 사각형 EOFO' 색칠. OE, O'F에 4가 점선 곡선
     answer: $16$
@@ -118,27 +118,27 @@ problems:
     alt: 직사각형 ABCD. 변 BC 위의 E, 선분 DE. 왼쪽의 큰 원 O가 사각형 ABED에, 오른쪽의 작은 원 O'이 삼각형 CDE에 내접
     answer: $9:4$
 
-  - text: 그림과 같이 반지름의 길이가 6인 원 $\mathrm{O}$의 지름 $\mathrm{AB}$의 연장선과 현 $\mathrm{CD}$의 연장선의 교점을 $\mathrm{P}$라 하자. $\overline{\mathrm{AB}}\perp\overline{\mathrm{OD}}$, $\overline{\mathrm{PA}}=2$일 때, 선분 $\mathrm{AC}$의 길이를 구하시오.
+  - text: 그림과 같이 반지름의 길이가 6인 원 $\mathrm{O}$의 지름 $\mathrm{AB}$의 연장선과 현 $\mathrm{CD}$의 연장선이 만나는 점을 $\mathrm{P}$라 하자. $\overline{\mathrm{AB}}\perp\overline{\mathrm{OD}}$, $\overline{\mathrm{PA}}=2$일 때, 선분 $\mathrm{AC}$의 길이를 구하시오.
     figure: p16.svg
     alt: 원 O, 가로 지름 AB(A 왼쪽), D는 원의 맨 아래(O에 직각 표시). C는 원의 왼쪽 아래. 직선 DC를 왼쪽으로 늘여 지름의 연장선과 만나는 점 P(A의 왼쪽). PA=2는 위, AO=6은 아래에 점선 곡선
     answer: $\dfrac{6\sqrt{2}}{5}$
 
-  - text: 그림과 같이 반지름의 길이가 2인 원 $\mathrm{O}$와 서로 평행한 두 직선 $l_1$, $l_2$가 있고, 두 직선 $l_1$, $l_2$ 사이의 거리는 2이다. 두 직선 $l_1$, $l_2$에 의하여 생긴 원 $\mathrm{O}$의 두 현의 길이를 각각 $x$, $y$라 할 때, $x^2+y^2$의 최댓값을 구하시오. (단, 두 직선 $l_1$, $l_2$는 각각 원 $\mathrm{O}$와 서로 다른 두 점에서 만난다.)
+  - text: 그림과 같이 서로 평행한 두 직선 $l_1$, $l_2$와 원 $\mathrm{O}$가 있다. 두 직선 $l_1$, $l_2$가 원 $\mathrm{O}$와 만나서 생기는 두 현의 길이를 각각 $x$, $y$라 하자. 원 $\mathrm{O}$의 반지름의 길이가 2이고 두 직선 $l_1$, $l_2$ 사이의 거리가 2일 때, $x^2+y^2$의 최댓값을 구하시오. (단, 두 직선 $l_1$, $l_2$는 각각 원 $\mathrm{O}$와 서로 다른 두 점에서 만난다.)
     figure: p17.svg
     alt: 원 O. 가로 직선 l₁이 중심 위쪽을, l₂가 중심 아래쪽을 지나 원과 두 점씩 만난다. 이름 l₁, l₂는 왼쪽 끝
     answer: $24$
 
-  - text: 그림과 같이 $\overline{\mathrm{AB}}=6$, $\overline{\mathrm{BC}}=7$, $\overline{\mathrm{AC}}=8$인 삼각형 $\mathrm{ABC}$가 있다. 각 $\mathrm{A}$의 이등분선이 선분 $\mathrm{BC}$와 만나는 점을 $\mathrm{D}$라 할 때, 선분 $\mathrm{AD}$의 길이를 구하시오.
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=6$, $\overline{\mathrm{BC}}=7$, $\overline{\mathrm{AC}}=8$인 삼각형 $\mathrm{ABC}$가 있다. 각 $\mathrm{A}$의 이등분선이 변 $\mathrm{BC}$와 만나는 점을 $\mathrm{D}$라 할 때, 선분 $\mathrm{AD}$의 길이를 구하시오.
     figure: p18.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. A에서 BC 위의 D로 이등분선, A의 두 각에 같은 각 표시. 6(AB)·8(AC)은 바깥, 7(BC)은 아래에 점선 곡선
     answer: $6$
 
-  - text: 그림과 같이 반지름의 길이가 각각 8, 6인 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 공통인 현 $\mathrm{AB}$가 있다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 중심 사이의 거리가 7일 때, 현 $\mathrm{AB}$의 길이를 구하시오.
+  - text: 그림과 같이 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$가 서로 다른 두 점 $\mathrm{A}$, $\mathrm{B}$에서 만난다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 8, 6이고 $\overline{\mathrm{O}_1\mathrm{O}_2}=7$일 때, 선분 $\mathrm{AB}$의 길이를 구하시오.
     figure: p19.svg
     alt: 왼쪽의 큰 원 O₁과 오른쪽의 작은 원 O₂(중심이 큰 원 안). 두 교점 A(위), B(아래)를 잇는 세로 현 AB. 선분 O₁O₂ 위에 7이 점선 곡선
     answer: $3\sqrt{15}$
 
-  - text: 그림과 같이 원 $\mathrm{O}$는 삼각형 $\mathrm{ABC}$의 내접원이고, 원 $\mathrm{O}'$은 두 선분 $\mathrm{AB}$, $\mathrm{BC}$의 연장선과 선분 $\mathrm{AC}$에 접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$의 반지름의 길이는 각각 3cm, 8cm이고, $\overline{\mathrm{OO}'}=13$cm일 때, 선분 $\mathrm{AC}$의 길이를 구하시오.
+  - text: 그림과 같이 원 $\mathrm{O}$는 삼각형 $\mathrm{ABC}$의 내접원이고, 원 $\mathrm{O}'$은 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 연장선과 변 $\mathrm{AC}$에 접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$의 반지름의 길이가 각각 3cm, 8cm이고, $\overline{\mathrm{OO}'}=13$cm일 때, 선분 $\mathrm{AC}$의 길이를 구하시오.
     figure: p20.svg
     alt: B 왼쪽, C는 오른쪽 지면 선 위, A 위. 변 BA, BC를 오른쪽으로 늘인 두 반직선 사이에 내접원 O와 큰 원 O'(C의 오른쪽 밖). 선분 OO' 위에 13cm가 점선 곡선. O의 반지름에 3cm(지시선), O'의 반지름에 8cm
     answer: $12$cm
