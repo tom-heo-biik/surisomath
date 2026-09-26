@@ -39,9 +39,9 @@ problems:
     alt: 동심원 둘(큰 원 C₁, 작은 원 C₂). C는 큰 원의 왼쪽 위, A는 왼쪽 아래, B는 오른쪽 위. 현 AC가 작은 원에 접하고, 반지름 OC와 현 AB가 직각으로 만난다
     answer: $6\sqrt{7}$
 
-  - text: 그림과 같이 중심이 $\mathrm{O}$이고 반지름의 길이가 10인 원의 내부에 $\overline{\mathrm{OP}}=6$인 점 $\mathrm{P}$가 있다. 점 $\mathrm{P}$를 지나고 길이가 정수인 이 원의 현의 개수는?
+  - text: 그림과 같이 반지름의 길이가 10인 원 $\mathrm{C}$의 중심 $\mathrm{O}$와 점 $\mathrm{P}$는 $\overline{\mathrm{OP}}=6$을 만족시킨다. 점 $\mathrm{P}$를 지나고 길이가 자연수인 원 $\mathrm{C}$의 현의 개수는?
     figure: p5.svg
-    alt: 원, 중심 O, 왼쪽 위 안쪽의 점 P. O에서 P를 지나 원 위까지 그은 반지름. PO 위쪽에 6, 반지름 아래쪽에 10이 점선 곡선
+    alt: 원 C(이름은 오른쪽 아래 밖), 중심 O, 왼쪽 위 안쪽의 점 P. O에서 P를 지나 원 위까지 그은 반지름. PO 위쪽에 6, 반지름 아래쪽에 10이 점선 곡선
     choices:
       - $4$
       - $5$

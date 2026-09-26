@@ -239,6 +239,7 @@ def p5():
     g.dim(ax, P, O, "6", side=1)
     g.name(ax, P, "P", dx=1, dy=5, ha="center", va="bottom")
     g.name(ax, O, "O", dy=-5, va="top")
+    g.name(ax, g.polar(O, 10.0, -50), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")   # 원의 이름(선생님 문장 2026-09-26)
     g.save(fig, "p5.svg")
 
 
