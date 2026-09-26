@@ -8,7 +8,7 @@
 
 도형 선 0.7pt, 보조선 0.4pt, 길이는 연마와 같이 점선 곡선(g.dim, 꼭짓점에서 꼭짓점까지 — trim 없음),
 각은 호와 각도 글, 같은 각은 점(ticks=1, 두 쌍이면 ×도), 같은 길이는 g.tick. 좁은 각의 글은 지시선으로 밖에
-(005 x, 004 x, 013 x, 014 x₃~x₅, 022 x, 024 30°). 그림은 단 글 너비(229pt) 안에 들어야 하고 y 범위가
+(005 θ₁°, 004 θ°, 013 θ°, 014 θ₃°~θ₅°, 024 30°). 각의 크기 문자는 θ°(둘이면 θ₁°·θ₂°, 수열이면 θₙ°. 육십분법이라 문자에도 ° — 2026-09-26 선생님 지시). 그림은 단 글 너비(229pt) 안에 들어야 하고 y 범위가
 배율을 정한다. 점의 자리는 책 그림(사진)을 그대로 따른다.
 
 삽화(2026-09-23 선생님 결정): 001 지구·달·태양은 이름 붙은 세 점 — 88°와 태양의 2°를 실제 각으로 그리고
@@ -147,7 +147,7 @@ def p2():
         g.seg(ax, p, q)
     for p, q in ((R, D), (D, C), (C, Q), (B, Q)):
         g.seg(ax, p, q, dashed=True)
-    g.angle(ax, R, B, Q, "$x$", r=14)
+    g.angle(ax, R, B, Q, "$\\theta^{\\circ}$", r=14)
     g.dim(ax, A, D, "8cm", side=1, gap=g.pt(ax, 20))     # R 이름 위로 곡선이 지나가게 높인다
     g.dim(ax, A, B, "4cm", side=-1)
     g.name(ax, A, "A", dx=-4, dy=2, ha="right", va="bottom")
@@ -180,8 +180,9 @@ def p3():
     g.tick(ax, B, C)
     g.tick(ax, D, B)
     g.dim(ax, B, C, "6", side=-1)
-    g.angle(ax, A, B, C, "$x$", r=30)
-    g.angle(ax, A, D, B, "$y$", r=30)
+    g.angle(ax, A, B, C, "$\\theta_1^{\\circ}$", r=30)
+    m = g.angle(ax, A, D, B, "", r=16)                  # 각이 16°라 θ₂°가 안에 안 든다 — 지시선으로 왼쪽 밖에
+    g.leader(ax, m, "$\\theta_2^{\\circ}$", dx=-1, dy=0.25)
     g.name(ax, A, "A", dy=5, va="bottom")
     g.name(ax, B, "B", dx=-5, dy=4, ha="right", va="bottom")
     g.name(ax, C, "C", dx=5, ha="left")
@@ -210,7 +211,7 @@ def p4():
     g.name(ax, (2.0, 0.0), "2", dy=4, va="bottom")
     g.leader(ax, (0.0, -1.0), "$-1$", dx=-1, dy=-0.5, length=12)       # 책처럼 지시선으로 y축 왼쪽에(오른쪽이면 C와 붙어 읽힌다)
     m = g.angle(ax, B, C, A, "", r=12)
-    g.leader(ax, m, "$x$", dx=-0.4, dy=1)
+    g.leader(ax, m, "$\\theta^{\\circ}$", dx=-0.4, dy=1)
     g.name(ax, A, "A", dx=2, dy=5, va="bottom")
     g.name(ax, B, "B", dx=-5, ha="right")
     g.name(ax, C, "C", dy=-5, va="top")
@@ -232,8 +233,8 @@ def p5():
     g.dim(ax, A, C, "$\\sqrt{2}$", side=1)
     g.dim(ax, F, C, "1", side=-1)
     m = g.angle(ax, B, C, A, "", r=12)
-    g.leader(ax, m, "$x$", dx=-0.3, dy=1)
-    g.angle(ax, E, F, A, "$y$", r=12)
+    g.leader(ax, m, "$\\theta_1^{\\circ}$", dx=-0.3, dy=1)
+    g.angle(ax, E, F, A, "$\\theta_2^{\\circ}$", r=24)  # θ₂°가 넓어 r=12에선 EA와 겹친다
     g.name(ax, A, "A", dy=5, va="bottom")
     g.name(ax, B, "B", dx=-5, ha="right")
     g.name(ax, C, "C", dx=4, dy=-4, ha="left", va="top")
@@ -387,7 +388,7 @@ def p12():
     g.corner_mark(ax, D, unit(D, A), unit(D, C))
     g.angle(ax, C, A, B, "", r=12, ticks=1)
     g.angle(ax, C, D, A, "", r=12, ticks=1)
-    g.angle(ax, D, H, C, "$x$", r=14)
+    g.angle(ax, D, H, C, "$\\theta^{\\circ}$", r=14)
     g.dim(ax, A, D, "6", side=1)
     g.dim(ax, D, C, "12", side=1)
     g.name(ax, A, "A", dx=-5, ha="right")
@@ -442,7 +443,7 @@ def p13():
     for p, q in ((V, D), (D, A), (D, C), (D, B)):
         g.seg(ax, p, q, dashed=True)
     m = g.angle(ax, D, B, P, "", r=12)
-    g.leader(ax, m, "$x$", dx=1, dy=-0.69, length=12)     # 대각선 DB와 모서리 DC 사이, 모서리 VB 오른쪽으로
+    g.leader(ax, m, "$\\theta^{\\circ}$", dx=1, dy=-0.69, length=12)     # 대각선 DB와 모서리 DC 사이, 모서리 VB 오른쪽으로
     g.dim(ax, V, A, "1", side=-1)
     g.dot(ax, P)
     g.name(ax, V, "V", dy=5, va="bottom")
@@ -455,42 +456,43 @@ def p13():
 
 
 # ── 014 — 테오도로스 나선(직각삼각형 여섯) ──────────────────────────────
-# A(0, 0), B(−1, 0). 다음 점은 A에서 본 방향을 시계 방향으로 직각 돌린 쪽으로 1cm.
+# O(0, 0), A₁(−1, 0). 다음 점 Aₙ₊₁은 O에서 본 방향을 시계 방향으로 직각 돌린 쪽으로 1cm.
+# 이름은 O, A₁~A₇(2026-09-26 선생님 지시 — A, B, C, …가 어색하니 첨자로). 각은 θ₁°~θ₆°(처음엔 x₁~x₆).
 
 def p14():
-    A = (0.0, 0.0)
+    O = (0.0, 0.0)
     pts = [(-1.0, 0.0)]
     for _ in range(6):
         vx, vy = pts[-1]
         n = math.hypot(vx, vy)
         pts.append((vx + vy / n, vy - vx / n))
-    names = "BCDEFGH"
-    fig, ax = g.canvas(7, -0.75, 2.37)
+    fig, ax = g.canvas(7, -0.78, 2.40)
     for p in pts:
-        g.seg(ax, A, p)
+        g.seg(ax, O, p)
     for p, q in zip(pts, pts[1:]):
         g.seg(ax, p, q)
-        g.corner_mark(ax, p, unit(p, A), unit(p, q))
+        g.corner_mark(ax, p, unit(p, O), unit(p, q))
         g.dim(ax, p, q, "1cm", side=1)
-    g.dim(ax, pts[0], A, "1cm", side=-1)
-    # A의 각 x₁~x₆. 좁은 x₃·x₄·x₅는 지시선으로 밖에
+    g.dim(ax, pts[0], O, "1cm", side=-1)
+    # O의 각 θ₁°~θ₆°. 좁은 θ₃°·θ₄°·θ₅°는 지시선으로 밖에
     for k in range(6):
         p, q = pts[k], pts[k + 1]
-        text = "$x_%d$" % (k + 1)
-        if k in (2, 3, 4):
-            m = g.angle(ax, A, q, p, "", r=16)
-            dxy = {2: (0.15, 1), 3: (0.9, 1), 4: (1.2, 0.6)}[k]
+        text = "$\\theta_%d^{\\circ}$" % (k + 1)
+        if k in (2, 3, 4, 5):                            # θ₆°(22°)도 θ° 글자가 넓어 지시선으로 밑변 아래에
+            m = g.angle(ax, O, q, p, "", r=16)
+            dxy = {2: (0.15, 1), 3: (0.9, 1), 4: (1.2, 0.6), 5: (1, -0.8)}[k]
             g.leader(ax, m, text, dx=dxy[0], dy=dxy[1])
         else:
-            g.angle(ax, A, q, p, text, r=16)
-    g.name(ax, A, "A", dy=-5, va="top")
-    g.name(ax, pts[0], "B", dx=-2, dy=-5, va="top")
-    g.name(ax, pts[1], "C", dx=-5, ha="right")
-    g.name(ax, pts[2], "D", dx=-4, dy=3, ha="right", va="bottom")
-    g.name(ax, pts[3], "E", dy=5, va="bottom")
-    g.name(ax, pts[4], "F", dx=4, dy=3, ha="left", va="bottom")
-    g.name(ax, pts[5], "G", dx=4, dy=3, ha="left", va="bottom")
-    g.name(ax, pts[6], "H", dx=5, ha="left")
+            g.angle(ax, O, q, p, text, r=16)
+    sub = ["$\\mathrm{A}_%d$" % (k + 1) for k in range(7)]
+    g.name(ax, O, "O", dy=-5, va="top")
+    g.name(ax, pts[0], sub[0], dx=-3, dy=-5, va="top")
+    g.name(ax, pts[1], sub[1], dx=-5, ha="right")
+    g.name(ax, pts[2], sub[2], dx=-4, dy=3, ha="right", va="bottom")
+    g.name(ax, pts[3], sub[3], dy=5, va="bottom")
+    g.name(ax, pts[4], sub[4], dx=4, dy=3, ha="left", va="bottom")
+    g.name(ax, pts[5], sub[5], dx=4, dy=3, ha="left", va="bottom")
+    g.name(ax, pts[6], sub[6], dx=5, ha="left")
     g.name(ax, pts[6], "$\\vdots$", dx=2, dy=-9, va="top")
     g.save(fig, "p14.svg")
 
@@ -509,7 +511,7 @@ def p15():
     g.seg(ax, A, D)
     g.tick(ax, A, E, n=2)
     g.tick(ax, D, C, n=2)
-    g.angle(ax, P, B, D, "$\\alpha$", r=12)
+    g.angle(ax, P, B, D, "$\\theta^{\\circ}$", r=12)
     g.name(ax, A, "A", dy=5, va="bottom")
     g.name(ax, B, "B", dx=-4, dy=-3, ha="right", va="top")
     g.name(ax, C, "C", dx=4, dy=-3, ha="left", va="top")
@@ -669,8 +671,8 @@ def p22():
     g.tick(ax, D, C, n=2)
     g.tick(ax, B, E)
     g.tick(ax, E, D)
-    m = g.angle(ax, C, E, B, "", r=12)
-    g.leader(ax, m, "$x$", dx=-0.3, dy=-1)
+    m = g.angle(ax, C, E, B, "", r=16)                 # 각이 19°라 호가 짧다. 책처럼 x는 지시선 없이 밑변 아래에
+    g.name(ax, (m[0], C[1]), "$\\theta^{\\circ}$", dy=-4, va="top")   # (지시선을 호 한가운데서 내리면 호와 한 줄로 보인다 — 독립 검토)
     g.name(ax, A, "A", dy=5, va="bottom")
     g.name(ax, B, "B", dx=-4, dy=-3, ha="right", va="top")
     g.name(ax, C, "C", dx=4, dy=-3, ha="left", va="top")
@@ -687,7 +689,7 @@ def p23():
     E = (0.0, 8.0)
     t = 288 / 208
     F = (-12 + 12 * t, 8 * t)
-    fig, ax = g.canvas(7, -15.85, 15.85)
+    fig, ax = g.canvas(6, -16.75, 16.75)                   # 지문이 일곱 줄이라 6칸(풀 자리 8칸)
     g.circle(ax, O, 12.0)
     g.seg(ax, A, B)
     g.seg(ax, C, D)
@@ -750,7 +752,7 @@ def p25():
     g.name(ax, O, "$60^{\\circ}$", dx=40 * math.cos(math.radians(16.5)),
            dy=40 * math.sin(math.radians(16.5)))
     g.dashed(ax, O, A)                                     # 책처럼 OA는 점선 직선, 6cm는 그 옆에(반지름 규칙과 같다)
-    g.name(ax, lerp(O, A, 0.55), "6cm", dx=-3, dy=5, ha="right", va="bottom")
+    g.leader(ax, lerp(O, A, 0.55), "6cm", dx=-0.4, dy=1, length=10)   # 글만 두면 OP의 길이로 읽힌다(재검토). 책도 지시선
     for p in (X, Y, A):
         g.dot(ax, p)
     g.name(ax, O, "O", dx=-4, dy=-3, ha="right", va="top")
@@ -801,7 +803,7 @@ def p26():
     g.name(ax, (2.2, 1.0), "2m", dx=8, ha="left")
     # P에서 Q를 올려다본 각
     g.seg(ax, P, Q)
-    g.angle(ax, P, Q, (-1.0, 0.0), "$x^{\\circ}$", r=16)
+    g.angle(ax, P, Q, (-1.0, 0.0), "$\\theta^{\\circ}$", r=16)
     for p in (A, Q, P):
         g.dot(ax, p)
     g.name(ax, A, "A", dy=10, va="bottom")
