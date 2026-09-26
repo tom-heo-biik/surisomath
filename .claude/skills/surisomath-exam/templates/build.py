@@ -73,6 +73,7 @@ HERE = Path(__file__).resolve().parent
 SKILLS = HERE.parents[1]
 A4 = SKILLS / "surisomath-a4" / "templates"
 GRIND = SKILLS / "surisomath-grind" / "templates"
+MUNHANG = SKILLS / "surisomath-munhang" / "templates"
 RENDER = A4 / "render.py"
 BASE_CSS = A4 / "base.css"
 EXAM_CSS = HERE / "exam.css"
@@ -101,6 +102,8 @@ GRID = 22.0
 BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 풀 자리가 여기서 끝난다
 COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁은 쪽으로 잰다
 MARK_W = 14.8          # 선지 마커 칸(exam.css의 ol.n7 --pad). ① 10.8pt + 4pt
+GUTTER = 6.0           # 여러 열일 때 칸마다 남겨야 하는 여백(pt). 칸에 딱 맞으면 다음 마커와 붙어 보인다
+                       # (2026-09-26 근호가 좁아지며 삼각비 016·018이 3열에 0.3pt 차로 들어 ②와 ③이 붙었다)
 SUB_W = 33.0           # 소문항 (1) 마커 칸(a4 괄호형 ol.n5 --pad)
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
 TALL = 16.0            # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸 간격
@@ -175,7 +178,7 @@ def choice_layout(choices: list) -> tuple[int, bool]:
     for n in (5, 3, 2, 1):
         if n == 2 and not tall:
             continue
-        if all(w <= COL_W / n for w in widths):
+        if all(w + (GUTTER if n > 1 else 0) <= COL_W / n for w in widths):
             rows = -(-len(choices) // n)
             return n, tall and rows > 1
     return 1, tall
@@ -236,7 +239,19 @@ def figure_html(no: str, p: dict, fig_dir: Path) -> str:
             f'<img src="figures/{svg.name}" alt="{alt}"></div>\n')
 
 
+_nspec = importlib.util.spec_from_file_location("munhang_notation", MUNHANG / "notation.py")
+notation = importlib.util.module_from_spec(_nspec)
+_nspec.loader.exec_module(notation)                     # 표기 검사(surisomath-munhang)
+
 NAME_WARNINGS = 0
+
+def check_notation(no: str, p: dict) -> None:
+    """표기 규칙 검사 — surisomath-munhang/templates/notation.py(길이·크기는 식 안에서 기호, 도형은 낱말).
+    기호가 식 밖에 홀로 있거나 낱말 뒤에 = : < ⊥가 오면 경고."""
+    global NAME_WARNINGS
+    for msg in notation.check(notation.problem_fields(p)):
+        print(f"  ! {no}: {msg}")
+        NAME_WARNINGS += 1
 
 
 def text_names(p: dict) -> set:
@@ -374,6 +389,8 @@ def work_html(no: str, p: dict, fig_dir: Path) -> str:
 
 
 def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
+    if not teacher:
+        check_notation(no, p)
     text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
     work = work_html(no, p, fig_dir) if teacher else ""
     return ('    <div class="col">\n'

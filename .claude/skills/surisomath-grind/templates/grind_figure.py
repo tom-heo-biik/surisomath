@@ -455,7 +455,59 @@ def _tex_fraction() -> None:
     mt.Parser._genfrac = _genfrac
 
 
+def _tex_sqrt() -> None:
+    """mathtext의 근호 배치를 TeX 방식으로 바꿔 끼운다.
+
+    matplotlib은 근호 안 내용의 양옆에 밑줄 두께의 두 배(12pt에서 2pt)씩 빈 상자를 붙이고
+    그 위까지 가로줄을 긋는다. 그래서 √3 뒤가 2pt쯤 비어 "√3 일 때", "1 : √3 ,"처럼
+    글자·쉼표가 떨어져 보인다(2026-09-26 독립 검토 셋이 세 단원에서 다 잡았다). TeX는
+    가로줄을 내용의 너비만큼만 긋는다(The TeXbook 부록 G 규칙 11). 오른쪽 상자를 없애고
+    왼쪽은 근호 획과 내용이 붙지 않게 밑줄 두께 하나만 둔다. 나머지는 matplotlib 3.10의
+    Parser.sqrt 그대로다. 안의 상자 클래스가 없는 판에서는 그대로 둔다."""
+    import matplotlib._mathtext as mt
+
+    if getattr(mt.Parser.sqrt, "_tex", False):
+        return
+    try:
+        AutoHeightChar, Hlist, Hbox, Vlist, Hrule, Glue, Box, Kern = (
+            mt.AutoHeightChar, mt.Hlist, mt.Hbox, mt.Vlist, mt.Hrule, mt.Glue, mt.Box, mt.Kern)
+    except AttributeError:
+        return
+
+    def sqrt(self, toks):
+        root = toks.get("root")
+        body = toks["value"]
+        state = self.get_state()
+        thickness = state.get_current_underline_thickness()
+        height = body.height - body.shift_amount + thickness * 5.0
+        depth = body.depth + body.shift_amount
+        check = AutoHeightChar(r"\__sqrt__", height, depth, state, always=True)
+        height = check.height - check.shift_amount
+        depth = check.depth + check.shift_amount
+        padded_body = Hlist([Hbox(thickness), body])          # TeX처럼 오른쪽 여백 없음
+        rightside = Vlist([Hrule(state), Glue("fill"), padded_body])
+        rightside.vpack(height + (state.fontsize * state.dpi) / (100.0 * 12.0), "exactly", depth)
+        if not root:
+            root = Box(check.width * 0.5, 0.0, 0.0)
+        else:
+            root = Hlist(root)
+            root.shrink()
+            root.shrink()
+        root_vlist = Vlist([Hlist([root])])
+        root_vlist.shift_amount = -height * 0.6
+        return [Hlist([root_vlist, Kern(-check.width * 0.5), check, rightside])]
+
+    sqrt._tex = True
+    mt.Parser.sqrt = sqrt
+    try:                                                      # 이미 만든 파서가 있으면 새로 만들게
+        import matplotlib.mathtext as mathtext
+        mathtext.MathTextParser._parser = None
+    except AttributeError:
+        pass
+
+
 _tex_fraction()
+_tex_sqrt()
 
 
 # ── 기본 도형 ───────────────────────────────────────────────────────────

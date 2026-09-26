@@ -8,7 +8,7 @@ description: "수리소 수학학원의 학교 수행평가 대비 학습지 '�
 
 ## 환경
 포맷: PDF
-선행 스킬: surisomath-a4 — 판형·여백·그리드·서체·렌더·그리드 검사. surisomath-grind — 그림 도우미(grind_figure.py)와 본문 수식 조판(build.py의 rich), 분수 규격. surisomath-exam — 글 너비 재기(width_of)와 SVG 너비
+선행 스킬: surisomath-a4 — 판형·여백·그리드·서체·렌더·그리드 검사. surisomath-grind — 그림 도우미(grind_figure.py)와 본문 수식 조판(build.py의 rich), 분수 규격. surisomath-exam — 글 너비 재기(width_of)와 SVG 너비. surisomath-munhang — 문제 글의 문형·표기(평가원 문형)
 작업 순서: build.py가 그림 → 수식 → 표 → HTML → PDF → 검사를 한 번에 한다. a4의 render.py를 직접 부르지 않는다
 패키지: pyyaml, weasyprint, pdfplumber, matplotlib, pymupdf. fontTools는 matplotlib이 깐다
 
