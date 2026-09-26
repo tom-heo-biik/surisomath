@@ -256,6 +256,7 @@ def p6():
     g.seg(ax, C, D)
     g.seg(ax, A, H)
     g.seg(ax, B, H)
+    center(ax, (0.0, 0.0), "O", dx=4, dy=-2, va="top")           # 원 O(선생님 지시 2026-09-26). 선분 BH의 오른쪽 아래
     g.corner_mark(ax, A, (1, 0), (0, -1))
     g.corner_mark(ax, H, (0, 1), (1, 0))
     g.dim(ax, A, H, "4", side=-1)

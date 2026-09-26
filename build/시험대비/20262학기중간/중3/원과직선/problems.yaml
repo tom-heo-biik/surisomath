@@ -50,9 +50,9 @@ problems:
       - $8$
     answer: ⑤
 
-  - text: 그림과 같이 원의 두 현 $\mathrm{AB}$, $\mathrm{CD}$에 대하여 점 $\mathrm{A}$에서 현 $\mathrm{CD}$에 내린 수선의 발을 $\mathrm{H}$라 하자. 원의 반지름의 길이가 $\sqrt{13}$이고 $\overline{\mathrm{AB}}:\overline{\mathrm{CD}}=1:\sqrt{3}$, $\angle\mathrm{BAH}=90^{\circ}$, $\overline{\mathrm{AH}}=4$일 때, 선분 $\mathrm{BH}$의 길이는?
+  - text: 그림과 같이 원 $\mathrm{O}$의 두 현 $\mathrm{AB}$, $\mathrm{CD}$에 대하여 점 $\mathrm{A}$에서 현 $\mathrm{CD}$에 내린 수선의 발을 $\mathrm{H}$라 하자. 원 $\mathrm{O}$의 반지름의 길이가 $\sqrt{13}$이고 $\overline{\mathrm{AB}}:\overline{\mathrm{CD}}=1:\sqrt{3}$, $\angle\mathrm{BAH}=90^{\circ}$, $\overline{\mathrm{AH}}=4$일 때, 선분 $\mathrm{BH}$의 길이는?
     figure: p6.svg
-    alt: 원의 위쪽에 가로 현 AB, 그 아래에 더 긴 가로 현 CD. A에서 CD에 내린 수선의 발 H, 선분 BH. A와 H에 직각 표시. AH=4가 왼쪽에 점선 곡선
+    alt: 원 O(중심 O 표시). 원의 위쪽에 가로 현 AB, 그 아래에 더 긴 가로 현 CD. A에서 CD에 내린 수선의 발 H, 선분 BH. A와 H에 직각 표시. AH=4가 왼쪽에 점선 곡선
     choices:
       - $4\sqrt{2}$
       - $4\sqrt{3}$
