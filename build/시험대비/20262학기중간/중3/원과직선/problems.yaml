@@ -7,7 +7,7 @@
 # 정답은 답만 적는 정답표다(선생님 방침). 풀이는 넣지 않았다.
 
 problems:
-  - text: 그림과 같이 두 원 $\mathrm{O}$, $\mathrm{O}'$이 각각 두 사각형 $\mathrm{ABCD}$, $\mathrm{CEFD}$에 내접한다. $\overline{\mathrm{AD}}=8$, $\overline{\mathrm{DF}}=5$, $\overline{\mathrm{BC}}=6$, $\overline{\mathrm{CE}}=12$일 때, $\overline{\mathrm{EF}}-\overline{\mathrm{AB}}$의 값은?
+  - text: 그림과 같이 두 원 $\mathrm{O}$, $\mathrm{O}'$은 각각 두 사각형 $\mathrm{ABCD}$, $\mathrm{CEFD}$에 내접한다. $\overline{\mathrm{AD}}=8$, $\overline{\mathrm{DF}}=5$, $\overline{\mathrm{BC}}=6$, $\overline{\mathrm{CE}}=12$일 때, $\overline{\mathrm{EF}}-\overline{\mathrm{AB}}$의 값은?
     figure: p1.svg
     alt: 변 CD를 맞댄 두 사각형 ABCD, CEFD에 원 O, O'이 각각 내접한다. B·C·E는 아래 한 직선 위, A·D·F는 위 한 직선 위. AD=8, DF=5는 위에, BC=6, CE=12는 아래에 점선 곡선
     choices:
@@ -18,7 +18,7 @@ problems:
       - $3$
     answer: ⑤
 
-  - text: 그림과 같이 원의 두 현 $\mathrm{AB}$, $\mathrm{CD}$가 점 $\mathrm{E}$에서 서로 수직으로 만난다. $\overline{\mathrm{AE}}=5$, $\overline{\mathrm{EB}}=9$, $\overline{\mathrm{CD}}=16$일 때, 이 원의 넓이는?
+  - text: 그림과 같이 원의 두 현 $\mathrm{AB}$, $\mathrm{CD}$는 점 $\mathrm{E}$에서 서로 수직으로 만난다. $\overline{\mathrm{AE}}=5$, $\overline{\mathrm{EB}}=9$, $\overline{\mathrm{CD}}=16$일 때, 이 원의 넓이는?
     figure: p2.svg
     alt: 원 안에서 현 AB(왼쪽 위→오른쪽 아래)와 현 CD(오른쪽 위→왼쪽 아래)가 위쪽 E에서 직각으로 만난다. AE=5, EB=9, CD=16이 점선 곡선
     choices:
