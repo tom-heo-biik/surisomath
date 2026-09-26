@@ -268,8 +268,9 @@ def p6():
     g.save(fig, "p6.svg")
 
 
-# ── 007 — OH = OI, 호 AB : 호 BC = 5 : 2 ──────────────────────────────────
-# r = 4. 호 AB = 150°, BC = 60°, CA = 150°. A는 195°, C는 −15°, B는 45° 방향. 삼각형 색칠.
+# ── 007 — OH = OI, 호 PQ : 호 QR = 5 : 2 ──────────────────────────────────
+# r = 4. 호 PQ = 150°, QR = 60°, RP = 150°. P는 195°, R는 −15°, Q는 45° 방향. 삼각형 색칠.
+# 이름은 P, Q, R(책은 A, B, C) — 원 C의 중심 O로 가르려고 꼭짓점 C를 피했다(선생님 지시 2026-09-26).
 
 def p7():
     O = (0.0, 0.0)
@@ -284,11 +285,12 @@ def p7():
     g.corner_mark(ax, H, unit(H, B), unit(H, O))
     g.corner_mark(ax, I, (1, 0), (0, 1))
     center(ax, O, "O")
-    g.name(ax, A, "A", dx=-4, ha="right")
-    g.name(ax, B, "B", dx=3, dy=3, ha="left", va="bottom")
-    g.name(ax, C, "C", dx=4, ha="left")
+    g.name(ax, A, "P", dx=-4, ha="right")
+    g.name(ax, B, "Q", dx=3, dy=3, ha="left", va="bottom")
+    g.name(ax, C, "R", dx=4, ha="left")
     g.name(ax, H, "H", dx=-4, dy=2, ha="right", va="bottom")
     g.name(ax, I, "I", dy=-5, va="top")
+    g.name(ax, g.polar(O, 4.0, 240), "$\\mathrm{C}$", dx=-3, dy=-3, ha="right", va="top")   # 원의 이름
     g.save(fig, "p7.svg")
 
 

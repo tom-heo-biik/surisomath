@@ -61,9 +61,9 @@ problems:
       - $6$
     answer: ①
 
-  - text: 그림과 같이 원 $\mathrm{O}$의 두 현 $\mathrm{AB}$, $\mathrm{AC}$에 대하여 원의 중심 $\mathrm{O}$에서 두 현 $\mathrm{AB}$, $\mathrm{AC}$에 내린 수선의 발을 각각 $\mathrm{H}$, $\mathrm{I}$라 하자. 원 $\mathrm{O}$의 반지름의 길이가 4이고 $\overline{\mathrm{OH}}=\overline{\mathrm{OI}}$, $\overset{\frown}{\mathrm{AB}}:\overset{\frown}{\mathrm{BC}}=5:2$일 때, 삼각형 $\mathrm{ABC}$의 넓이는?
+  - text: 그림과 같이 원 $\mathrm{C}$의 중심 $\mathrm{O}$에서 두 현 $\mathrm{PQ}$, $\mathrm{PR}$에 내린 수선의 발을 각각 $\mathrm{H}$, $\mathrm{I}$라 하자. 원 $\mathrm{C}$의 반지름의 길이가 4이고 $\overline{\mathrm{OH}}=\overline{\mathrm{OI}}$, $\overset{\frown}{\mathrm{PQ}}:\overset{\frown}{\mathrm{QR}}=5:2$일 때, 삼각형 $\mathrm{PQR}$의 넓이는?
     figure: p7.svg
-    alt: 원 O. A 왼쪽, C 오른쪽(중심 조금 아래의 가로 현 AC), B 오른쪽 위. 삼각형 ABC 색칠. O에서 AB, AC에 내린 수선의 발 H, I에 직각 표시
+    alt: 원 C(이름은 왼쪽 아래 밖), 중심 O. P 왼쪽, R 오른쪽(중심 조금 아래의 가로 현 PR), Q 오른쪽 위. 삼각형 PQR 색칠. O에서 PQ, PR에 내린 수선의 발 H, I에 직각 표시
     choices:
       - $8+4\sqrt{3}$
       - $8+6\sqrt{3}$
