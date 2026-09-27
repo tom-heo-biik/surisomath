@@ -29,10 +29,10 @@ problems:
       - $70\pi$
     answer: ③
 
-  - text: 그림과 같이 원 $\mathrm{O}$의 세 현 $\mathrm{AB}$, $\mathrm{CD}$, $\mathrm{EF}$는 서로 평행하고, 이웃한 두 현 사이의 거리가 같다. $\overline{\mathrm{AB}}=6$cm, $\overline{\mathrm{CD}}=8$cm, $\overline{\mathrm{EF}}=2\sqrt{21}$cm일 때, 원 $\mathrm{O}$의 둘레의 길이를 구하시오.
+  - text: 그림과 같이 원 $\mathrm{O}$의 세 현 $\mathrm{AB}$, $\mathrm{CD}$, $\mathrm{EF}$는 서로 평행하고, 이웃한 두 현 사이의 거리가 같다. $\overline{\mathrm{AB}}=6$, $\overline{\mathrm{CD}}=8$, $\overline{\mathrm{EF}}=2\sqrt{21}$일 때, 원 $\mathrm{O}$의 둘레의 길이를 구하시오.
     figure: p3.svg
     alt: 원의 왼쪽 아래에 오른쪽 아래로 기운 평행한 현 셋. 바깥부터 AB, CD, EF. 왼쪽 위 끝이 위부터 E, C, A, 아래 끝이 왼쪽부터 B, D, F. 중심 O
-    answer: $10\pi$cm
+    answer: $10\pi$
 
   - text: 그림과 같이 점 $\mathrm{O}$를 중심으로 하는 두 원 $\mathrm{C}_1$, $\mathrm{C}_2$가 있다. 원 $\mathrm{C}_1$의 두 현 $\mathrm{AB}$, $\mathrm{AC}$에 대하여 현 $\mathrm{AC}$는 원 $\mathrm{C}_2$에 접하고 $\overline{\mathrm{OC}}\perp\overline{\mathrm{AB}}$이다. 두 원 $\mathrm{C}_1$, $\mathrm{C}_2$의 반지름의 길이가 각각 8, 6일 때, 선분 $\mathrm{AB}$의 길이를 구하시오.
     figure: p4.svg
