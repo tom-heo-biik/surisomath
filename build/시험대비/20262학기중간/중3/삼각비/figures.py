@@ -340,7 +340,7 @@ def p10():
     g.right_angle(ax, H, -1, 1)
     g.angle(ax, B, C, A, "$28^{\\circ}$", r=16)
     g.angle(ax, C, H, A, "$42^{\\circ}$", r=14)
-    g.dim(ax, B, C, "100m", side=-1)
+    g.dim(ax, B, C, "100", side=-1)
     g.name(ax, B, "B", dx=-5, ha="right")
     g.name(ax, C, "C", dx=2, dy=-5, va="top")
     g.name(ax, H, "H", dx=5, dy=-2, ha="left", va="top")

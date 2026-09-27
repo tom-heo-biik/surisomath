@@ -82,9 +82,9 @@ problems:
         - ['$12^{\circ}$', '0.20', '0.97', '0.21']
     answer: $6^{\circ}$
 
-  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 꼭짓점 $\mathrm{A}$에서 변 $\mathrm{BC}$의 연장선에 내린 수선의 발을 $\mathrm{H}$라 하자. $\angle\mathrm{ABC}=28^{\circ}$, $\angle\mathrm{ACH}=42^{\circ}$, $\overline{\mathrm{BC}}=100$m일 때, 선분 $\mathrm{AH}$의 길이를 주어진 삼각비의 표를 이용하여 소수점 아래 첫째 자리에서 반올림하여 구하시오.
+  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 꼭짓점 $\mathrm{A}$에서 변 $\mathrm{BC}$의 연장선에 내린 수선의 발을 $\mathrm{H}$라 하고, 선분 $\mathrm{AH}$의 길이를 $k$라 하자. $\angle\mathrm{ABC}=28^{\circ}$, $\angle\mathrm{ACH}=42^{\circ}$, $\overline{\mathrm{BC}}=100$일 때, $\dfrac{10000}{k}$의 값을 아래 삼각비의 표를 이용하여 구하시오.
     figure: p10.svg
-    alt: B 왼쪽, C 오른쪽, H 더 오른쪽, A는 H 위. 28°는 B, 42°는 C(바깥각 ACH). 100m는 BC 아래. H에 직각
+    alt: B 왼쪽, C 오른쪽, H 더 오른쪽, A는 H 위. 28°는 B, 42°는 C(바깥각 ACH). 100은 BC 아래. H에 직각
     table:
       head: ['각도', '$\sin$', '$\cos$', '$\tan$']
       rows:
@@ -92,7 +92,7 @@ problems:
         - ['$42^{\circ}$', '0.6691', '0.7431', '0.9004']
         - ['$48^{\circ}$', '0.7431', '0.6691', '1.1106']
         - ['$62^{\circ}$', '0.8829', '0.4695', '1.8807']
-    answer: 130m
+    answer: $77.01$
 
   - text: 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}$, $\angle\mathrm{A}=36^{\circ}$, $\overline{\mathrm{BC}}=2$인 이등변삼각형 $\mathrm{ABC}$에서 각 $\mathrm{B}$의 이등분선이 변 $\mathrm{AC}$와 만나는 점을 $\mathrm{D}$라 하자. 다음 물음에 답하시오.
     figure: p11.svg
