@@ -932,7 +932,8 @@ def p30():
     g.name(ax, D, "D", dx=-4, dy=-3, ha="right", va="top")    # 위쪽은 변 D'C'이 지나 그 위의 점처럼 보인다
     g.name(ax, B2, "$\\mathrm{B}'$", dx=2, dy=-5, va="top")   # 오른쪽은 변 BC가 지난다
     g.name(ax, C2, "$\\mathrm{C}'$", dy=5, va="bottom")
-    g.name(ax, D2, "$\\mathrm{D}'$", dx=-5, ha="right")   # 교점 E는 지문이 부르지 않아 이름을 안 붙인다
+    g.name(ax, D2, "$\\mathrm{D}'$", dx=-5, ha="right")
+    g.name(ax, E, "E", dx=3, dy=4, ha="left", va="bottom")   # 선생님 문장(2026. 9. 27.)이 E를 부른다. 책처럼 교점 위 오른쪽, 두 정사각형 밖
     g.save(fig, "p30.svg")
 
 
