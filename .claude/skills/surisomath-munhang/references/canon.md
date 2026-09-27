@@ -327,7 +327,7 @@ $x^2$의 계수가 1인 세 이차함수 $y=f(x)$, $y=g(x)$, $y=h(x)$의 그래�
 
 #### 정본
 ```
-그림과 같이 $\overline{\mathrm{OA}}=2$인 정사각형 $\mathrm{OABC}$와 부채꼴 $\mathrm{OAC}$에서 두 변 $\mathrm{AB}$, $\mathrm{BC}$와 호 $\mathrm{AC}$에 접하는 원 $\mathrm{O}'$이 있다. 이때 원 $\mathrm{O}'$의 반지름의 길이를 구하시오.
+그림과 같이 $\overline{\mathrm{OA}}=2$인 정사각형 $\mathrm{OABC}$와 부채꼴 $\mathrm{OAC}$에 대하여 두 변 $\mathrm{AB}$, $\mathrm{BC}$와 호 $\mathrm{AC}$에 접하는 원 $\mathrm{O}'$이 있다. 이때 원 $\mathrm{O}'$의 반지름의 길이를 구하시오.
 ```
 
 
