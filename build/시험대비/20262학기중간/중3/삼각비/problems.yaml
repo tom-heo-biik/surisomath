@@ -193,7 +193,7 @@ problems:
       - $\dfrac{72\sqrt{13}}{13}$
     answer: ⑤
 
-  - text: 그림과 같이 $\overline{\mathrm{AB}}=12$, $\overline{\mathrm{AC}}=8\sqrt{2}$, $\angle\mathrm{A}=75^{\circ}$인 삼각형 $\mathrm{ABC}$가 있다. $\angle\mathrm{BAD}=45^{\circ}$, $\angle\mathrm{DAC}=30^{\circ}$가 되도록 변 $\mathrm{BC}$ 위에 점 $\mathrm{D}$를 잡을 때, $\dfrac{\overline{\mathrm{BD}}}{\overline{\mathrm{DC}}}$의 값은?
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=12$, $\overline{\mathrm{AC}}=8\sqrt{2}$인 삼각형 $\mathrm{ABC}$에서 변 $\mathrm{BC}$ 위의 점 $\mathrm{D}$에 대하여 $\angle\mathrm{BAD}=45^{\circ}$, $\angle\mathrm{DAC}=30^{\circ}$일 때, $\dfrac{\overline{\mathrm{BD}}}{\overline{\mathrm{DC}}}$의 값은?
     figure: p24.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래, D는 BC 위. AD. 12는 AB 바깥, 8√2는 AC 바깥. 45°(AB~AD), 30°(AD~AC, 지시선)
     choices:
