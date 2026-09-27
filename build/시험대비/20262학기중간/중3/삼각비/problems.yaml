@@ -60,13 +60,13 @@ problems:
     alt: P 위, Q 왼쪽 아래(직각), R 오른쪽 아래. 빗변 PR 위에 지름을 둔 반원 둘이 PQ 쪽으로 볼록. 큰 반원 C는 PQ와 QR에 접하고, 작은 반원 C'은 PQ에 접하며 C와 외접한다. 30°는 P. r, r'은 빗변 위의 지름에 바깥쪽 점선 곡선으로(r'은 지시선). C는 큰 반원 안, C'은 지시선으로 PQ 왼쪽에
     answer: $3$
 
-  - text: $0<\theta_1<\theta_2<90$인 두 각 $\theta_1^{\circ}$, $\theta_2^{\circ}$에 대하여 $\tan\theta_2^{\circ}$가 이차방정식 $2x^2-x-1=0$의 한 근일 때, $\sqrt{(\cos\theta_1^{\circ}-\sin\theta_1^{\circ})^2}-\sqrt{(\cos\theta_1^{\circ}+\sin\theta_1^{\circ})^2}$을 간단히 한 것은?
+  - text: 이차함수 $f(x)=2x^2-x-1$에 대하여 $f(\tan\theta_0^{\circ})=0$일 때, $\sqrt{(\cos\theta^{\circ}-\sin\theta^{\circ})^2}-\sqrt{(\cos\theta^{\circ}+\sin\theta^{\circ})^2}$을 간단히 한 것은? (단, $0<\theta<\theta_0<90$)
     choices:
-      - $-2\sin\theta_1^{\circ}$
-      - $-2\cos\theta_1^{\circ}$
+      - $-2\sin\theta^{\circ}$
+      - $-2\cos\theta^{\circ}$
       - $0$
-      - $2\sin\theta_1^{\circ}$
-      - $2\cos\theta_1^{\circ}$
+      - $2\sin\theta^{\circ}$
+      - $2\cos\theta^{\circ}$
     answer: ①
 
   - text: 그림과 같이 도로의 수평 거리에 대한 수직 거리의 비율을 나타낸 도로 표지판이 있다. 이 도로가 수평면에 대하여 기울어진 각의 크기를 주어진 삼각비의 표를 이용하여 구하시오.
