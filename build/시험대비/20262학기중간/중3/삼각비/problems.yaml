@@ -161,7 +161,7 @@ problems:
     alt: A 왼쪽, B 오른쪽 아래(직각), C 오른쪽 위. P는 AC 위. BP. 30°는 A. 4는 BC 오른쪽
     answer: $30$
 
-  - text: 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=6$, $\angle\mathrm{B}=30^{\circ}$인 이등변삼각형 $\mathrm{ABC}$에서 밑변 $\mathrm{BC}$를 삼등분하는 두 점 중 점 $\mathrm{B}$에 가까운 점을 $\mathrm{D}$라 할 때, 선분 $\mathrm{AD}$의 길이를 구하시오.
+  - text: 그림과 같이 $\angle\mathrm{B}=30^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=6$인 이등변삼각형 $\mathrm{ABC}$에서 $\overline{\mathrm{BD}}:\overline{\mathrm{CD}}=1:2$가 되도록 하는 변 $\mathrm{BC}$ 위의 점을 $\mathrm{D}$라 할 때, 선분 $\mathrm{AD}$의 길이를 구하시오.
     figure: p20.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 BC 위 B 쪽 삼등분점. AD. 30°는 B. AB, AC 같은 길이(두 획). 6은 AB 바깥
     answer: $2\sqrt{3}$
