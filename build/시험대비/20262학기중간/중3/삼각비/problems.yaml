@@ -145,7 +145,7 @@ problems:
       - $2\sqrt{3}-1$
     answer: ②
 
-  - text: 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{BC}}=\overline{\mathrm{AD}}=6$, $\angle\mathrm{BAD}=90^{\circ}$인 사각형 $\mathrm{ABCD}$에서 $\angle\mathrm{CBD}+\angle\mathrm{CDB}=45^{\circ}$일 때, 선분 $\mathrm{CD}$의 길이는?
+  - text: 그림과 같이 $\angle\mathrm{BAD}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{BC}}=\overline{\mathrm{AD}}=6$인 사각형 $\mathrm{ABCD}$가 있다. $\angle\mathrm{CBD}+\angle\mathrm{CDB}=45^{\circ}$일 때, 선분 $\mathrm{CD}$의 길이는?
     figure: p18.svg
     alt: A 위(직각), B 왼쪽, D 오른쪽, C 아래(BD 아래). 대각선 BD. AB, AD, BC 같은 길이(두 획). 6은 AD 바깥
     choices:

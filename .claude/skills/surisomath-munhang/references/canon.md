@@ -392,6 +392,25 @@ $0^{\circ}<A<B<90^{\circ}$일 때, 이차방정식 $2x^2-x-1=0$의 한 근이 $\
 사각형의 조건인 "선분 AC는 각 C의 이등분선이다"를 사각형에 먼저 두고, 점 H와 E의 정의를 한 문장에 모았습니다. 기호 `$\overline{\mathrm{AC}}$`와 `$\angle\mathrm{C}$`는 길이와 크기라 도형을 가리킬 때는 낱말 "선분 AC", "각 C"로 썼습니다. "AC, DH의 교점"은 "선분 AC와 선분 DH의 교점"으로 하나씩 불렀습니다. 선생님의 지시입니다. ∠x는 θ°로 바꿨고 그림은 책 그대로입니다.
 
 
+### 018
+
+
+#### 책
+```
+오른쪽 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{BC}}=\overline{\mathrm{AD}}=6$, $\angle\mathrm{BAD}=90^{\circ}$인 사각형 $\mathrm{ABCD}$가 있다. $\angle\mathrm{CBD}+\angle\mathrm{CDB}=45^{\circ}$일 때, $\overline{\mathrm{CD}}$의 길이는?
+```
+
+
+#### 정본
+```
+그림과 같이 $\angle\mathrm{BAD}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{BC}}=\overline{\mathrm{AD}}=6$인 사각형 $\mathrm{ABCD}$가 있다. $\angle\mathrm{CBD}+\angle\mathrm{CDB}=45^{\circ}$일 때, 선분 $\mathrm{CD}$의 길이는?
+```
+
+
+#### 바뀐 것
+"오른쪽 그림과 같이"를 "그림과 같이"로 열었습니다. 책이 길이 뒤에 둔 ∠BAD = 90°를 선생님이 앞으로 옮겨 "∠BAD = 90°, AB = BC = AD = 6인 사각형 ABCD가 있다"로 했습니다. 028 정본 "∠B = 40°, AB = a, AC = b인 삼각형"과 같은 차례입니다. 존재문으로 열고 "…일 때"로 조건을 잇는 짜임은 책 그대로입니다. 물음의 기호 CD는 도형이라 낱말 "선분 CD"로 고쳐 썼습니다. 선지와 답 ③, 그림은 책 그대로 옮겼습니다.
+
+
 ### 022
 
 
