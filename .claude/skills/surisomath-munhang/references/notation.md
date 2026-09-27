@@ -54,7 +54,7 @@
 - 루트. `$\sqrt{(\cdots)^2}$`, `$2\sqrt{3}$`.
 - 각도. `$35^{\circ}$`, `$\angle\mathrm{BAC}=60^{\circ}$`.
 - 삼각비. `$\tan 52^{\circ}$`, `$\tan 63^{\circ}=1.96$`, `$\dfrac{80}{\tan 52^{\circ}+\tan 35^{\circ}}$`.
-- 함수. `$\sin x$`, `$f(x)$`, `$y=\dfrac{1}{4}x^2$`.
+- 함수. `$\sin\theta$`(호도법이라 ° 없음), `$f(x)$`, `$y=\dfrac{1}{4}x^2$`.
 - 프라임과 첨자. `삼각형 $\mathrm{A}'\mathrm{BC}'$`, `$\mathrm{A}_n$`.
 - 좌표. `$(n,\,n)$`, `$\mathrm{A}(-1,\,3)$`, `$(2,\,{-3})$`.
 
