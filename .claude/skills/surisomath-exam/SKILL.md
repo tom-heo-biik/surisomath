@@ -39,7 +39,7 @@ description: "수리소 수학학원의 실전 모의 학습지 '시험대비' �
 
 ## 지문과 표기
 문항의 문형과 표기와 검토는 surisomath-munhang에 있고 여기에 시험대비 양식에 걸린 것만 둡니다. 퇴고는 problems.md의 지문을 고치고 머리에 무엇을 어떻게 바꿨는지 적는 일이며 yaml은 그것을 따릅니다. 표기는 연마의 조판 규칙 위에 munhang의 낱말과 기호의 경계를 얹은 것입니다. 빌드가 문제마다 표기를 검사하고 봉인된 문항의 글을 대조하므로 사람은 뜻만 가립니다. 정답 표기의 세부는 spec.md 정답 줄에 있습니다.
-- build.py가 문제마다 munhang/templates/notation.py의 check()를 불러 표기 경계를 `!`로 잡습니다. 단원 폴더에 sealed.json이 있으면 munhang/templates/seal.py로 확정 문항의 글과 봉인된 풀이를 대조해 바뀌었으면 `!`로 멈춥니다. 봉인은 선생님이 번호를 짚었을 때만 합니다.
+- build.py가 문제마다 munhang/templates/notation.py의 check()를 불러 표기 경계를 `!`로 잡습니다. 단원 폴더에 sealed.json이 있으면 munhang/templates/seal.py로 확정 문항의 글과 봉인된 풀이를 대조해 바뀌었으면 `!`로 멈춥니다. problems.md 확정 줄과 canon.md 쌍이 봉인과 어긋나도 `!`입니다. 봉인은 선생님이 번호를 짚었을 때만 합니다.
 - 분수의 분자에 근호가 들면 수식이 글줄 상자 위로 3pt쯤 넘습니다. 교과서 표기라 그대로 쓰되 잇단 두 줄에서 세로로 겹치게 두지 않습니다. 겹치면 build.py가 단마다 경고합니다.
 
 

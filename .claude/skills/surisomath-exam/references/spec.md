@@ -193,6 +193,7 @@ solution: `|` 블록
 --no-check: 그리드 검사 건너뜀
 표기 검사: 문제마다 munhang/templates/notation.py의 check(). `!`는 NAME_WARNINGS에 더한다
 봉인 대조: 단원 폴더에 sealed.json이 있으면 munhang/templates/seal.py로 글과 봉인된 풀이를 대조. 바뀌었으면 `!`로 멈춘다
+확정 기록 대조: seal.records()로 problems.md 확정 줄과 canon.md 쌍(단원 절, 번호 차례, 정본 = yaml 글)을 봉인과 맞춘다. 어긋나면 `!`
 
 
 ## 패키지

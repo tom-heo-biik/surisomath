@@ -608,6 +608,9 @@ def main() -> int:
     for msg in seal.check(src, data):                   # 선생님이 확정한 문항의 글이 바뀌었으면 멈춘다
         print(f"  ! {msg}")
         warnings += 1
+    for msg in seal.records(src, data):                 # 확정 줄과 canon.md 쌍이 봉인과 어긋났으면
+        print(f"  ! {msg}")
+        warnings += 1
     m = meta(data, out_dir)
     if width_of(m["head"], 10.0) > 475 - 120:       # 첫 쪽 오른쪽 끝의 "이름" 글과 90pt 빈 자리
         print(f"  ! 머리줄 '{m['head']}'이 길어 이름 칸과 겹친다. yaml의 exam·unit을 줄여라")

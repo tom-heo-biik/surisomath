@@ -16,17 +16,24 @@ text·conditions·after·table·notes·subs·choices·answer(그림 파일 이�
     python seal.py <problems.yaml> --list        봉인 목록(풀이가 봉인된 문항은 풀이 지문도 보인다)
 
 봉인은 사람이 건다. 모델이 알아서 걸거나 풀지 않는다(2026-09-26 선생님 요청 — 원과직선 003·004가 첫 봉인).
+
+--check와 빌드는 봉인 목록과 두 기록도 맞춰 본다(records). problems.md 머리의 "확정" 줄, 그리고
+references/canon.md의 책과 정본 쌍이다. 쌍은 그 단원 절 아래 번호 차례에 있어야 하고 정본은 yaml 글과 같아야 한다.
+2026-09-27에 삼각비 019 쌍이 이차함수 절에 들어가 있었는데 봉인 대조는 canon.md를 안 봐서 아무것도 멈추지 않았다.
 """
 from __future__ import annotations
 
 import hashlib
 import io
 import json
+import re
 import sys
 from pathlib import Path
 
 FIELDS = ("text", "after", "answer")
 LISTS = ("conditions", "notes", "subs", "choices")
+CANON = Path(__file__).resolve().parent.parent / "references" / "canon.md"
+LABELS = "가나다라마바사아자차"
 
 
 def digest(p: dict) -> str:
@@ -96,6 +103,93 @@ def check(yaml_path: Path, data: dict) -> list[str]:
     return out
 
 
+def canon_text(p: dict) -> str:
+    """canon.md의 정본 블록에 옮겨 적는 글. text, 조건 상자는 (가) (나)를 한 줄씩, 그리고 after."""
+    lines = [str(p.get("text", "")).strip()]
+    for i, c in enumerate(p.get("conditions") or []):
+        lines.append(f"({LABELS[i]}) {str(c).strip()}")
+    if p.get("after"):
+        lines.append(str(p["after"]).strip())
+    return "\n".join(lines)
+
+
+def canon_units(path: Path = CANON) -> dict:
+    """canon.md를 {단원: [(번호, {"책", "정본", "바뀐 것"}), …]}로 읽는다. 번호는 적힌 차례 그대로다."""
+    out = {}
+    s = path.read_text(encoding="utf-8")
+    for um in re.finditer(r"^## ([^\n]+)\n(.*?)(?=^## |\Z)", s, re.S | re.M):
+        entries = []
+        for pm in re.finditer(r"^### (\d{3})\n(.*?)(?=^### |\Z)", um.group(2), re.S | re.M):
+            parts = dict(re.findall(r"^#### (책|정본)\n```\n(.*?)\n```", pm.group(2), re.S | re.M))
+            ch = re.search(r"^#### 바뀐 것\n([^\n]+)", pm.group(2), re.M)
+            if ch:
+                parts["바뀐 것"] = ch.group(1)
+            entries.append((pm.group(1), parts))
+        out[um.group(1).strip()] = entries
+    return out
+
+
+def confirmed(md_path: Path) -> list[str]:
+    """problems.md 머리의 "확정(2026. 9. 26.): 001, 002 …" 줄에 적힌 번호. 한 줄에 날짜가 여럿이어도 된다."""
+    nos = []
+    for line in md_path.read_text(encoding="utf-8").splitlines():
+        if line.startswith("확정("):
+            for seg in re.findall(r"확정\([^)]*\):\s*([\d, ]+)", line):
+                nos += re.findall(r"\d{3}", seg)
+    return sorted(set(nos))
+
+
+def records(yaml_path: Path, data: dict, canon: Path = CANON) -> list[str]:
+    """봉인 목록과 확정 기록 둘(problems.md 확정 줄, canon.md 쌍)을 맞춰 어긋난 곳마다 경고 글을 돌려준다.
+    "확정 ㄱㄱ"의 네 가지 가운데 커밋을 뺀 셋을 기계가 본다. 봉인이 없으면 빈 목록."""
+    seals = load(yaml_path)
+    if not seals:
+        return []
+    sealed = sorted(seals)
+    unit = yaml_path.parent.name
+    out = []
+    md = yaml_path.parent / "problems.md"
+    if md.is_file():
+        conf = confirmed(md)
+        lack, over = [n for n in sealed if n not in conf], [n for n in conf if n not in seals]
+        if lack:
+            out.append(f"problems.md 머리의 확정 줄에 봉인한 {', '.join(lack)}이(가) 없다")
+        if over:
+            out.append(f"problems.md 머리의 확정 줄에 봉인이 없는 {', '.join(over)}이(가) 있다")
+    if not canon.is_file():
+        return out + [f"{canon}이 없다"]
+    units = canon_units(canon)
+    entries = units.get(unit)
+    if entries is None:
+        return out + [f"canon.md에 '## {unit}' 절이 없다. 봉인한 {len(sealed)}문항의 책과 정본 쌍을 넣어라"]
+    now = dict(numbered(data))
+    nos = [no for no, _ in entries]
+    dup = sorted({no for no in nos if nos.count(no) > 1})
+    if dup:
+        out.append(f"canon.md {unit} 절에 {', '.join(dup)}이(가) 두 번 나온다")
+    if nos != sorted(nos):
+        out.append(f"canon.md {unit} 절의 번호 차례가 어긋났다({', '.join(nos)})")
+    for no in sealed:
+        if no in nos:
+            continue
+        elsewhere = [u for u, es in units.items() if u != unit and no in now
+                     and any(n == no and parts.get("정본") == canon_text(now[no]) for n, parts in es)]
+        where = f" '## {elsewhere[0]}' 절에 들어가 있다" if elsewhere else ""
+        out.append(f"canon.md {unit} 절에 봉인한 {no}의 책과 정본 쌍이 없다.{where}")
+    extra = sorted(set(nos) - set(sealed))
+    if extra:
+        out.append(f"canon.md {unit} 절에 봉인이 없는 {', '.join(extra)}의 쌍이 있다")
+    for no, parts in entries:
+        if no not in seals or no not in now:
+            continue
+        for k in ("책", "정본", "바뀐 것"):
+            if not parts.get(k):
+                out.append(f"canon.md {unit} {no}: '{k}'이(가) 비었다")
+        if parts.get("정본") and parts["정본"] != canon_text(now[no]):
+            out.append(f"canon.md {unit} {no}: 정본이 problems.yaml의 글과 다르다. yaml을 한 글자도 바꾸지 말고 옮겨라")
+    return out
+
+
 def main(argv: list[str]) -> int:
     import datetime
 
@@ -112,10 +206,11 @@ def main(argv: list[str]) -> int:
     cmd, rest = argv[2], argv[3:]
     if cmd == "--check":
         msgs = check(yaml_path, data)
-        for m in msgs:
+        recs = records(yaml_path, data)
+        for m in msgs + recs:
             print("  ! " + m)
-        print(f"봉인 대조: {len(seals)}개 중 어긋남 {len(msgs)}개")
-        return 1 if msgs else 0
+        print(f"봉인 대조: {len(seals)}개 중 어긋남 {len(msgs)}개, 확정 기록 어긋남 {len(recs)}개")
+        return 1 if msgs or recs else 0
     if cmd == "--list":
         for no, s in sorted(seals.items()):
             sol = f"  풀이 {s['solution']}" if s.get("solution") else ""
