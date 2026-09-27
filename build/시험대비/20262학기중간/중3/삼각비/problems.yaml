@@ -50,7 +50,7 @@ problems:
     alt: B 왼쪽 끝, D, E, F, C 차례로, A는 C 위(직각). AB, AD, AE, AF. 네 선분에 같은 길이 표시. √2는 AC 오른쪽, 4는 BC 아래(D, E, F 이름 아래). θ₁°는 B, θ₂°는 E
     answer: $\sqrt{2}$
 
-  - text: 그림과 같이 한 변의 길이가 2인 정사각형 $\mathrm{OABC}$의 꼭짓점 $\mathrm{O}$를 중심으로 하고 선분 $\mathrm{OA}$를 반지름으로 하는 사분원이 있다. 이 정사각형의 두 변 $\mathrm{AB}$, $\mathrm{BC}$와 이 사분원의 호 $\mathrm{AC}$에 접하는 원 $\mathrm{O}'$의 반지름의 길이를 구하시오.
+  - text: 그림과 같이 $\overline{\mathrm{OA}}=2$인 정사각형 $\mathrm{OABC}$와 부채꼴 $\mathrm{OAC}$에서 두 변 $\mathrm{AB}$, $\mathrm{BC}$와 호 $\mathrm{AC}$에 접하는 원 $\mathrm{O}'$이 있다. 이때 원 $\mathrm{O}'$의 반지름의 길이를 구하시오.
     figure: p6.svg
     alt: 정사각형 A 왼쪽 위, O 오른쪽 위, B 왼쪽 아래, C 오른쪽 아래. 호 AC가 B 쪽으로 볼록. 귀퉁이 B와 호 사이의 작은 원 O'. 2는 AO 위
     answer: $6-4\sqrt{2}$
