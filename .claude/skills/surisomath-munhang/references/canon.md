@@ -582,6 +582,25 @@ $0^{\circ}<A<B<90^{\circ}$일 때, 이차방정식 $2x^2-x-1=0$의 한 근이 $\
 "오른쪽 그림의 △ABC는 정삼각형이다"를 "그림과 같이 정삼각형 ABC에서"로 열었습니다. 책의 기호 AC, BD는 도형이라 낱말 "변 AC", "선분 BD"로 바꿨습니다. 두 중점의 정의와 각의 조건이 한 문장에 있던 것을 "…을 E라 하자. ∠BCE = θ°라 할 때"로 갈랐습니다(012 정본의 꼴). 각의 크기 문자는 교과서의 ∠x 대신 θ°입니다. 그림의 각 θ°는 19°로 좁아서 호의 반지름을 12에서 22로 키웠습니다. 물음과 답은 책 그대로입니다.
 
 
+### 023
+
+
+#### 책
+```
+다음 그림과 같이 반지름의 길이가 12인 원의 중심 $\mathrm{O}$에서 두 지름 $\mathrm{AB}$, $\mathrm{CD}$가 수직으로 만난다. $\overline{\mathrm{OC}}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{OE}}:\overline{\mathrm{EC}}=2:1$이고 반직선 $\mathrm{AE}$가 원과 만나는 점을 $\mathrm{F}$라 할 때, $\overline{\mathrm{AF}}$의 길이는?
+```
+
+
+#### 정본
+```
+그림과 같이 중심이 $\mathrm{O}$인 원 $\mathrm{C}$의 두 지름 $\mathrm{PQ}$, $\mathrm{RS}$는 $\overline{\mathrm{PQ}}=\overline{\mathrm{RS}}=24$, $\overline{\mathrm{PQ}}\perp\overline{\mathrm{RS}}$이고 호 $\mathrm{QS}$ 위의 점 $\mathrm{T}$에 대하여 선분 $\mathrm{PT}$와 선분 $\mathrm{OS}$의 교점을 $\mathrm{U}$라 하자. $\overline{\mathrm{OU}}:\overline{\mathrm{US}}=2:1$일 때, 선분 $\mathrm{PT}$의 길이는?
+```
+
+
+#### 바뀐 것
+선생님이 정한 문장입니다. 중심 O를 문장에서 점으로 쓰므로 원에 이름 C를 주었고(원과직선 005) 점 이름 A, B, C, D, E, F는 P, Q, S, R, U, T로 바꿨습니다. 반지름 12는 "PQ = RS = 24"로, 수직은 "PQ ⊥ RS"로 두 지름의 진술에 얹었습니다. 책은 점 E를 잡고 반직선 AE가 원과 만나는 점을 F라 했지만 호 QS 위의 점 T를 먼저 잡고 선분 PT와 선분 OS의 교점을 U라 했습니다. 그림의 24는 지시선으로 달았고 답 ⑤는 그대로입니다.
+
+
 ### 024
 
 
