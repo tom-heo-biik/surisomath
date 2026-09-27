@@ -551,7 +551,7 @@ def p17():
     O, A, B = (0.0, 0.0), (4.0, 0.0), (0.0, 4.0)
     P = g.polar(O, 4.0, 60)
     r = 2 * R3 - 2
-    fig, ax = g.canvas(6, -0.67, 4.63)
+    fig, ax = g.canvas(6, -0.81, 4.65)
     g.seg(ax, O, A)
     g.seg(ax, O, B)
     g.arc(ax, O, 4.0, 0, 90)
@@ -559,6 +559,9 @@ def p17():
     g.circle(ax, (r, r), r)
     g.right_angle(ax, O, 1, 1)
     g.dot(ax, P)
+    # 2026-09-27 선생님 문장 "∠AOB = 90°, OA = OB = 4인 부채꼴"이라 4를 그림에(OA 아래 바깥), 원 이름 C는 원 안에
+    g.dim(ax, O, A, "4", side=-1)
+    g.name(ax, (r, r), "$\\mathrm{C}$")
     g.name(ax, O, "O", dx=-4, dy=-3, ha="right", va="top")
     g.name(ax, A, "A", dx=4, dy=-3, ha="left", va="top")
     g.name(ax, B, "B", dx=-4, dy=2, ha="right", va="bottom")

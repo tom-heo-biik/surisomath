@@ -134,9 +134,9 @@ problems:
       - $2\sqrt{2}+2\sqrt{3}$
     answer: ④
 
-  - text: 그림과 같이 중심각의 크기가 $90^{\circ}$인 부채꼴 $\mathrm{OAB}$의 호 $\mathrm{AB}$를 삼등분하는 두 점 중 점 $\mathrm{B}$에 가까운 점을 $\mathrm{P}$라 하자. 부채꼴 $\mathrm{OAB}$의 반지름의 길이가 4일 때, 세 선분 $\mathrm{OA}$, $\mathrm{OB}$, $\mathrm{AP}$에 모두 접하는 원의 반지름의 길이는?
+  - text: 그림과 같이 $\angle\mathrm{AOB}=90^{\circ}$, $\overline{\mathrm{OA}}=\overline{\mathrm{OB}}=4$인 부채꼴 $\mathrm{OAB}$와 $\angle\mathrm{POA}=2\angle\mathrm{POB}$를 만족시키는 현 $\mathrm{AP}$가 있다. 원 $\mathrm{C}$가 세 선분 $\mathrm{OA}$, $\mathrm{OB}$, $\mathrm{AP}$에 모두 접할 때, 원 $\mathrm{C}$의 반지름의 길이는?
     figure: p17.svg
-    alt: 부채꼴 O 왼쪽 아래(직각), A 오른쪽, B 위. P는 호 위 B 가까이. 선분 AP. OA, OB, AP에 접하는 원
+    alt: 부채꼴 O 왼쪽 아래(직각), A 오른쪽, B 위. P는 호 위 B 가까이(∠POB = 30°). 선분 AP. OA, OB, AP에 접하는 원 C(이름은 원 안). 4는 OA 아래
     choices:
       - $\sqrt{2}$
       - $2\sqrt{3}-2$
