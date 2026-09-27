@@ -295,22 +295,24 @@ def p7():
 
 
 # ── 008 — 직사각형 안의 사분원과 B에서 그은 접선 ──────────────────────────
-# B(0, 0), C(10, 0), D(10, 6), A(0, 6). 사분원은 C 중심 반지름 6. E(8, 6).
+# 2026-09-27 선생님: 책 그림을 180° 돌리고 직사각형을 OABC로. O(0, 6), A(0, 0), B(10, 0), C(10, 6).
+# 부채꼴 OAD는 O 중심 반지름 6, D(6, 6)은 변 OC 위. 접선 CE의 E(2, 0)은 변 AB 위(BE = 8이 답).
 
 def p8():
-    B, C, D, A = (0.0, 0.0), (10.0, 0.0), (10.0, 6.0), (0.0, 6.0)
-    E = (8.0, 6.0)
-    fig, ax = g.canvas(6, -1.6, 7.2)
-    g.rect(ax, B, 10.0, 6.0)
-    g.arc(ax, C, 6.0, 90, 180)
-    g.seg(ax, B, E)
-    g.dim(ax, B, C, "10", side=-1)
-    g.dim(ax, C, D, "6", side=-1)
-    g.name(ax, A, "A", dx=-4, dy=3, ha="right", va="bottom")
-    g.name(ax, B, "B", dx=-4, dy=-3, ha="right", va="top")
-    g.name(ax, C, "C", dx=4, dy=-3, ha="left", va="top")
-    g.name(ax, D, "D", dx=4, dy=3, ha="left", va="bottom")
-    g.name(ax, E, "E", dy=5, va="bottom")
+    O, A, B, C = (0.0, 6.0), (0.0, 0.0), (10.0, 0.0), (10.0, 6.0)
+    D, E = (6.0, 6.0), (2.0, 0.0)
+    fig, ax = g.canvas(6, -1.22, 7.28)
+    g.rect(ax, A, 10.0, 6.0)
+    g.arc(ax, O, 6.0, 270, 360)
+    g.seg(ax, C, E)
+    g.dim(ax, O, A, "6", side=-1)                         # OA 왼쪽 바깥
+    g.dim(ax, O, C, "10", side=1)                         # OC 위 바깥
+    g.name(ax, O, "O", dx=-4, dy=3, ha="right", va="bottom")
+    g.name(ax, A, "A", dx=-4, dy=-3, ha="right", va="top")
+    g.name(ax, B, "B", dx=4, dy=-3, ha="left", va="top")
+    g.name(ax, C, "C", dx=4, dy=3, ha="left", va="bottom")
+    g.name(ax, D, "D", dx=3, dy=-4, ha="left", va="top")  # 위의 10 곡선을 피해 안쪽에
+    g.name(ax, E, "E", dy=-5, va="top")
     g.save(fig, "p8.svg")
 
 

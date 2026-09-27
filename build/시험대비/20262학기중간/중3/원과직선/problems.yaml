@@ -72,9 +72,9 @@ problems:
       - $15+4\sqrt{3}$
     answer: ①
 
-  - text: 그림과 같이 $\overline{\mathrm{BC}}=10$, $\overline{\mathrm{CD}}=6$인 직사각형 $\mathrm{ABCD}$의 내부에 점 $\mathrm{C}$를 중심으로 하고 선분 $\mathrm{CD}$를 반지름으로 하는 사분원이 있다. 점 $\mathrm{B}$에서 이 사분원에 그은 접선이 변 $\mathrm{AD}$와 만나는 점을 $\mathrm{E}$라 할 때, 선분 $\mathrm{AE}$의 길이는?
+  - text: 그림과 같이 $\overline{\mathrm{OA}}=6$, $\overline{\mathrm{OC}}=10$인 직사각형 $\mathrm{OABC}$와 부채꼴 $\mathrm{OAD}$가 있다. 변 $\mathrm{AB}$ 위의 점 $\mathrm{E}$에 대하여 선분 $\mathrm{CE}$가 호 $\mathrm{AD}$에 접할 때, 선분 $\mathrm{BE}$의 길이는?
     figure: p8.svg
-    alt: 직사각형 ABCD(A 왼쪽 위, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽 위). C 중심, D에서 변 BC까지의 사분원. B에서 사분원에 그은 접선이 변 AD 위의 E에서 만난다. 10은 BC 아래, 6은 CD 오른쪽에 점선 곡선
+    alt: 직사각형 OABC(O 왼쪽 위, A 왼쪽 아래, B 오른쪽 아래, C 오른쪽 위). O 중심 반지름 6인 부채꼴 OAD, D는 변 OC 위. 변 AB 위의 E에서 C로 그은 선분 CE가 호 AD에 접한다. 6은 OA 왼쪽, 10은 OC 위에 점선 곡선
     choices:
       - $5$
       - $6$
