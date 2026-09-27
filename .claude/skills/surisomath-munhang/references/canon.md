@@ -468,6 +468,25 @@ $0^{\circ}<A<B<90^{\circ}$일 때, 이차방정식 $2x^2-x-1=0$의 한 근이 $\
 "오른쪽 그림과 같이"를 "그림과 같이"로 열었습니다. 책이 길이 뒤에 둔 ∠BAD = 90°를 선생님이 앞으로 옮겨 "∠BAD = 90°, AB = BC = AD = 6인 사각형 ABCD가 있다"로 했습니다. 028 정본 "∠B = 40°, AB = a, AC = b인 삼각형"과 같은 차례입니다. 존재문으로 열고 "…일 때"로 조건을 잇는 짜임은 책 그대로입니다. 물음의 기호 CD는 도형이라 낱말 "선분 CD"로 고쳐 썼습니다. 선지와 답 ③, 그림은 책 그대로 옮겼습니다.
 
 
+### 021
+
+
+#### 책
+```
+오른쪽 그림과 같이 $\triangle\!\mathrm{ABC}$에서 $\overline{\mathrm{AB}}$, $\overline{\mathrm{AC}}$의 중점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하자. $\angle\mathrm{A}=45^{\circ}$, $\angle\mathrm{AED}=60^{\circ}$, $\overline{\mathrm{BC}}=16$일 때, $\overline{\mathrm{BD}}$의 길이는?
+```
+
+
+#### 정본
+```
+그림과 같이 $\angle\mathrm{BAC}=45^{\circ}$, $\overline{\mathrm{BC}}=16$인 삼각형 $\mathrm{ABC}$에서 두 변 $\mathrm{AB}$, $\mathrm{AC}$의 중점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하자. $\angle\mathrm{AED}=60^{\circ}$일 때, 선분 $\mathrm{BD}$의 길이는?
+```
+
+
+#### 바뀐 것
+"△ABC에서 AB, AC의 중점을 각각 D, E라 하자. ∠A = 45°, ∠AED = 60°, BC = 16일 때"를 "∠BAC = 45°, BC = 16인 삼각형 ABC에서 두 변 AB, AC의 중점을 각각 D, E라 하자. ∠AED = 60°일 때"로 바꿨습니다. 선생님이 정한 문장입니다. 삼각형의 조건 둘은 삼각형의 정의에 얹고 점 E가 든 조건만 "…일 때"에 남긴 028 정본의 꼴입니다. 기호 AB, AC, BD는 도형이라 낱말로 썼고 선지와 답 ④는 그대로입니다.
+
+
 ### 022
 
 

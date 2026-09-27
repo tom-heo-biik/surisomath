@@ -166,7 +166,7 @@ problems:
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 BC 위 B 쪽 삼등분점. AD. 30°는 B. AB, AC 같은 길이(두 획). 6은 AB 바깥
     answer: $2\sqrt{3}$
 
-  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 두 변 $\mathrm{AB}$, $\mathrm{AC}$의 중점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하자. $\angle\mathrm{BAC}=45^{\circ}$, $\angle\mathrm{AED}=60^{\circ}$, $\overline{\mathrm{BC}}=16$일 때, 선분 $\mathrm{BD}$의 길이는?
+  - text: 그림과 같이 $\angle\mathrm{BAC}=45^{\circ}$, $\overline{\mathrm{BC}}=16$인 삼각형 $\mathrm{ABC}$에서 두 변 $\mathrm{AB}$, $\mathrm{AC}$의 중점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하자. $\angle\mathrm{AED}=60^{\circ}$일 때, 선분 $\mathrm{BD}$의 길이는?
     figure: p21.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 AB 중점, E는 AC 중점, DE. 45°는 A, 60°는 E. 16은 BC 아래
     choices:
