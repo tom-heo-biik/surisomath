@@ -138,7 +138,7 @@ problems:
     alt: 왼쪽의 큰 원 O₁과 오른쪽의 작은 원 O₂(중심이 큰 원 안). 두 교점 A(위), B(아래)를 잇는 세로 현 AB. 선분 O₁O₂ 위에 7이 점선 곡선
     answer: $3\sqrt{15}$
 
-  - text: 그림과 같이 원 $\mathrm{O}$는 삼각형 $\mathrm{ABC}$의 내접원이고, 원 $\mathrm{O}'$은 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 연장선과 변 $\mathrm{AC}$에 접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$의 반지름의 길이가 각각 3cm, 8cm이고, $\overline{\mathrm{OO}'}=13$cm일 때, 선분 $\mathrm{AC}$의 길이를 구하시오.
+  - text: 그림과 같이 원 $\mathrm{O}$는 삼각형 $\mathrm{ABC}$의 내접원이고, 원 $\mathrm{O}'$은 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 연장선과 변 $\mathrm{AC}$에 접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$의 반지름의 길이가 각각 3, 8이고, $\overline{\mathrm{OO}'}=13$일 때, 선분 $\mathrm{AC}$의 길이를 구하시오.
     figure: p20.svg
-    alt: B 왼쪽, C는 오른쪽 지면 선 위, A 위. 변 BA, BC를 오른쪽으로 늘인 두 반직선 사이에 내접원 O와 큰 원 O'(C의 오른쪽 밖). 선분 OO' 위에 13cm가 점선 곡선. O의 반지름에 3cm(지시선), O'의 반지름에 8cm
-    answer: $12$cm
+    alt: B 왼쪽, C는 오른쪽 지면 선 위, A 위. 변 BA, BC를 오른쪽으로 늘인 두 반직선 사이에 내접원 O와 큰 원 O'(C의 오른쪽 밖). 선분 OO' 위에 13이 점선 곡선. O의 반지름에 3(지시선), O'의 반지름에 8
+    answer: $12$

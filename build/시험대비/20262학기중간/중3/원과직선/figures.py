@@ -621,10 +621,10 @@ def p20():
     g.dim(ax, O, O2, "", side=1, gap=g.pt(ax, 8))
     n = (-5 / 13, 12 / 13)                                          # OO'의 왼쪽(위) 법선
     q = lerp(O, O2, 0.62)
-    g.name(ax, (q[0] + g.pt(ax, 16) * n[0], q[1] + g.pt(ax, 16) * n[1]), "13cm")
-    g.dim(ax, O2, T2, "8cm", side=1)                                # O'T' 오른쪽(원 O' 안)
+    g.name(ax, (q[0] + g.pt(ax, 16) * n[0], q[1] + g.pt(ax, 16) * n[1]), "13")
+    g.dim(ax, O2, T2, "8", side=1)                                # O'T' 오른쪽(원 O' 안)
     apex = g.dim(ax, O, T, "", side=-1, gap=g.pt(ax, 5))            # OT 왼쪽. 원 O가 작아 글은 지시선으로 밖에
-    g.leader(ax, apex, "3cm", dx=-1, dy=-1)
+    g.leader(ax, apex, "3", dx=-1, dy=-1)
     center(ax, O, "O", dx=-4, ha="right")
     center(ax, O2, "$\\mathrm{O}'$", dx=3, dy=4, ha="left", va="bottom")
     g.name(ax, A, "A", dx=-4, dy=2, ha="right", va="bottom")

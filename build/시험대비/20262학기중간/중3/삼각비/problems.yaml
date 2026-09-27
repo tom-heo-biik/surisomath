@@ -113,9 +113,9 @@ problems:
     alt: 정사각뿔 V-ABCD. V 위, A 왼쪽, B 앞, C 오른쪽, D 뒤. 숨은 모서리 VD, DA, DC와 대각선 DB는 점선, DP는 실선. P는 VC 위. θ°는 D. 1은 VA 왼쪽
     answer: $\dfrac{\sqrt{3}}{3}$
 
-  - text: 그림과 같이 길이가 1cm인 선분 $\mathrm{OA}_1$이 있다. 점 $\mathrm{A}_1$에서 선분 $\mathrm{OA}_1$에 수직이고 길이가 1cm인 선분 $\mathrm{A}_1\mathrm{A}_2$를 그려 직각삼각형 $\mathrm{OA}_1\mathrm{A}_2$를 만들고, 점 $\mathrm{A}_2$에서 선분 $\mathrm{OA}_2$에 수직이고 길이가 1cm인 선분 $\mathrm{A}_2\mathrm{A}_3$을 그려 직각삼각형 $\mathrm{OA}_2\mathrm{A}_3$을 만든다. 이와 같은 과정을 계속하여 $n$번째로 만든 직각삼각형 $\mathrm{OA}_n\mathrm{A}_{n+1}$에서 $\angle\mathrm{A}_n\mathrm{OA}_{n+1}=\theta_n^{\circ}$라 할 때, $\sin\theta_{24}^{\circ}\times\cos\theta_{24}^{\circ}$의 값을 구하시오.
+  - text: 그림과 같이 길이가 1인 선분 $\mathrm{OA}_1$이 있다. 점 $\mathrm{A}_1$에서 선분 $\mathrm{OA}_1$에 수직이고 길이가 1인 선분 $\mathrm{A}_1\mathrm{A}_2$를 그려 직각삼각형 $\mathrm{OA}_1\mathrm{A}_2$를 만들고, 점 $\mathrm{A}_2$에서 선분 $\mathrm{OA}_2$에 수직이고 길이가 1인 선분 $\mathrm{A}_2\mathrm{A}_3$을 그려 직각삼각형 $\mathrm{OA}_2\mathrm{A}_3$을 만든다. 이와 같은 과정을 계속하여 $n$번째로 만든 직각삼각형 $\mathrm{OA}_n\mathrm{A}_{n+1}$에서 $\angle\mathrm{A}_n\mathrm{OA}_{n+1}=\theta_n^{\circ}$라 할 때, $\sin\theta_{24}^{\circ}\times\cos\theta_{24}^{\circ}$의 값을 구하시오.
     figure: p14.svg
-    alt: 테오도로스 나선. O 아래 가운데, A₁ 왼쪽, A₂, A₃, …, A₇이 시계 방향. 직각 표시 A₁~A₆. 1cm는 OA₁ 아래와 바깥 여섯 변. O의 각 θ₁°~θ₆°
+    alt: 테오도로스 나선. O 아래 가운데, A₁ 왼쪽, A₂, A₃, …, A₇이 시계 방향. 직각 표시 A₁~A₆. 1은 OA₁ 아래와 바깥 여섯 변. O의 각 θ₁°~θ₆°
     answer: $\dfrac{2\sqrt{6}}{25}$
 
   - text: 그림과 같이 정삼각형 $\mathrm{ABC}$의 변 $\mathrm{BC}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{AC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이다. 선분 $\mathrm{BE}$와 선분 $\mathrm{AD}$의 교점을 $\mathrm{P}$라 하자. $\angle\mathrm{BPD}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값을 구하시오.
@@ -204,14 +204,14 @@ problems:
       - $\dfrac{13}{8}$
     answer: ④
 
-  - text: 그림과 같이 크기가 $60^{\circ}$인 각 $\mathrm{XOY}$의 내부에 $\overline{\mathrm{OA}}=6$cm인 점 $\mathrm{A}$가 있다. 반직선 $\mathrm{OX}$ 위의 점 $\mathrm{P}$와 반직선 $\mathrm{OY}$ 위의 점 $\mathrm{Q}$에 대하여 삼각형 $\mathrm{APQ}$의 둘레의 길이의 최솟값을 구하시오.
+  - text: 그림과 같이 크기가 $60^{\circ}$인 각 $\mathrm{XOY}$의 내부에 $\overline{\mathrm{OA}}=6$인 점 $\mathrm{A}$가 있다. 반직선 $\mathrm{OX}$ 위의 점 $\mathrm{P}$와 반직선 $\mathrm{OY}$ 위의 점 $\mathrm{Q}$에 대하여 삼각형 $\mathrm{APQ}$의 둘레의 길이의 최솟값을 구하시오.
     figure: p25.svg
-    alt: O 왼쪽 아래. 반직선 OX(60° 위 오른쪽), OY(가로). A는 각의 안. P는 OX 위, Q는 OY 위. 삼각형 APQ. 60°는 O. OA는 점선 직선, 6cm는 그 옆
-    answer: $6\sqrt{3}$cm
+    alt: O 왼쪽 아래. 반직선 OX(60° 위 오른쪽), OY(가로). A는 각의 안. P는 OX 위, Q는 OY 위. 삼각형 APQ. 60°는 O. OA는 점선 직선, 6은 그 옆
+    answer: $6\sqrt{3}$
 
-  - text: 그림과 같이 반지름의 길이가 6m인 원 모양을 따라 시계 반대 방향으로 일정한 속력으로 도는 관람차가 있다. 이 관람차가 가장 낮게 내려왔을 때의 지면으로부터의 높이는 2m이고, 관람차는 12분에 한 바퀴를 돈다. 관람차의 기둥의 아래 끝 지점을 $\mathrm{P}$, 관람차가 가장 높이 올라갔을 때의 지점을 $\mathrm{A}$, 지점 $\mathrm{A}$에 도달한 지 4분 후에 관람차가 있는 지점을 $\mathrm{Q}$라 하자. 지점 $\mathrm{P}$에서 지점 $\mathrm{Q}$를 올려다본 각의 크기를 $\theta^{\circ}$라 할 때, $\tan\theta^{\circ}$의 값을 구하시오. (단, 관람차의 크기는 고려하지 않는다.)
+  - text: 그림과 같이 반지름의 길이가 6인 원 모양을 따라 시계 반대 방향으로 일정한 속력으로 도는 관람차가 있다. 이 관람차가 가장 낮게 내려왔을 때의 지면으로부터의 높이는 2이고, 관람차는 12분에 한 바퀴를 돈다. 관람차의 기둥의 아래 끝 지점을 $\mathrm{P}$, 관람차가 가장 높이 올라갔을 때의 지점을 $\mathrm{A}$, 지점 $\mathrm{A}$에 도달한 지 4분 후에 관람차가 있는 지점을 $\mathrm{Q}$라 하자. 지점 $\mathrm{P}$에서 지점 $\mathrm{Q}$를 올려다본 각의 크기를 $\theta^{\circ}$라 할 때, $\tan\theta^{\circ}$의 값을 구하시오. (단, 길이의 단위는 m이고, 관람차의 크기는 고려하지 않는다.)
     figure: p26.svg
-    alt: 원(반지름 6, 중심 높이 8)과 지면. P는 중심 아래 지면 위, 기둥. A는 꼭대기, Q는 A에서 반시계 120°(왼쪽 아래). PQ. θ°는 P. 6m는 왼쪽 반지름, 2m는 원 아래 끝~지면
+    alt: 원(반지름 6, 중심 높이 8)과 지면. P는 중심 아래 지면 위, 기둥. A는 꼭대기, Q는 A에서 반시계 120°(왼쪽 아래). PQ. θ°는 P. 6은 왼쪽 반지름, 2는 원 아래 끝~지면
     answer: $\dfrac{5\sqrt{3}}{9}$
 
   - text: 그림과 같이 평행사변형 $\mathrm{ABCD}$에서 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 중점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하고, 두 선분 $\mathrm{DE}$, $\mathrm{DF}$가 선분 $\mathrm{AC}$와 만나는 점을 각각 $\mathrm{G}$, $\mathrm{H}$라 하자. $\angle\mathrm{EDF}=30^{\circ}$, $\overline{\mathrm{DG}}=6$, $\overline{\mathrm{DH}}=5$일 때, 사각형 $\mathrm{EFHG}$의 넓이를 구하시오.

@@ -471,8 +471,8 @@ def p14():
     for p, q in zip(pts, pts[1:]):
         g.seg(ax, p, q)
         g.corner_mark(ax, p, unit(p, O), unit(p, q))
-        g.dim(ax, p, q, "1cm", side=1)
-    g.dim(ax, pts[0], O, "1cm", side=-1)
+        g.dim(ax, p, q, "1", side=1)
+    g.dim(ax, pts[0], O, "1", side=-1)
     # O의 각 θ₁°~θ₆°. 좁은 θ₃°·θ₄°·θ₅°는 지시선으로 밖에
     for k in range(6):
         p, q = pts[k], pts[k + 1]
@@ -753,8 +753,8 @@ def p25():
     g.angle(ax, O, Y_end, X_end, "", r=16)                # 60° 글은 OA 점선을 피해 OY 쪽 아래 틈에
     g.name(ax, O, "$60^{\\circ}$", dx=40 * math.cos(math.radians(16.5)),
            dy=40 * math.sin(math.radians(16.5)))
-    g.dashed(ax, O, A)                                     # 책처럼 OA는 점선 직선, 6cm는 그 옆에(반지름 규칙과 같다)
-    g.leader(ax, lerp(O, A, 0.55), "6cm", dx=-0.4, dy=1, length=10)   # 글만 두면 OP의 길이로 읽힌다(재검토). 책도 지시선
+    g.dashed(ax, O, A)                                     # 책처럼 OA는 점선 직선, 6은 그 옆에(반지름 규칙과 같다)
+    g.leader(ax, lerp(O, A, 0.55), "6", dx=-0.4, dy=1, length=10)   # 글만 두면 OP의 길이로 읽힌다(재검토). 책도 지시선
     for p in (X, Y, A):
         g.dot(ax, p)
     g.name(ax, O, "O", dx=-4, dy=-3, ha="right", va="top")
@@ -778,7 +778,7 @@ def p26():
     Q = g.polar(M, 6.0, 210)
     L = (-6.0, 8.0)
     cab = 0.5                                              # 곤돌라 반지름
-    fig, ax = g.canvas(6, -4.2, 17.9)                      # 지문이 길어 6칸 — 풀 자리 8칸을 지킨다
+    fig, ax = g.canvas(5, -5.73, 19.34)                    # 지문이 길어 5칸(단위 단서로 한 줄 늘었다). 풀 자리 8칸을 지킨다
     # 지면 띠와 기둥
     ax.add_patch(Polygon([(-9.0, -0.9), (9.0, -0.9), (9.0, 0.0), (-9.0, 0.0)],
                          closed=True, facecolor=g.INK, alpha=g.TINT, edgecolor="none", gid="noedge"))
@@ -799,10 +799,10 @@ def p26():
     g.dot(ax, M)
     # 6m: 책처럼 9시 방향 살(반지름) 위에 — 살을 글만큼 끊고 그 자리에 쓴다(반지름은 선분 + 이름).
     # 2m: 아래 끝에서 보조선을 오른쪽으로 뽑아 그 끝에 점선 곡선, 글은 옆에
-    g.name(ax, (-3.0, 8.0), "6m")
+    g.name(ax, (-3.0, 8.0), "6")
     g.seg(ax, (0.0, 2.0), (2.2, 2.0), lw=g.AUX)
     g.dim(ax, (2.2, 2.0), (2.2, 0.0), "", side=1, gap=g.pt(ax, 4))
-    g.name(ax, (2.2, 1.0), "2m", dx=8, ha="left")
+    g.name(ax, (2.2, 1.0), "2", dx=8, ha="left")
     # P에서 Q를 올려다본 각
     g.seg(ax, P, Q)
     g.angle(ax, P, Q, (-1.0, 0.0), "$\\theta^{\\circ}$", r=16)
