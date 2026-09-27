@@ -55,7 +55,7 @@ problems:
     alt: 정사각형 A 왼쪽 위, O 오른쪽 위, B 왼쪽 아래, C 오른쪽 아래. 호 AC가 B 쪽으로 볼록. 귀퉁이 B와 호 사이의 작은 원 O'. 2는 AO 위
     answer: $6-4\sqrt{2}$
 
-  - text: 그림과 같이 $\angle\mathrm{A}=30^{\circ}$, $\angle\mathrm{B}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$의 빗변 $\mathrm{AC}$ 위에 지름이 있는 두 반원 $\mathrm{O}$, $\mathrm{O}'$이 있다. 두 반원은 모두 변 $\mathrm{AB}$에 접하면서 서로 외접하고, 반원 $\mathrm{O}'$은 변 $\mathrm{BC}$에도 접한다. 두 반원 $\mathrm{O}$, $\mathrm{O}'$이 변 $\mathrm{AB}$와 접하는 점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하고 두 반원의 반지름의 길이를 각각 $r$, $r'$이라 할 때, $\dfrac{r'}{r}$의 값을 구하시오.
+  - text: 그림과 같이 $\angle\mathrm{B}=90^{\circ}$, $\angle\mathrm{A}=30^{\circ}$인 직각삼각형 $\mathrm{ABC}$의 빗변 $\mathrm{AC}$ 위에 지름이 있는 두 반원 $\mathrm{O}$, $\mathrm{O}'$이 있다. 두 반원은 모두 변 $\mathrm{AB}$에 접하고 서로 외접하며, 반원 $\mathrm{O}'$은 변 $\mathrm{BC}$에도 접한다. 두 반원 $\mathrm{O}$, $\mathrm{O}'$이 변 $\mathrm{AB}$와 접하는 점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하고 두 반원의 반지름의 길이를 각각 $r$, $r'$이라 할 때, $\dfrac{r'}{r}$의 값을 구하시오.
     figure: p7.svg
     alt: A 위, B 왼쪽 아래(직각), C 오른쪽 아래. 빗변 AC 위에 지름을 둔 반원 둘이 AB 쪽으로 볼록. 작은 반원 O는 AB와 D에서, 큰 반원 O'은 AB와 E에서 접하고 BC에도 접한다. 30°는 A. r은 D~O, r'은 E~O'
     answer: $3$
@@ -118,7 +118,7 @@ problems:
     alt: 테오도로스 나선. O 아래 가운데, A₁ 왼쪽, A₂, A₃, …, A₇이 시계 방향. 직각 표시 A₁~A₆. 1cm는 OA₁ 아래와 바깥 여섯 변. O의 각 θ₁°~θ₆°
     answer: $\dfrac{2\sqrt{6}}{25}$
 
-  - text: 그림과 같이 정삼각형 $\mathrm{ABC}$의 변 $\mathrm{BC}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{AC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이다. 두 선분 $\mathrm{BE}$, $\mathrm{AD}$의 교점을 $\mathrm{P}$, $\angle\mathrm{BPD}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값을 구하시오.
+  - text: 그림과 같이 정삼각형 $\mathrm{ABC}$의 변 $\mathrm{BC}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{AC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이다. 선분 $\mathrm{BE}$와 선분 $\mathrm{AD}$의 교점을 $\mathrm{P}$라 하자. $\angle\mathrm{BPD}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값을 구하시오.
     figure: p15.svg
     alt: 정삼각형 A 위, B 왼쪽 아래, C 오른쪽 아래. E는 AC 위 A 가까이, D는 BC 위 C 가까이(같은 길이 두 획). BE, AD, 교점 P. θ°는 P 아래
     answer: $\dfrac{\sqrt{3}}{2}$
@@ -166,7 +166,7 @@ problems:
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 BC 위 B 쪽 삼등분점. AD. 30°는 B. AB, AC 같은 길이(두 획). 6은 AB 바깥
     answer: $2\sqrt{3}$
 
-  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 두 변 $\mathrm{AB}$, $\mathrm{AC}$의 중점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하자. $\angle\mathrm{A}=45^{\circ}$, $\angle\mathrm{AED}=60^{\circ}$, $\overline{\mathrm{BC}}=16$일 때, 선분 $\mathrm{BD}$의 길이는?
+  - text: 그림과 같이 삼각형 $\mathrm{ABC}$의 두 변 $\mathrm{AB}$, $\mathrm{AC}$의 중점을 각각 $\mathrm{D}$, $\mathrm{E}$라 하자. $\angle\mathrm{BAC}=45^{\circ}$, $\angle\mathrm{AED}=60^{\circ}$, $\overline{\mathrm{BC}}=16$일 때, 선분 $\mathrm{BD}$의 길이는?
     figure: p21.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. D는 AB 중점, E는 AC 중점, DE. 45°는 A, 60°는 E. 16은 BC 아래
     choices:
@@ -182,7 +182,7 @@ problems:
     alt: 정삼각형 A 위, B 왼쪽 아래, C 오른쪽 아래. D는 AC 중점(두 획), E는 BD 중점(한 획). BD, CE. θ°는 C
     answer: $\dfrac{\sqrt{21}}{14}$
 
-  - text: 그림과 같이 중심이 $\mathrm{O}$이고 반지름의 길이가 12인 원의 두 지름 $\mathrm{AB}$, $\mathrm{CD}$는 서로 수직이다. 선분 $\mathrm{OC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{OE}}:\overline{\mathrm{EC}}=2:1$이고, 직선 $\mathrm{AE}$가 원과 만나는 점 중 점 $\mathrm{A}$가 아닌 점을 $\mathrm{F}$라 할 때, 선분 $\mathrm{AF}$의 길이는?
+  - text: 그림과 같이 중심이 $\mathrm{O}$이고 반지름의 길이가 12인 원의 두 지름 $\mathrm{AB}$, $\mathrm{CD}$는 서로 수직이다. 선분 $\mathrm{OC}$ 위의 점 $\mathrm{E}$에 대하여 직선 $\mathrm{AE}$가 이 원과 만나는 점 중 점 $\mathrm{A}$가 아닌 점을 $\mathrm{F}$라 하자. $\overline{\mathrm{OE}}:\overline{\mathrm{EC}}=2:1$일 때, 선분 $\mathrm{AF}$의 길이는?
     figure: p23.svg
     alt: 원 O. 지름 AB 가로, CD 세로. E는 OC 위. A에서 E를 지나 원 위의 F까지. 반지름 OF. O에 직각. 12는 AO 아래
     choices:
@@ -209,7 +209,7 @@ problems:
     alt: O 왼쪽 아래. 반직선 OX(60° 위 오른쪽), OY(가로). A는 각의 안. P는 OX 위, Q는 OY 위. 삼각형 APQ. 60°는 O. OA는 점선 직선, 6cm는 그 옆
     answer: $6\sqrt{3}$cm
 
-  - text: 그림과 같이 반지름의 길이가 6m인 원 모양을 따라 시계 반대 방향으로 일정한 속력으로 도는 관람차가 있다. 이 관람차가 지면에 가장 가까이 내려왔을 때의 지면으로부터의 높이는 2m이고, 관람차는 12분에 한 바퀴를 돈다. 관람차의 기둥의 아래 끝 지점을 $\mathrm{P}$, 관람차가 가장 높이 올라갔을 때의 지점을 $\mathrm{A}$, 지점 $\mathrm{A}$에 도달한 지 4분 후에 관람차가 있는 지점을 $\mathrm{Q}$라 하자. 지점 $\mathrm{P}$에서 지점 $\mathrm{Q}$를 올려다본 각의 크기를 $\theta^{\circ}$라 할 때, $\tan\theta^{\circ}$의 값을 구하시오. (단, 관람차의 크기는 고려하지 않는다.)
+  - text: 그림과 같이 반지름의 길이가 6m인 원 모양을 따라 시계 반대 방향으로 일정한 속력으로 도는 관람차가 있다. 이 관람차가 가장 낮게 내려왔을 때의 지면으로부터의 높이는 2m이고, 관람차는 12분에 한 바퀴를 돈다. 관람차의 기둥의 아래 끝 지점을 $\mathrm{P}$, 관람차가 가장 높이 올라갔을 때의 지점을 $\mathrm{A}$, 지점 $\mathrm{A}$에 도달한 지 4분 후에 관람차가 있는 지점을 $\mathrm{Q}$라 하자. 지점 $\mathrm{P}$에서 지점 $\mathrm{Q}$를 올려다본 각의 크기를 $\theta^{\circ}$라 할 때, $\tan\theta^{\circ}$의 값을 구하시오. (단, 관람차의 크기는 고려하지 않는다.)
     figure: p26.svg
     alt: 원(반지름 6, 중심 높이 8)과 지면. P는 중심 아래 지면 위, 기둥. A는 꼭대기, Q는 A에서 반시계 120°(왼쪽 아래). PQ. θ°는 P. 6m는 왼쪽 반지름, 2m는 원 아래 끝~지면
     answer: $\dfrac{5\sqrt{3}}{9}$
@@ -224,7 +224,7 @@ problems:
     alt: B 왼쪽, C 오른쪽, A 위(오른쪽 치우침). D는 BC 위. AD. 40°는 B. A의 두 각 같은 표시. a는 AB 바깥, b는 AC 바깥
     answer: $\dfrac{\sqrt{3}}{4}ab$
 
-  - text: 그림과 같이 선분 $\mathrm{AB}$를 지름으로 하고 반지름의 길이가 3인 원 $\mathrm{O}$에 내접하는 사각형 $\mathrm{ABCD}$가 있다. $\angle\mathrm{B}=30^{\circ}$, $\overline{\mathrm{AD}}=\overline{\mathrm{DC}}$일 때, 사각형 $\mathrm{ABCD}$의 넓이는?
+  - text: 그림과 같이 선분 $\mathrm{AB}$를 지름으로 하고 반지름의 길이가 3인 원 $\mathrm{O}$에 내접하는 사각형 $\mathrm{ABCD}$에서 $\angle\mathrm{B}=30^{\circ}$, $\overline{\mathrm{AD}}=\overline{\mathrm{DC}}$일 때, 사각형 $\mathrm{ABCD}$의 넓이는?
     figure: p29.svg
     alt: 원 O. 지름 AB 가로. C는 왼쪽 위, D는 호 AC 가운데. 사각형 ABCD 색칠. AD·DC 같은 길이(한 획). 30°는 B. 3은 A~O 아래
     choices:
