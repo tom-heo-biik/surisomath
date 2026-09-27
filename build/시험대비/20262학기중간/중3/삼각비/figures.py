@@ -925,7 +925,7 @@ def p30():
                       (D2, (unit(D2, C2), unit(D2, A)))):
         g.corner_mark(ax, p, u, v)
     g.angle(ax, A, B, B2, "$34^{\\circ}$", r=16)
-    g.dim(ax, A, B, "10cm", side=-1)
+    g.dim(ax, A, B, "10", side=-1)
     g.name(ax, A, "A", dx=-2, dy=-5, va="top")
     g.name(ax, B, "B", dx=4, dy=-3, ha="left", va="top")
     g.name(ax, C, "C", dx=5, ha="left")

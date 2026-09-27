@@ -669,9 +669,9 @@ $0^{\circ}<A<B<90^{\circ}$일 때, 이차방정식 $2x^2-x-1=0$의 한 근이 $\
 
 #### 정본
 ```
-그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{AB}'}=10$cm인 두 정사각형 $\mathrm{ABCD}$, $\mathrm{AB}'\mathrm{C}'\mathrm{D}'$에서 두 변 $\mathrm{CD}$, $\mathrm{B}'\mathrm{C}'$은 점 $\mathrm{E}$에서 만난다. $\angle\mathrm{BAB}'=34^{\circ}$일 때, 사각형 $\mathrm{AB}'\mathrm{ED}$의 넓이를 구하시오. (단, $\tan 28^{\circ}=0.5317$로 계산한다.)
+그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{AB}'}=10$인 두 정사각형 $\mathrm{ABCD}$, $\mathrm{AB}'\mathrm{C}'\mathrm{D}'$에서 두 변 $\mathrm{CD}$, $\mathrm{B}'\mathrm{C}'$은 점 $\mathrm{E}$에서 만난다. $\angle\mathrm{BAB}'=34^{\circ}$일 때, 사각형 $\mathrm{AB}'\mathrm{ED}$의 넓이를 구하시오. (단, $\tan 28^{\circ}=0.5317$로 계산한다.)
 ```
 
 
 #### 바뀐 것
-점 A를 중심으로 회전시켜 만들었다는 서술을 두 정사각형이 놓인 진술로 바꿨습니다. "AB = AB' = 10cm인 두 정사각형 ABCD, AB'C'D'에서 두 변 CD, B'C'은 점 E에서 만난다. ∠BAB' = 34°일 때, 사각형 AB'ED의 넓이를 구하시오." 선생님이 정한 문장이고 "두"는 원과직선 정본을 따라 넣었습니다. 지문이 E를 부르므로 그림에 E를 되살렸습니다. "이때,"와 회전 화살표를 뺐고 단서와 답 53.17cm²는 그대로입니다.
+점 A를 중심으로 회전시켜 만들었다는 서술을 두 정사각형이 놓인 진술로 바꿨습니다. "AB = AB' = 10인 두 정사각형 ABCD, AB'C'D'에서 두 변 CD, B'C'은 점 E에서 만난다." 선생님이 정한 문장이고 "두"는 원과직선 정본을 따라 넣었습니다. 지문이 E를 부르므로 그림에 E를 되살렸습니다. "이때,"와 회전 화살표를 뺐고 단위 cm도 평가원처럼 뺐습니다. 단서의 "…로 계산한다."는 평가원의 꼴 그대로이고 답은 맨수 53.17입니다.
