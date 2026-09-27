@@ -3,12 +3,16 @@
 - H1을 뺀 모든 헤더 위에 빈 줄 둘
 - 최하위 헤더와 본문 사이 빈 줄 없음
 - 최하위 헤더의 첫 문단(항목이나 코드 블록 앞의 글)은 공백 제외 정확히 200자
+- 항목(- 줄, 1. 줄)은 공백 제외 ITEM_MAX자 이하. 짧은 본보기 줄이지 문단이 아니다. 넘치면 새 절을 연다
+  (2026-09-28 선생님: 첫 문단만 재니 항목이 243자, 259자까지 불었다. "새로운 절 만들면 되잖아")
 - 플레이스홀더는 {중괄호}, 경로는 슬래시
 - em dash와 가운뎃점 없음(CLAUDE.md)
 사용: python lib/skill_check.py <md> [<md> ...]
-      --loose 이면 200자를 알리기만 한다(a4처럼 명세 줄 꼴인 파일)
+      --loose 이면 200자와 항목 길이를 알리기만 한다(a4처럼 명세 줄 꼴인 파일)
 종료 코드는 어긋난 파일이 있으면 1."""
 import io, re, sys
+
+ITEM_MAX = 100
 
 
 def check(path, strict=True):
@@ -33,6 +37,17 @@ def check(path, strict=True):
             notes.append(f"{i+1}: 꺾쇠 플레이스홀더? {ln.strip()[:60]}")
         if re.search(r"[A-Za-z가-힣]\\[A-Za-z가-힣]", plain):
             notes.append(f"{i+1}: 역슬래시 경로? {ln.strip()[:60]}")
+        m = re.match(r"(- |\d+\. )", ln)
+        if m:
+            item = ln[m.end():]
+            k = i + 1
+            while k < len(lines) and lines[k].startswith("  ") and lines[k].strip():
+                item += lines[k]      # 들여 쓴 이음 줄도 한 항목
+                k += 1
+            n_item = len(item.replace(" ", ""))
+            if n_item > ITEM_MAX:
+                (errs if strict else notes).append(
+                    f"{i+1}: 항목 {n_item}자 (+{n_item - ITEM_MAX}) 새 절로 올리거나 가를 것 {ln.strip()[:40]!r}")
     for n, (i, lvl) in enumerate(hdr):
         if n > 0 or lvl > 1:
             ok = i >= 2 and lines[i-1] == "" and lines[i-2] == "" and (i < 3 or lines[i-3] != "")
