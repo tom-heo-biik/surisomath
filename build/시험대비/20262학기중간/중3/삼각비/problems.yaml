@@ -214,7 +214,7 @@ problems:
     alt: 원(반지름 6, 중심 높이 8)과 지면. P는 중심 아래 지면 위, 기둥. A는 꼭대기, Q는 A에서 반시계 120°(왼쪽 아래). PQ. θ°는 P. 6m는 왼쪽 반지름, 2m는 원 아래 끝~지면
     answer: $\dfrac{5\sqrt{3}}{9}$
 
-  - text: 그림과 같이 평행사변형 $\mathrm{ABCD}$에서 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 중점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하고, 두 선분 $\mathrm{DE}$, $\mathrm{DF}$가 대각선 $\mathrm{AC}$와 만나는 점을 각각 $\mathrm{G}$, $\mathrm{H}$라 하자. $\overline{\mathrm{DG}}=6$, $\overline{\mathrm{DH}}=5$, $\angle\mathrm{EDF}=30^{\circ}$일 때, 사각형 $\mathrm{EFHG}$의 넓이를 구하시오.
+  - text: 그림과 같이 평행사변형 $\mathrm{ABCD}$에서 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 중점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하고, 두 선분 $\mathrm{DE}$, $\mathrm{DF}$가 선분 $\mathrm{AC}$와 만나는 점을 각각 $\mathrm{G}$, $\mathrm{H}$라 하자. $\angle\mathrm{EDF}=30^{\circ}$, $\overline{\mathrm{DG}}=6$, $\overline{\mathrm{DH}}=5$일 때, 사각형 $\mathrm{EFHG}$의 넓이를 구하시오.
     figure: p27.svg
     alt: 평행사변형 A 왼쪽 위, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽 위. E(AB 중점), F(BC 중점). AC, DE, DF. G, H는 AC 위. EFHG 색칠. 6은 D~G, 5는 D~H. 30°는 D
     answer: $\dfrac{75}{8}$

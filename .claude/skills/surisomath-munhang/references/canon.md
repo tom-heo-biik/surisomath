@@ -525,6 +525,25 @@ $0^{\circ}<A<B<90^{\circ}$일 때, 이차방정식 $2x^2-x-1=0$의 한 근이 $\
 "∠BAD = 45°, ∠DAC = 30°가 되도록 변 BC 위에 점 D를 잡을 때"를 "삼각형 ABC에서 변 BC 위의 점 D에 대하여 …일 때"로 바꿨습니다. 005 정본의 꼴이고 선생님이 정한 문장입니다. 책의 ∠A = 75°는 그림에 없고 45°와 30°의 합이라 선생님의 지시로 뺐습니다. 두 길이와 두 각만으로 삼각형이 정해져 답 3/2는 그대로입니다. "다음 그림과 같이"는 "그림과 같이"로 열었고 출처를 뺐습니다. 그림은 책 그대로 45°와 30°를 답니다.
 
 
+### 027
+
+
+#### 책
+```
+다음 그림과 같은 평행사변형 $\mathrm{ABCD}$에서 $\overline{\mathrm{AB}}$, $\overline{\mathrm{BC}}$의 중점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하고 $\overline{\mathrm{DE}}$, $\overline{\mathrm{DF}}$가 대각선 $\mathrm{AC}$와 만나는 점을 각각 $\mathrm{G}$, $\mathrm{H}$라 하자. $\overline{\mathrm{DG}}=6$, $\overline{\mathrm{DH}}=5$, $\angle\mathrm{EDF}=30^{\circ}$일 때, $\square\mathrm{EFHG}$의 넓이를 구하시오.
+```
+
+
+#### 정본
+```
+그림과 같이 평행사변형 $\mathrm{ABCD}$에서 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 중점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하고, 두 선분 $\mathrm{DE}$, $\mathrm{DF}$가 선분 $\mathrm{AC}$와 만나는 점을 각각 $\mathrm{G}$, $\mathrm{H}$라 하자. $\angle\mathrm{EDF}=30^{\circ}$, $\overline{\mathrm{DG}}=6$, $\overline{\mathrm{DH}}=5$일 때, 사각형 $\mathrm{EFHG}$의 넓이를 구하시오.
+```
+
+
+#### 바뀐 것
+"다음 그림과 같은 평행사변형"을 "그림과 같이 평행사변형"으로 열었습니다. 기호 AB, BC, DE, DF는 도형이라 낱말 "두 변 AB, BC", "두 선분 DE, DF"로 썼고 □EFHG는 "사각형 EFHG"로 썼습니다. 조건은 각을 앞에 두어 "∠EDF = 30°, DG = 6, DH = 5"로 했습니다. 018과 028 정본의 차례입니다. "대각선 AC"는 선생님이 "선분 AC"로 정했습니다. 짜임은 책 그대로이고 그림과 답 75/8도 그대로입니다.
+
+
 ### 028
 
 
