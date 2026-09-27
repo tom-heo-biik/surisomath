@@ -269,18 +269,27 @@ def text_names(p: dict) -> set:
     return names
 
 
+def seq_letters(p: dict) -> set:
+    """지문이 첨자 문자로 부른 이름의 글자. $\\mathrm{A}_n$, $\\mathrm{OA}_{n+1}$ → A."""
+    fields = [str(p.get("text", "")), str(p.get("after", ""))]
+    for key in ("conditions", "notes", "subs"):
+        fields += [str(x) for x in (p.get(key) or [])]
+    return {m.group(1) for s in fields for m in re.finditer(r"\\mathrm\{[A-Z]*([A-Z])\}_\{?[a-z]", s)}
+
+
 def check_names(no: str, p: dict, svg: Path) -> None:
     """그림의 점 이름(grind_figure.save가 SVG 끝에 남긴 <!-- names: … -->)과 지문의 점 이름을 맞춰 본다.
     지문에 있는데 그림에 없으면 경고 — 이름을 빠뜨렸거나 지문이 그림에 없는 점을 부른다. 그림에만 있는
-    이름은 알려만 준다(014의 F·G·H처럼 "…"로 이어지는 그림도 있다)."""
+    이름은 알려만 준다. 지문이 Aₙ으로 부른 이름의 A₄, A₅ 같은 점은 "…"로 이어지는 이름이라 넘긴다(삼각비 014)."""
     global NAME_WARNINGS
     m = re.search(r"<!-- names: ([^>]*) -->", svg.read_text(encoding="utf-8")[-2000:])
     if not m:
         return
     fig = set(m.group(1).split())
     want = text_names(p)
+    seq = seq_letters(p)
     missing = sorted(want - fig)
-    extra = sorted(fig - want)
+    extra = sorted(e for e in fig - want if not (e[:1] in seq and e[1:].isdigit()))
     if missing:
         print(f"  ! {no}: 지문의 점 {', '.join(missing)}이(가) 그림에 없다. 이름을 넣거나 지문을 보라")
         NAME_WARNINGS += 1
