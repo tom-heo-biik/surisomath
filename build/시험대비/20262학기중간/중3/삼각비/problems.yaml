@@ -219,7 +219,7 @@ problems:
     alt: 평행사변형 A 왼쪽 위, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽 위. E(AB 중점), F(BC 중점). AC, DE, DF. G, H는 AC 위. EFHG 색칠. 6은 D~G, 5는 D~H. 30°는 D
     answer: $\dfrac{75}{8}$
 
-  - text: 그림과 같이 $\angle\mathrm{B}=40^{\circ}$, $\overline{\mathrm{AB}}=a$, $\overline{\mathrm{AC}}=b$인 삼각형 $\mathrm{ABC}$에서 각 $\mathrm{A}$의 이등분선이 변 $\mathrm{BC}$와 만나는 점을 $\mathrm{D}$라 하자. $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}+\overline{\mathrm{CD}}$일 때, 삼각형 $\mathrm{ABC}$의 넓이를 $a$, $b$를 사용하여 나타내시오.
+  - text: 그림과 같이 $\angle\mathrm{B}=40^{\circ}$, $\overline{\mathrm{AB}}=a$, $\overline{\mathrm{AC}}=b$인 삼각형 $\mathrm{ABC}$에서 각 $\mathrm{A}$의 이등분선이 변 $\mathrm{BC}$와 만나는 점을 $\mathrm{D}$라 하자. $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}+\overline{\mathrm{CD}}$일 때, 삼각형 $\mathrm{ABC}$의 넓이를 $a$, $b$로 나타내시오.
     figure: p28.svg
     alt: B 왼쪽, C 오른쪽, A 위(오른쪽 치우침). D는 BC 위. AD. 40°는 B. A의 두 각 같은 표시. a는 AB 바깥, b는 AC 바깥
     answer: $\dfrac{\sqrt{3}}{4}ab$
