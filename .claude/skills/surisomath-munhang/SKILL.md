@@ -74,7 +74,7 @@ description: "수리소 수학학원 학습지의 문제 글(문항)을 평가�
 
 ## 표기
 뜻이 표기를 가릅니다. 기호 AB̄는 선분 AB의 길이라는 수이고 낱말 선분 AB는 도형입니다. 관계 기호로 잇는 식이면 기호이고 서술이면 낱말이라 한 문제에 둘이 같이 서는 것이 맞습니다. 표기는 검사기가 잡아 주지만 뜻은 사람이 가릅니다. 각의 크기를 나타내는 문자는 θ°이고 육십분법이라 문자에도 °를 붙입니다. 원은 중심 이름으로 부르되 중심이 같은 두 원은 C₁, C₂입니다. 세부 규칙과 조판 예는 references/notation.md에 있습니다.
-- templates/notation.py가 기호가 식 밖에 홀로 있거나 낱말 뒤에 관계 기호가 오는 것을 `!`로 잡습니다. 시험대비 build.py가 문제마다 부르고 `python templates/notation.py {problems.yaml}`로 홀로 돌릴 수 있습니다.
+- templates/notation.py가 기호가 식 밖에 홀로 있거나 낱말 뒤에 관계 기호가 오는 것, 한 문장에 ∠A와 ∠BAC가 섞인 것을 `!`로 잡습니다. 시험대비 build.py가 문제마다 부르고 `python templates/notation.py {problems.yaml}`로 홀로 돌릴 수 있습니다.
 - problems.md에는 "선분 AE = 5"처럼 낱말로 적고 yaml이 식이면 기호로 옮깁니다.
 - 연마 조판 규칙(surisomath-grind) 위에 얹습니다. 정답 줄과 선지 열 같은 양식 표기는 양식 스킬에 있습니다.
 

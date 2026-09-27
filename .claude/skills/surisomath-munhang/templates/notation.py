@@ -6,6 +6,9 @@
 2026-09-26 삼각비 012를 보고 "어떤 규칙이냐"고 물은 뒤 유지로 확정). 이 검사는 그 경계를 지킨다 —
   (가) 기호가 식 밖에 홀로 있으면("$\\overline{\\mathrm{AC}}$는 …", "$\\angle\\mathrm{C}$의 이등분선") 도형을 기호로 쓴 것
   (나) 낱말 뒤에 = : < > ⊥가 오면("선분 $\\mathrm{AB}$ = 6") 길이를 낱말로 쓴 것
+  (다) 한 문장에 한 글자 각(∠A)과 세 글자 각(∠BAC)이 같이 있으면 각의 이름을 섞어 쓴 것. 줄일 수 있으면
+       한 글자로(삼각비 019 ∠CAB → ∠A), 없으면 세 글자로(021 ∠A → ∠BAC) 맞춘다. "∠C = 90°인 직각삼각형"은
+       003, 005 정본의 정형구라 넘긴다(016)
 
     python notation.py <problems.yaml>      문제마다 ! 줄을 찍고, 경고가 있으면 종료 코드 1
 
@@ -22,12 +25,29 @@ SHAPE_TEX = ("\\overline", "\\angle", "\\overset{\\frown}", "\\triangle", "□")
 EXPR_TEX = ("=", ":", "<", ">", "+", "-", "^", "/", "\\perp", "\\parallel", "\\dfrac", "\\frac",
             "\\times", "\\leq", "\\geq", "\\neq", "\\cdot")
 WORD_EQ_RX = re.compile(r"(선분|변|현|호|각|지름|반지름) \$\\mathrm\{[A-Z]+\}[^$]*\$ ?(=|:|<|>|⊥)")
+ANGLE_RX = re.compile(r"\\angle\s*((?:\\mathrm\{[A-Z]+\}(?:'|_\{[^{}]*\}|_[0-9a-z])?)+)")   # 각 이름, 첨자·프라임 포함
+RIGHT_TRI_RX = re.compile(r"\$\\angle\\mathrm\{[A-Z]\}=90\^\{\\circ\}\$인 직각삼각형")        # 정형구
+SENTENCE_RX = re.compile(r"(?<=[.?])\s+")
+
+
+def angle_mix(s: str) -> list[str]:
+    """한 문장에 한 글자 각과 세 글자 각이 같이 있으면 그 문장의 각 이름들(∠C, ∠AED)을 돌려준다."""
+    out = []
+    for sent in SENTENCE_RX.split(RIGHT_TRI_RX.sub("", s)):
+        toks = [m.group(1) for m in ANGLE_RX.finditer(sent)]
+        sizes = {sum(len(x) for x in re.findall(r"\\mathrm\{([A-Z]+)\}", t)) for t in toks}
+        if 1 in sizes and 3 in sizes:
+            out.append(", ".join("∠" + re.sub(r"\\mathrm\{([A-Z]+)\}", r"\1", t) for t in toks))
+    return out
 
 
 def check(fields: list[str]) -> list[str]:
     """지문·조건·뒷문장·보기·소문항(문자열 목록)에서 규칙을 벗어난 곳을 경고 글 목록으로 돌려준다."""
     out: list[str] = []
     for s in fields:
+        for names in angle_mix(s):
+            out.append(f"한 문장에 한 글자 각과 세 글자 각이 섞였다({names}). 줄일 수 있으면 한 글자로, "
+                       f"없으면 세 글자로 맞춰라")
         for m in MATH_RX.finditer(s):
             tex = m.group(1)
             if any(t in tex for t in SHAPE_TEX) and not any(op in tex for op in EXPR_TEX):
