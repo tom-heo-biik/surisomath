@@ -7,6 +7,7 @@
     python lib/print_pdf.py 삼각비.pdf --plan                       계획만(작업·장 수, 프린터 설정 확인)
     python lib/print_pdf.py 삼각비.pdf=4/2 원과직선.pdf=2/2 --go    학생 쪽 4부·선생님 쪽 2부, 원과직선은 2부·2부
     python lib/print_pdf.py 삼각비.pdf=1/0 --go                     학생 쪽만 한 부
+    python lib/print_pdf.py 삼각비.pdf=4/1 --quality standard --go  급할 때 표준 품질(표준+일반)로
     python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go             1·2쪽만 한 부(--copies N)
     python lib/print_pdf.py 삼각비.pdf --pages 1-2 --dry-run out    Microsoft Print to PDF로 찍어 본다
 
@@ -101,8 +102,8 @@ try {
     $base = $q.UserPrintTicket
     $conv = New-Object System.Printing.Interop.PrintTicketConverter($Printer, $q.ClientPrintSchemaVersion)
     $want = [ordered]@{
-        'psk:PageOutputQuality'                 = 'epson:HighQuality'
-        'psk:PageResolution'                    = 'epson:FineStd'
+        'psk:PageOutputQuality'                 = $Quality
+        'psk:PageResolution'                    = $Resolution
         'psk:JobDuplexAllDocumentsContiguously' = 'psk:TwoSidedLongEdge'
         'psk:PageMediaSize'                     = 'psk:ISOA4'
         'psk:PageOrientation'                   = 'psk:Portrait'
@@ -150,11 +151,19 @@ def _ps_str(s):
     return "'" + s.replace("'", "''") + "'"
 
 
-def make_devmodes(printer):
+QUALITY = {   # Epson 드라이버의 품질·해상도 이름. 표준은 사용자 기본 티켓과 같다(2026-09-27 조회)
+    "high": ("epson:HighQuality", "epson:FineStd"),      # 높게 + 섬세하게
+    "standard": ("epson:Standard", "epson:NormalStd"),   # 표준 + 일반
+}
+
+
+def make_devmodes(printer, quality="high"):
     """컬러·흑백 DEVMODE 둘을 만들고 되읽어 요청과 같은지 잰다. 다르면 멈춘다."""
     tmp = Path(tempfile.mkdtemp(prefix="suriso_print_"))
     try:
-        script = f"$Printer = {_ps_str(printer)}\n$OutDir = {_ps_str(str(tmp))}\n" + DEVMODE_PS
+        q, r = QUALITY[quality]
+        script = (f"$Printer = {_ps_str(printer)}\n$OutDir = {_ps_str(str(tmp))}\n"
+                  f"$Quality = {_ps_str(q)}\n$Resolution = {_ps_str(r)}\n") + DEVMODE_PS
         enc = base64.b64encode(script.encode("utf-16-le")).decode("ascii")
         r = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-EncodedCommand", enc],
                            capture_output=True, timeout=180)
@@ -435,6 +444,8 @@ def main():
     ap.add_argument("--pages", metavar="RANGE", help="이 쪽만(예: 1-2 또는 1,3-4). PDF 하나일 때만")
     ap.add_argument("--copies", type=int, default=1, help="--pages의 부수(기본 1)")
     ap.add_argument("--printer", default=PRINTER, help=f"프린터 이름(기본 {PRINTER})")
+    ap.add_argument("--quality", choices=sorted(QUALITY), default="high",
+                    help="품질. high는 높게+섬세하게(기본), standard는 표준+일반(급할 때)")
     args = ap.parse_args()
 
     specs = [parse_spec(s) for s in args.pdf]
@@ -463,7 +474,7 @@ def main():
         print(f"{i:2d}. {j['name']}")
     print(f"작업 {len(jobs)}개, {faces}면, {sheets}장")
 
-    dm, res = make_devmodes(args.printer)
+    dm, res = make_devmodes(args.printer, args.quality)
     s = res["mono"]["settings"]
     print("프린터 설정(되읽음, 컬러·흑백 둘 다 요청대로): "
           f"품질 {s['psk:PageOutputQuality']} · 해상도 {s['psk:PageResolution']} · "

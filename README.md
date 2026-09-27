@@ -101,13 +101,14 @@ python .claude/skills/surisomath-assess/templates/build.py build/수행평가/20
 ## 학습지 인쇄
 
 연마·시험대비·수행평가 PDF를 학원 프린터(EPSON EM-C800)로 뽑는다. 100% 크기, 양면 긴 쪽 넘김,
-품질 "높게"·해상도 "섬세하게"(600dpi). 세 양식 모두 앞 절반이 학생 쪽, 뒤 절반이 선생님 쪽이라
-두 쪽의 부수를 따로 정한다.
+품질 "높게"·해상도 "섬세하게"(600dpi). 급할 때는 `--quality standard`로 "표준"·"일반"이다. 세 양식
+모두 앞 절반이 학생 쪽, 뒤 절반이 선생님 쪽이라 두 쪽의 부수를 따로 정한다.
 
 ```
 python lib/print_pdf.py 삼각비.pdf=4/2 원과직선.pdf=2/2 --plan   계획과 프린터 설정 확인
 python lib/print_pdf.py 삼각비.pdf=4/2 원과직선.pdf=2/2 --go     보낸다 (학생 쪽 4부·선생님 쪽 2부 …)
 python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go              1·2쪽만 한 부
+python lib/print_pdf.py 삼각비.pdf=4/1 --quality standard --go   급할 때 표준 품질로
 ```
 
 쪽을 프린터 해상도로 그려 1:1로 보내므로 뷰어의 용지 맞춤이 끼지 않는다. 색 없는 장은 흑백으로,
