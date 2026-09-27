@@ -289,12 +289,12 @@ $x^2$의 계수가 1인 세 이차함수 $y=f(x)$, $y=g(x)$, $y=h(x)$의 그래�
 
 #### 정본
 ```
-그림과 같이 $\overline{\mathrm{AB}}=4$cm, $\overline{\mathrm{AD}}=8$cm인 직사각형 $\mathrm{ABCD}$ 모양의 종이를 점 $\mathrm{D}$가 점 $\mathrm{B}$에 오도록 접었다. 접는 선이 두 변 $\mathrm{AD}$, $\mathrm{BC}$와 만나는 점을 각각 $\mathrm{R}$, $\mathrm{Q}$라 하고, 점 $\mathrm{C}$가 옮겨진 점을 $\mathrm{P}$라 하자. $\angle\mathrm{BRQ}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값은?
+그림과 같이 $\overline{\mathrm{AB}}=4$, $\overline{\mathrm{AD}}=8$인 직사각형 $\mathrm{ABCD}$ 모양의 종이를 점 $\mathrm{D}$가 점 $\mathrm{B}$에 오도록 접었다. 접는 선이 두 변 $\mathrm{AD}$, $\mathrm{BC}$와 만나는 점을 각각 $\mathrm{R}$, $\mathrm{Q}$라 하고, 점 $\mathrm{C}$가 옮겨진 점을 $\mathrm{P}$라 하자. $\angle\mathrm{BRQ}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값은?
 ```
 
 
 #### 바뀐 것
-그림에 있는 두 길이를 "…인 직사각형"에 얹었고 "색종이 ABCD"는 "직사각형 ABCD 모양의 종이"로 썼습니다. 접는 선 RQ를 먼저 잡던 것을 접는 조건 뒤에 "접는 선이 두 변 AD, BC와 만나는 점을 각각 R, Q"로 정의했습니다. 접는 조건 하나가 접는 선을 정하고 R, Q, P는 그 결과이기 때문입니다. 원인 뒤에 결과를 두는 쪽을 선생님이 골랐습니다. 그림에만 있던 점 P를 지문에 넣고 ∠x는 θ°로 바꿨습니다. 여기 "각각"은 변과 점의 대응이라 맞습니다.
+그림에 있는 두 길이를 "…인 직사각형"에 얹었고 "색종이 ABCD"는 "직사각형 ABCD 모양의 종이"로 썼습니다. 접는 선 RQ를 먼저 잡던 것을 접는 조건 뒤에 "접는 선이 두 변 AD, BC와 만나는 점을 각각 R, Q"로 정의했습니다. 접는 조건 하나가 접는 선을 정하고 R, Q, P는 그 결과이기 때문입니다. 원인 뒤에 결과를 두는 쪽을 선생님이 골랐습니다. 그림에만 있던 점 P를 지문에 넣고 ∠x는 θ°로 바꿨습니다. 단위 cm는 평가원처럼 뺐습니다(선생님).
 
 
 ### 003

@@ -148,8 +148,8 @@ def p2():
     for p, q in ((R, D), (D, C), (C, Q), (B, Q)):
         g.seg(ax, p, q, dashed=True)
     g.angle(ax, R, B, Q, "$\\theta^{\\circ}$", r=14)
-    g.dim(ax, A, D, "8cm", side=1, gap=g.pt(ax, 20))     # R 이름 위로 곡선이 지나가게 높인다
-    g.dim(ax, A, B, "4cm", side=-1)
+    g.dim(ax, A, D, "8", side=1, gap=g.pt(ax, 20))     # R 이름 위로 곡선이 지나가게 높인다
+    g.dim(ax, A, B, "4", side=-1)
     g.name(ax, A, "A", dx=-4, dy=2, ha="right", va="bottom")
     g.name(ax, B, "B", dx=-4, dy=-2, ha="right", va="top")
     g.name(ax, C, "C", dx=4, dy=-2, ha="left", va="top")
