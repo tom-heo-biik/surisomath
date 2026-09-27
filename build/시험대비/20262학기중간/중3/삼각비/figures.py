@@ -686,27 +686,30 @@ def p22():
 # ── 023 — 서로 수직인 두 지름과 반직선 AE ───────────────────────────────
 
 def p23():
+    # 2026-09-28 선생님이 정한 문장에 맞춰 이름을 바꿨다. 옛 A, B, C, D, E, F는 새 P, Q, S, R, U, T다.
     O = (0.0, 0.0)
-    A, B, C, D = (-12.0, 0.0), (12.0, 0.0), (0.0, 12.0), (0.0, -12.0)
-    E = (0.0, 8.0)
+    P, Q, S, R = (-12.0, 0.0), (12.0, 0.0), (0.0, 12.0), (0.0, -12.0)
+    U = (0.0, 8.0)
     t = 288 / 208
-    F = (-12 + 12 * t, 8 * t)
-    fig, ax = g.canvas(6, -16.75, 16.75)                   # 지문이 일곱 줄이라 6칸(풀 자리 8칸)
+    T = (-12 + 12 * t, 8 * t)
+    fig, ax = g.canvas(6, -16.75, 16.75)                   # 지문이 길어 6칸(풀 자리 8칸)
     g.circle(ax, O, 12.0)
-    g.seg(ax, A, B)
-    g.seg(ax, C, D)
-    g.seg(ax, A, F)
-    g.seg(ax, O, F)                                        # 책은 반지름 OF를 긋는다(BF가 아니다 — 독립 검토가 잡았다)
+    g.seg(ax, P, Q)
+    g.seg(ax, S, R)
+    g.seg(ax, P, T)
+    g.seg(ax, O, T)                                        # 책은 반지름 OT(옛 OF)를 긋는다. 독립 검토가 잡았다
     g.right_angle(ax, O, -1, 1)
-    g.dim(ax, A, O, "12", side=-1)
-    center(ax, O, "O", dx=4, dy=-4, va="top")
-    g.dot(ax, E)
-    g.name(ax, A, "A", dx=-5, ha="right")
-    g.name(ax, B, "B", dx=5, ha="left")
-    g.name(ax, C, "C", dx=-1, dy=5, va="bottom")
-    g.name(ax, D, "D", dy=-5, va="top")
-    g.name(ax, E, "E", dx=-4, dy=2, ha="right", va="bottom")
-    g.name(ax, F, "F", dx=3, dy=4, ha="left", va="bottom")
+    apex = g.dim(ax, P, Q, "", side=-1, gap=g.pt(ax, 15))  # 지름 PQ = 24. 곡선 가운데가 선분 OR과 겹쳐 글은 지시선으로 뺀다
+    g.leader(ax, apex, "24", dx=-1.5, dy=-1, length=12)
+    center(ax, O, "O", dx=3, dy=-3, va="top")
+    g.dot(ax, U)
+    g.name(ax, P, "P", dx=-5, ha="right")
+    g.name(ax, Q, "Q", dx=5, ha="left")
+    g.name(ax, S, "S", dx=-1, dy=5, va="bottom")
+    g.name(ax, R, "R", dy=-5, va="top")
+    g.name(ax, U, "U", dx=-4, dy=2, ha="right", va="bottom")
+    g.name(ax, T, "T", dx=3, dy=4, ha="left", va="bottom")
+    g.name(ax, g.polar(O, 12.0, -50), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")   # 원의 이름(원과직선 005처럼)
     g.save(fig, "p23.svg")
 
 
