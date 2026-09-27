@@ -258,36 +258,41 @@ def p6():
 
 
 # ── 007 — 빗변 위의 두 반원 ─────────────────────────────────────────────
-# r = 1, r' = 3. O'(3, 3)이 AC 위에 있고 A = O' + 2r'·(−1/2, √3/2). O = A + 2r·(1/2, −√3/2).
+# 큰 반원 C의 r = 3, 작은 반원 C'의 r' = 1. O(3, 3)이 PR 위에 있고 P = O + 2r(−1/2, √3/2), O' = P + 2r'(1/2, −√3/2).
 
 def p7():
-    r, r2 = 1.0, 3.0
-    d = (0.5, -R3 / 2)
-    A = (0.0, r2 * (1 + R3))
-    O = (A[0] + 2 * r * d[0], A[1] + 2 * r * d[1])
-    O2 = (A[0] + 2 * r2 * d[0], A[1] + 2 * r2 * d[1])
-    B = (0.0, 0.0)
-    C = (A[1] / R3, 0.0)
-    D, E = (0.0, O[1]), (0.0, O2[1])
+    # 큰 반원 C(반지름 r = 3)와 작은 반원 C'(반지름 r' = 1). 2026-09-27 선생님 지시로 큰 반원이 C, 작은 반원이
+    # C'이고 꼭짓점 C가 겹쳐 삼각형을 PQR로 바꿨다(원과직선 007처럼). 지문이 중심을 안 부르므로 중심은 점만
+    # 찍는다(변수 Ob, Os는 자리 이름). 반지름 선분은 안 긋고 r, r'을 빗변 위의 지름에 단다.
+    rb, rs = 3.0, 1.0
+    d = (0.5, -R3 / 2)                                    # 빗변 P에서 R로 가는 방향
+    P = (0.0, rb * (1 + R3))
+    Os = (P[0] + 2 * rs * d[0], P[1] + 2 * rs * d[1])    # 작은 반원 C'의 중심
+    Ob = (P[0] + 2 * rb * d[0], P[1] + 2 * rb * d[1])    # 큰 반원 C의 중심
+    Q = (0.0, 0.0)
+    R = (P[1] / R3, 0.0)
+    T = (Os[0] + rs * d[0], Os[1] + rs * d[1])            # 두 반원이 외접하는 점(빗변 위)
+    Cend = (Ob[0] + rb * d[0], Ob[1] + rb * d[1])         # 큰 반원 지름의 아래 끝(R 쪽)
     fig, ax = g.canvas(7, -1.16, 9.49)
-    g.poly(ax, [A, B, C])
-    g.arc(ax, O, r, 120, 300)
-    g.arc(ax, O2, r2, 120, 300)
-    g.right_angle(ax, B, 1, 1)
-    m = g.angle(ax, A, B, C, "", r=14)                    # 좁은 각. 글은 빗변 오른쪽 밖에
+    g.poly(ax, [P, Q, R])
+    g.arc(ax, Os, rs, 120, 300)
+    g.arc(ax, Ob, rb, 120, 300)
+    g.right_angle(ax, Q, 1, 1)
+    m = g.angle(ax, P, Q, R, "", r=14)                    # 좁은 각. 글은 빗변 오른쪽 밖에
     g.leader(ax, m, "$30^{\\circ}$", dx=1, dy=0.3)
-    center(ax, O, "O", dx=4, dy=1)
-    center(ax, O2, "$\\mathrm{O}'$", dx=4, dy=1)
-    # 반지름은 선분(0.4pt)을 긋고("직선으로", 2026-09-23 선생님) 길이는 책처럼 그 아래 점선 호에 글
-    g.seg(ax, D, O, lw=g.AUX)
-    g.seg(ax, E, O2, lw=g.AUX)
-    g.dim(ax, D, O, "$r$", side=-1, gap=g.pt(ax, 6))     # 반원 O 안에 든다
-    g.dim(ax, E, O2, "$r'$", side=-1)
-    g.name(ax, A, "A", dy=5, va="bottom")
-    g.name(ax, B, "B", dx=-4, dy=-3, ha="right", va="top")
-    g.name(ax, C, "C", dx=4, dy=-3, ha="left", va="top")
-    g.name(ax, D, "D", dx=-5, ha="right")
-    g.name(ax, E, "E", dx=-5, ha="right")
+    g.dot(ax, Ob)                                         # 중심은 점만, 이름 없음
+    g.dot(ax, Os)
+    # 반지름은 빗변 위의 지름에 점선 곡선으로 단다(2026-09-27 선생님: 중심에서 변 PQ에 내린 반지름 선분은
+    # 풀이의 보조선이 되니 긋지 않는다). 곡선은 빗변 바깥(오른쪽 위)으로 부푼다. side=+1은 진행 방향의 왼쪽.
+    g.dim(ax, Ob, Cend, "$r$", side=1)                    # 큰 반원: 중심에서 지름의 아래 끝까지
+    t = g.dim(ax, Os, T, "", side=1)                      # 작은 반원: 현 14pt라 r'을 지시선으로 바깥에
+    g.leader(ax, t, "$r'$", dx=1, dy=0.6)
+    # 반원의 이름. C는 큰 반원 안에, C'은 작은 반원이 좁아 지시선으로 변 PQ 왼쪽에(006의 O'처럼)
+    g.name(ax, (1.6, 1.15), "$\\mathrm{C}$")
+    g.leader(ax, g.polar(Os, rs, 150), "$\\mathrm{C}'$", dx=-1, dy=0.8, length=14)
+    g.name(ax, P, "P", dy=5, va="bottom")
+    g.name(ax, Q, "Q", dx=-4, dy=-3, ha="right", va="top")
+    g.name(ax, R, "R", dx=4, dy=-3, ha="left", va="top")
     g.save(fig, "p7.svg")
 
 
