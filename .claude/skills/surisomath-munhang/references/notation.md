@@ -3,15 +3,25 @@
 
 ## 문장 안과 식 안
 문장 안에서 도형은 낱말로 부르고 이름만 정체 수식으로 씁니다. 선분 AB, 현 AB, 삼각형 ABC, 사각형 ABCD, 각 A, 호 AB, 원 O가 그것입니다. 식 안에서 길이와 각의 크기는 기호로 씁니다. 등식과 비와 부등호와 수직 기호로 잇는 식이 그 자리입니다. 이 경계가 있어야 학생이 수와 도형을 헷갈리지 않습니다. 기호가 식 밖에 홀로 서거나 낱말 뒤에 관계 기호가 오면 검사기가 잡습니다. problems.md에는 낱말로 적고 yaml이 식이면 기호로 옮깁니다.
-- 문장 안. `선분 $\mathrm{AB}$`, `삼각형 $\mathrm{ABC}$`, `각 $\mathrm{A}$`, `호 $\mathrm{AB}$`, `원 $\mathrm{O}$`, `$\mathrm{O}'$`, `$\mathrm{O}_1$`.
-- 식 안. `$\overline{\mathrm{AE}}=5$`, `$\overline{\mathrm{AB}}:\overline{\mathrm{CD}}=1:\sqrt{3}$`, `$\overline{\mathrm{OC}}\perp\overline{\mathrm{AB}}$`, `$\overline{\mathrm{AC}}<\overline{\mathrm{BC}}$`, `$\angle\mathrm{BAH}=90^{\circ}$`, `$\overset{\frown}{\mathrm{AB}}:\overset{\frown}{\mathrm{BC}}=5:2$`, `$\overline{\mathrm{EF}}-\overline{\mathrm{AB}}$`, `$\overline{\mathrm{OO}'}=13$cm`, `$\overline{\mathrm{O}_1\mathrm{O}_2}=7$`.
+- 문장 안. `선분 $\mathrm{AB}$`, `삼각형 $\mathrm{ABC}$`, `각 $\mathrm{A}$`, `호 $\mathrm{AB}$`, `원 $\mathrm{O}$`.
+- 문장 안의 프라임과 첨자. `$\mathrm{O}'$`, `$\mathrm{O}_1$`.
+- 식 안의 등식. `$\overline{\mathrm{AE}}=5$`, `$\angle\mathrm{BAH}=90^{\circ}$`.
+- 식 안의 비. `$\overline{\mathrm{AB}}:\overline{\mathrm{CD}}=1:\sqrt{3}$`.
+- 식 안의 부등호. `$\overline{\mathrm{AC}}<\overline{\mathrm{BC}}$`.
+- 식 안의 수직. `$\overline{\mathrm{OC}}\perp\overline{\mathrm{AB}}$`.
+- 식 안의 차. `$\overline{\mathrm{EF}}-\overline{\mathrm{AB}}$`.
+- 식 안의 프라임과 첨자. `$\overline{\mathrm{OO}'}=13$cm`, `$\overline{\mathrm{O}_1\mathrm{O}_2}=7$`.
+- 식 안의 호. `$\overset{\frown}{\mathrm{AB}}:\overset{\frown}{\mathrm{BC}}=5:2$`.
 - 호는 `\overset{\frown}`으로 씁니다. `\widehat`은 모자꼴이라 쓰지 않습니다.
-- 기호로 써야 할 때는 `$\triangle\!\mathrm{ABC}$`(`\!`가 없으면 벌어집니다)와 `$□\mathrm{ABCD}$`(유니코드 □, `\square`는 mathtext에 없습니다)입니다. 지금 학습지에는 없습니다.
+- 기호로 써야 할 때는 `$\triangle\!\mathrm{ABC}$`(`\!`가 없으면 벌어집니다)와 `$□\mathrm{ABCD}$`입니다. 지금 학습지에는 없습니다.
+- 사각형의 □는 유니코드 글자 그대로 씁니다. `\square`는 mathtext에 없습니다.
 
 
 ## 낱말로만 쓰는 것
 식 안에서도 낱말로만 쓰는 것이 있습니다. 직각삼각형 ABC, 정사각형 ABCD, 직사각형 ABCD, 평행사변형 ABCD, 육각형 PABCDE는 이름만 정체 수식으로 쓰고 나머지는 글자입니다. 점 A, 지점 A, 중점 M, 원점 O, 중심 O도 모두 낱말입니다. 직선은 이탤릭 l로 씁니다. 이름을 기호로 감싸면 도형이 수처럼 읽혀서 학생이 헷갈립니다. 교과서에서도 낱말인 것들이라서 기호를 만들지 않습니다. 삼각형의 변은 변이라 부르고 선분이라 하지 않습니다.
-- `직각삼각형 $\mathrm{ABC}$`, `정사각형 $\mathrm{ABCD}$`, `육각형 $\mathrm{PABCDE}$`, `점 $\mathrm{A}$`, `직선 $l$`, `두 직선 $l_1$, $l_2$`, `중점 $\mathrm{M}$`, `원점 $\mathrm{O}$`.
+- 다각형. `직각삼각형 $\mathrm{ABC}$`, `정사각형 $\mathrm{ABCD}$`, `육각형 $\mathrm{PABCDE}$`.
+- 점. `점 $\mathrm{A}$`, `중점 $\mathrm{M}$`, `원점 $\mathrm{O}$`.
+- 직선. `직선 $l$`, `두 직선 $l_1$, $l_2$`.
 
 
 ## 원의 이름
@@ -25,7 +35,8 @@
 ## 각의 크기 문자
 각의 크기를 나타내는 문자는 θ°입니다. 육십분법이라 문자에도 °를 붙입니다. 둘이면 θ₁°, θ₂°이고 수열이면 θₙ°입니다. 범위는 수로만 적고 조사는 ° 뒤에 붙입니다. x, y, α, 두 각 A, B는 쓰지 않습니다(선생님). 교과서와 학력평가의 ∠B = θ와 책의 x°, tan x° 가운데 뒤쪽을 골라 정한 규칙입니다. 학생이 보는 학습지라 교과서의 육십분법 표기를 따르는 것입니다. 그림의 글자도 똑같고, θ가 넓어 좁은 각에서는 지시선으로 밖에 뺍니다.
 - `$\angle\mathrm{BRQ}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값은?`
-- 둘이면 `\theta_1^{\circ}`, `\theta_2^{\circ}`이고 합은 `$\tan(\theta_1+\theta_2)^{\circ}$`, 수열이면 `\theta_n^{\circ}`(`$\sin\theta_{24}^{\circ}$`)입니다.
+- 둘이면 `\theta_1^{\circ}`, `\theta_2^{\circ}`이고 합은 `$\tan(\theta_1+\theta_2)^{\circ}$`입니다.
+- 수열이면 `\theta_n^{\circ}`(`$\sin\theta_{24}^{\circ}$`)입니다.
 - 범위는 "(단, $0<\theta<\theta_0<90$)"처럼 수로 씁니다(삼각비 008). 조사는 "θ°라 할 때", "θₙ°라"입니다.
 - 다른 각의 범위를 정하는 붙박이 각은 θ₀°, 자유로운 각은 θ°입니다. "f(tan θ₀°) = 0일 때"(삼각비 008, 선생님).
 - 그림은 `g.angle(…, "$\\theta^{\\circ}$")`입니다.
@@ -40,11 +51,16 @@
 
 ## 루트와 각도와 함수와 좌표
 루트와 각도와 함수와 좌표는 수식으로 조판합니다. 모두 mathtext가 그리므로 명령은 mathtext에 있는 것만 씁니다. 각도는 낱말 사이에 홀로 있어도 수식 서체이고 도 기호는 중괄호로 감싼 `^{\circ}`로 씁니다. 중괄호가 없으면 벌어지고 수식 안의 ° 글자는 γ 같은 다른 글자로 찍힙니다. 프라임은 정체 명령 mathrm 밖에 둡니다. 좌표의 둘째 성분이 음수면 중괄호로 감쌉니다. 감싸지 않으면 쉼표 뒤의 마이너스가 이항 연산자로 벌어집니다.
-- `$\sqrt{(\cdots)^2}$`, `$2\sqrt{3}$`, `$\sin x$`, `$\tan 52^{\circ}$`, `$35^{\circ}$`, `$\angle\mathrm{BAC}=60^{\circ}$`, `$\tan 63^{\circ}=1.96$`, `$\dfrac{80}{\tan 52^{\circ}+\tan 35^{\circ}}$`.
-- `삼각형 $\mathrm{A}'\mathrm{BC}'$`, `$f(x)$`, `$y=\dfrac{1}{4}x^2$`, `$(n,\,n)$`, `$\mathrm{A}(-1,\,3)$`, `$(2,\,{-3})$`, `$\mathrm{A}_n$`.
+- 루트. `$\sqrt{(\cdots)^2}$`, `$2\sqrt{3}$`.
+- 각도. `$35^{\circ}$`, `$\angle\mathrm{BAC}=60^{\circ}$`.
+- 삼각비. `$\tan 52^{\circ}$`, `$\tan 63^{\circ}=1.96$`, `$\dfrac{80}{\tan 52^{\circ}+\tan 35^{\circ}}$`.
+- 함수. `$\sin x$`, `$f(x)$`, `$y=\dfrac{1}{4}x^2$`.
+- 프라임과 첨자. `삼각형 $\mathrm{A}'\mathrm{BC}'$`, `$\mathrm{A}_n$`.
+- 좌표. `$(n,\,n)$`, `$\mathrm{A}(-1,\,3)$`, `$(2,\,{-3})$`.
 
 
 ## 치수와 조판
 치수는 글자 그대로 붙여 씁니다. 80m, 4cm, 124m, 30%가 그것이고 a4의 단위 붙여쓰기 규칙입니다. 수식 안 값에 단위가 붙으면 수식 뒤에 글자로 붙입니다. 수식 SVG와 글자의 경계가 단위 앞에서 갈라지지 않게 하려는 것입니다. 이 규칙들은 연마의 조판 규칙 위에 얹는 것입니다. 같지 않다는 `\neq`, 분수는 `\dfrac`, 점 이름은 정체, 변수는 이탤릭이고 수식 뒤 조사는 붙여 씁니다. 정답 줄과 선지 열 같은 양식 표기는 양식 스킬에 있습니다.
 - `$\overline{\mathrm{AB}}=8$cm`, `$\overline{\mathrm{EF}}=2\sqrt{21}$cm`.
-- 시험대비는 본문의 수에 단위를 붙이지 않습니다(선생님, 2026. 9. 28.). cm 이하는 맨수로 쓰고 m 이상은 실생활 문항에서만 끝 단서로 밝힙니다. 규칙과 근거는 munhang SKILL 표기 절에 있습니다. 이 절의 붙여 쓰기는 연마와 수행평가의 규칙입니다.
+- 이 절의 단위 붙여쓰기는 연마와 수행평가의 규칙입니다. 시험대비는 본문의 수에 단위를 붙이지 않습니다(선생님, 2026. 9. 28.).
+- 시험대비에서는 cm 이하는 맨수로 쓰고 m 이상은 실생활 문항에서만 끝 단서로 밝힙니다. 규칙과 근거는 munhang SKILL 단위 절에 있습니다.

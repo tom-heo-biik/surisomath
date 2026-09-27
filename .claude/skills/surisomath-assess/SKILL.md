@@ -8,9 +8,13 @@ description: "수리소 수학학원의 학교 수행평가 대비 학습지 '�
 
 ## 들어가는 말
 이 스킬은 학교 수행평가를 대비하는 학습지 '수행평가' 양식을 담고 있습니다. 문제 한 개가 한 쪽이고 단은 하나이며 문제 아래는 학생이 답안을 손으로 쓰는 빈 종이입니다. 학생 쪽 뒤에 선생님 쪽이 같은 차례로 붙고 정답은 머리줄 오른쪽 끝에, 풀이는 빈 자리에 들어갑니다. 판형은 a4, 그림과 수식은 연마, 글 너비 재기는 시험대비, 문제 글의 문형과 표기는 문항 스킬을 따르므로 네 스킬도 함께 읽습니다. 수치와 규격은 references/spec.md에 있습니다.
-- 선행 스킬에서 빌려 쓰는 것입니다. surisomath-a4는 판형과 여백과 그리드와 서체와 렌더와 그리드 검사, surisomath-grind는 그림 도우미 grind_figure.py와 본문 수식 조판(build.py의 rich)과 분수 규격, surisomath-exam은 글 너비 재기 width_of와 SVG 너비 재기, surisomath-munhang은 평가원 문형과 표기입니다.
+- 선행 스킬에서 빌려 쓰는 것은 surisomath-a4의 판형과 여백과 그리드와 서체와 렌더와 그리드 검사입니다.
+- surisomath-grind의 그림 도우미 grind_figure.py와 본문 수식 조판(build.py의 rich)과 분수 규격도 빌려 씁니다.
+- surisomath-exam의 글 너비 재기 width_of와 SVG 너비 재기도 빌려 씁니다.
+- surisomath-munhang의 평가원 문형과 표기도 빌려 씁니다.
 - 빌드는 templates/build.py 하나가 그림 → 수식 → 표 → HTML → PDF → 검사를 한 번에 합니다. a4의 render.py를 직접 부르지 않습니다.
-- 정본은 build/수행평가/20262학기/수지중학교/중1/2026.09.17/입니다. 좌표평면 그림 한 문제와 표 두 문제(하나는 빈 칸)가 있고 새 학습지는 이 폴더의 problems.yaml과 figures.py를 복사해 출발합니다.
+- 정본은 build/수행평가/20262학기/수지중학교/중1/2026.09.17/입니다. 좌표평면 그림 한 문제와 표 두 문제(하나는 빈 칸)가 있습니다.
+- 새 학습지는 정본 폴더의 problems.yaml과 figures.py를 복사해 출발합니다.
 - 포맷은 PDF이고 패키지와 설치는 references/spec.md의 환경 절에 있습니다.
 
 
@@ -25,7 +29,8 @@ description: "수리소 수학학원의 학교 수행평가 대비 학습지 '�
 
 ## 정답과 풀이
 선생님 쪽의 정답은 머리줄 오른쪽 끝에 정답 줄로 찍힙니다. 연마와 같은 자리이고 캡션 서체에 회색이며 한 줄에 다 들어가야 합니다. 풀이는 yaml의 solution 블록이고 빈 자리 위부터 줄마다 한 칸씩 앉습니다. 풀이 글은 선생님이 준 문장을 그대로 옮기고 표기만 조판합니다. 줄 나누기도 선생님의 줄을 따르되 본문 너비를 넘는 줄만 어절에서 둘로 끊습니다. 되감기에 맡기면 어디서 줄이 바뀔지 알 수 없기 때문입니다. 소제목도 심볼도 없이 첫 줄부터 풀이가 시작됩니다.
-- 정답 표기는 서술형이면 단위까지(`정답: 8점`)이고 수식이면 `$…$`(`$a=-\dfrac{1}{4}$, $b=-4$`)입니다. 머리줄 너비에 16pt와 정답 너비를 더해 475pt를 넘으면 build.py가 경고하니 짧게 씁니다.
+- 정답 표기는 서술형이면 단위까지(`정답: 8점`)이고 수식이면 `$…$`(`$a=-\dfrac{1}{4}$, $b=-4$`)입니다.
+- 머리줄 너비에 16pt와 정답 너비를 더해 475pt를 넘으면 build.py가 경고하니 정답은 짧게 씁니다.
 - 표를 완성하는 문제의 정답은 답 칸의 값을 읽는 차례로 적습니다(`9, 0.36, 0.2, 7, 1`). 표에도 회색으로 찍히므로 어느 칸의 값인지는 표가 말해 줍니다.
 - 풀이는 줄마다 한 칸이고 문단 간격이 없으며 빈 줄은 한 칸을 비웁니다. typo-1이고 수식은 `$…$`입니다. 본문 너비 475pt는 한글 38자쯤입니다.
 - 식 번호는 연마 규칙대로 수식 뒤에 줄임표와 원 숫자를 글로 씁니다(`$a=-\dfrac{1}{4}$ …… ①이고`). 선생님 원문의 "...... 1"은 이것으로 옮기고 가리킬 때도 "①에 의하여"입니다.
@@ -36,8 +41,11 @@ description: "수리소 수학학원의 학교 수행평가 대비 학습지 '�
 ## 문제
 문제 번호는 001부터 problems.yaml의 차례대로 매기고 순서를 바꾸지 않습니다. 지문은 원문 md의 문장을 한 글자도 바꾸지 않고 옮기며 바꾸는 것은 수식 표기뿐입니다. 표기 규칙은 연마의 것이고 문형은 선생님이 퇴고를 시킬 때만 문항 스킬을 따릅니다. 그림은 지문 아래 가운데에 놓고 표는 그 아래에 놓습니다. 단이 없으니 그림 너비는 연마와 같이 본문 너비까지 쓸 수 있습니다. 문제 글에 없는 것은 넣지 않습니다. 답 칸과 배점과 풀이 과정 상자가 그것입니다.
 - 번호는 typo-4에 왼끝맞추기입니다. 지문은 typo-1 한 문단이고 어절 줄 바꿈은 render.py가 합니다.
-- 표기 조판의 예입니다. `!=`는 `\neq`, `b/x`는 `\dfrac{b}{x}`, 점 이름은 정체 `\mathrm{P}`, 변수는 이탤릭이고 수식 뒤 조사는 붙여 씁니다. 세부는 surisomath-grind의 수식 절과 references/typesetting.md, surisomath-munhang의 references/notation.md에 있습니다.
-- 그림은 a4의 `.figure` 블록입니다. units는 yaml에 적지 않고 SVG 높이가 칸 수를 정합니다. 높이가 22의 배수가 아니거나 너비가 475pt를 넘으면 build.py가 멈추고 y 범위를 몇 배 넓히라고 알려 줍니다.
+- 표기 조판의 예입니다. `!=`는 `\neq`, `b/x`는 `\dfrac{b}{x}`, 점 이름은 정체 `\mathrm{P}`, 변수는 이탤릭이고 수식 뒤 조사는 붙여 씁니다.
+- 세부는 surisomath-grind의 수식 절과 references/typesetting.md, surisomath-munhang의 references/notation.md에 있습니다.
+- 그림은 a4의 `.figure` 블록입니다. units는 yaml에 적지 않고 SVG 높이가 칸 수를 정합니다.
+- SVG 높이가 22의 배수가 아니면 build.py가 멈추고 g.canvas의 units를 보라고 알려 줍니다.
+- 너비가 475pt를 넘으면 build.py가 멈추고 y 범위를 몇 배 넓히라고 알려 줍니다.
 - 그림과 표가 한 문제에 같이 있어도 되고 그림이 먼저입니다. 지문과 그림과 표 사이와 아래는 한 칸씩 비웁니다.
 
 
@@ -55,7 +63,8 @@ description: "수리소 수학학원의 학교 수행평가 대비 학습지 '�
 ## 그림
 그림은 연마 규격 그대로입니다. 선 굵기와 글자 크기와 잉크 여백과 배율을 정하는 법은 surisomath-grind의 그림 절에 있습니다. 좌표평면과 중1 통계 그림의 고증도 그 스킬의 references/figure.md를 따릅니다. 축 화살촉과 눈금 도우미는 grind_figure에 없어 figures.py에 둡니다. 좌표 글은 점의 반대쪽 축 옆에 두는 것이 교과서의 관례입니다. 기계가 겹침을 재 주어도 글이 선에 걸리는지는 눈으로 봅니다.
 - 규격은 도형 선 0.7pt, 그래프 선 1pt, 보조선 0.4pt, 글자 10pt 정체, 잉크 여백 4pt이고 y 범위가 배율을 정합니다.
-- 좌표평면 고증(축 이름과 O의 자리, 점선과 축의 숫자, 반비례 가지의 길이)과 중1 통계 그림 고증(모눈 위 다각형, 수직선 위 상자 그림)은 surisomath-grind의 references/figure.md에 있습니다.
+- 좌표평면 고증(축 이름과 O의 자리, 점선과 축의 숫자, 반비례 가지의 길이)은 surisomath-grind의 references/figure.md에 있습니다.
+- 중1 통계 그림 고증(모눈 위 다각형, 수직선 위 상자 그림)도 같은 파일에 있습니다.
 - 화살촉 도우미 arrow와 눈금 도우미 tick_x의 견본은 build/연마/2026.09.12/figures.py와 정본의 figures.py에 있습니다. 축은 0.4pt이고 화살촉은 채운 6pt입니다.
 - 제2사분면의 점이면 x좌표는 x축 아래에, y좌표는 y축 오른쪽에 적습니다. 제4사분면의 점은 x좌표가 x축 위, y좌표가 y축 왼쪽입니다. O는 곡선도 숫자도 없는 사분면 쪽에 둡니다.
 - 눈으로 볼 때는 PDF를 pymupdf로 PNG를 뽑아 봅니다. SVG를 바로 열면 점선이 실선으로 보입니다.
@@ -63,11 +72,16 @@ description: "수리소 수학학원의 학교 수행평가 대비 학습지 '�
 
 ## 학습지 폴더와 파일
 학습지는 build/수행평가 아래 학기와 학교와 학년과 날짜 폴더에 있습니다. build.py가 폴더 이름에서 머리줄과 파일 이름과 PDF 날짜를 만들기 때문에 yaml에는 머리 정보를 적지 않습니다. 원문 md는 선생님이 쓰는 파일이라 빌드가 읽지도 손대지도 않습니다. 빌드 입력은 problems.yaml이고 그림은 figures.py가 그립니다. 고칠 것은 이 둘뿐이고 나머지는 빌드 결과입니다. 같은 입력이면 PDF도 바이트 단위로 같습니다.
-- 자리는 build/수행평가/{학기}/{학교}/{학년}/{YYYY.MM.DD}/이고 학기 폴더 이름은 YYYY에 N학기를 붙인 20262학기 꼴입니다. 파일 이름은 수리소_수행평가_수지중학교_중1_2026.09.17처럼 만들어집니다.
-- 원문 md는 학습지 폴더 옆에 {YYYY.MM.DD}.md로 두거나 폴더 안에 problems.md로 둡니다. `## 001` 아래 `### 지문`과 `### 그림`(설명)과 `### 표`(`#### 제목`과 `#### 내용`, 칸은 `|`로)입니다.
-- problems.yaml에는 지문을 표기 규칙대로 옮기고 answer(필수)와 solution, 그림이 있으면 figure와 alt, 표가 있으면 table을 적습니다. term과 school과 grade와 date와 file은 폴더 이름에서 만들므로 적지 않습니다.
-- figures.py는 그 학습지 그림만 담고 그림이 없으면 두지 않습니다. figures/에는 그림 p*.svg와 수식 SVG(m 지문, t 표, a 정답, s 풀이)가 생기고 수식 SVG는 빌드마다 다시 그리며 안 쓴 것은 지웁니다.
-- templates/assess.css는 base.css 위에 얹는 수행평가 스타일이고 templates/build.py는 시험대비 build.py를 모듈로 읽고 그 안의 연마 build.py(rich)를 함께 씁니다.
+- 자리는 build/수행평가/{학기}/{학교}/{학년}/{YYYY.MM.DD}/이고 학기 폴더 이름은 YYYY에 N학기를 붙인 20262학기 꼴입니다.
+- 파일 이름은 수리소_수행평가_수지중학교_중1_2026.09.17처럼 만들어집니다.
+- 원문 md는 학습지 폴더 옆에 {YYYY.MM.DD}.md로 두거나 폴더 안에 problems.md로 둡니다.
+- 원문 md의 짜임은 `## 001` 아래 `### 지문`과 `### 그림`(설명)과 `### 표`(`#### 제목`과 `#### 내용`, 칸은 `|`로)입니다.
+- problems.yaml에는 지문을 표기 규칙대로 옮기고 answer(필수)와 solution, 그림이 있으면 figure와 alt, 표가 있으면 table을 적습니다.
+- term과 school과 grade와 date와 file은 폴더 이름에서 만들므로 적지 않습니다.
+- figures.py는 그 학습지 그림만 담고 그림이 없으면 두지 않습니다.
+- figures/에는 그림 p*.svg와 수식 SVG(m 지문, t 표, a 정답, s 풀이)가 생기고 수식 SVG는 빌드마다 다시 그리며 안 쓴 것은 지웁니다.
+- templates/assess.css는 base.css 위에 얹는 수행평가 스타일입니다.
+- templates/build.py는 시험대비 build.py를 모듈로 읽고 그 안의 연마 build.py(rich)를 함께 씁니다.
 - PDF 안의 만든 날짜는 수행평가 날짜로 고정됩니다.
 
 
@@ -76,7 +90,10 @@ description: "수리소 수학학원의 학교 수행평가 대비 학습지 '�
 - 원문 md를 읽고 정본 폴더의 problems.yaml과 figures.py를 새 학습지 폴더에 복사합니다.
 - problems.yaml에 지문을 표기 규칙대로 옮기고 answer와 figure와 alt와 table을 적습니다. 선생님이 풀이를 주면 solution을 적습니다.
 - figures.py에 그 학습지 그림만 남깁니다. 그림이 없으면 지웁니다.
-- `python .claude/skills/surisomath-assess/templates/build.py build/수행평가/{학기}/{학교}/{학년}/{날짜}/problems.yaml`을 돌립니다.
+- 다음 명령으로 build.py를 돌립니다.
+```
+python .claude/skills/surisomath-assess/templates/build.py build/수행평가/{학기}/{학교}/{학년}/{날짜}/problems.yaml
+```
 - 경고가 없으면(종료 코드 0) 규격은 끝입니다. `!` 줄이 있으면 그대로 고치고 다시 돌립니다. 경고가 있어도 PDF는 나옵니다.
 - PDF를 눈으로 봅니다. 좌표 글이 선에 걸리는지, 표의 빈 칸이 뜻대로인지, 그림이 문제와 맞는지, 풀이 줄이 뜻대로 끊기는지를 봅니다.
 - 그림은 그대로 두고 글만 고칠 때는 `--no-figures`, 그리드 검사를 건너뛸 때는 `--no-check`를 붙입니다.
@@ -87,7 +104,13 @@ problems.yaml에는 problems 목록만 있으면 됩니다. 문제마다 text와
 - table은 title과 head와 rows이고 답 칸은 `{답: 값}`입니다. solution은 `|` 블록입니다. 필드 차례는 references/spec.md에 있습니다.
 - text에 `": "`가 들어가면 따옴표로 감쌉니다. 수식의 역슬래시는 따옴표 없는 글에서 그대로 살아 있습니다.
 - 번호를 직접 주려면 `"no": "004"`처럼 키와 값 모두 따옴표로 감쌉니다. 따옴표가 없으면 YAML이 no를 거짓으로 읽어 build.py가 멈춥니다.
-- figures.py 뼈대는 `import grind_figure as g`, `g.setup(__file__)`, 그림 함수들, `if __name__ == "__main__":`에서 부르기입니다. 저장한 이름은 yaml의 figure와 같아야 합니다.
+- figures.py 뼈대는 `import grind_figure as g`, `g.setup(__file__)`, 그림 함수들, `if __name__ == "__main__":`에서 부르기입니다.
+- 그림을 저장한 이름은 yaml의 figure와 같아야 합니다.
 - TeX가 든 yaml과 figures.py는 Edit나 Write로 고칩니다. Bash heredoc은 역슬래시를 한 겹 벗깁니다.
-- PDF 보기는 `python -c "import fitz; d=fitz.open('…pdf'); [p.get_pixmap(dpi=110).save(f'{p.number}.png') for p in d]"`입니다.
-- 인쇄는 `python lib/print_pdf.py {PDF}=학생쪽부수/선생님쪽부수 --plan`으로 계획을 보고 `--go`로 보냅니다. 몇 쪽만이면 `--pages 1-2`입니다. 100% 크기에 양면 긴 쪽 넘김에 품질 높게이고 색 없는 장은 흑백입니다. README의 학습지 인쇄 절에 있습니다.
+- PDF는 다음 명령으로 쪽마다 PNG를 뽑아 봅니다.
+```
+python -c "import fitz; d=fitz.open('…pdf'); [p.get_pixmap(dpi=110).save(f'{p.number}.png') for p in d]"
+```
+- 인쇄는 `python lib/print_pdf.py {PDF}=학생쪽부수/선생님쪽부수 --plan`으로 계획을 보고 `--go`로 보냅니다.
+- 몇 쪽만이면 `--pages 1-2`입니다.
+- 100% 크기에 양면 긴 쪽 넘김에 품질 높게이고 색 없는 장은 흑백입니다. 인쇄의 세부는 README의 학습지 인쇄 절에 있습니다.
