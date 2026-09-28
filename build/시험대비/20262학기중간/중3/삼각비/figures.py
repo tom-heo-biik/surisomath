@@ -17,7 +17,7 @@
 
 문제가 정하지 않는 것은 책 그림에 맞춰 골랐다: 002 AR = 3(RD = RB = 5는 문제가 정한다),
 003 A의 자리(sin x = 1/3 → AB = 18), 007 r = 1(r' = 3, AB = 3 + 3√3), 013 정사각뿔의 눈 자리
-(EYE·LOOK·FOCAL)와 P = VC의 0.55 지점, 015 AE = CD = 1.8(한 변 6), 019 P = AC의 중점,
+(EYE·LOOK·FOCAL)와 P = AD의 0.55 지점, 015 AE = CD = 1.8(한 변 6), 019 P = AC의 중점,
 021 삼각형의 모양(∠A = 45°, DE = 8이면 AD = 4√6, AE ≈ 10.93로 정해진다), 024 D의 자리(BD : DC = 3 : 2),
 025 A·P·Q의 자리, 027 DE·DF의 방향(200°·230°, DG = 6, DH = 5, 30°에 맞춰 평행사변형을 역산),
 028 b = 5(a ≈ 7.66), 029 C의 방향 120°(∠B = 30°), D = 호 AC의 가운데.
@@ -399,10 +399,11 @@ def p12():
     g.save(fig, "p12.svg")
 
 
-# ── 013 — 정사각뿔 V-ABCD와 모서리 VC 위의 점 P ─────────────────────────
-# 투시도(선생님 지시, 2026-09-23 — 교과서 겨냥도 대신). 밑면의 정사각형을 위에서 볼 때 A·B·C·D가
-# 195°·285°·15°·105° 방향에 오게 돌려 놓고(B가 앞, D가 뒤), 앞쪽 위의 눈 EYE에서 핀홀 투영한다.
-# 평행한 모서리가 소실점 쪽으로 모인다. 눈 높이는 꼭짓점 V보다 조금 위라 D가 윤곽 안에 숨는다.
+# ── 013 — 정사각뿔 ABCDE와 모서리 AD 위의 점 P ──────────────────────────
+# 투시도(선생님 지시, 2026-09-23 — 교과서 겨냥도 대신). 밑면의 정사각형을 위에서 볼 때 B·C·D·E가
+# 195°·285°·15°·105° 방향에 오게 돌려 놓고(C가 앞, E가 뒤), 앞쪽 위의 눈 EYE에서 핀홀 투영한다.
+# 평행한 모서리가 소실점 쪽으로 모인다. 눈 높이는 꼭짓점 A보다 조금 위라 E가 윤곽 안에 숨는다.
+# 이름은 책의 V-ABCD를 ABCDE(꼭짓점 A, 밑면 BCDE)로 바꿨다(2026-09-28 선생님). V→A, A→B, B→C, C→D, D→E.
 
 EYE = (0.45, -3.4, 1.15)       # 눈의 자리(밑면 중심이 원점, 모서리 1)
 LOOK = (0.0, 0.0, 0.28)        # 바라보는 점
@@ -432,24 +433,24 @@ def p13():
     def base(deg):
         return perspective((s * math.cos(math.radians(deg)), s * math.sin(math.radians(deg)), 0.0))
 
-    V = perspective((0.0, 0.0, s))
-    A, B, C, D = base(195), base(285), base(15), base(105)
+    A = perspective((0.0, 0.0, s))
+    B, C, D, E = base(195), base(285), base(15), base(105)
     t = 0.55
     P = perspective((t * s * math.cos(math.radians(15)), t * s * math.sin(math.radians(15)), (1 - t) * s))
     fig, ax = g.canvas(5, -0.67, 0.57)
-    for p, q in ((V, A), (V, B), (V, C), (A, B), (B, C), (D, P)):
+    for p, q in ((A, B), (A, C), (A, D), (B, C), (C, D), (E, P)):
         g.seg(ax, p, q)
-    for p, q in ((V, D), (D, A), (D, C), (D, B)):
+    for p, q in ((A, E), (E, B), (E, D), (E, C)):
         g.seg(ax, p, q, dashed=True)
-    m = g.angle(ax, D, B, P, "", r=12)
-    g.leader(ax, m, "$\\theta^{\\circ}$", dx=1, dy=-0.69, length=12)     # 대각선 DB와 모서리 DC 사이, 모서리 VB 오른쪽으로
-    g.dim(ax, V, A, "1", side=-1)
+    m = g.angle(ax, E, C, P, "", r=12)
+    g.leader(ax, m, "$\\theta^{\\circ}$", dx=1, dy=-0.69, length=12)     # 대각선 EC와 모서리 ED 사이, 모서리 AC 오른쪽으로
+    g.dim(ax, A, B, "1", side=-1)
     g.dot(ax, P)
-    g.name(ax, V, "V", dy=5, va="bottom")
-    g.name(ax, A, "A", dx=-4, dy=-2, ha="right", va="top")
-    g.name(ax, B, "B", dy=-5, va="top")
-    g.name(ax, C, "C", dx=5, ha="left")
-    g.name(ax, D, "D", dx=-1, dy=-6, va="top")             # 위·왼쪽은 모서리 VA가 10pt 옆을 지난다. 아래(DA·DB 사이)로
+    g.name(ax, A, "A", dy=5, va="bottom")
+    g.name(ax, B, "B", dx=-4, dy=-2, ha="right", va="top")
+    g.name(ax, C, "C", dy=-5, va="top")
+    g.name(ax, D, "D", dx=5, ha="left")
+    g.name(ax, E, "E", dx=-1, dy=-6, va="top")             # 위·왼쪽은 모서리 AB가 10pt 옆을 지난다. 아래(EB·EC 사이)로
     g.name(ax, P, "P", dx=4, dy=3, ha="left", va="bottom")
     g.save(fig, "p13.svg")
 
