@@ -118,7 +118,7 @@ problems:
   - text: $\angle\mathrm{OA}_n\mathrm{A}_{n+1}=90^{\circ}$, $\overline{\mathrm{A}_n\mathrm{A}_{n+1}}=1$인 직각삼각형 $\mathrm{OA}_n\mathrm{A}_{n+1}$에 대하여 $\angle\mathrm{A}_n\mathrm{OA}_{n+1}=\theta_n^{\circ}$라 하자. $\overline{\mathrm{OA}_1}=1$일 때, $\sin\theta_{24}^{\circ}\times\cos\theta_{24}^{\circ}$의 값을 구하시오. (단, $n$은 자연수이다.)
     answer: $\dfrac{2\sqrt{6}}{25}$
 
-  - text: 그림과 같이 정삼각형 $\mathrm{ABC}$의 변 $\mathrm{BC}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{AC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이다. 선분 $\mathrm{BE}$와 선분 $\mathrm{AD}$의 교점을 $\mathrm{P}$라 하자. $\angle\mathrm{BPD}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값을 구하시오.
+  - text: 그림과 같이 정삼각형 $\mathrm{ABC}$에서 변 $\mathrm{BC}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{AC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이고 선분 $\mathrm{AD}$와 선분 $\mathrm{BE}$의 교점을 $\mathrm{P}$라 하자. $\angle\mathrm{BPD}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값을 구하시오.
     figure: p15.svg
     alt: 정삼각형 A 위, B 왼쪽 아래, C 오른쪽 아래. E는 AC 위 A 가까이, D는 BC 위 C 가까이(같은 길이 두 획). BE, AD, 교점 P. θ°는 P 아래
     answer: $\dfrac{\sqrt{3}}{2}$

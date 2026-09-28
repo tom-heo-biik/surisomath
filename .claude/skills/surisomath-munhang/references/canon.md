@@ -528,6 +528,25 @@ $\angle\mathrm{OA}_n\mathrm{A}_{n+1}=90^{\circ}$, $\overline{\mathrm{A}_n\mathrm
 선생님과 정한 문장입니다. 책은 그림을 보며 길이가 1인 선분을 수직으로 붙여 가는 구성을 서술했는데, 정본은 직각삼각형 OAₙAₙ₊₁을 ∠OAₙAₙ₊₁ = 90°, AₙAₙ₊₁ = 1로 정의하고 그림을 뺐습니다. n이 모든 자연수라는 것은 2023학년도 수능 12번처럼 단서 "(단, n은 자연수이다.)"로 줍니다. OA₁은 첫 삼각형의 변이라 조건 절 "OA₁ = 1일 때"로 뗐습니다. 점 이름은 O, A₁, A₂, …이고 답 2√6/25는 그대로입니다.
 
 
+### 015
+
+
+#### 책
+```
+오른쪽 그림과 같이 정삼각형 $\mathrm{ABC}$에서 두 점 $\mathrm{D}$, $\mathrm{E}$는 각각 $\overline{\mathrm{BC}}$, $\overline{\mathrm{AC}}$ 위의 점이고, $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이다. $\overline{\mathrm{BE}}$와 $\overline{\mathrm{AD}}$의 교점을 $\mathrm{P}$, $\angle\mathrm{BPD}=\angle\alpha$라 할 때, $\sin\alpha$의 값을 구하시오.
+```
+
+
+#### 정본
+```
+그림과 같이 정삼각형 $\mathrm{ABC}$에서 변 $\mathrm{BC}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{AC}$ 위의 점 $\mathrm{E}$에 대하여 $\overline{\mathrm{AE}}=\overline{\mathrm{CD}}$이고 선분 $\mathrm{AD}$와 선분 $\mathrm{BE}$의 교점을 $\mathrm{P}$라 하자. $\angle\mathrm{BPD}=\theta^{\circ}$라 할 때, $\sin\theta^{\circ}$의 값을 구하시오.
+```
+
+
+#### 바뀐 것
+선생님이 정한 문장입니다. 책의 "두 점 D, E는 각각 BC, AC 위의 점이고"는 "변 BC 위의 점 D와 변 AC 위의 점 E에 대하여"로 하나씩 불렀습니다. 평가원 17장에 "두 변 X, Y 위의 점"은 없고 2022학년도 6월 모의평가가 이 꼴이고 두 점의 대응도 글이 정합니다. AE = CD는 "이고"로 이어 교점 P의 정의와 한 문장에 두었습니다(023 정본). 기호 BE, AD는 도형이라 낱말 선분으로 썼고 ∠α는 θ°입니다. 그림과 답 √3/2는 책 그대로입니다.
+
+
 ### 017
 
 
