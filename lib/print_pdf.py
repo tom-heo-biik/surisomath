@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""수리소 학습지 PDF를 학원 프린터(EPSON EM-C800)로 뽑는다 — 100% 크기, 양면 긴 쪽 넘김, 품질 높게.
+"""수리소 학습지 PDF를 학원 프린터(EPSON EM-C800)로 뽑는다 — 100% 크기, 양면 긴 쪽 넘김, 품질 표준.
 
 연마·시험대비·수행평가 PDF는 앞 절반이 학생 쪽, 뒤 절반이 선생님 쪽이다. 두 쪽의 부수를
 따로 정한다. 한 부씩 따로 보내므로 쪽 수가 홀수여도 부마다 새 장에서 시작한다.
@@ -7,7 +7,7 @@
     python lib/print_pdf.py 삼각비.pdf --plan                       계획만(작업·장 수, 프린터 설정 확인)
     python lib/print_pdf.py 삼각비.pdf=4/2 원과직선.pdf=2/2 --go    학생 쪽 4부·선생님 쪽 2부, 원과직선은 2부·2부
     python lib/print_pdf.py 삼각비.pdf=1/0 --go                     학생 쪽만 한 부
-    python lib/print_pdf.py 삼각비.pdf=4/1 --quality standard --go  급할 때 표준 품질(표준+일반)로
+    python lib/print_pdf.py 삼각비.pdf=4/1 --quality high --go      "최고품질"이면 높게+섬세하게로
     python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go             1·2쪽만 한 부(--copies N)
     python lib/print_pdf.py 삼각비.pdf --pages 1-2 --dry-run out    Microsoft Print to PDF로 찍어 본다
 
@@ -19,8 +19,9 @@ Windows 전용. pywin32·numpy·pymupdf가 필요하다. 품질 이름이 Epson 
   인쇄 가능 영역이 종이 끝에서 PHYSICALOFFSET(3mm)만큼 들어와 있어 그만큼 당긴다.
   시험대비는 종이에서 가운데 세로선이 22.5cm면 100%다.
 - 품질: 사용자 기본 PrintTicket에서 품질·해상도·양면·색만 바꿔 DEVMODE를 만든다. 사용자 기본값은
-  건드리지 않는다. 표준 psk:High는 드라이버가 받지 않고 다른 값으로 바꾸므로 Epson 이름공간의
-  HighQuality("높게")·FineStd("섬세하게")를 쓴다. 만든 DEVMODE를 되읽어 요청과 같을 때만 보낸다.
+  건드리지 않는다. 기본은 Epson 이름공간의 Standard("표준")와 NormalStd("일반")다(2026-09-28 선생님이
+  정했다). --quality high면 HighQuality("높게")와 FineStd("섬세하게")다. 표준 psk:High는 드라이버가
+  받지 않고 다른 값으로 바꾸므로 Epson 이름을 쓴다. 만든 DEVMODE를 되읽어 요청과 같을 때만 보낸다.
 - 색: 래스터로 보내므로 색 없는 장은 흑백 설정으로 보낸다. 컬러 설정이면 검정 글자에 컬러 잉크가
   섞일 수 있다. 색 있는 장만 장(앞뒤 두 쪽) 단위로 끊어 컬러로 보낸다. 차례는 그대로다.
 - 차례: 보내는 도중 프린터가 비면 스풀러가 뒤 작업을 앞 작업보다 먼저 내보내기도 한다(2026-09-23 겪었다).
@@ -157,7 +158,7 @@ QUALITY = {   # Epson 드라이버의 품질·해상도 이름. 표준은 사용
 }
 
 
-def make_devmodes(printer, quality="high"):
+def make_devmodes(printer, quality="standard"):
     """컬러·흑백 DEVMODE 둘을 만들고 되읽어 요청과 같은지 잰다. 다르면 멈춘다."""
     tmp = Path(tempfile.mkdtemp(prefix="suriso_print_"))
     try:
@@ -435,7 +436,7 @@ def plan(specs, pages=None, copies=1):
 def main():
     for s in (sys.stdout, sys.stderr):
         s.reconfigure(errors="replace")   # cp949 콘솔에서 못 찍는 글자로 죽지 않게
-    ap = argparse.ArgumentParser(description="수리소 학습지 PDF를 100%·양면(긴 쪽)·품질 높게 뽑는다")
+    ap = argparse.ArgumentParser(description="수리소 학습지 PDF를 100%·양면(긴 쪽)·품질 표준으로 뽑는다")
     ap.add_argument("pdf", nargs="+", help="PDF 또는 PDF=학생쪽부수/선생님쪽부수 (적지 않으면 1/1)")
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--plan", action="store_true", help="계획과 프린터 설정만 본다")
@@ -444,8 +445,8 @@ def main():
     ap.add_argument("--pages", metavar="RANGE", help="이 쪽만(예: 1-2 또는 1,3-4). PDF 하나일 때만")
     ap.add_argument("--copies", type=int, default=1, help="--pages의 부수(기본 1)")
     ap.add_argument("--printer", default=PRINTER, help=f"프린터 이름(기본 {PRINTER})")
-    ap.add_argument("--quality", choices=sorted(QUALITY), default="high",
-                    help="품질. high는 높게+섬세하게(기본), standard는 표준+일반(급할 때)")
+    ap.add_argument("--quality", choices=sorted(QUALITY), default="standard",
+                    help="품질. standard는 표준+일반(기본), high는 높게+섬세하게(\"최고품질\")")
     args = ap.parse_args()
 
     specs = [parse_spec(s) for s in args.pdf]

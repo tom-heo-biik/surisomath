@@ -153,7 +153,7 @@ PDF 날짜: SOURCE_DATE_EPOCH를 폴더 날짜 0시(UTC)로 고정. 날짜 폴�
 ## 보기와 인쇄
 PDF 보기: `python -c "import fitz; d=fitz.open('…pdf'); [p.get_pixmap(dpi=110).save(f'{p.number}.png') for p in d]"`
 인쇄: `python lib/print_pdf.py {PDF}=학생쪽부수/선생님쪽부수 --plan`으로 보고 `--go`. 몇 쪽만이면 `--pages 1-2`
-인쇄 설정: 100%, 양면 긴 쪽, 품질 높게, 색 없는 장은 흑백. README의 학습지 인쇄
+인쇄 설정: 100%, 양면 긴 쪽, 품질 표준, 색 없는 장은 흑백. README의 학습지 인쇄
 
 
 ## 참고

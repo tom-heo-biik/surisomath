@@ -113,4 +113,4 @@ python -c "import fitz; d=fitz.open('…pdf'); [p.get_pixmap(dpi=110).save(f'{p.
 ```
 - 인쇄는 `python lib/print_pdf.py {PDF}=학생쪽부수/선생님쪽부수 --plan`으로 계획을 보고 `--go`로 보냅니다.
 - 몇 쪽만이면 `--pages 1-2`입니다.
-- 100% 크기에 양면 긴 쪽 넘김에 품질 높게이고 색 없는 장은 흑백입니다. 인쇄의 세부는 README의 학습지 인쇄 절에 있습니다.
+- 100% 크기에 양면 긴 쪽 넘김에 품질 표준이고 색 없는 장은 흑백입니다. 인쇄의 세부는 README의 학습지 인쇄 절에 있습니다.

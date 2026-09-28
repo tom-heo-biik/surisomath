@@ -130,7 +130,7 @@ problems.yaml은 problems 목록만 있으면 됩니다. 문제마다 text와 an
 - figures.py의 뼈대는 `import grind_figure as g` → `g.setup(__file__)` → 그림 함수들 → `if __name__ == "__main__":`에서 부르기입니다.
 - 사진은 photos.py의 축소본(긴 변 1400px)을 Read로 봅니다. 원본(600KB~1MB)은 무겁습니다.
 - 인쇄는 `python lib/print_pdf.py {PDF}=학생쪽부수/선생님쪽부수 --plan`으로 보고 `--go`로 찍습니다. 몇 쪽만이면 `--pages 1-2`입니다.
-- 인쇄는 100%, 양면 긴 쪽, 품질 높게이고 색 없는 장은 흑백입니다. README의 학습지 인쇄에 있습니다.
+- 인쇄는 100%, 양면 긴 쪽, 품질 표준이고 색 없는 장은 흑백입니다. README의 학습지 인쇄에 있습니다.
 
 
 ## PDF 보기
