@@ -109,9 +109,6 @@ section.exam table.stat td {
 }
 section.exam table.stat tr.first > * { --top: 0.4pt; }
 
-/* 소문항 (1) (2) (3) — a4 괄호형 ol.n5(마커 칸 33pt). 한 항목이 한 칸 */
-section.exam ol.sub { margin: 0 0 22pt; }
-
 /* 풀 자리 — 학생 쪽은 빈 종이. 선생님 쪽은 첫 줄에 정답(캡션 서체·회색), 그 아래 풀이.
    줄마다 p 하나, 문단 간격 없이 한 줄 = 한 칸. 빈 줄은 p.gap. 풀 자리 위 끝은 본문 위상이라
    10pt 정답 줄이 머리줄과 같은 그리드 잔여값에 앉는다 */

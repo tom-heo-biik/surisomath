@@ -44,8 +44,6 @@ problems.yaml
           - ['$1^{\\circ}$', '0.0175', '0.9998', '0.0175']
       notes:                       # 있으면 보기 상자. ㄱ. ㄴ. ㄷ. 항목. 그림 뒤, 선지 앞
         - 점 $(1,\\,1)$을 지난다.
-      subs:                        # 있으면 소문항 (1) (2) (3). 표 뒤, 선지 앞. 한 항목이 한 줄
-        - 선분 $\\mathrm{CD}$의 길이를 구하시오.
       choices:                     # 있으면 객관식. 다섯 개
         - $\\dfrac{80}{\\tan 52^{\\circ}+\\tan 35^{\\circ}}$
       answer: ④                    # 정답. 객관식은 번호만, 서술형은 단위까지. 필수 — 선생님 쪽 정답 줄
@@ -104,7 +102,6 @@ COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁
 MARK_W = 14.8          # 선지 마커 칸(exam.css의 ol.n7 --pad). ① 10.8pt + 4pt
 GUTTER = 6.0           # 여러 열일 때 칸마다 남겨야 하는 여백(pt). 칸에 딱 맞으면 다음 마커와 붙어 보인다
                        # (2026-09-26 근호가 좁아지며 삼각비 016·018이 3열에 0.3pt 차로 들어 ②와 ③이 붙었다)
-SUB_W = 33.0           # 소문항 (1) 마커 칸(a4 괄호형 ol.n5 --pad)
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
 TALL = 16.0            # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸 간격
 CAPTION = gb.CAPTION   # neutral-500. 정답 줄
@@ -258,10 +255,10 @@ def check_notation(no: str, p: dict) -> None:
 
 
 def text_names(p: dict) -> set:
-    """지문·조건·뒷문장·보기·소문항에 나오는 점 이름(\\mathrm{…}의 대문자, 프라임·첨자 포함).
+    """지문·조건·뒷문장·보기에 나오는 점 이름(\\mathrm{…}의 대문자, 프라임·첨자 포함).
     "(단, O는 원점이다.)"의 O도 이름이다."""
     fields = [p.get("text", ""), p.get("after", "")]
-    for key in ("conditions", "notes", "subs"):
+    for key in ("conditions", "notes"):
         fields += [str(x) for x in (p.get(key) or [])]
     names = set(g._names(fields))
     if any("O는 원점" in str(t) for t in fields):
@@ -272,7 +269,7 @@ def text_names(p: dict) -> set:
 def seq_letters(p: dict) -> set:
     """지문이 첨자 문자로 부른 이름의 글자. $\\mathrm{A}_n$, $\\mathrm{OA}_{n+1}$ → A."""
     fields = [str(p.get("text", "")), str(p.get("after", ""))]
-    for key in ("conditions", "notes", "subs"):
+    for key in ("conditions", "notes"):
         fields += [str(x) for x in (p.get(key) or [])]
     return {m.group(1) for s in fields for m in re.finditer(r"\\mathrm\{[A-Z]*([A-Z])\}_\{?[a-z]", s)}
 
@@ -362,19 +359,6 @@ def table_html(no: str, p: dict, fig_dir: Path) -> str:
     return "\n".join(out)
 
 
-def subs_html(no: str, p: dict, fig_dir: Path) -> str:
-    """소문항 (1) (2) (3). yaml의 subs(목록). a4의 괄호형 순서 표기(ol.n5, 마커 칸 33pt).
-    한 항목이 한 줄에 들어야 한다 — 넘으면 경고. 표 뒤, 선지 앞에 온다."""
-    subs = p.get("subs")
-    if not subs:
-        return ""
-    if not isinstance(subs, list):
-        raise SystemExit(f"{no}: subs는 목록('- …')이어야 한다")
-    items = "".join(f'        <li>{rich(str(c).strip(), f"q{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
-                    for k, c in enumerate(subs, 1))
-    return f'      <ol class="n5 sub">\n{items}      </ol>\n'
-
-
 def choices_html(no: str, p: dict, fig_dir: Path) -> str:
     choices = p.get("choices")
     if not choices:
@@ -412,7 +396,6 @@ def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
             f'{figure_html(no, p, fig_dir)}'
             f'{table_html(no, p, fig_dir)}'
             f'{notes_html(no, p, fig_dir)}'
-            f'{subs_html(no, p, fig_dir)}'
             f'{choices_html(no, p, fig_dir)}'
             f'      <div class="work box {"t" if teacher else "n"}{no}">\n{work}      </div>\n'
             '    </div>\n')
@@ -480,6 +463,9 @@ def check(problems: list) -> int:
         for key in ("text", "answer"):
             if key not in p:
                 raise SystemExit(f"{no}번째 문제에 {key}가 없다")
+        # 평가원 문항에는 소문항이 없다. 책의 소문항은 한 물음으로 합친다(2026-09-28 선생님, 삼각비 011)
+        if "subs" in p:
+            raise SystemExit(f"{no}번째 문제: 소문항(subs)은 쓰지 않는다. 한 물음으로 합쳐라(삼각비 011)")
         if "choices" in p and not isinstance(p["choices"], list):
             raise SystemExit(f"{no}번째 문제: choices는 목록('- …' 다섯 줄)이어야 한다")
         if "choices" in p and len(p["choices"] or []) != 5:
@@ -493,10 +479,6 @@ def check(problems: list) -> int:
         if w > COL_W:
             print(f"  ! {no}번째 문제: 정답 줄 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. 짧게 써라")
             bad += 1
-        for k, s in enumerate(p.get("subs") or [], 1):
-            if SUB_W + width_of(str(s).strip()) > COL_W:
-                print(f"  ! {no}번째 문제: 소문항 ({k})이 단 글 너비를 넘어 두 줄이 된다. 짧게 써라")
-                bad += 1
     return bad
 
 

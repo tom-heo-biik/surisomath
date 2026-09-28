@@ -42,7 +42,7 @@ def angle_mix(s: str) -> list[str]:
 
 
 def check(fields: list[str]) -> list[str]:
-    """지문·조건·뒷문장·보기·소문항(문자열 목록)에서 규칙을 벗어난 곳을 경고 글 목록으로 돌려준다."""
+    """지문·조건·뒷문장·보기(문자열 목록)에서 규칙을 벗어난 곳을 경고 글 목록으로 돌려준다."""
     out: list[str] = []
     for s in fields:
         for names in angle_mix(s):
@@ -60,9 +60,9 @@ def check(fields: list[str]) -> list[str]:
 
 
 def problem_fields(p: dict) -> list[str]:
-    """problems.yaml의 문제 하나에서 검사할 글 — text, after, conditions, notes, subs."""
+    """problems.yaml의 문제 하나에서 검사할 글 — text, after, conditions, notes."""
     fields = [str(p.get("text", "")), str(p.get("after", ""))]
-    for key in ("conditions", "notes", "subs"):
+    for key in ("conditions", "notes"):
         fields += [str(x) for x in (p.get(key) or [])]
     return fields
 

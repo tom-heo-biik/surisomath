@@ -2,7 +2,7 @@
 """확정 문항 봉인 — 선생님이 "됐다"고 한 문항의 글이 다음 세션의 퇴고에서 바뀌지 않게 한다.
 
 단원 폴더의 sealed.json에 문항 번호마다 글의 지문(digest)과 날짜를 적는다. 글은 problems.yaml의
-text·conditions·after·table·notes·subs·choices·answer(그림 파일 이름은 뺀다 — 그림 손질은 문항을 바꾸지
+text·conditions·after·table·notes·choices·answer(그림 파일 이름은 뺀다 — 그림 손질은 문항을 바꾸지
 않는다). 빌드가 매번 대조해 봉인된 문항의 글이 바뀌었으면 `!`로 멈춘다.
 
 선생님 풀이(solution)가 있는 문항을 봉인하면 풀이의 지문(solution)도 함께 적는다. 풀이도 선생님이 확정한
@@ -31,7 +31,7 @@ import sys
 from pathlib import Path
 
 FIELDS = ("text", "after", "answer")
-LISTS = ("conditions", "notes", "subs", "choices")
+LISTS = ("conditions", "notes", "choices")
 CANON = Path(__file__).resolve().parent.parent / "references" / "canon.md"
 LABELS = "가나다라마바사아자차"
 
