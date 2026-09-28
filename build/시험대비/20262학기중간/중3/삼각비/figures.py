@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""시험대비 · 2026학년도 2학기 중간고사 · 중3 · 삼각비 — 도형 그림 스물아홉 장(008은 그림이 없다).
+"""시험대비 · 2026학년도 2학기 중간고사 · 중3 · 삼각비 — 도형 그림 스물여덟 장(008과 014는 그림이 없다).
 
 도우미는 surisomath-grind 스킬의 grind_figure를 쓴다. build.py가 import 경로를 잡아
 주므로 이 파일은 build.py로 실행한다.
@@ -8,7 +8,7 @@
 
 도형 선 0.7pt, 보조선 0.4pt, 길이는 연마와 같이 점선 곡선(g.dim, 꼭짓점에서 꼭짓점까지 — trim 없음),
 각은 호와 각도 글, 같은 각은 점(ticks=1, 두 쌍이면 ×도), 같은 길이는 g.tick. 좁은 각의 글은 지시선으로 밖에
-(005 θ₁°, 004 θ°, 013 θ°, 014 θ₃°~θ₅°, 024 30°). 각의 크기 문자는 θ°(둘이면 θ₁°·θ₂°, 수열이면 θₙ°. 육십분법이라 문자에도 ° — 2026-09-26 선생님 지시). 그림은 단 글 너비(229pt) 안에 들어야 하고 y 범위가
+(005 θ₁°, 004 θ°, 013 θ°, 024 30°). 각의 크기 문자는 θ°(둘이면 θ₁°·θ₂°, 수열이면 θₙ°. 육십분법이라 문자에도 ° — 2026-09-26 선생님 지시). 그림은 단 글 너비(229pt) 안에 들어야 하고 y 범위가
 배율을 정한다. 점의 자리는 책 그림(사진)을 그대로 따른다.
 
 삽화(2026-09-23 선생님 결정): 001 지구·달·태양은 이름 붙은 세 점 — 88°와 태양의 2°를 실제 각으로 그리고
@@ -453,48 +453,6 @@ def p13():
     g.name(ax, E, "E", dx=-1, dy=-6, va="top")             # 위·왼쪽은 모서리 AB가 10pt 옆을 지난다. 아래(EB·EC 사이)로
     g.name(ax, P, "P", dx=4, dy=3, ha="left", va="bottom")
     g.save(fig, "p13.svg")
-
-
-# ── 014 — 테오도로스 나선(직각삼각형 여섯) ──────────────────────────────
-# O(0, 0), A₁(−1, 0). 다음 점 Aₙ₊₁은 O에서 본 방향을 시계 방향으로 직각 돌린 쪽으로 1cm.
-# 이름은 O, A₁~A₇(2026-09-26 선생님 지시 — A, B, C, …가 어색하니 첨자로). 각은 θ₁°~θ₆°(처음엔 x₁~x₆).
-
-def p14():
-    O = (0.0, 0.0)
-    pts = [(-1.0, 0.0)]
-    for _ in range(6):
-        vx, vy = pts[-1]
-        n = math.hypot(vx, vy)
-        pts.append((vx + vy / n, vy - vx / n))
-    fig, ax = g.canvas(7, -0.78, 2.40)
-    for p in pts:
-        g.seg(ax, O, p)
-    for p, q in zip(pts, pts[1:]):
-        g.seg(ax, p, q)
-        g.corner_mark(ax, p, unit(p, O), unit(p, q))
-        g.dim(ax, p, q, "1", side=1)
-    g.dim(ax, pts[0], O, "1", side=-1)
-    # O의 각 θ₁°~θ₆°. 좁은 θ₃°·θ₄°·θ₅°는 지시선으로 밖에
-    for k in range(6):
-        p, q = pts[k], pts[k + 1]
-        text = "$\\theta_%d^{\\circ}$" % (k + 1)
-        if k in (2, 3, 4, 5):                            # θ₆°(22°)도 θ° 글자가 넓어 지시선으로 밑변 아래에
-            m = g.angle(ax, O, q, p, "", r=16)
-            dxy = {2: (0.15, 1), 3: (0.9, 1), 4: (1.2, 0.6), 5: (1, -0.8)}[k]
-            g.leader(ax, m, text, dx=dxy[0], dy=dxy[1])
-        else:
-            g.angle(ax, O, q, p, text, r=16)
-    sub = ["$\\mathrm{A}_%d$" % (k + 1) for k in range(7)]
-    g.name(ax, O, "O", dy=-5, va="top")
-    g.name(ax, pts[0], sub[0], dx=-3, dy=-5, va="top")
-    g.name(ax, pts[1], sub[1], dx=-5, ha="right")
-    g.name(ax, pts[2], sub[2], dx=-4, dy=3, ha="right", va="bottom")
-    g.name(ax, pts[3], sub[3], dy=5, va="bottom")
-    g.name(ax, pts[4], sub[4], dx=4, dy=3, ha="left", va="bottom")
-    g.name(ax, pts[5], sub[5], dx=4, dy=3, ha="left", va="bottom")
-    g.name(ax, pts[6], sub[6], dx=5, ha="left")
-    g.name(ax, pts[6], "$\\vdots$", dx=2, dy=-9, va="top")
-    g.save(fig, "p14.svg")
 
 
 # ── 015 — 정삼각형 안의 두 선분 BE, AD ──────────────────────────────────
@@ -943,6 +901,6 @@ def p30():
 
 if __name__ == "__main__":
     print("figures/")
-    for fn in (p1, p2, p3, p4, p5, p6, p7, p9, p10, p11, p12, p13, p14, p15, p16, p17,
+    for fn in (p1, p2, p3, p4, p5, p6, p7, p9, p10, p11, p12, p13, p15, p16, p17,
                p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30):
         fn()
