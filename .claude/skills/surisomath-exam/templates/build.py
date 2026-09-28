@@ -277,7 +277,7 @@ def seq_letters(p: dict) -> set:
 def check_names(no: str, p: dict, svg: Path) -> None:
     """그림의 점 이름(grind_figure.save가 SVG 끝에 남긴 <!-- names: … -->)과 지문의 점 이름을 맞춰 본다.
     지문에 있는데 그림에 없으면 경고 — 이름을 빠뜨렸거나 지문이 그림에 없는 점을 부른다. 그림에만 있는
-    이름은 알려만 준다. 지문이 Aₙ으로 부른 이름의 A₄, A₅ 같은 점은 "…"로 이어지는 이름이라 넘긴다(삼각비 014)."""
+    이름은 알려만 준다. 지문이 Aₙ으로 부른 이름의 A₄, A₅ 같은 점은 "…"로 이어지는 이름이라 넘긴다(삼각비 014의 옛 그림이 본이었다)."""
     global NAME_WARNINGS
     m = re.search(r"<!-- names: ([^>]*) -->", svg.read_text(encoding="utf-8")[-2000:])
     if not m:
