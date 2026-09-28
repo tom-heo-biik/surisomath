@@ -547,6 +547,25 @@ $\angle\mathrm{OA}_n\mathrm{A}_{n+1}=90^{\circ}$, $\overline{\mathrm{A}_n\mathrm
 선생님이 정한 문장입니다. 책의 "두 점 D, E는 각각 BC, AC 위의 점이고"는 "변 BC 위의 점 D와 변 AC 위의 점 E에 대하여"로 하나씩 불렀습니다. 평가원 17장에 "두 변 X, Y 위의 점"은 없고 2022학년도 6월 모의평가가 이 꼴이고 두 점의 대응도 글이 정합니다. AE = CD는 "이고"로 이어 교점 P의 정의와 한 문장에 두었습니다(023 정본). 기호 BE, AD는 도형이라 낱말 선분으로 썼고 ∠α는 θ°입니다. 그림과 답 √3/2는 책 그대로입니다.
 
 
+### 016
+
+
+#### 책
+```
+다음 그림에서 $\angle\mathrm{BCA}=\angle\mathrm{AED}=90^{\circ}$, $\angle\mathrm{AEC}=60^{\circ}$이고 $\overline{\mathrm{AE}}=\overline{\mathrm{ED}}$, $\overline{\mathrm{EC}}=1$일 때, $\overline{\mathrm{AB}}$의 길이는?
+```
+
+
+#### 정본
+```
+그림과 같이 $\angle\mathrm{C}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$에서 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 $\angle\mathrm{AED}=90^{\circ}$, $\angle\mathrm{AEC}=60^{\circ}$이다. $\overline{\mathrm{EC}}=1$, $\overline{\mathrm{AE}}=\overline{\mathrm{ED}}$일 때, 선분 $\mathrm{AB}$의 길이는?
+```
+
+
+#### 바뀐 것
+책은 "다음 그림에서"로 열어 두 점 D, E의 자리와 삼각형 ABC를 그림에만 맡겼습니다. 정본은 "∠C = 90°인 직각삼각형 ABC에서 변 AB 위의 점 D와 변 BC 위의 점 E에 대하여"로 채웠고, 015처럼 두 점을 하나씩 불렀습니다. "∠BCA = ∠AED = 90°"의 ∠BCA는 삼각형에 얹어 ∠AED = 90°만 남겼습니다. 조건은 선생님이 "EC = 1, AE = ED" 순서로 바꿨습니다. 기호 AB는 도형이라 선분으로 썼고 선지와 답 ④는 그대로입니다.
+
+
 ### 017
 
 

@@ -123,7 +123,7 @@ problems:
     alt: 정삼각형 A 위, B 왼쪽 아래, C 오른쪽 아래. E는 AC 위 A 가까이, D는 BC 위 C 가까이(같은 길이 두 획). BE, AD, 교점 P. θ°는 P 아래
     answer: $\dfrac{\sqrt{3}}{2}$
 
-  - text: 그림과 같이 $\angle\mathrm{C}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$의 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 $\angle\mathrm{AED}=90^{\circ}$, $\angle\mathrm{AEC}=60^{\circ}$이다. $\overline{\mathrm{AE}}=\overline{\mathrm{ED}}$, $\overline{\mathrm{EC}}=1$일 때, 선분 $\mathrm{AB}$의 길이는?
+  - text: 그림과 같이 $\angle\mathrm{C}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$에서 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 $\angle\mathrm{AED}=90^{\circ}$, $\angle\mathrm{AEC}=60^{\circ}$이다. $\overline{\mathrm{EC}}=1$, $\overline{\mathrm{AE}}=\overline{\mathrm{ED}}$일 때, 선분 $\mathrm{AB}$의 길이는?
     figure: p16.svg
     alt: B 왼쪽 끝, C 오른쪽 끝(직각), A는 C 위. E는 BC 위 C 가까이, D는 AB 위. AE, ED(같은 길이 두 획). E에 직각(AED), 60°(AEC). 1은 EC 아래
     choices:
