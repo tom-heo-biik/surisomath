@@ -48,33 +48,61 @@ python .claude/skills/surisomath-a4/templates/render.py 문서.html --check
 ```
 
 ```
-python .claude/skills/surisomath-grind/templates/build.py build/연마_원의둘레와넓이/problems.yaml
+python .claude/skills/surisomath-grind/templates/build.py build/연마/2026.09.12/problems.yaml
 ```
+
+학습지 폴더는 `build/연마/{YYYY.MM.DD}/`. 정본은 위 명령의 `2026.09.12/`이고, 그보다 앞서 양식을
+시험한 `build/연마_원의둘레와넓이/`는 견본으로 삼지 않는다.
 
 ### surisomath-exam
 
-실전 모의 학습지 '시험대비' 양식. surisomath-a4 위에 얹고 연마의 그림 도우미와 수식 조판을
-빌려 쓴다. 한 쪽에 문제 둘(두 단), 문제 아래는 학생이 손으로 푸는 빈 자리. 선생님 쪽에는
-정답 줄과 풀이가 같은 자리에 붙는다. 낱말로 쓴 도형 표기(선분 AB, 각 A, 삼각형 ABC)를
-교과서 기호로 조판한다.
+실전 모의 학습지 '시험대비' 양식. surisomath-a4 위에 얹고 연마의 그림 도우미와 수식 조판,
+surisomath-munhang의 단원 읽기와 표기 검사와 봉인을 빌려 쓴다. 한 쪽에 문제 둘(두 단), 문제 아래는
+학생이 손으로 푸는 빈 자리. 선생님 쪽에는 정답 줄과 풀이가 같은 자리에 붙는다. 길이와 크기는
+식 안의 기호로, 도형은 낱말(선분 AB, 각 A, 삼각형 ABC)로 쓰고 빌드가 그 경계를 검사한다.
 
 ```
 .claude/skills/surisomath-exam/
 ├─ SKILL.md
 └─ templates/
    ├─ exam.css      base.css 위에 얹는 시험대비 스타일(두 단·세로선·머리줄·이름 칸·선지 열)
-   ├─ build.py      problems.yaml → 그림 → HTML → PDF → 검사. 연마 build.py의 rich()를 모듈로 쓴다. --png DIR이면 쪽·그림 크롭 PNG
-   ├─ photos.py     선생님이 보낸 문제 사진을 수리소_시험대비_…_001.jpg로 바꾸고 읽기용 축소본을 뽑는다
-   └─ sample/       견본 세 문제. 새 단원은 이 폴더를 복사해 출발한다
+   ├─ build.py      단원 폴더 → 그림 → HTML → PDF → 검사. 옛 꼴과 새 꼴을 다 빌드한다.
+   │                연마 build.py의 rich()를 모듈로 쓴다. --png DIR이면 쪽과 그림 크롭 PNG
+   ├─ figrun.py     새 꼴에서 문제마다 둔 figure.py를 한 프로세스에서 차례로 돌린다(build.py가 부른다)
+   ├─ photos.py     선생님이 보낸 문제 사진을 번호에 붙이고 읽기용 축소본을 뽑는다.
+   │                새 꼴은 001/photo.jpg, 옛 꼴은 수리소_시험대비_…_001.jpg
+   ├─ sample/          옛 꼴 견본 세 문제(problems.yaml 하나)
+   └─ sample_folders/  새 꼴 견본 세 문제(unit.yaml, 001~003/, 002/figure.py). 새 단원은 이 짜임으로 출발한다
 ```
 
 ```
-python .claude/skills/surisomath-exam/templates/photos.py build/시험대비/20262학기중간/중3/이차함수
-python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/이차함수/problems.yaml --png out
+python .claude/skills/surisomath-exam/templates/photos.py "build/시험대비/20262학기기말/중1/기본 도형"
+python .claude/skills/surisomath-exam/templates/build.py "build/시험대비/20262학기기말/중1/기본 도형" --png out
+python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/이차함수
 ```
 
-단원 폴더는 `build/시험대비/<시험>/<학년>/<단원>/`. 시험 폴더 이름(`20262학기중간`)에서 머리줄과
-파일 이름을 만든다. 정본은 삼각비(도형 그림)와 이차함수(좌표평면 그림, 보기·조건 상자, 평가원 문형).
+단원 폴더는 `build/시험대비/{시험}/{학년}/{단원}/`. 시험 폴더 이름(`20262학기중간`)에서 머리줄과
+파일 이름을 만든다. 폴더 이름에 빈칸이 있으면(`원과 직선`, `기본 도형`) 명령에서 따옴표로 감싼다.
+
+단원은 두 꼴이다. 단원에 `problems.yaml`이 있으면 옛 꼴, 없으면 새 꼴이고 둘이 섞이면 빌드가 멈춘다.
+명령은 어느 꼴이든 단원 폴더를 받는다(옛 꼴은 `problems.yaml` 경로도 된다).
+
+옛 꼴(단원 하나에 problems.yaml)은 단원에 `problems.yaml`, `problems.md`, `figures.py`를 하나씩 둔다.
+PDF는 하나이고 학생 쪽 뒤에 선생님 쪽이 붙는다. 20262학기중간 중3의 세 단원, 시험기출 수지중학교,
+견본 `sample/`이 이 꼴이다.
+
+새 꼴(문제마다 폴더, 2026-09-30부터)은 문제마다 `001/`, `002/` … 폴더를 두고 그 안에 `problem.yaml`,
+`problem.md`(원문과 되돌리기 기록), `figure.py`(그림이 있을 때), `photo.jpg`(원문 사진)를 둔다.
+번호는 폴더 이름이다. PDF와 HTML은 둘이다. `{학습지 이름}_문제.pdf`는 학생 쪽이고 첫 쪽에 이름 칸이 있다.
+`{학습지 이름}_정답.pdf`는 선생님 쪽이고 쪽번호가 1부터다.
+
+새 꼴의 그림은 모두 단원의 `figures/`에 모이므로 이름이 문제 번호로 시작한다. `g.save(f)`에 이름을
+안 주면 `p001.svg`이고, 그림이 둘이면 `p001a.svg`처럼 짓는다. 여러 문제가 같이 쓰는 그림 도우미는
+단원의 `figlib.py`에 둔다. 머리 설정이 폴더 이름과 다를 때만 단원의 `unit.yaml`에 적는다.
+
+정본은 20262학기중간 중3의 이차함수(좌표평면 그림, 보기와 조건 상자, 평가원 문형), 원과 직선(원과
+현과 접선 그림, 문장 안 도형의 낱말), 삼각비(도형 그림, 삼각비의 표, 삽화 문제) 세 단원이다. 셋 다
+옛 꼴이고 새 꼴의 짜임은 `sample_folders/`가 보여 준다.
 
 ### surisomath-assess
 
@@ -95,21 +123,67 @@ python .claude/skills/surisomath-exam/templates/build.py build/시험대비/2026
 python .claude/skills/surisomath-assess/templates/build.py build/수행평가/20262학기/수지중학교/중1/2026.09.17/problems.yaml
 ```
 
-학습지 폴더는 `build/수행평가/<학기>/<학교>/<학년>/<날짜>/`. 폴더 이름에서 머리줄
+학습지 폴더는 `build/수행평가/{학기}/{학교}/{학년}/{날짜}/`. 폴더 이름에서 머리줄
 "수행평가 · 2026학년도 2학기 · 수지중학교 · 중1 · 2026. 9. 17."과 파일 이름을 만든다. 정본은 그 폴더다.
+수행평가는 옛 꼴 그대로다(학습지 하나에 problems.yaml, PDF 하나).
+
+### surisomath-munhang
+
+학습지의 문제 글(문항)을 평가원 문형으로 쓰고 퇴고하는 스킬. 양식이 아니라 글의 규칙이라 연마,
+시험대비, 수행평가가 함께 따른다. 문장의 짜임, 낱말과 기호의 경계, 확정 문항의 봉인, 독립 검토
+절차가 있다. 시험대비 빌드가 여기 있는 도구로 단원을 읽고 표기와 봉인을 검사한다.
+
+```
+.claude/skills/surisomath-munhang/
+├─ SKILL.md
+├─ references/
+│  ├─ notation.md      낱말과 기호의 표기 규칙
+│  └─ canon.md         확정 문항의 책 문장과 정본 문장 쌍(정본 대조본)
+└─ templates/
+   ├─ unit.py          단원 읽기. 옛 꼴과 새 꼴을 같은 모양으로 돌려준다(빌드, 봉인, 표기 검사가 함께 쓴다)
+   ├─ seal.py          확정 문항 봉인. 단원의 sealed.json에 글의 해시를 적고 빌드마다 대조한다
+   ├─ notation.py      표기 검사(길이와 크기는 식 안의 기호, 도형은 낱말)
+   └─ review_brief.md  독립 검토자에게 주는 브리핑 틀
+```
+
+```
+python .claude/skills/surisomath-munhang/templates/seal.py "build/시험대비/20262학기기말/중1/기본 도형" 003 004
+python .claude/skills/surisomath-munhang/templates/seal.py "build/시험대비/20262학기기말/중1/기본 도형" --check
+python .claude/skills/surisomath-munhang/templates/notation.py "build/시험대비/20262학기기말/중1/기본 도형"
+```
+
+봉인은 선생님이 번호를 짚어 확정할 때만 건다. `--list`는 봉인 목록, `--unseal 003`은 풀기다. 확정
+표시는 옛 꼴이 `problems.md` 머리의 확정 줄, 새 꼴이 그 문제 `problem.md` 둘째 줄의
+`확정(2026. 10. 1.)`이다. `--check`와 빌드가 봉인과 이 표시와 `canon.md` 쌍을 맞춰 본다.
 
 ## 학습지 인쇄
 
-연마·시험대비·수행평가 PDF를 학원 프린터(EPSON EM-C800)로 뽑는다. 100% 크기, 양면 긴 쪽 넘김,
+연마, 시험대비, 수행평가 PDF를 학원 프린터(EPSON EM-C800)로 뽑는다. 100% 크기, 양면 긴 쪽 넘김,
 품질 "표준"과 해상도 "일반"이다. "최고품질"이 필요하면 `--quality high`로 "높게"와 "섬세하게"다.
-세 양식 모두 앞 절반이 학생 쪽, 뒤 절반이 선생님 쪽이라 두 쪽의 부수를 따로 정한다.
+학생 쪽과 선생님 쪽의 부수는 `=학생 쪽 부수/선생님 쪽 부수`로 따로 정한다. PDF 꼴은 둘이다.
+
+PDF가 하나인 것은 연마, 수행평가, 시험대비 옛 꼴이다. 앞 절반이 학생 쪽, 뒤 절반이 선생님 쪽이라
+반으로 가르고 쪽 수가 홀수면 멈춘다. 연마는 풀이가 있는 문제만 선생님 쪽이 붙으니 풀이가 빠진 문제가
+있으면 절반이 맞지 않는다. 그때는 `--pages`로 쪽을 정한다.
+
+PDF가 둘인 것은 시험대비 새 꼴이다. `{학습지 이름}_문제.pdf`가 학생 쪽, `{학습지 이름}_정답.pdf`가
+선생님 쪽이다. 짝의 앞 이름(`{학습지 이름}.pdf`)이나 둘 가운데 하나를 적으면 짝을 찾아 `_문제.pdf`에
+학생 쪽 부수, `_정답.pdf`에 선생님 쪽 부수를 건다. 가르지 않으니 홀수 쪽이어도 된다. 짝 없이 한쪽
+파일만 있으면 그 파일을 통째로 그쪽 부수만큼 보낸다.
 
 ```
 python lib/print_pdf.py 삼각비.pdf=4/2 "원과 직선.pdf=2/2" --plan   계획과 프린터 설정 확인
-python lib/print_pdf.py 삼각비.pdf=4/2 "원과 직선.pdf=2/2" --go     보낸다 (학생 쪽 4부·선생님 쪽 2부 …)
-python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go              1·2쪽만 한 부
+python lib/print_pdf.py 삼각비.pdf=4/2 "원과 직선.pdf=2/2" --go     보낸다 (학생 쪽 4부, 선생님 쪽 2부 …)
+python lib/print_pdf.py "기본 도형.pdf=4/2" --go                 새 꼴 짝. 기본 도형_문제.pdf 4부, 기본 도형_정답.pdf 2부
+python lib/print_pdf.py "기본 도형_정답.pdf=0/1" --go            새 꼴 짝에서 정답만 한 부
+python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go              1, 2쪽만 한 부
+python lib/print_pdf.py "기본 도형_문제.pdf" --pages 1-2 --go    짝의 한쪽만 쪽을 고를 때는 그 파일 이름을 적는다
 python lib/print_pdf.py 삼각비.pdf=4/1 --quality high --go       "최고품질"이면 높게+섬세하게로
 ```
+
+예의 PDF 이름은 줄여 적었다. 실제 이름에는 `수리소_시험대비_2026_2학기기말_중1_기본 도형_문제.pdf`처럼
+학습지 이름이 붙는다. 짝을 제대로 찾았는지는 `--plan`이 맨 먼저 찍는 작업 목록(`… 기본 도형 학생 쪽 1/4`,
+`… 기본 도형 선생님 쪽 1/2`)으로 본다.
 
 쪽을 프린터 해상도로 그려 1:1로 보내므로 뷰어의 용지 맞춤이 끼지 않는다. 색 없는 장은 흑백으로,
 색 있는 장만 컬러로 보낸다. 프린터가 작업 순서를 바꾸지 못하게 뒤 작업을 멈춰 두었다가 차례로 푼다.

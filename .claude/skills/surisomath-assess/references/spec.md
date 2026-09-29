@@ -8,6 +8,7 @@
 Windows: GTK 런타임이 따로 필요하다. winget install tschoonj.GTKForWindows
 빌드: templates/build.py가 그림 → 수식 → 표 → HTML → PDF → 검사를 한 번에 한다. a4의 render.py는 직접 부르지 않는다
 빌려 쓰는 것: surisomath-a4의 render.py와 base.css, surisomath-grind의 grind_figure.py와 build.py의 rich, surisomath-exam build.py의 width_of와 svg_width
+함께 읽히는 것: 시험대비 build.py를 모듈로 읽으면 surisomath-munhang의 seal.py와 unit.py도 읽힌다. 수행평가는 둘을 쓰지 않지만 둘이 깨지면 빌드가 멈춘다
 종료 코드: 경고가 하나라도 있으면 1. PDF는 그래도 나온다
 
 
@@ -98,6 +99,7 @@ HTML: `<table class="stat">` 안에 caption, thead(head가 있으면), tbody
 눈금: figures.py의 tick_x(통계 그래프)
 좌표 글: 점의 반대쪽 축 옆. 제2사분면의 점이면 x좌표는 x축 아래, y좌표는 y축 오른쪽. O는 곡선과 숫자가 없는 사분면 쪽
 도우미: surisomath-grind/templates/grind_figure.py. build.py가 PYTHONPATH에 넣는다
+저장 이름: g.save(f, "p1.svg")처럼 늘 준다. 빼면 멈춘다. 이름을 빼서 p001.svg가 되는 곳은 시험대비 새 꼴의 문제 폴더(001/figure.py)뿐이다
 견본: build/연마/2026.09.12/figures.py, 정본의 figures.py
 보기: PDF를 pymupdf로 PNG를 뽑아 본다. SVG를 바로 열면 점선이 실선으로 보인다
 
@@ -146,6 +148,7 @@ references/spec.md: 이 파일
 --no-check: 그리드 검사를 건너뛴다
 PDF 보기: `python -c "import fitz; d=fitz.open('…pdf'); [p.get_pixmap(dpi=110).save(f'{p.number}.png') for p in d]"`
 인쇄: `python lib/print_pdf.py {PDF}=학생쪽부수/선생님쪽부수 --plan`으로 보고 `--go`. 몇 쪽만이면 `--pages 1-2`. 100%, 양면 긴 쪽, 품질 표준. 색 없는 장은 흑백. README의 학습지 인쇄
+인쇄 가르기: 수행평가는 PDF 하나라 print_pdf가 앞 절반을 학생 쪽, 뒤 절반을 선생님 쪽으로 가른다. 시험대비 새 꼴의 _문제.pdf, _정답.pdf 짝과 다르다
 
 
 ## 검사

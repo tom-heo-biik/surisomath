@@ -2,33 +2,52 @@
 """확정 문항 봉인 — 선생님이 "됐다"고 한 문항의 글이 다음 세션의 퇴고에서 바뀌지 않게 한다.
 
 단원 폴더의 sealed.json에 문항 번호마다 글의 지문(digest)과 날짜를 적는다. 글은 problems.yaml의
-text·conditions·after·table·notes·choices·answer(그림 파일 이름은 뺀다 — 그림 손질은 문항을 바꾸지
-않는다). 빌드가 매번 대조해 봉인된 문항의 글이 바뀌었으면 `!`로 멈춘다.
+text·conditions·after·table·notes·choices·answer(figure의 그림 파일 이름은 뺀다. 그림 손질은 문항을 바꾸지
+않는다. 지문 안 [[p004s.svg]]와 그림 보기 이름은 글이라 든다). 빌드가 매번 대조해 봉인된 문항의 글이
+바뀌었으면 `!`로 경고한다. 빌드는 멈추지 않고 PDF도 나오며 종료 코드만 1이다.
 
 선생님 풀이(solution)가 있는 문항을 봉인하면 풀이의 지문(solution)도 함께 적는다. 풀이도 선생님이 확정한
 것이라서다(2026-09-26 "풀이도 봉인", 이차함수 001). 줄 나눔까지 선생님이 정하므로 줄째로 잰다. 풀이 없이
 봉인한 문항에 뒤에 풀이를 넣는 것은 막지 않는다(초안은 대화에 쓰고 확정되면 넣는다). 풀이가 확정되면 같은
 번호를 다시 봉인해 풀이까지 잠근다.
 
-    python seal.py <problems.yaml> 003 004      봉인(선생님이 확정한 번호만. 풀이가 있으면 풀이까지)
-    python seal.py <problems.yaml> --unseal 003  풀기(선생님이 번호를 짚어 풀라고 했을 때)
-    python seal.py <problems.yaml> --check       대조. 바뀐 것이 있으면 종료 코드 1
-    python seal.py <problems.yaml> --list        봉인 목록(풀이가 봉인된 문항은 풀이 지문도 보인다)
+    python seal.py <단원> 003 004      봉인(선생님이 확정한 번호만. 풀이가 있으면 풀이까지)
+    python seal.py <단원> --unseal 003  풀기(선생님이 번호를 짚어 풀라고 했을 때)
+    python seal.py <단원> --check       대조. 바뀐 것이 있으면 종료 코드 1
+    python seal.py <단원> --list        봉인 목록(풀이가 봉인된 문항은 풀이 지문도 보인다)
+
+<단원>은 단원 폴더나 그 안의 problems.yaml(옛 꼴)이다. 새 꼴(문제마다 폴더)은 단원 폴더를 준다(unit.py).
 
 봉인은 사람이 건다. 모델이 알아서 걸거나 풀지 않는다(2026-09-26 선생님 요청 — 원과 직선 003·004가 첫 봉인).
 
---check와 빌드는 봉인 목록과 두 기록도 맞춰 본다(records). problems.md 머리의 "확정" 줄, 그리고
-references/canon.md의 책과 정본 쌍이다. 쌍은 그 단원 절 아래 번호 차례에 있어야 하고 정본은 yaml 글과 같아야 한다.
-2026-09-27에 삼각비 019 쌍이 이차함수 절에 들어가 있었는데 봉인 대조는 canon.md를 안 봐서 아무것도 멈추지 않았다.
+--check와 빌드는 봉인 목록과 두 기록도 맞춰 본다(records). 확정 표시(옛 꼴은 problems.md 머리의 "확정" 줄,
+새 꼴은 그 문제 problem.md 첫머리의 "확정(날짜)" 줄), 그리고 references/canon.md의 책과 정본 쌍이다. 쌍은 그
+단원 절 아래 번호 차례에 있어야 하고 정본은 yaml 글과 같아야 한다.
+2026-09-27에 삼각비 019 쌍이 이차함수 절에 들어가 있었는데 봉인 대조는 canon.md를 안 봐서 아무 경고도 나지 않았다.
 """
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import io
 import json
 import re
 import sys
 from pathlib import Path
+
+
+def _unit_module():
+    """같은 폴더의 unit.py(단원 읽기). 빌드와 표기 검사가 같은 모듈을 쓰도록 sys.modules에 한 번만 올린다."""
+    name = "munhang_unit"
+    if name not in sys.modules:
+        spec = importlib.util.spec_from_file_location(name, Path(__file__).resolve().parent / "unit.py")
+        mod = importlib.util.module_from_spec(spec)
+        sys.modules[name] = mod
+        spec.loader.exec_module(mod)
+    return sys.modules[name]
+
+
+U = _unit_module()
 
 FIELDS = ("text", "after", "answer")
 LISTS = ("conditions", "notes", "choices")
@@ -57,15 +76,12 @@ def solution_digest(p: dict) -> str | None:
     return hashlib.sha1("\n".join(lines).encode("utf-8")).hexdigest()[:12]
 
 
-def numbered(data: dict) -> list[tuple[str, dict]]:
-    out = []
-    for i, p in enumerate(data.get("problems") or [], 1):
-        out.append((str(p.get("no") or f"{i:03d}"), p))
-    return out
+numbered = U.numbered
 
 
-def seal_path(yaml_path: Path) -> Path:
-    return yaml_path.parent / "sealed.json"
+def seal_path(path: Path) -> Path:
+    """단원 폴더의 sealed.json. path는 단원 폴더, problems.yaml, 문제 폴더 무엇이든 된다."""
+    return U.unit_dir(path) / "sealed.json"
 
 
 def load(yaml_path: Path) -> dict:
@@ -92,14 +108,20 @@ def check(yaml_path: Path, data: dict) -> list[str]:
     for no, s in seals.items():
         p = now.get(no)
         if p is None:
-            out.append(f"{no}: 봉인된 문항이 yaml에 없다(번호가 밀렸나). sealed.json을 보라")
+            if U.is_folders(U.unit_dir(yaml_path)):
+                moved = [n for n, q in now.items() if digest(q) == s["digest"]]
+                where = f" 같은 글이 {moved[0]}/에 있다(폴더 이름이 바뀌었나)." if moved else ""
+                out.append(f"{no}: 봉인된 문항의 폴더 {no}/가 없다.{where} sealed.json을 보라")
+            else:
+                out.append(f"{no}: 봉인된 문항이 yaml에 없다(번호가 밀렸나). sealed.json을 보라")
             continue
-        if digest(p) != s["digest"]:
-            out.append(f"{no}: 확정 문항({s['date']} 봉인)의 글이 바뀌었다. 되돌리거나, 선생님이 풀라고 한 것이면 "
-                       f"`python seal.py problems.yaml --unseal {no}` 뒤에 다시 봉인하라")
+        again = f'`python .claude/skills/surisomath-munhang/templates/seal.py "{U.unit_dir(yaml_path)}" {no}`'
+        if digest(p) != s["digest"]:           # 같은 번호를 다시 봉인하면 덮어쓴다. --unseal을 먼저 할 까닭이 없다
+            out.append(f"{no}: 확정 문항({s['date']} 봉인)의 글이 바뀌었다. 되돌리거나, 선생님이 고치라고 한 것이면 "
+                       f"{again}로 다시 봉인하라")
         if s.get("solution") and solution_digest(p) != s["solution"]:
             out.append(f"{no}: 확정 문항({s['date']} 봉인)의 풀이가 바뀌었다(줄 나눔도 봉인이다). 되돌리거나, "
-                       f"선생님이 풀라고 한 것이면 `python seal.py problems.yaml --unseal {no}` 뒤에 다시 봉인하라")
+                       f"선생님이 고치라고 한 것이면 {again}로 다시 봉인하라")
     return out
 
 
@@ -139,17 +161,29 @@ def confirmed(md_path: Path) -> list[str]:
     return sorted(set(nos))
 
 
-def records(yaml_path: Path, data: dict, canon: Path = CANON) -> list[str]:
-    """봉인 목록과 확정 기록 둘(problems.md 확정 줄, canon.md 쌍)을 맞춰 어긋난 곳마다 경고 글을 돌려준다.
-    "확정 ㄱㄱ"의 네 가지 가운데 커밋을 뺀 셋을 기계가 본다. 봉인이 없으면 빈 목록."""
-    seals = load(yaml_path)
-    if not seals:
+def records(path: Path, data: dict, canon: Path = CANON) -> list[str]:
+    """봉인 목록과 확정 기록 둘(확정 표시, canon.md 쌍)을 맞춰 어긋난 곳마다 경고 글을 돌려준다.
+    "확정 ㄱㄱ"의 네 가지 가운데 커밋을 뺀 셋을 기계가 본다. 봉인이 없으면 빈 목록.
+    확정 표시는 옛 꼴이면 problems.md 머리의 확정 줄, 새 꼴이면 문제마다 problem.md 첫머리의 "확정(날짜)" 줄이다."""
+    seals = load(path)
+    folders = U.is_folders(U.unit_dir(path))
+    if not seals and not folders:
         return []
     sealed = sorted(seals)
-    unit = yaml_path.parent.name
+    unit_path = U.unit_dir(path)
+    unit = unit_path.name
     out = []
-    md = yaml_path.parent / "problems.md"
-    if md.is_file():
+    if folders:
+        marked = [no for no, _ in numbered(data) if U.confirmed_mark(unit_path, no)]
+        lack, over = [n for n in sealed if n not in marked], [n for n in marked if n not in seals]
+        if lack:
+            out.append(f"봉인한 {', '.join(lack)}의 problem.md 첫머리에 '확정(날짜)' 줄이 없다")
+        if over:
+            out.append(f"봉인이 없는 {', '.join(over)}의 problem.md 첫머리에 '확정(날짜)' 줄이 있다")
+        if not seals:
+            return out
+    md = unit_path / "problems.md"
+    if not folders and md.is_file():
         conf = confirmed(md)
         lack, over = [n for n in sealed if n not in conf], [n for n in conf if n not in seals]
         if lack:
@@ -186,21 +220,18 @@ def records(yaml_path: Path, data: dict, canon: Path = CANON) -> list[str]:
             if not parts.get(k):
                 out.append(f"canon.md {unit} {no}: '{k}'이(가) 비었다")
         if parts.get("정본") and parts["정본"] != canon_text(now[no]):
-            out.append(f"canon.md {unit} {no}: 정본이 problems.yaml의 글과 다르다. yaml을 한 글자도 바꾸지 말고 옮겨라")
+            src = f"{no}/problem.yaml" if folders else "problems.yaml"
+            out.append(f"canon.md {unit} {no}: 정본이 {src}의 글과 다르다. yaml을 한 글자도 바꾸지 말고 옮겨라")
     return out
 
 
 def main(argv: list[str]) -> int:
     import datetime
 
-    import yaml
-
     if len(argv) < 3:
         print(__doc__)
         return 2
-    yaml_path = Path(argv[1])
-    with io.open(yaml_path, encoding="utf-8") as fh:
-        data = yaml.safe_load(fh) or {}
+    yaml_path, data = U.load(argv[1])          # 단원 폴더. 이하 함수들은 단원 폴더를 받는다
     seals = load(yaml_path)
     now = dict(numbered(data))
     cmd, rest = argv[2], argv[3:]

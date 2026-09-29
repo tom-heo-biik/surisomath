@@ -113,6 +113,7 @@ problems.yaml에는 problems 목록만 있으면 됩니다. figures.py는 도우
 - figures.py 뼈대는 `import grind_figure as g` → `g.setup(__file__)` → 그림 함수들입니다.
 - 그림 함수는 파일 끝의 `if __name__ == "__main__":`에서 부릅니다.
 - `f, ax = g.canvas(units, y0, y1)`로 열고 `g.save(f, "p1.svg")`로 닫습니다.
+- 연마는 save에 이름을 꼭 줍니다. 이름을 빼도 되는 것은 시험대비 새 꼴의 문제 폴더뿐입니다(references/figure.md).
 - 도형과 길이와 각의 도우미는 references/figure.md의 도우미 목록에 있습니다.
 - HTML을 손으로 만들 일은 드뭅니다. 만들 때는 소제목 글을 span으로 감쌉니다. build.py도 그렇게 하는데 플렉스 상자가 자식 사이 공백을 버려 어절 span 사이의 띄어쓰기가 사라지기 때문입니다.
 - PDF는 pymupdf로 PNG를 뽑아 봅니다. SVG를 바로 열면 점선이 실선으로 보입니다.

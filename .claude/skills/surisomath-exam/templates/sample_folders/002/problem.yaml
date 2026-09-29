@@ -1,0 +1,13 @@
+# 견본 002. 지문, 선지, 정답, 풀이. 번호는 폴더 이름이 정하므로 no를 적지 않는다.
+text: 그림과 같이 $\angle\mathrm{B}=90^{\circ}$, $\angle\mathrm{A}=30^{\circ}$, $\overline{\mathrm{AC}}=10$인 직각삼각형 $\mathrm{ABC}$의 넓이를 구하시오.
+figure: p002.svg
+alt: 각 B가 직각, 각 A가 30°, 빗변 AC의 길이가 10인 직각삼각형
+answer: $\dfrac{25\sqrt{3}}{2}$
+solution: |
+  주어진 그림에서
+  $\overline{\mathrm{BC}}=\overline{\mathrm{AC}}\sin 30^{\circ}=5$,
+  $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}\cos 30^{\circ}=5\sqrt{3}$이므로
+
+  $\triangle\!\mathrm{ABC}=\dfrac{1}{2}\times5\sqrt{3}\times5$이다.
+  따라서 삼각형 $\mathrm{ABC}$의 넓이는
+  $\dfrac{25\sqrt{3}}{2}$이다.

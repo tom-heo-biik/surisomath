@@ -1,0 +1,13 @@
+# 견본 001. 지문, 선지, 정답, 풀이. 번호는 폴더 이름이 정하므로 no를 적지 않는다.
+text: $\sin 30^{\circ}+\cos 60^{\circ}$의 값은?
+choices:
+  - $0$
+  - $\dfrac{1}{2}$
+  - $1$
+  - $\dfrac{3}{2}$
+  - $2$
+answer: ③
+solution: |
+  $\sin 30^{\circ}=\dfrac{1}{2}$, $\cos 60^{\circ}=\dfrac{1}{2}$이므로
+  $\sin 30^{\circ}+\cos 60^{\circ}=1$이다.
+  따라서 구하는 값은 $1$이다.

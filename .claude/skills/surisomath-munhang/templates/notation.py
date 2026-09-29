@@ -10,7 +10,9 @@
        한 글자로(삼각비 019 ∠CAB → ∠A), 없으면 세 글자로(021 ∠A → ∠BAC) 맞춘다. "∠C = 90°인 직각삼각형"은
        003, 005 정본의 정형구라 넘긴다(016)
 
-    python notation.py <problems.yaml>      문제마다 ! 줄을 찍고, 경고가 있으면 종료 코드 1
+    python .claude/skills/surisomath-munhang/templates/notation.py "{단원 폴더}"
+        문제마다 ! 줄을 찍고, 경고가 있으면 종료 코드 1. 옛 꼴은 problems.yaml 경로도 된다.
+        verbatim: true인 단원(시험기출)은 빌드처럼 건너뛴다
 
 시험대비 build.py는 check()를 불러 문제 번호를 붙여 찍고 경고 수에 더한다. 연마·수행평가 빌드에 넣으려면
 같은 방식으로 부른다(연마 지문이 문장 안 기호를 쓰는 곳이 있으면 먼저 그것부터 낱말로).
@@ -68,18 +70,24 @@ def problem_fields(p: dict) -> list[str]:
 
 
 def main(argv: list[str]) -> int:
-    import io
-
-    import yaml
+    import importlib.util
+    from pathlib import Path
 
     if len(argv) != 2:
-        print("쓰는 법: python notation.py <problems.yaml>")
+        print("쓰는 법: python notation.py <단원 폴더 또는 problems.yaml>")
         return 2
-    with io.open(argv[1], encoding="utf-8") as fh:
-        data = yaml.safe_load(fh)
+    name = "munhang_unit"                         # 단원 읽기(옛 꼴, 새 꼴 모두). seal.py와 같은 모듈
+    if name not in sys.modules:
+        spec = importlib.util.spec_from_file_location(name, Path(__file__).resolve().parent / "unit.py")
+        sys.modules[name] = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sys.modules[name])
+    U = sys.modules[name]
+    _, data = U.load(argv[1])
+    if data.get("verbatim"):                      # 시험기출처럼 원문 그대로인 단원은 빌드처럼 건너뛴다
+        print("표기 검사: 원문 그대로(verbatim)라 평가원 표기 검사를 건너뛴다")
+        return 0
     n = 0
-    for i, p in enumerate(data.get("problems") or [], 1):
-        no = str(p.get("no") or f"{i:03d}")
+    for no, p in U.numbered(data):
         for msg in check(problem_fields(p)):
             print(f"  ! {no}: {msg}")
             n += 1

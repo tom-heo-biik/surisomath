@@ -1,17 +1,29 @@
 # -*- coding: utf-8 -*-
 """수리소 학습지 PDF를 학원 프린터(EPSON EM-C800)로 뽑는다 — 100% 크기, 양면 긴 쪽 넘김, 품질 표준.
 
-연마·시험대비·수행평가 PDF는 앞 절반이 학생 쪽, 뒤 절반이 선생님 쪽이다. 두 쪽의 부수를
-따로 정한다. 한 부씩 따로 보내므로 쪽 수가 홀수여도 부마다 새 장에서 시작한다.
+학생 쪽과 선생님 쪽의 부수를 따로 정한다(PDF=학생 쪽 부수/선생님 쪽 부수). PDF 꼴은 둘이다.
+- PDF 하나. 연마, 수행평가, 시험대비 옛 꼴(단원 하나에 problems.yaml)이다. 앞 절반이 학생 쪽, 뒤 절반이
+  선생님 쪽이라 반으로 가르고 쪽 수가 홀수면 멈춘다. 연마는 풀이가 있는 문제만 선생님 쪽이 붙으니 풀이가
+  빠진 문제가 있으면 절반이 맞지 않는다. 그때는 --pages로 쪽을 정한다.
+- PDF 둘. 시험대비 새 꼴(문제마다 폴더, 2026-09-30)이다. {학습지 이름}_문제.pdf가 학생 쪽, {학습지 이름}_정답.pdf가
+  선생님 쪽이다. 짝의 앞 이름({학습지 이름}.pdf)이나 둘 가운데 하나를 적으면 pair_of가 짝을 찾아 _문제.pdf에
+  학생 쪽 부수, _정답.pdf에 선생님 쪽 부수를 건다. 가르지 않으니 홀수 쪽이어도 된다. 짝 없이 한쪽 파일만
+  있으면 그 파일을 통째로 그쪽 부수만큼 보낸다.
+부마다 따로 보내므로 한 부의 쪽 수가 홀수여도 부마다 새 장에서 시작한다.
 
     python lib/print_pdf.py 삼각비.pdf --plan                       계획만(작업·장 수, 프린터 설정 확인)
     python lib/print_pdf.py 삼각비.pdf=4/2 "원과 직선.pdf=2/2" --go    학생 쪽 4부·선생님 쪽 2부, 원과 직선은 2부·2부
     python lib/print_pdf.py 삼각비.pdf=1/0 --go                     학생 쪽만 한 부
+    python lib/print_pdf.py "기본 도형.pdf=4/2" --go                 새 꼴 짝. 기본 도형_문제.pdf 4부, 기본 도형_정답.pdf 2부
+    python lib/print_pdf.py "기본 도형_정답.pdf=0/1" --go            새 꼴 짝에서 정답만 한 부
     python lib/print_pdf.py 삼각비.pdf=4/1 --quality high --go      "최고품질"이면 높게+섬세하게로
     python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go             1·2쪽만 한 부(--copies N)
+    python lib/print_pdf.py "기본 도형_문제.pdf" --pages 1-2 --go    짝의 한쪽만 쪽을 고를 때는 그 파일 이름을 적는다
     python lib/print_pdf.py 삼각비.pdf --pages 1-2 --dry-run out    Microsoft Print to PDF로 찍어 본다
 
-PDF만 적으면 =1/1(학생 쪽 한 부, 선생님 쪽 한 부)이다. 적은 차례대로 나온다.
+PDF만 적으면 =1/1(학생 쪽 한 부, 선생님 쪽 한 부)이고 짝이면 _문제.pdf 한 부, _정답.pdf 한 부다. 적은 차례대로
+나온다. 예의 이름은 줄여 적었다. 실제는 수리소_시험대비_2026_2학기기말_중1_기본 도형_문제.pdf처럼 학습지 이름이
+붙는다. 짝을 제대로 찾았는지는 --plan이 맨 먼저 찍는 작업 목록(… 기본 도형 학생 쪽 1/4, … 선생님 쪽 1/2)으로 본다.
 Windows 전용. pywin32·numpy·pymupdf가 필요하다. 품질 이름이 Epson 드라이버 고유라 다른 프린터면 멈춘다.
 
 어떻게 뽑나
@@ -384,7 +396,8 @@ def page_text(pages):
 
 
 def parse_spec(s):
-    """'삼각비.pdf=4/2' → (경로, 학생 쪽 부수, 선생님 쪽 부수). 부수를 안 적으면 1/1."""
+    """'삼각비.pdf=4/2' → (경로, 학생 쪽 부수, 선생님 쪽 부수, 부수를 적었나). 부수를 안 적으면 1/1.
+    경로가 시험대비 새 꼴의 짝이면 plan()이 학생 쪽 부수를 _문제.pdf에, 선생님 쪽 부수를 _정답.pdf에 건다."""
     m = re.fullmatch(r"(.+?)=(\d+)/(\d+)", s)
     return (Path(m[1]), int(m[2]), int(m[3]), True) if m else (Path(s), 1, 1, False)
 
@@ -404,32 +417,63 @@ def parse_pages(s, count):
     return out
 
 
+def pair_of(path):
+    """시험대비 새 꼴은 학생 쪽과 선생님 쪽이 두 파일이다(…_문제.pdf, …_정답.pdf). path가 그 가운데 하나이거나
+    짝의 앞 이름(…_기본 도형.pdf)이면 (문제, 정답)을, 아니면 None을 돌려준다."""
+    stem = re.sub(r"_(문제|정답)$", "", path.stem)
+    pair = (path.with_name(f"{stem}_문제.pdf"), path.with_name(f"{stem}_정답.pdf"))
+    if pair[0].exists() and pair[1].exists() and (not path.exists() or path in pair):
+        return pair
+    return None
+
+
+def check_a4(path, doc):
+    for p in doc:
+        if abs(p.rect.width - A4[0]) > 1 or abs(p.rect.height - A4[1]) > 1:
+            sys.exit(f"{path.name} {p.number + 1}쪽이 A4 세로가 아니다({p.rect.width:.0f}×{p.rect.height:.0f}pt) — 100%로 놓을 수 없다")
+
+
 def plan(specs, pages=None, copies=1):
     jobs = []
     for path, n_student, n_teacher, _ in specs:
-        if not path.exists():
-            sys.exit(f"없는 파일: {path}")
-        doc = fitz.open(path)
-        for p in doc:
-            if abs(p.rect.width - A4[0]) > 1 or abs(p.rect.height - A4[1]) > 1:
-                sys.exit(f"{path.name} {p.number + 1}쪽이 A4 세로가 아니다({p.rect.width:.0f}×{p.rect.height:.0f}pt) — 100%로 놓을 수 없다")
-        label = re.sub(r"^수리소_", "", path.stem).replace("_", " ")
-        if pages is not None:
-            parts = [("", parse_pages(pages, doc.page_count), copies)]
+        pair = pair_of(path)
+        if pair and pages is None:
+            # 새 꼴: 학생 쪽은 _문제.pdf 전부, 선생님 쪽은 _정답.pdf 전부
+            docs = [(pair[0], fitz.open(pair[0])), (pair[1], fitz.open(pair[1]))]
+            label = re.sub(r"^수리소_", "", re.sub(r"_(문제|정답)$", "", path.stem)).replace("_", " ")
+            parts = [("학생 쪽", docs[0], list(range(docs[0][1].page_count)), n_student),
+                     ("선생님 쪽", docs[1], list(range(docs[1][1].page_count)), n_teacher)]
         else:
-            if doc.page_count % 2:
-                sys.exit(f"{path.name}: {doc.page_count}쪽이라 학생 쪽과 선생님 쪽을 반으로 가를 수 없다 — --pages로 쪽을 정한다")
-            half = doc.page_count // 2
-            parts = [("학생 쪽", list(range(half)), n_student),
-                     ("선생님 쪽", list(range(half, 2 * half)), n_teacher)]
-        for part, pp, n in parts:
-            segs = segments(doc, pp)
+            if not path.exists():
+                sys.exit(f"없는 파일: {path}" + (". _문제.pdf와 _정답.pdf 짝은 --pages 없이 뽑는다. 한쪽만 "
+                                                 "쪽을 골라 뽑으려면 그 파일 이름을 적는다" if pair else ""))
+            docs = [(path, fitz.open(path))]
+            label = re.sub(r"^수리소_", "", path.stem).replace("_", " ")
+            doc = docs[0][1]
+            side = re.search(r"_(문제|정답)$", path.stem)
+            if pages is not None:
+                parts = [("", docs[0], parse_pages(pages, doc.page_count), copies)]
+            elif side:
+                # 짝이 없는 _문제.pdf나 _정답.pdf 한 파일. 반으로 가르지 않고 통째로 한쪽 부수만큼 보낸다
+                n = n_student if side[1] == "문제" else n_teacher
+                parts = [("학생 쪽" if side[1] == "문제" else "선생님 쪽", docs[0], list(range(doc.page_count)), n)]
+            else:
+                if doc.page_count % 2:
+                    sys.exit(f"{path.name}: {doc.page_count}쪽이라 학생 쪽과 선생님 쪽을 반으로 가를 수 없다 — --pages로 쪽을 정한다")
+                half = doc.page_count // 2
+                parts = [("학생 쪽", docs[0], list(range(half)), n_student),
+                         ("선생님 쪽", docs[0], list(range(half, 2 * half)), n_teacher)]
+        for p_, d_ in docs:
+            check_a4(p_, d_)
+        for part, (p_, d_), pp, n in parts:
+            segs = segments(d_, pp)
             for c in range(1, n + 1):
                 for sheet_pages, color in segs:
                     head = " ".join(x for x in (TAG.strip(), label, part, f"{c}/{n}") if x)
                     name = f"{head} ({page_text(sheet_pages)}{', 컬러' if color else ''})"
-                    jobs.append(dict(path=str(path), pages=sheet_pages, color=color, name=name))
-        doc.close()
+                    jobs.append(dict(path=str(p_), pages=sheet_pages, color=color, name=name))
+        for _, d_ in docs:
+            d_.close()
     return jobs
 
 
@@ -437,12 +481,15 @@ def main():
     for s in (sys.stdout, sys.stderr):
         s.reconfigure(errors="replace")   # cp949 콘솔에서 못 찍는 글자로 죽지 않게
     ap = argparse.ArgumentParser(description="수리소 학습지 PDF를 100%·양면(긴 쪽)·품질 표준으로 뽑는다")
-    ap.add_argument("pdf", nargs="+", help="PDF 또는 PDF=학생쪽부수/선생님쪽부수 (적지 않으면 1/1)")
+    ap.add_argument("pdf", nargs="+", help="PDF 또는 PDF=학생쪽부수/선생님쪽부수 (적지 않으면 1/1). 시험대비 새 꼴은 "
+                                           "짝의 앞 이름이나 _문제.pdf, _정답.pdf 가운데 하나를 적으면 _문제.pdf에 "
+                                           "학생 쪽 부수, _정답.pdf에 선생님 쪽 부수를 건다")
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--plan", action="store_true", help="계획과 프린터 설정만 본다")
     g.add_argument("--dry-run", metavar="DIR", help="흑백·컬러 첫 작업을 Microsoft Print to PDF로 DIR에 찍어 본다")
     g.add_argument("--go", action="store_true", help="프린터로 보낸다")
-    ap.add_argument("--pages", metavar="RANGE", help="이 쪽만(예: 1-2 또는 1,3-4). PDF 하나일 때만")
+    ap.add_argument("--pages", metavar="RANGE", help="이 쪽만(예: 1-2 또는 1,3-4). PDF 하나일 때만. "
+                                                     "새 꼴 짝이면 _문제.pdf나 _정답.pdf 이름을 적는다")
     ap.add_argument("--copies", type=int, default=1, help="--pages의 부수(기본 1)")
     ap.add_argument("--printer", default=PRINTER, help=f"프린터 이름(기본 {PRINTER})")
     ap.add_argument("--quality", choices=sorted(QUALITY), default="standard",

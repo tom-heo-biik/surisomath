@@ -105,7 +105,7 @@ problems.yaml에는 problems 목록만 있으면 됩니다. 문제마다 text와
 - text에 `": "`가 들어가면 따옴표로 감쌉니다. 수식의 역슬래시는 따옴표 없는 글에서 그대로 살아 있습니다.
 - 번호를 직접 주려면 `"no": "004"`처럼 키와 값 모두 따옴표로 감쌉니다. 따옴표가 없으면 YAML이 no를 거짓으로 읽어 build.py가 멈춥니다.
 - figures.py 뼈대는 `import grind_figure as g`, `g.setup(__file__)`, 그림 함수들, `if __name__ == "__main__":`에서 부르기입니다.
-- 그림을 저장한 이름은 yaml의 figure와 같아야 합니다.
+- 저장 이름은 yaml의 figure와 같아야 하니 `g.save(f, "p1.svg")`처럼 늘 줍니다. 이름을 뺄 수 있는 곳은 시험대비 새 꼴의 문제 폴더뿐입니다.
 - TeX가 든 yaml과 figures.py는 Edit나 Write로 고칩니다. Bash heredoc은 역슬래시를 한 겹 벗깁니다.
 - PDF는 다음 명령으로 쪽마다 PNG를 뽑아 봅니다.
 ```

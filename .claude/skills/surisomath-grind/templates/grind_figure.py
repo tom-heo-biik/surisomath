@@ -63,6 +63,7 @@ PAD = 2.0              # 길이 글 양옆에 비우는 점선 길이(pt)
 SLACK = 22.0           # 위아래 여백이 이보다 크면 그림이 블록에 비해 작다
 
 OUT = None             # setup()이 단원 폴더의 figures/ 로 잡는다
+DEFAULT_NAME = None    # 문제마다 폴더(단원/001/figure.py)면 save()의 기본 이름 p001.svg
 
 # dfrac에서 분자 기준선을 올리는 양과 분모 기준선을 내리는 양(em). 22pt 글줄 상자
 # (KoPub 12pt: 베이스라인 위 14.4pt·아래 7.6pt)에 분수가 통째로 들도록 잡은 값이다.
@@ -82,9 +83,17 @@ def warn(msg: str) -> None:
 
 def setup(script_file: str) -> Path:
     """단원 figures.py의 __file__을 받아 그 옆 figures/ 를 출력 폴더로 잡는다.
-    figures.py 첫머리에서 반드시 부른다."""
-    global OUT
-    OUT = Path(script_file).resolve().parent / "figures"
+    figures.py 첫머리에서 반드시 부른다.
+
+    시험대비 새 꼴(문제마다 폴더)의 단원/001/figure.py에서 부르면 문제 폴더가 아니라 단원 폴더의
+    figures/ 를 잡고, save()에 이름을 주지 않으면 p001.svg로 저장한다(2026-09-30)."""
+    import re
+    global OUT, DEFAULT_NAME
+    here = Path(script_file).resolve().parent
+    if (here / "problem.yaml").is_file() and re.fullmatch(r"\d{3}", here.name):
+        OUT, DEFAULT_NAME = here.parent / "figures", f"p{here.name}.svg"
+    else:
+        OUT, DEFAULT_NAME = here / "figures", None
     OUT.mkdir(exist_ok=True)
     return OUT
 
@@ -299,13 +308,21 @@ def _names(texts: list) -> list:
 NAME_RX = __import__("re").compile(r"\\mathrm\{([A-Z]+)\}('|_\{?([0-9a-z])\}?)?")   # 점 이름: 대문자, 프라임, 첨자
 
 
-def save(f, filename: str) -> Path:
+def save(f, filename: str | None = None) -> Path:
     """x 범위를 잉크 기준 좌우 대칭으로 잡아 SVG로 저장한다. 위아래 여백이 모자라거나
     지나치게 남으면 y 범위를 얼마로 바꾸면 되는지 알려 준다. 글자가 선이나 다른 글자와
     겹치면(_check_labels), 색칠한 부분의 변에 선이 없으면(_check_shades) 경고한다. 그림의 점
-    이름 목록을 SVG 끝에 주석(<!-- names: … -->)으로 남겨 build.py가 지문의 점 이름과 맞춰 본다."""
+    이름 목록을 SVG 끝에 주석(<!-- names: … -->)으로 남겨 build.py가 지문의 점 이름과 맞춰 본다.
+    filename을 주지 않으면 문제 폴더의 figure.py에서만 p001.svg 꼴의 기본 이름을 쓴다."""
     if OUT is None:
         raise RuntimeError("g.setup(__file__)을 먼저 불러라. 출력 폴더가 정해지지 않았다")
+    if filename is None:
+        if DEFAULT_NAME is None:
+            raise RuntimeError("g.save(f, \"p1.svg\")처럼 파일 이름을 주어라. 기본 이름은 문제 폴더의 figure.py에만 있다")
+        filename = DEFAULT_NAME
+    elif DEFAULT_NAME and not filename.startswith(DEFAULT_NAME[:-4]):
+        # 문제마다 따로 그려 한 figures/에 모이므로 이름에 번호가 없으면 다른 문제 그림을 덮을 수 있다
+        warn(f"{filename}: 문제 폴더의 그림 이름은 {DEFAULT_NAME[:-4]}로 시작한다({DEFAULT_NAME[:-4]}a.svg처럼)")
     ax = f.axes[0]
     H = ax.units * GRID
     scale = ax.pt

@@ -5,9 +5,11 @@
 단위: 한 쪽에 문제 둘(`<section class="exam">`). 두 단, 단마다 문제 하나
 본문 영역: 475×682pt(31칸). 위에 머리줄, 44pt부터 바닥까지 두 단
 학생 쪽: 문제 열 개면 다섯 쪽, 스무 개면 열 쪽. 문제 수가 홀수면 마지막 쪽의 오른 단이 빈다
-선생님 쪽: 학생 쪽 뒤에 같은 짝으로(스무 개면 11~20쪽). 양식은 같고 이름 칸만 없다
+선생님 쪽: 학생 쪽과 같은 짝. 양식은 같고 이름 칸만 없다
+옛 꼴(단원 하나에 problems.yaml): PDF 하나. 선생님 쪽이 학생 쪽 뒤에 같은 짝으로 붙는다(스무 개면 11~20쪽)
+새 꼴(문제마다 폴더): PDF 둘. 학생 쪽은 {학습지 이름}_문제.pdf, 선생님 쪽은 {학습지 이름}_정답.pdf(스무 개면 1~10쪽)
 표지, 제목 줄, 이름 칸 행: 없음
-쪽번호: a4 그대로(- n -). 선생님 쪽까지 이어 센다
+쪽번호: a4 그대로(- n -). 옛 꼴은 선생님 쪽까지 이어 세고, 새 꼴은 두 PDF 모두 1부터 센다
 바깥 세로선, 가로선: 없음. 학교 시험지 꼴이다. 연마의 세 줄 상자는 쓰지 않는다
 
 
@@ -26,8 +28,9 @@
 ## 머리줄과 이름 칸
 머리줄: 시험대비, 학년도와 학기와 시험(2026학년도 2학기 중간고사), 학년(중3), 단원(삼각비) 넷을 가운뎃점으로 잇는다
 머리줄 서체: typo-0, neutral-1000
-이름 칸: 첫 쪽만 머리줄 오른쪽 끝에 "이름"과 90pt 빈 자리(아래 선 0.4pt)
+이름 칸: 학생 쪽 첫 쪽만(새 꼴은 _문제.pdf 첫 쪽) 머리줄 오른쪽 끝에 "이름"과 90pt 빈 자리(아래 선 0.4pt). 선생님 쪽(새 꼴은 _정답.pdf)에는 없다
 머리줄이 이름 칸과 겹치면: build.py가 경고한다
+HTML 제목: 머리줄 그대로. 새 꼴은 두 파일을 가르려고 끝에 문제, 정답을 가운뎃점으로 이어 붙인다
 
 
 ## 단
@@ -48,8 +51,8 @@
 
 
 ## 문제 번호와 지문
-번호: 001부터 problems.yaml 차례대로. typo-4, 단 왼끝. 순서는 바꾸지 않는다
-지문: typo-1, 한 문단. problems.md 문장 그대로, 표기만 조판
+번호: 001부터. 옛 꼴은 problems.yaml 차례대로, 새 꼴은 문제 폴더 이름이고 차례도 폴더 이름 차례. typo-4, 단 왼끝. 순서는 바꾸지 않는다
+지문: typo-1, 한 문단. 원문 문장 그대로(옛 꼴은 problems.md, 새 꼴은 그 문제의 problem.md), 표기만 조판
 그림: 지문 아래 단 가운데. a4의 `.figure` 블록. 너비 229pt 안. 높이가 22의 배수가 아니면 멈춘다
 units: yaml에 적지 않는다. SVG 높이가 칸 수다
 그림 칸 수: 5~7. 도형 하나 5, 세로로 긴 그림 7, 좌표평면 6~7, 표가 있는 문제 3~5
@@ -127,7 +130,10 @@ yaml: `solution: |` 블록. 선택
 자리: 정답 줄 다음 줄부터
 줄: 줄마다 한 칸. 빈 줄은 한 칸을 비운다
 서체: typo-1. 수식은 `$…$`
-줄 너비: 단 글 너비(한글 19자쯤). 넘는 줄만 어절에서 가른다(build.py의 width_of). 단 바닥을 넘으면 경고
+줄 나눔: 선생님이 정한다
+줄 너비: 단 글 너비 229pt(한글 19자쯤). 빌드가 줄마다 width_of로 재어 229pt를 넘는 줄을 경고한다. 렌더러가 말없이 두 줄로 감기 때문이다
+넘치는 줄: 어절에서 가른다
+단 바닥: 풀이 글이 단 바닥을 넘으면 경고
 분수 분자의 근호: 글줄 상자 위로 3pt쯤 넘는다. 잇단 두 줄에서 세로로 겹치면 단마다 경고
 없으면: 정답 줄만 찍히고 아래가 빈다
 
@@ -138,54 +144,94 @@ yaml: `solution: |` 블록. 선택
 시험 폴더: `YYYY` + `N학기` + `중간|기말`(20262학기중간). build.py가 정규식으로 읽는다
 머리줄의 시험: 2026학년도 2학기 중간고사
 파일 이름: 수리소_시험대비_2026_2학기중간_중3_삼각비. 학년과 단원은 폴더 이름 그대로
-사진: {학습지 이름}_001.jpg …(수리소_시험대비_2026_2학기중간_중3_이차함수_001.jpg). photos.py가 git mv로 바꾼다
-축소본: 긴 변 1400px. 임시 폴더
-빌드 결과: 수리소_시험대비_….html, .pdf
-PDF 날짜: 학기 첫날로 고정(1학기 3. 1., 2학기 9. 1.). 같은 입력이면 PDF도 바이트 단위로 같다. 폴더 꼴이 안 맞으면 yaml의 date
+꼴 가르기: 단원 폴더에 problems.yaml이 있으면 옛 꼴, 없으면 새 꼴(munhang/templates/unit.py가 읽는다). 둘이 섞이면 멈춘다
+옛 꼴 단원: 20262학기중간의 이차함수, 원과 직선, 삼각비와 시험기출 수지중학교, 견본 templates/sample
+옛 꼴 파일: 단원 폴더에 problems.yaml(머리 설정과 문제 목록), problems.md(원문), figures.py(그림), 사진
+새 꼴 문제 폴더: build/시험대비/{시험}/{학년}/{단원}/{번호}/(001/, 002/ …). 번호는 폴더 이름이다. 세 자리 숫자라야 문제로 읽고 1/, 0001/ 같은 폴더는 보지 않는다
+새 꼴 파일: 문제 폴더에 problem.yaml(문제 하나), problem.md(원문), figure.py(그림이 있을 때), photo.jpg(원문 사진)
+unit.yaml: 새 꼴 단원의 머리 설정. 시험대비 폴더 꼴이면 없어도 된다(yaml 필드 절)
+figlib.py: 새 꼴 단원에서 여러 문제가 같이 쓰는 그림 도우미. 있을 때만. figure.py에서 import figlib로 부른다
+problem.md 절: `## 지문`, `## 조건`((가) …), `## 뒷문장`, `## 표`, `## 보기`(ㄱ. …), `## 선지`(1. …), `## 그림`(설명), `## 책과 달라진 것`(퇴고한 것, 되돌리기 기록)
+problem.md의 표: 원문 표를 한 행이 한 줄로, 칸은 `|`로 갈라 적는다. 빌드는 대조하지 않는다
+problem.md 글: 첫 줄은 `# 001`처럼 번호. 지문부터 선지까지는 problem.yaml과 같은 TeX 꼴로 적는다
+사진(옛 꼴): {학습지 이름}_001.jpg …(수리소_시험대비_2026_2학기중간_중3_이차함수_001.jpg). photos.py가 git mv로 바꾼다. git이 모르는 사진(막 받은 사진)은 그냥 옮긴다
+사진(새 꼴): {번호}/photo.jpg. photos.py가 카카오톡 사진을 이름 차례로 문제 폴더를 만들어 옮긴다(git mv, git이 모르는 사진은 그냥 옮긴다). 번호는 이미 있는 문제 폴더 다음부터. 확장자는 원본을 따른다(png면 photo.png)
+축소본: 긴 변 1400px. 이름은 번호(001.jpg …)
+축소본 자리: `--small DIR`로 준다. 기본은 임시 폴더의 surisomath_photos/{학습지 이름}이다. 비우지 않으니 지난 축소본이 남아 있을 수 있다
+빌드 결과(옛 꼴): 수리소_시험대비_….html, .pdf 하나씩. 학생 쪽 뒤에 선생님 쪽
+빌드 결과(새 꼴): {학습지 이름}_문제.html, .pdf(학생 쪽)와 {학습지 이름}_정답.html, .pdf(선생님 쪽)
+PDF 날짜: 학기 첫날로 고정(1학기 3. 1., 2학기 9. 1.). 같은 입력이면 PDF도 바이트 단위로 같다. 폴더 꼴이 안 맞으면 yaml의 date(새 꼴은 unit.yaml의 date)
+date도 없으면: 옛 꼴은 problems.yaml, 새 꼴은 unit.yaml(없으면 가장 늦게 고친 problem.yaml)의 수정 시각. 그때는 PDF가 재현되지 않는다
 figures/: 그림 p*.svg. 수식은 m 지문, k 조건, e 뒷문장, b 보기, c 선지, a 정답, s 풀이, t 표 칸. 빌드마다 다시 그리고 안 쓴 것은 지운다
---png: 쪽 p01.png …(110dpi), 그림 있는 문제의 단 크롭 f001.png …(200dpi)
+figures/(새 꼴): 문제 폴더마다가 아니라 단원 폴더에 하나다. 이름에 번호가 들어(p001.svg, m001_1.svg, a001_1.svg) 문제마다 가려낼 수 있다
+그림 이름(옛 꼴): figures.py가 저장한 이름 그대로(p2.svg)
+그림 이름(새 꼴): p{번호}.svg. g.save(f)에 이름을 안 주면 이 이름이다. 한 문제에 그림이 둘이면 p001a.svg처럼 번호로 시작하는 이름을 준다. 아니면 save가 경고한다. 모든 문제가 한 figures/에 그리니 번호로 부딪침을 막는다
+지난 그림(새 꼴): 빌드는 안 쓴 수식 SVG만 지우고 p*.svg는 남긴다. 문제 폴더를 지우거나 번호를 바꾸면 옛 p{번호}.svg는 손으로 지운다
+--png(옛 꼴): 쪽 p01.png …(110dpi), 그림 있는 문제의 단 크롭 f001.png …(200dpi)
+--png(새 꼴): _문제.pdf의 쪽은 p01.png …, _정답.pdf의 쪽은 a01.png …(110dpi). 그림 크롭은 _문제.pdf에서 f001.png …(200dpi)
 
 
 ## 파일
 templates/exam.css: base.css 위에 얹는 시험대비 스타일. 두 단, 머리줄, 이름 칸, 선지 열, 보기 상자, 조건 상자의 구현
-templates/build.py: problems.yaml 하나로 그림 → 수식 → HTML → PDF → 검사. 연마 build.py를 모듈로 읽어 rich()를 쓴다. `--png {폴더}`로 쪽과 그림 크롭 PNG
-templates/photos.py: 단원 폴더의 문제 사진을 {학습지 이름}_001.jpg …로 바꾸고(git mv) 긴 변 1400px 축소본을 임시 폴더에 뽑는다. 이미 양식 이름인 사진은 건드리지 않는다
-templates/sample/: 견본 세 문제(객관식 5열, 그림 있는 서술형, 객관식 3열, 홀수 짝). 새 단원은 이 폴더의 problems.yaml과 figures.py를 복사해 출발한다
-견본 회귀: build.py, exam.css, render.py, grind_figure.py를 고친 뒤 견본을 다시 빌드해 종료 코드 0이고 `git status --short .claude/skills/surisomath-exam/templates/sample/`이 비어 있으면 양식이 그대로다
-grind_figure.py를 고쳤으면: 연마 견본, 연마 2026.09.12, 삼각비, 원과 직선, 이차함수, 수행평가 여섯을 다 돌려 오탐이 없는지 본다
+templates/build.py: 단원 하나로 그림 → 수식 → HTML → PDF → 검사. 입력은 단원 폴더(옛 꼴은 problems.yaml 경로도 된다). 연마 build.py를 모듈로 읽어 rich()를 쓴다. `--png {폴더}`로 쪽과 그림 크롭 PNG
+build.py 옛 꼴: problems.yaml과 figures.py로 PDF 하나(학생 쪽 뒤에 선생님 쪽)
+build.py 새 꼴: {번호}/problem.yaml과 {번호}/figure.py로 PDF 둘(_문제, _정답). 그림은 figrun.py에 맡긴다
+templates/figrun.py: 새 꼴의 모든 {번호}/figure.py를 한 프로세스에서 __main__으로 차례로 돌린다. build.py가 부르고 작업 폴더는 그 문제 폴더다
+figrun.py의 까닭: 문제마다 파이썬을 띄우면 matplotlib을 부르는 데만 1~2초씩이라 100문제면 몇 분이다
+figrun.py의 import 경로: 단원 폴더를 넣어 figlib.py를 부를 수 있다. 한 문제가 터지면 그 번호를 알리고 종료 코드 1
+figrun.py의 되돌림: 문제마다 출력 폴더와 기본 이름을 비운다. g.setup(__file__)을 빠뜨린 figure.py는 앞 문제의 자리에 그리지 않고 save에서 멈춘다
+templates/photos.py: 단원 폴더의 문제 사진을 번호에 붙이고(git mv, git이 모르는 사진은 그냥 옮긴다) 긴 변 1400px 축소본을 뽑는다
+photos.py의 축소본 자리: `--small DIR`. 기본은 임시 폴더의 surisomath_photos/{학습지 이름}이고 비우지 않는다
+photos.py 옛 꼴: {학습지 이름}_001.jpg …로 바꾼다. 이미 양식 이름인 사진은 건드리지 않는다
+photos.py 새 꼴: 단원 폴더 바로 아래 사진을 이름 차례로 {번호}/photo.jpg에 옮긴다. 번호는 이미 있는 문제 폴더 다음부터
+templates/sample/: 옛 꼴 견본 세 문제(객관식 5열, 그림 있는 서술형, 객관식 3열, 홀수 짝). 옛 꼴 회귀를 지키려고 그대로 둔다
+templates/sample_folders/: 새 꼴 견본. sample/과 같은 세 문제를 unit.yaml, 001~003, 002/figure.py로 나눴다. 새 단원은 이 폴더의 문제 폴더와 figure.py를 복사해 출발한다
+견본 회귀: build.py, figrun.py, exam.css, render.py, grind_figure.py, munhang/templates의 unit.py, seal.py, notation.py를 고친 뒤 아래 목록을 모두 다시 빌드해 바이트가 그대로인지 본다
+견본 회귀 목록: 두 견본(templates/sample/, templates/sample_folders/), 연마 견본, 연마 2026.09.12, 삼각비, 원과 직선, 이차함수, 시험기출 수지중학교, 수행평가 2026.09.17, 그리고 새 꼴 단원이 있으면 그것
+견본 회귀의 판정: 빌드 결과가 git status에 바뀐 파일로 뜨지 않고 전에 없던 `!` 경고가 없으면 양식이 그대로다. 오탐도 여기서 본다
+두 견본의 판정: 종료 코드 0이고 `git status --short .claude/skills/surisomath-exam/templates/sample/ .claude/skills/surisomath-exam/templates/sample_folders/`이 비어 있다
+시험기출을 넣는 까닭: label, 별행 수식, 그림 보기, min_rows, unnamed, verbatim을 쓰는 하나뿐인 단원이다
 
 
 ## yaml 필드
 필수: text, answer
+problem.yaml(새 꼴): 문제 하나. 옛 problems.yaml의 한 항목과 같은 키를 쓴다
 블록 차례: text → conditions → after → figure → table → notes → choices
 choices: 다섯, 목록. 있으면 객관식
 conditions: 목록, (가)부터
 after: 상자 뒤 문단
 notes: 목록, ㄱ부터
 table: head, rows
-figure: figures/ 안의 SVG 이름. figures.py의 저장 이름과 같아야 한다
+figure: figures/ 안의 SVG 이름. 옛 꼴은 figures.py의, 새 꼴은 그 문제 figure.py의 저장 이름(기본 p{번호}.svg)과 같아야 한다
+figure를 빼면: 그림 없이 빌드한다. 새 꼴도 기본 이름을 찾아 붙이지 않으니 p001.svg도 적는다
 alt: 그림 설명. PDF에는 안 찍힌다
 solution: `|` 블록
 적지 않는 것: exam, grade, unit, file, date(폴더 이름에서 만든다). units
-번호: `"no": "004"`. 키와 값 모두 따옴표
+머리 설정(옛 꼴): 적을 일이 있으면 problems.yaml 머리에
+머리 설정(새 꼴): problem.yaml에는 머리가 없다. 적을 일이 있으면 단원의 unit.yaml에 series, exam, school, grade, unit, file, date, verbatim
+unit.yaml에 problems를 두면: 멈춘다. 문제는 {번호}/problem.yaml에만 둔다
+번호(옛 꼴): 목록 차례. 직접 줄 때는 `"no": "004"`. 키와 값 모두 따옴표
+번호(새 꼴): 폴더 이름. no를 적지 않는다. 폴더 이름과 다르게 적거나 따옴표 없이 적으면 멈춘다
 따옴표: text에 `": "`가 들어가면 감싼다. 역슬래시는 따옴표 없는 글에서 그대로 살아 있다
 
 
 ## 시험기출
-폴더: build/시험기출/{학교}/{학년}/{시험}/(수지중학교/중2/2학기중간). 시험대비의 폴더 정규식에 안 맞아 yaml 머리에 적는다
-yaml 머리: series 시험기출, exam 2026학년도 2학기 중간고사, school 수지중학교, grade 중2, file, date 2026.09.01, verbatim true
+폴더: build/시험기출/{학교}/{학년}/{시험}/(수지중학교/중2/2학기중간). 시험대비의 폴더 정규식에 안 맞아 머리 설정을 적는다(옛 꼴은 problems.yaml 머리, 새 꼴은 unit.yaml)
+머리 설정: series 시험기출, exam 2026학년도 2학기 중간고사, school 수지중학교, grade 중2, file, date 2026.09.01, verbatim true
 머리줄: 시리즈, 시험, 학교, 학년을 가운뎃점으로 잇는다. 단원이 없다
-파일 이름: 수리소_시험기출_2026_2학기중간_수지중학교_중2. 사진도 이 이름_001.jpg(photos.py가 yaml 머리를 읽는다)
-verbatim: 평가원 표기 검사(notation.py)를 건너뛴다. 원문의 △ABC, ∠A, 선분의 길이 기호, //, ⊥, ≡, 배점 [4점]을 그대로 둔다
+파일 이름: 수리소_시험기출_2026_2학기중간_수지중학교_중2. 옛 꼴은 사진도 이 이름_001.jpg(photos.py가 problems.yaml 머리를 읽는다)
+사진(새 꼴): {번호}/photo.jpg라 이름에 머리가 들지 않는다. 다만 photos.py가 축소본 폴더 이름을 지으려고 읽으니 unit.yaml을 먼저 적는다
+verbatim: 평가원 표기 검사를 건너뛴다. 빌드도, 따로 돌린 notation.py도 건너뛴다. 원문의 △ABC, ∠A, 선분의 길이 기호, //, ⊥, ≡, 배점 [4점]을 그대로 둔다
 △: `{\bigtriangleup}\mathrm{ABC}`(대문자 높이, 붙음). ≡ 뒤는 `\equiv{}{\bigtriangleup}`. `\triangle`은 크고 뒤가 벌어진다
-label: 번호 자리의 글(논술형 1). 원문 딱지의 띄어쓰기가 섞여도 "논술형 n"으로 맞춘다. 파일 이름과 class와 검사는 번호(018)
-별행 수식: 지문의 [[이름.svg]]. 앞 글은 p.run(아래 여백 0), 블록은 .figure.disp(여백 0, 단 가운데), 뒤 글은 다음 줄에서 이어진다
+label: 번호 자리의 글(논술형 1). 원문 딱지의 띄어쓰기가 섞여도 "논술형 n"으로 맞춘다. 파일 이름과 class와 검사는 번호(018, 새 꼴은 폴더 이름)
+별행 수식: 지문의 [[이름.svg]]. 새 꼴은 이름이 p{번호}로 시작한다(p004s.svg). 앞 글은 p.run(아래 여백 0), 블록은 .figure.disp(여백 0, 단 가운데), 뒤 글은 다음 줄에서 이어진다
 별행 수식 그림: 2칸(44pt). 식은 12pt, 베이스라인은 블록 위 끝에서 14.4pt와 36.4pt(본문 글줄과 같은 위상)
-그림 보기: notes 항목마다 `- figure: p005a.svg`. `<ol class="bogi figs">` 두 열, 마커는 칸 왼쪽 위, 칸 높이는 가장 높은 그림
+그림 보기: notes 항목마다 `- figure: p005a.svg`(새 꼴도 이 꼴, p{번호}에 a, b를 붙인다). `<ol class="bogi figs">` 두 열, 마커는 칸 왼쪽 위, 칸 높이는 가장 높은 그림
 그림 보기 너비: 84pt(NOTE_FIG_W) = (229 - 16) / 2 - 22
 min_rows: 문제별 풀 자리 하한. 원문 분량(지문, 보기, 1열 선지)으로 8칸을 못 지키는 문제만. 빌드가 하한과 칸 수를 알린다
 unnamed: 지문이 부르지만 원본 그림에 이름이 인쇄되지 않은 점의 목록(`[O]`). 점 이름 대조에서 뺀다. 그림에 이름을 더하지 않는다
-지시 화살표: figures.py 머리의 pointer(곧거나 2차 곡선), 갈고리 꼴은 pointer3(3차 베지에). 촉 4pt(TIP). 평행 표시 촉은 mid_arrow
+지시 화살표: 옛 꼴(수지중학교)은 figures.py 머리의 pointer(곧거나 2차 곡선), 갈고리 꼴은 pointer3(3차 베지에). 촉 4pt(TIP). 평행 표시 촉은 mid_arrow
+지시 화살표(새 꼴): figure.py는 문제마다 따로라 머리 도우미를 나눠 쓸 수 없다. 여러 문제가 쓰면 단원의 figlib.py로 옮겨 import figlib로 부른다
 연립방정식 괄호: cmex10의 braceleftBigg 윤곽(TeX가 두 줄 cases에 고르는 괄호)을 TextPath로 앉힌다. 위아래 4pt 여백에 맞춰 줄인다
 선생님 쪽: 객관식은 정답표. 논술형은 과정이 점수라 모범 답안(풀이 문체는 시험대비와 같다). 설명 문제의 정답 줄은 "풀이 참고"
 
@@ -197,12 +243,27 @@ unnamed: 지문이 부르지만 원본 그림에 이름이 인쇄되지 않은 �
 
 
 ## 빌드 옵션
---png {폴더}: 쪽 PNG와 그림 크롭
---no-figures: 그림은 그대로 두고 글만
+--png {폴더}: 쪽 PNG와 그림 크롭. 이름은 폴더와 파일 이름 절
+--no-figures: 그림은 그대로 두고 글만(figures.py도, 문제마다의 figure.py도 돌리지 않는다)
 --no-check: 그리드 검사 건너뜀
 표기 검사: 문제마다 munhang/templates/notation.py의 check(). `!`는 NAME_WARNINGS에 더한다
-봉인 대조: 단원 폴더에 sealed.json이 있으면 munhang/templates/seal.py로 글과 봉인된 풀이를 대조. 바뀌었으면 `!`로 멈춘다
-확정 기록 대조: seal.records()로 problems.md 확정 줄과 canon.md 쌍(단원 절, 번호 차례, 정본 = yaml 글)을 봉인과 맞춘다. 어긋나면 `!`
+봉인 대조: 단원 폴더에 sealed.json이 있으면 munhang/templates/seal.py의 check()로 글과 봉인된 풀이를 대조. 바뀌었으면 `!` 경고. 경고 수에 더해 종료 코드 1이 되고 PDF는 그래도 나온다
+봉인 대조(새 꼴): 봉인한 번호의 폴더가 없으면 같은 글이 옮겨 간 폴더를 짚는다(폴더 이름이 바뀌었나)
+확정 기록 대조: seal.records()로 확정 표시와 canon.md 쌍(단원 절, 번호 차례, 정본 = yaml 글)을 봉인과 맞춘다. 어긋나면 봉인 대조처럼 `!` 경고, 종료 코드 1, PDF는 나온다
+확정 표시(옛 꼴): problems.md 머리의 확정 줄(`확정(2026. 9. 26.): 001, 002`). 정본은 problems.yaml의 글
+확정 표시(새 꼴): 그 문제 problem.md 둘째 줄의 `확정(2026. 10. 1.)` 한 줄(첫머리 다섯 줄 안). 정본은 {번호}/problem.yaml의 글
+확정 표시만 있으면(새 꼴): sealed.json이 없는 단원도 본다. 봉인 없이 이 줄만 있는 문제를 짚는다
+확정하면(새 꼴): problem.md의 `## 책과 달라진 것` 절을 canon.md 쌍으로 옮기고 지운다
+원문 대조(새 꼴): problem.md와 problem.yaml의 지문, 조건, 뒷문장, 보기, 선지가 다르면 경고. 둘 다 TeX 꼴이다. 무엇을 같게 보는지는 아래 줄들
+원문 대조의 빈칸: 지문과 뒷문장은 줄바꿈과 겹친 빈칸을 하나로 본다
+원문 대조의 항목: 조건, 보기, 선지는 한 줄이 한 항목이다. 항목 수가 다르면 md와 yaml의 개수를 알린다
+원문 대조의 그림 보기: notes 항목이 figure면 보기는 대조하지 않는다. 그림 보기의 설명은 `## 그림`에 적는다
+원문 대조에서 빼는 것: 표, 그림 설명, 책과 달라진 것
+원문 대조의 경고: 처음 어긋난 자리의 앞뒤 스무 자쯤을 md 것과 yaml 것으로 나란히 보인다. problem.md가 없어도 경고
+그림 번호(새 꼴): figure, [[…]], 그림 보기가 제 번호로 시작하지 않는 그림(p{번호})을 부르면 경고
+옮기는 중(새 꼴): 사진만 있고 problem.yaml이 없는 문제 폴더는 빼고 빌드하고 경고한다. 하나도 없으면 멈춘다
+경고: `!` 줄은 경고 수에 더한다. 하나라도 있으면 종료 코드 1이고 PDF는 나온다
+빌드가 멈추는 때: 단원을 읽을 수 없을 때(두 꼴이 섞임, yaml 오류, 문제 폴더도 problems.yaml도 없음), 그림 스크립트가 터질 때, 그림 SVG가 없거나 높이가 22의 배수가 아니거나 너비가 자리를 넘을 때, yaml에 subs가 있을 때 등
 
 
 ## 패키지

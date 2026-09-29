@@ -84,14 +84,21 @@ save는 x 범위를 잉크 기준으로 잡아 SVG로 저장하면서 세 가지
 - 점 이름의 자리와 책 그림 따르기, 색칠 둘의 농도 같은 시험대비의 좌표평면 규칙은 surisomath-exam의 references/figures.md 좌표평면 절에 있습니다.
 
 
+## 출력 폴더와 그림 이름
+연마와 수행평가는 figures.py 하나가 그리고 옆의 figures/에 저장합니다. save에는 이름을 꼭 줍니다. 시험대비 새 꼴(문제마다 폴더)만 다릅니다. 세 자리 숫자 폴더에 problem.yaml이 있으면 setup이 한 단계 위 단원의 figures/를 잡고 이름을 뺀 save가 p001.svg처럼 폴더 번호로 짓습니다. 자세한 것은 surisomath-exam의 references/figures.md에 있습니다.
+- 연마 figures.py에서 `g.save(f)`처럼 이름을 빼면 "파일 이름을 주어라"로 멈춥니다.
+- 날짜 폴더는 세 자리 숫자가 아니고 problem.yaml도 없어서 연마는 이 갈래에 걸리지 않습니다.
+- 문제 폴더에서 p001로 시작하지 않는 이름을 주면 save가 경고합니다(p001a.svg는 됩니다).
+
+
 ## 도우미 목록
 도우미는 templates/grind_figure.py에 있고 figures.py가 g로 가져다 씁니다. 좌표 인자는 문제의 단위이고 pt로 적은 인자만이 종이 위의 크기입니다. 선 굵기 lw는 상수 g.EDGE, g.STRING, g.AUX 가운데 하나입니다. 본문 안 수식을 그리는 inline은 build.py가 부르니 figures.py에서 쓸 일이 없습니다. 상수와 문턱값은 references/spec.md에 있습니다.
 ```
-g.setup(script_file): figures.py 첫머리에서 부른다. 옆의 figures/를 출력 폴더로 잡는다
+g.setup(script_file): figures.py 첫머리에서 부른다. 옆의 figures/를 출력 폴더로 잡는다. 시험대비 문제 폴더(001/figure.py)면 단원의 figures/
 g.canvas(units, y0, y1): 높이 units칸과 y 범위. (f, ax)를 돌려준다. ax.pt가 1단위의 pt
 g.pt(ax, n): n pt를 좌표 단위로
 g.text_size(ax, s, size=10): 글의 너비와 높이(pt)
-g.save(f, filename): x 범위를 잡고 검사하고 저장. 경로를 돌려준다
+g.save(f, filename=None): x 범위를 잡고 검사하고 저장. 경로를 돌려준다. 이름은 시험대비 문제 폴더에서만 뺀다(p001.svg)
 g.seg(ax, p, q, lw=EDGE, dashed=False): 선분
 g.dashed(ax, p, q, lw=AUX): 점선(수선)
 g.circle(ax, c, r, lw=EDGE): 원
