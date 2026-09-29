@@ -98,7 +98,7 @@ problems:
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 변 AB 위, E는 변 BC 위, 선분 DE가 원에 접하며 B 쪽 귀퉁이를 자른다. 15(AB)·12(AC)는 바깥, 18(BC)은 아래에 점선 곡선
     answer: $21$
 
-  - text: 그림과 같이 원 $\mathrm{O}$는 $\angle\mathrm{A}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=2$인 직각이등변삼각형 $\mathrm{ABC}$에 내접한다. 원 $\mathrm{O}$가 세 변 $\mathrm{AB}$, $\mathrm{BC}$, $\mathrm{CA}$와 접하는 점을 각각 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$라 할 때, 삼각형 $\mathrm{DEF}$의 넓이를 구하시오.
+  - text: 그림과 같이 $\angle\mathrm{A}=90^{\circ}$, $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}=2$인 직각이등변삼각형 $\mathrm{ABC}$에 내접하는 원 $\mathrm{O}$에 대하여 세 변 $\mathrm{AB}$, $\mathrm{BC}$, $\mathrm{CA}$ 위의 세 접점을 각각 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$라 하자. 이때 삼각형 $\mathrm{DEF}$의 넓이를 구하시오.
     figure: p12.svg
     alt: A 위(직각), B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 AB 위, E는 BC 위(A 바로 아래), F는 AC 위. 삼각형 DEF 색칠. 2는 AB·AC 바깥에 점선 곡선
     answer: $\sqrt{2}-1$
