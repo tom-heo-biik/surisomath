@@ -93,7 +93,7 @@ problems:
     alt: B 왼쪽 아래, C 오른쪽 아래(직각), A 오른쪽 위. 빗변 AB 위에 13이 점선 곡선. 내접원 O
     answer: $30-4\pi$
 
-  - text: 그림과 같이 원 $\mathrm{O}$는 $\overline{\mathrm{AB}}=15$, $\overline{\mathrm{BC}}=18$, $\overline{\mathrm{AC}}=12$인 삼각형 $\mathrm{ABC}$에 내접한다. 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 선분 $\mathrm{DE}$가 원 $\mathrm{O}$에 접할 때, 삼각형 $\mathrm{BED}$의 둘레의 길이를 구하시오.
+  - text: 그림과 같이 $\overline{\mathrm{AB}}=15$, $\overline{\mathrm{BC}}=18$, $\overline{\mathrm{AC}}=12$인 삼각형 $\mathrm{ABC}$에서 변 $\mathrm{AB}$ 위의 점 $\mathrm{D}$와 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 선분 $\mathrm{DE}$가 삼각형 $\mathrm{ABC}$에 내접하는 원 $\mathrm{O}$와 접한다. 이때 삼각형 $\mathrm{BED}$의 둘레의 길이를 구하시오.
     figure: p11.svg
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 변 AB 위, E는 변 BC 위, 선분 DE가 원에 접하며 B 쪽 귀퉁이를 자른다. 15(AB)·12(AC)는 바깥, 18(BC)은 아래에 점선 곡선
     answer: $21$
