@@ -108,9 +108,9 @@ problems:
     alt: P 위. A 왼쪽, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽, E 오른쪽 위인 육각형. 선분 PB, PC, PD가 네 삼각형으로 가르고 삼각형마다 내접원(O₁이 가장 크고 O₄가 가장 작다). 이웃한 두 원은 공통변 위의 한 점에서 접한다. O₄ 이름은 원 밖에 지시선. 15(PA)·3(DE)은 바깥, 8(BC)은 아래에 점선 곡선
     answer: $52$
 
-  - text: 그림과 같이 반지름의 길이가 4인 두 원 $\mathrm{O}$, $\mathrm{O}'$은 각각 직사각형 $\mathrm{ABCD}$의 대각선 $\mathrm{AC}$로 나뉜 두 삼각형 $\mathrm{ABC}$, $\mathrm{ADC}$에 내접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$이 대각선 $\mathrm{AC}$와 접하는 점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하자. 직사각형 $\mathrm{ABCD}$의 둘레의 길이가 56일 때, 사각형 $\mathrm{EOFO}'$의 넓이를 구하시오. (단, $\overline{\mathrm{AB}}<\overline{\mathrm{BC}}$)
+  - text: 그림과 같이 직사각형 $\mathrm{PQRS}$에서 두 점 $\mathrm{O}$, $\mathrm{O}'$을 각각 중심으로 하고 반지름의 길이가 4인 두 원 $\mathrm{C}$, $\mathrm{C}'$은 각각 두 삼각형 $\mathrm{PQR}$, $\mathrm{PSR}$에 내접한다. 두 원 $\mathrm{C}$, $\mathrm{C}'$이 선분 $\mathrm{PR}$과 접하는 점을 각각 $\mathrm{E}$, $\mathrm{F}$라 하자. 직사각형 $\mathrm{PQRS}$의 둘레의 길이가 56일 때, 사각형 $\mathrm{EOFO}'$의 넓이를 구하시오. (단, $\overline{\mathrm{PQ}}<\overline{\mathrm{QR}}$)
     figure: p14.svg
-    alt: 직사각형 ABCD와 대각선 AC. 원 O는 왼쪽 아래 삼각형 ABC에, 원 O'은 오른쪽 위 삼각형 ADC에 내접. E는 원 O와 AC의 접점, F는 원 O'과 AC의 접점. 사각형 EOFO' 색칠. OE, O'F에 4가 점선 곡선
+    alt: 직사각형 PQRS와 대각선 PR. 원 C(중심 O)는 왼쪽 아래 삼각형 PQR에, 원 C'(중심 O')은 오른쪽 위 삼각형 PSR에 내접. E는 원 C와 PR의 접점, F는 원 C'과 PR의 접점. 사각형 EOFO' 색칠. OE, O'F에 4가 점선 곡선. 원 이름 C는 원 C의 오른쪽 아래, C'은 원 C'의 왼쪽 위
     answer: $16$
 
   - text: 그림과 같이 직사각형 $\mathrm{ABCD}$의 변 $\mathrm{BC}$ 위의 점 $\mathrm{E}$에 대하여 두 원 $\mathrm{O}$, $\mathrm{O}'$은 각각 사각형 $\mathrm{ABED}$와 삼각형 $\mathrm{CDE}$에 내접한다. $\overline{\mathrm{BE}}:\overline{\mathrm{EC}}=1:2$일 때, 두 원 $\mathrm{O}$, $\mathrm{O}'$의 넓이의 비를 가장 간단한 자연수의 비로 나타내시오.

@@ -437,7 +437,9 @@ def p13():
 
 
 # ── 014 — 두 직각삼각형의 내접원과 평행사변형 EOFO' ──────────────────────
-# AB = 12, BC = 16, AC = 20. O(4, 4), O'(12, 8). E = A에서 8, F = C에서 8. EF = 4, 넓이 16.
+# PQ = 12, QR = 16, PR = 20. O(4, 4), O'(12, 8). E = P에서 8, F = R에서 8. EF = 4, 넓이 16.
+# 이름은 P, Q, R, S(책은 A, B, C, D). 두 원 C, C'과 중심 O, O'을 가르려고 꼭짓점 C를 피했다
+# (2026-09-29 선생님, 원과직선 007, 삼각비 007처럼). 코드의 변수 A, B, C, D는 책의 이름 그대로다.
 
 def p14():
     A, B, C, D = (0.0, 12.0), (0.0, 0.0), (16.0, 0.0), (16.0, 12.0)
@@ -454,14 +456,17 @@ def p14():
     g.dim(ax, O2, F, "4", side=1)
     center(ax, O, "O", dx=-5, ha="right")
     center(ax, O2, "$\\mathrm{O}'$", dx=5, ha="left")
-    g.name(ax, A, "A", dx=-4, dy=3, ha="right", va="bottom")
-    g.name(ax, B, "B", dx=-4, dy=-3, ha="right", va="top")
-    g.name(ax, C, "C", dx=4, dy=-3, ha="left", va="top")
-    g.name(ax, D, "D", dx=4, dy=3, ha="left", va="bottom")
+    g.name(ax, A, "P", dx=-4, dy=3, ha="right", va="bottom")
+    g.name(ax, B, "Q", dx=-4, dy=-3, ha="right", va="top")
+    g.name(ax, C, "R", dx=4, dy=-3, ha="left", va="top")
+    g.name(ax, D, "S", dx=4, dy=3, ha="left", va="bottom")
     # E·F는 대각선 위의 점이라 대각선 방향(왼쪽 위·오른쪽 아래)에 두면 선이 글자를 지난다.
     # 대각선의 법선 쪽 — E는 오른쪽 위(원 O 밖, 선분 O'E 위), F는 왼쪽 아래(원 O' 밖, 선분 OF 아래)
     g.name(ax, E, "E", dx=3, dy=5, ha="left", va="bottom")
     g.name(ax, F, "F", dx=-3, dy=-5, ha="right", va="top")
+    # 원의 이름. C는 삼각형 PQR 안에서 원 C의 오른쪽 아래, C'은 삼각형 PSR 안에서 원 C'의 왼쪽 위
+    g.name(ax, g.polar(O, 4.0, -30), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")
+    g.name(ax, g.polar(O2, 4.0, 150), "$\\mathrm{C}'$", dx=-3, dy=3, ha="right", va="bottom")
     g.save(fig, "p14.svg")
 
 
