@@ -83,7 +83,7 @@ problems:
       - $9$
     answer: ④
 
-  - text: 그림과 같이 점 $\mathrm{A}$에서 서로 외접하는 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$는 직선 $l$과 각각 두 점 $\mathrm{B}$, $\mathrm{C}$에서 접한다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 4, 1일 때, 삼각형 $\mathrm{ABC}$의 외접원의 반지름의 길이를 구하시오.
+  - text: 그림과 같이 점 $\mathrm{A}$에서 서로 외접하는 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$가 직선 $l$과 각각 두 점 $\mathrm{B}$, $\mathrm{C}$에서 접한다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 4, 1일 때, 삼각형 $\mathrm{ABC}$의 외접원의 반지름의 길이를 구하시오.
     figure: p9.svg
     alt: 가로 직선 l. 큰 원 O₁(반지름 4)이 B에서, 오른쪽의 작은 원 O₂(반지름 1)가 C에서 l에 접한다. 두 원은 A에서 외접. 삼각형 ABC. O₂ 이름은 작은 원 밖 오른쪽 위에 지시선
     answer: $2$
