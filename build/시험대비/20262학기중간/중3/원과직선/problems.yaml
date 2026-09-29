@@ -133,9 +133,9 @@ problems:
     alt: A 위, B 왼쪽 아래, C 오른쪽 아래. A에서 BC 위의 D로 이등분선, A의 두 각에 같은 각 표시. 6(AB)·8(AC)은 바깥, 7(BC)은 아래에 점선 곡선
     answer: $6$
 
-  - text: 그림과 같이 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$는 서로 다른 두 점 $\mathrm{A}$, $\mathrm{B}$에서 만난다. 두 원 $\mathrm{O}_1$, $\mathrm{O}_2$의 반지름의 길이가 각각 8, 6이고 $\overline{\mathrm{O}_1\mathrm{O}_2}=7$일 때, 선분 $\mathrm{AB}$의 길이를 구하시오.
+  - text: 그림과 같이 두 점 $\mathrm{O}_1$, $\mathrm{O}_2$를 각각 중심으로 하는 두 원 $\mathrm{C}_1$, $\mathrm{C}_2$가 두 점 $\mathrm{A}$, $\mathrm{B}$에서 만난다. 두 원 $\mathrm{C}_1$, $\mathrm{C}_2$의 반지름의 길이가 각각 8, 6이고 $\overline{\mathrm{O}_1\mathrm{O}_2}=7$일 때, 선분 $\mathrm{AB}$의 길이를 구하시오.
     figure: p19.svg
-    alt: 왼쪽의 큰 원 O₁과 오른쪽의 작은 원 O₂(중심이 큰 원 안). 두 교점 A(위), B(아래)를 잇는 세로 현 AB. 선분 O₁O₂ 위에 7이 점선 곡선
+    alt: 왼쪽의 큰 원 C₁(중심 O₁, 이름은 왼쪽 아래 밖)과 오른쪽의 작은 원 C₂(중심 O₂는 큰 원 안, 이름은 오른쪽 아래 밖). 두 교점 A(위), B(아래)를 잇는 세로 현 AB. 선분 O₁O₂ 위에 7이 점선 곡선
     answer: $3\sqrt{15}$
 
   - text: 그림과 같이 원 $\mathrm{O}$는 삼각형 $\mathrm{ABC}$의 내접원이고, 원 $\mathrm{O}'$은 두 변 $\mathrm{AB}$, $\mathrm{BC}$의 연장선과 변 $\mathrm{AC}$에 접한다. 두 원 $\mathrm{O}$, $\mathrm{O}'$의 반지름의 길이가 각각 3, 8이고, $\overline{\mathrm{OO}'}=13$일 때, 선분 $\mathrm{AC}$의 길이를 구하시오.
