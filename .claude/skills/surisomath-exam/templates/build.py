@@ -50,6 +50,18 @@ problems.yaml
       solution: |                  # 선생님 풀이(선택). 줄마다 한 칸. 빈 줄은 한 칸을 비운다
         주어진 그림에서 …
     - "no": "004"                  # 번호를 직접 줄 때. 키까지 따옴표로(YAML은 no를 거짓으로 읽는다)
+
+시험기출(학교 기출 시험지를 원문 그대로 옮긴 것)만 쓰는 것
+  series: 시험기출                  # 머리줄 첫 낱말과 파일 이름. 생략하면 시험대비
+  school: 수지중학교                # 있으면 머리줄이 시리즈 · 시험 · 학교 · 학년이고 단원이 없다
+  verbatim: true                   # 원문 그대로. 평가원 표기 검사(notation.py)를 하지 않는다
+  problems:
+    - label: 논술형 1              # 번호 자리에 찍을 글. 생략하면 번호. 파일 이름과 검사는 번호로 한다
+      text: 연립방정식 [[p04s.svg]] 의 해가 …   # [[…]]는 figures.py가 그린 별행 수식. 그 자리에서 줄이 바뀐다
+      notes:                       # 보기가 그래프면 항목마다 figure. 두 열, 그림 너비 84pt 안
+        - figure: p05a.svg
+      min_rows: 4                  # 원문 분량이라 풀 자리 8칸을 못 지키는 문제만. 그 문제의 하한
+      unnamed: [O]                 # 지문이 부르지만 원본 그림에 이름이 인쇄되지 않은 점. 이름 대조에서 뺀다
 """
 from __future__ import annotations
 
@@ -103,6 +115,7 @@ MARK_W = 14.8          # 선지 마커 칸(exam.css의 ol.n7 --pad). ① 10.8pt 
 GUTTER = 6.0           # 여러 열일 때 칸마다 남겨야 하는 여백(pt). 칸에 딱 맞으면 다음 마커와 붙어 보인다
                        # (2026-09-26 근호가 좁아지며 삼각비 016·018이 3열에 0.3pt 차로 들어 ②와 ③이 붙었다)
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
+NOTE_FIG_W = 84.0      # 그림 보기 한 칸의 그림 너비(pt). (229 - 16) / 2 - 22
 TALL = 16.0            # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸 간격
 CAPTION = gb.CAPTION   # neutral-500. 정답 줄
 MATH = gb.MATH
@@ -189,36 +202,41 @@ def choice_cols(choices: list) -> int:
 
 def meta(data: dict, out_dir: Path) -> dict:
     """머리줄·파일 이름·PDF 날짜. 폴더 build/시험대비/<시험>/<학년>/<단원>/ 에서 만들고
-    yaml의 exam·grade·unit·file·date가 있으면 그것이 이긴다."""
+    yaml의 exam·grade·unit·file·date가 있으면 그것이 이긴다.
+
+    시험기출은 폴더가 build/시험기출/<학교>/<학년>/<시험>/ 이라 위 꼴이 아니다. yaml에 series(시험기출),
+    exam, school, grade, file, date를 적는다. 단원이 없고 머리줄은 시리즈 · 시험 · 학교 · 학년이다."""
     m = FOLDER.fullmatch(out_dir.parents[1].name) if len(out_dir.parents) > 1 else None
+    series = str(data.get("series") or SERIES)
     exam = data.get("exam") or (m and f"{m[1]}학년도 {m[2]}학기 {m[3]}고사")
     grade = data.get("grade") or (m and out_dir.parent.name)
+    school = data.get("school")
     unit = data.get("unit") or (m and out_dir.name)
-    if not (exam and grade and unit):
+    if not (exam and grade and (unit or school)):
         raise SystemExit("폴더가 build/시험대비/<YYYY><N>학기<중간|기말>/<학년>/<단원>/ 꼴이 아니다. "
-                         "problems.yaml에 exam·grade·unit을 적어라")
+                         "problems.yaml에 exam·grade·unit을 적어라(시험기출이면 series·exam·school·grade)")
     if m:
-        stem = f"수리소_시험대비_{m[1]}_{m[2]}학기{m[3]}_{grade}_{unit}"
+        stem = f"수리소_{series}_{m[1]}_{m[2]}학기{m[3]}_{grade}_{unit}"
         epoch = calendar.timegm((int(m[1]), 3 if m[2] == "1" else 9, 1, 0, 0, 0))
     else:
-        stem = f"수리소_시험대비_{exam}_{grade}_{unit}".replace(" ", "")
+        stem = "_".join(["수리소", series, str(exam)] + ([str(school)] if school else [])
+                        + [str(grade)] + ([str(unit)] if unit else [])).replace(" ", "")
         epoch = None
     if data.get("date"):
         d = re.fullmatch(r"(\d{4})\.(\d{1,2})\.(\d{1,2})", str(data["date"]).strip())
         if not d:
             raise SystemExit(f"date는 YYYY.MM.DD 꼴로 적어라: {data['date']}")
         epoch = calendar.timegm((int(d[1]), int(d[2]), int(d[3]), 0, 0, 0))
-    return {"exam": str(exam), "grade": str(grade), "unit": str(unit),
+    head = [series, str(exam)] + ([str(school)] if school else []) + [str(grade)] + ([str(unit)] if unit else [])
+    return {"exam": str(exam), "grade": str(grade), "unit": str(unit or ""),
             "file": str(data.get("file") or stem), "epoch": epoch,
-            "head": f"{SERIES} · {exam} · {grade} · {unit}"}
+            "head": " · ".join(head)}
 
 
 # ── HTML ────────────────────────────────────────────────────────────────
 
-def figure_html(no: str, p: dict, fig_dir: Path) -> str:
-    if not p.get("figure"):
-        return ""
-    svg = fig_dir / str(p["figure"])
+def svg_units(no: str, svg: Path, width: float = COL_W, where: str = "단 글 너비") -> int:
+    """그림 SVG의 칸 수. 높이가 22의 배수가 아니거나 너비가 자리를 넘으면 멈춘다."""
     if not svg.is_file():
         raise SystemExit(f"{no}: 그림 파일이 없다: {svg}")
     h, w = svg_height(svg), svg_width(svg)
@@ -227,13 +245,45 @@ def figure_html(no: str, p: dict, fig_dir: Path) -> str:
     units = round(h / GRID)
     if abs(h - units * GRID) > 0.05:
         raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt가 22의 배수가 아니다. g.canvas의 units를 보라")
-    if w > COL_W:
-        raise SystemExit(f"{no}: {svg.name} 너비 {w:.0f}pt가 단 글 너비 {COL_W:.0f}pt를 넘는다. "
-                         f"y 범위를 {w / COL_W:.2f}배 넓혀 배율을 줄여라")
+    if w > width:
+        raise SystemExit(f"{no}: {svg.name} 너비 {w:.0f}pt가 {where} {width:.0f}pt를 넘는다. "
+                         f"y 범위를 {w / width:.2f}배 넓혀 배율을 줄여라")
+    return units
+
+
+def figure_html(no: str, p: dict, fig_dir: Path) -> str:
+    if not p.get("figure"):
+        return ""
+    svg = fig_dir / str(p["figure"])
+    units = svg_units(no, svg)
     alt = html.escape(str(p.get("alt", "")))
     check_names(no, p, svg)
     return (f'      <div class="figure" style="--u:{units}">'
             f'<img src="figures/{svg.name}" alt="{alt}"></div>\n')
+
+
+DISPLAY = re.compile(r"\[\[([^\[\]]+\.svg)\]\]")    # 지문 안의 별행 수식 그림 [[p04s.svg]]
+
+
+def text_html(no: str, p: dict, fig_dir: Path) -> str:
+    """지문. 보통은 한 문단이다. 연립방정식처럼 mathtext가 못 그리는 별행 수식은 figures.py가 그린
+    SVG를 지문 안에 [[이름.svg]]로 적는다. 그 자리에서 문단을 끊어 수식 블록(단 가운데, 칸 수는
+    SVG 높이)을 두고 뒤 글이 다음 줄에서 이어진다. 문장 하나라 블록 앞뒤에 빈 칸을 두지 않는다."""
+    parts = DISPLAY.split(str(p["text"]).strip())
+    if len(parts) == 1:
+        return f'      <p>{rich(parts[0], f"m{no}", fig_dir, 12.0, g.INK)}</p>\n'
+    out, k = [], 0
+    for i, piece in enumerate(parts):
+        if i % 2:                                   # 홀수째 조각이 별행 수식 그림 이름이다
+            units = svg_units(no, fig_dir / piece)
+            out.append(f'      <div class="figure disp" style="--u:{units}">'
+                       f'<img src="figures/{piece}" alt=""></div>\n')
+        elif piece.strip():
+            k += 1
+            last = i == len(parts) - 1
+            out.append(f'      <p{"" if last else " class=\"run\""}>'
+                       f'{rich(piece.strip(), f"m{no}" if k == 1 else f"m{no}_{k}", fig_dir, 12.0, g.INK)}</p>\n')
+    return "".join(out)
 
 
 _nspec = importlib.util.spec_from_file_location("munhang_notation", MUNHANG / "notation.py")
@@ -283,7 +333,9 @@ def check_names(no: str, p: dict, svg: Path) -> None:
     if not m:
         return
     fig = set(m.group(1).split())
-    want = text_names(p)
+    # 시험기출에서 지문은 부르지만 원본 그림에 이름이 인쇄되지 않은 점(015의 두 대각선의 교점 O)은
+    # yaml의 unnamed에 적어 대조에서 뺀다. 원본 그림에 없는 이름을 더하지 않기 위해서다
+    want = text_names(p) - {str(x) for x in (p.get("unnamed") or [])}
     seq = seq_letters(p)
     missing = sorted(want - fig)
     extra = sorted(e for e in fig - want if not (e[:1] in seq and e[1:].isdigit()))
@@ -318,6 +370,17 @@ def notes_html(no: str, p: dict, fig_dir: Path) -> str:
         return ""
     if not isinstance(notes, list):
         raise SystemExit(f"{no}: notes는 목록('- …')이어야 한다")
+    figs = [isinstance(c, dict) and c.get("figure") for c in notes]
+    if any(figs):
+        # 그림 보기(ㄱ. ㄴ. ㄷ. ㄹ.가 저마다 그래프). 두 열로 놓고 마커는 칸 왼쪽 위. 그림 너비는
+        # 상자 안(229 - 16pt)의 절반에서 마커 칸 22pt를 뺀 84pt 안. 칸 수는 가장 높은 그림이 정한다
+        if not all(figs):
+            raise SystemExit(f"{no}: 보기를 그림으로 쓰려면 항목 모두를 '- figure: 이름.svg'로 적어라")
+        units = [svg_units(no, fig_dir / str(f), NOTE_FIG_W, "그림 보기 칸 너비") for f in figs]
+        items = "".join(f'          <li><div class="figure" style="--u:{max(units)}">'
+                        f'<img src="figures/{f}" alt=""></div></li>\n' for f in figs)
+        return ('      <div class="notes">\n        <p class="head">보기</p>\n'
+                f'        <ol class="bogi figs">\n{items}        </ol>\n      </div>\n')
     items = "".join(f'          <li>{rich(str(c).strip(), f"b{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
                     for k, c in enumerate(notes, 1))
     return ('      <div class="notes">\n        <p class="head">보기</p>\n'
@@ -384,14 +447,19 @@ def work_html(no: str, p: dict, fig_dir: Path) -> str:
     return "\n".join(out) + "\n"
 
 
+VERBATIM = False       # yaml의 verbatim: true. 시험기출은 원문 그대로라 평가원 표기 검사를 하지 않는다
+
+
 def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
-    if not teacher:
+    if not teacher and not VERBATIM:
         check_notation(no, p)
-    text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
     work = work_html(no, p, fig_dir) if teacher else ""
+    # 번호 자리의 글. 보통은 번호(001)이고 시험기출의 논술형은 label(논술형 1)이다. 파일 이름과
+    # 검사는 늘 번호로 한다
+    label = html.escape(str(p.get("label") or no))
     return ('    <div class="col">\n'
-            f'      <h2>{no}</h2>\n'
-            f'      <p>{text}</p>\n'
+            f'      <h2>{label}</h2>\n'
+            f'{text_html(no, p, fig_dir)}'
             f'{conditions_html(no, p, fig_dir)}'
             f'{figure_html(no, p, fig_dir)}'
             f'{table_html(no, p, fig_dir)}'
@@ -425,6 +493,8 @@ def pages(problems: list) -> list[list]:
 
 def build_html(data: dict, m: dict, out_dir: Path) -> tuple[str, list[str], int]:
     """HTML 전체, 쪽마다 붙일 이름표(경고에 쓴다), 학생 쪽 수."""
+    global VERBATIM
+    VERBATIM = bool(data.get("verbatim"))
     problems = data.get("problems") or []
     fig_dir = out_dir / "figures"
     body, labels = [], []
@@ -492,7 +562,7 @@ def overlap_by_column(boxes: list, labels: list[str]) -> int:
     return bad
 
 
-def report(boxes: list, labels: list[str], n_student: int) -> int:
+def report(boxes: list, labels: list[str], n_student: int, mins: dict | None = None) -> int:
     """풀 자리 상자(학생 쪽 div.work.box.n<번호>, 선생님 쪽 .t<번호>)로 잰다. 넘친 내용을
     WeasyPrint는 바닥 아래로 흘리지 않고 다음 쪽으로 쪼개므로, 상자가 있어야 할 쪽보다 뒤
     쪽에 있으면 그 문제의 블록이 단을 넘친 것이고, 같은 상자가 두 쪽에 걸쳐 있으면 그 안의
@@ -543,9 +613,12 @@ def report(boxes: list, labels: list[str], n_student: int) -> int:
         no, r = min(rows, key=lambda t: t[1])
         print(f"  풀 자리: 가장 좁은 단 {no} {r:.1f}칸")
         for no, r in rows:
-            if r < MIN_ROWS:
-                print(f"  ! {no}: 풀 자리 {r:.1f}칸. {MIN_ROWS}칸은 두라")
+            floor = (mins or {}).get(no, MIN_ROWS)
+            if r < floor:
+                print(f"  ! {no}: 풀 자리 {r:.1f}칸. {floor:g}칸은 두라")
                 bad += 1
+            elif floor < MIN_ROWS:
+                print(f"  {no}: 풀 자리 {r:.1f}칸(원문 분량이라 하한 {floor:g}칸, yaml의 min_rows)")
     return bad
 
 
@@ -559,13 +632,17 @@ def pngs(pdf: Path, problems: list, out: Path) -> None:
     d = fitz.open(str(pdf))
     for p in d:
         p.get_pixmap(dpi=110).save(str(out / f"p{p.number + 1:02d}.png"))
+    def drawn(p: dict) -> bool:                      # 그림, 별행 수식, 그림 보기 가운데 하나라도 있으면
+        return bool(p.get("figure") or DISPLAY.search(str(p.get("text", "")))
+                    or any(isinstance(c, dict) for c in (p.get("notes") or [])))
+
     for i, (no, p) in enumerate(zip(numbers(problems), problems)):
-        if not p.get("figure"):
+        if not drawn(p):
             continue
         page = d[i // 2]
         x0, x1 = (60, 297) if i % 2 == 0 else (297, 535)
         page.get_pixmap(dpi=200, clip=fitz.Rect(x0, 120, x1, 700)).save(str(out / f"f{no}.png"))
-    print(f"  PNG: {out}  (쪽 {len(d)}장, 그림 크롭 {sum(1 for p in problems if p.get('figure'))}장)")
+    print(f"  PNG: {out}  (쪽 {len(d)}장, 그림 크롭 {sum(1 for p in problems if drawn(p))}장)")
 
 
 # ── 빌드 ────────────────────────────────────────────────────────────────
@@ -603,6 +680,8 @@ def main() -> int:
         print(f"  ! {msg}")
         warnings += 1
     m = meta(data, out_dir)
+    if data.get("verbatim"):
+        print("  표기 검사: 원문 그대로(verbatim)라 평가원 표기 검사를 건너뛴다")
     if width_of(m["head"], 10.0) > 475 - 120:       # 첫 쪽 오른쪽 끝의 "이름" 글과 90pt 빈 자리
         print(f"  ! 머리줄 '{m['head']}'이 길어 이름 칸과 겹친다. yaml의 exam·unit을 줄여라")
         warnings += 1
@@ -653,7 +732,11 @@ def main() -> int:
     finally:
         boxes_json.unlink(missing_ok=True)
     warnings += overlap_by_column(boxes, labels)
-    warnings += report(boxes, labels, n_student)
+    # 시험기출은 지문과 보기와 선지를 원문 그대로 두어 풀 자리 8칸을 못 지키는 문제가 있다. 그 문제만
+    # yaml의 min_rows로 하한을 낮춘다(그림을 줄여도 안 될 때만. 시험대비에는 쓰지 않는다)
+    mins = {no: float(p["min_rows"]) for no, p in zip(numbers(problems), problems)
+            if p.get("min_rows") is not None}
+    warnings += report(boxes, labels, n_student, mins)
     if args.png:
         pngs(out_dir / f"{m['file']}.pdf", problems, args.png)
     if warnings:

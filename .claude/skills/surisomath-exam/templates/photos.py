@@ -39,7 +39,15 @@ def main() -> int:
     folder = args.folder.resolve()
     if not folder.is_dir():
         raise SystemExit(f"폴더가 없다: {folder}")
-    stem = meta({}, folder)["file"]
+    # 시험기출처럼 폴더 이름으로 학습지 이름을 못 만드는 곳은 problems.yaml의 머리(series·exam·school·
+    # grade·file)를 먼저 적어 두면 그것으로 짓는다
+    src = folder / "problems.yaml"
+    head = {}
+    if src.is_file():
+        import yaml
+        head = {k: v for k, v in (yaml.safe_load(src.read_text(encoding="utf-8")) or {}).items()
+                if k != "problems"}
+    stem = meta(head, folder)["file"]
     from PIL import Image
 
     photos = sorted(p for p in folder.iterdir() if p.suffix.lower() in (".jpg", ".jpeg", ".png"))

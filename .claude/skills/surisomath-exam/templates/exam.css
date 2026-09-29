@@ -61,6 +61,11 @@ section.exam h2 {
 /* 본문 안 수식. build.py가 $…$를 Computer Modern SVG로 바꿔 넣는다(연마와 같다) */
 section.exam img.mi { width: auto; }
 
+/* 별행 수식(시험기출 연립방정식) — 지문의 [[이름.svg]]. 한 문장 안이라 앞 문단과 블록 아래에
+   빈 칸을 두지 않고 뒤 글이 다음 줄에서 이어진다. 블록 높이는 22의 배수라 위상이 안 바뀐다 */
+section.exam p.run { margin-bottom: 0; }
+section.exam .figure.disp { margin: 0; }
+
 /* 선지 — 수능·모의고사 관례의 5열·3열·2열·1열. build.py가 너비를 재서 c5·c3·c2·c1을 고른다.
    칸 너비가 같아 ④가 ① 아래 온다. 항목 한 줄이 한 칸(22pt).
    마커 칸은 a4의 22pt 대신 14.8pt — ①(KoPub 12pt, 10.8pt) 뒤에 4pt만 비우고 글이 시작한다.
@@ -93,6 +98,12 @@ section.exam ol.bogi { margin: 0; --pad: 22pt; }
   suffix: "";
 }
 section.exam ol.bogi > li::before { content: counter(item, ko-jamo) "."; }
+/* 그림 보기(시험기출) — ㄱ. ㄴ. ㄷ. ㄹ.가 저마다 그래프. 두 열, 마커는 칸 왼쪽 위.
+   칸 높이 = 그림 칸 수. build.py가 그림 너비를 NOTE_FIG_W(84pt) 안으로 잰다 */
+section.exam ol.bogi.figs { display: flex; flex-wrap: wrap; }
+section.exam ol.bogi.figs > li { flex: none; box-sizing: border-box; width: 49.99%; position: relative; }
+section.exam ol.bogi.figs > li::before { position: absolute; left: 0; top: 0; margin-left: 0; }
+section.exam ol.bogi.figs .figure { margin: 0; }
 /* 조건 상자(평가원 꼴) — 머리글 없이 (가) (나) 항목만. 마커 칸은 a4 괄호형과 같은 33pt */
 section.exam ol.cond { margin: 0; --pad: 33pt; }
 section.exam ol.cond > li::before { content: "(" counter(item, ko-hangul) ")"; }
