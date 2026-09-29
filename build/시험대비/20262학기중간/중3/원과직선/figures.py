@@ -16,15 +16,11 @@ corner_mark, 같은 각은 점(ticks=1). 길이 곡선은 책처럼 꼭짓점에
 011 DE의 접점 방향 220°, 013 P에서의 접선 길이 9와 꼭짓점의 접선 길이 6·5·3·2·1(이웃한 두 원이
 공통변 위의 한 점에서 접하도록 접선 길이로 짓는다), 017 l₁·l₂의 높이 1.2·−0.8, 020 삼각형의
 모양(내접원 3, 방접원 8, OO' = 13이면 AC = 12만 정해진다 — BC ≈ 16.66, AB ≈ 9.74).
-색칠은 문제가 가리키는 것만(007·010·012·014). 010은 삼각형에서 원을 뺀 부분이라 구멍 있는
-패스로 칠한다.
+색칠은 문제가 가리키는 것만(007·012·014). 010은 물음이 S₁ − S₂라 색칠하지 않는다.
 """
 from __future__ import annotations
 
 import math
-
-from matplotlib.patches import PathPatch
-from matplotlib.path import Path
 
 import grind_figure as g
 
@@ -88,16 +84,6 @@ def incircle_quad(A, B, C, D):
     """접선사각형 ABCD의 내접원. 이웃한 두 꼭짓점 A, B의 각의 이등분선이 만나는 점이 중심이다."""
     I = meet(A, bisector(D, A, B), B, bisector(A, B, C))
     return I, line_dist(I, A, B)
-
-
-def shade_minus_circle(ax, outer, c, r, n=90):
-    """다각형 outer(반시계)에서 원(c, r)을 뺀 부분을 잉크 10% 틴트로 칠한다. 원을 시계 방향
-    다각형으로 넣어 nonzero 규칙으로 구멍을 낸다."""
-    ring = [g.polar(c, r, -360.0 * i / n) for i in range(n)]
-    verts = list(outer) + [outer[0]] + ring + [ring[0]]
-    codes = ([Path.MOVETO] + [Path.LINETO] * (len(outer) - 1) + [Path.CLOSEPOLY]
-             + [Path.MOVETO] + [Path.LINETO] * (n - 1) + [Path.CLOSEPOLY])
-    ax.add_patch(PathPatch(Path(verts, codes), facecolor=g.INK, alpha=g.TINT, edgecolor="none"))
 
 
 def center(ax, p, text, dx=4.0, dy=0.0, ha="left", va="center"):
@@ -338,14 +324,14 @@ def p9():
     g.save(fig, "p9.svg")
 
 
-# ── 010 — 내접원을 뺀 직각삼각형 ─────────────────────────────────────────
+# ── 010 — 직각삼각형과 내접원 ────────────────────────────────────────────
 # ∠C = 90°, AB = 13, r = 2 → BC = 12, AC = 5. B(0, 0), C(12, 0), A(12, 5). O(10, 2).
+# 물음이 S₁ − S₂라 색칠하지 않는다(2026-09-29 선생님, 옛 물음은 "색칠한 부분의 넓이").
 
 def p10():
     B, C, A = (0.0, 0.0), (12.0, 0.0), (12.0, 5.0)
     O = (10.0, 2.0)
     fig, ax = g.canvas(5, -1.4, 7.2)
-    shade_minus_circle(ax, [B, C, A], O, 2.0)
     g.circle(ax, O, 2.0)
     g.poly(ax, [A, B, C])
     g.right_angle(ax, C, -1, 1)
