@@ -493,32 +493,37 @@ def p15():
     g.save(fig, "p15.svg")
 
 
-# ── 016 — 지름의 연장선과 현의 연장선이 만나는 P ──────────────────────────
-# O(0, 0) r = 6, A(−6, 0), B(6, 0), D(0, −6), P(−8, 0). C는 직선 PD와 원의 다른 교점. AC = 6√2/5.
+# ── 016 — 지름의 연장선과 현의 연장선의 교점 T ───────────────────────────
+# O(0, 0) r = 6, P(−6, 0), Q(6, 0), S(0, −6), T(−8, 0). R은 직선 TS와 원의 다른 교점. PR = 6√2/5.
+# 이름은 P, Q, R, S, T(책은 A, B, C, D, P). 원 C의 중심 O와 가르려고 점 C를 피했다
+# (2026-09-29 선생님, 원과직선 007, 삼각비 023처럼).
 
 def p16():
-    O, A, B, D, P = (0.0, 0.0), (-6.0, 0.0), (6.0, 0.0), (0.0, -6.0), (-8.0, 0.0)
-    # 직선 PD: P + s(D − P). 원과의 교점 s는 |P|² − 36 = 28, 2P·(D−P) = 2(64 + 0)… 이차식으로 푼다
-    dx, dy = D[0] - P[0], D[1] - P[1]
-    qa, qb = dx * dx + dy * dy, 2 * (P[0] * dx + P[1] * dy)
-    qc = P[0] ** 2 + P[1] ** 2 - 36
+    O, P, Q, S, T = (0.0, 0.0), (-6.0, 0.0), (6.0, 0.0), (0.0, -6.0), (-8.0, 0.0)
+    # 직선 TS를 T + s(S − T)로 두고 원과의 다른 교점 R을 이차식으로 푼다
+    dx, dy = S[0] - T[0], S[1] - T[1]
+    qa, qb = dx * dx + dy * dy, 2 * (T[0] * dx + T[1] * dy)
+    qc = T[0] ** 2 + T[1] ** 2 - 36
     s = (-qb - math.sqrt(qb * qb - 4 * qa * qc)) / (2 * qa)
-    C = (P[0] + s * dx, P[1] + s * dy)
+    R = (T[0] + s * dx, T[1] + s * dy)
     fig, ax = g.canvas(6, -8.07, 6.61)
     g.circle(ax, O, 6.0)
-    g.seg(ax, P, B)
-    g.seg(ax, P, D)
-    g.seg(ax, O, D)
+    g.seg(ax, T, Q)
+    g.seg(ax, T, S)
+    g.seg(ax, O, S)
     g.right_angle(ax, O, 1, -1)
     g.dot(ax, O)
-    g.dim(ax, P, A, "2", side=1)
-    g.dim(ax, A, O, "6", side=-1)
-    g.name(ax, P, "P", dx=-4, ha="right")
-    g.name(ax, A, "A", dx=2, dy=4, ha="left", va="bottom")
+    g.dim(ax, T, P, "2", side=1)
+    # 지문이 PQ = 12를 주므로 12를 지름 PQ에 단다(2026-09-29 선생님, 책은 반지름 PO에 6). 아래로 두면
+    # 선분 OS와 직각 표시를 가로지르니 위로 띄워 O의 이름보다 위에 앉힌다
+    g.dim(ax, P, Q, "12", side=1, gap=g.pt(ax, 24))
+    g.name(ax, T, "T", dx=-4, ha="right")
+    g.name(ax, P, "P", dx=2, dy=-4, ha="left", va="top")        # 오른쪽 위는 12의 곡선이 지나 오른쪽 아래(원 안)로
     g.name(ax, O, "O", dx=-2, dy=4, ha="right", va="bottom")
-    g.name(ax, B, "B", dx=4, ha="left")
-    g.name(ax, C, "C", dx=-4, dy=-2, ha="right", va="top")
-    g.name(ax, D, "D", dy=-5, va="top")
+    g.name(ax, Q, "Q", dx=4, ha="left")
+    g.name(ax, R, "R", dx=-4, dy=-2, ha="right", va="top")
+    g.name(ax, S, "S", dy=-5, va="top")
+    g.name(ax, g.polar(O, 6.0, -50), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")   # 원의 이름(원과직선 005처럼)
     g.save(fig, "p16.svg")
 
 
