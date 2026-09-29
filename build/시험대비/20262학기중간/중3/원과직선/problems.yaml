@@ -103,7 +103,7 @@ problems:
     alt: A 위(직각), B 왼쪽 아래, C 오른쪽 아래. 내접원 O. D는 AB 위, E는 BC 위(A 바로 아래), F는 AC 위. 삼각형 DEF 색칠. 2는 AB·AC 바깥에 점선 곡선
     answer: $\sqrt{2}-1$
 
-  - text: 그림과 같이 네 원 $\mathrm{O}_1$, $\mathrm{O}_2$, $\mathrm{O}_3$, $\mathrm{O}_4$는 각각 네 삼각형 $\mathrm{PAB}$, $\mathrm{PBC}$, $\mathrm{PCD}$, $\mathrm{PDE}$에 내접하고, 이웃한 두 원은 서로 접한다. $\overline{\mathrm{PA}}=15$, $\overline{\mathrm{BC}}=8$, $\overline{\mathrm{DE}}=3$일 때, 육각형 $\mathrm{PABCDE}$의 둘레의 길이를 구하시오.
+  - text: 그림과 같이 네 원 $\mathrm{O}_1$, $\mathrm{O}_2$, $\mathrm{O}_3$, $\mathrm{O}_4$는 각각 네 삼각형 $\mathrm{PAB}$, $\mathrm{PBC}$, $\mathrm{PCD}$, $\mathrm{PDE}$에 내접하고, 이웃한 두 원이 서로 외접한다. $\overline{\mathrm{PA}}=15$, $\overline{\mathrm{BC}}=8$, $\overline{\mathrm{DE}}=3$일 때, 육각형 $\mathrm{PABCDE}$의 둘레의 길이를 구하시오.
     figure: p13.svg
     alt: P 위. A 왼쪽, B 왼쪽 아래, C 오른쪽 아래, D 오른쪽, E 오른쪽 위인 육각형. 선분 PB, PC, PD가 네 삼각형으로 가르고 삼각형마다 내접원(O₁이 가장 크고 O₄가 가장 작다). 이웃한 두 원은 공통변 위의 한 점에서 접한다. O₄ 이름은 원 밖에 지시선. 15(PA)·3(DE)은 바깥, 8(BC)은 아래에 점선 곡선
     answer: $52$
