@@ -1,0 +1,274 @@
+# 시험기출 2026학년도 2학기 중간고사 수지중학교 중2. problems.md 스무 문제(객관식 17, 논술형 3).
+# 기출이라 지문과 선지와 보기는 사진 원문 그대로다(선생님). 평가원 문형으로 퇴고하지 않았고 표기만 조판했다.
+# 원문의 기호(△ABC, ∠A, 선분의 길이 AB̄, //, ⊥, ≡)와 배점 [4점]도 그대로 두었다. 그래서 verbatim: true로
+# 평가원 표기 검사(munhang notation.py)를 건너뛴다. 조판은 연마 규칙이다. 점 이름 정체, 변수 이탤릭,
+# 좌표 (a,\,b)이고 둘째 성분이 음수면 중괄호, 분수 \dfrac.
+# 폴더가 build/시험기출/<학교>/<학년>/<시험>/ 꼴이라 머리줄과 파일 이름과 PDF 날짜를 여기 적는다.
+# 004의 연립방정식은 mathtext가 못 그려 figures.py가 그린 별행 수식([[p004s.svg]])이다.
+# 005의 보기는 그래프 넷이라 항목마다 figure다.
+# 정답은 답만 적는 정답표다(선생님 방침). 논술형 셋(018~020)은 과정이 점수라 모범 답안을 붙였다.
+
+series: 시험기출
+exam: 2026학년도 2학기 중간고사
+school: 수지중학교
+grade: 중2
+file: 수리소_시험기출_2026_2학기중간_수지중학교_중2
+date: 2026.09.01
+verbatim: true
+
+problems:
+  - text: 두 점 $(-4,\,2k+10)$, $(5k+1,\,{-k+1})$을 지나는 직선이 $y$축에 수직일 때, $k$의 값과 직선의 방정식은? (단, $k$는 수이다.) [4점]
+    choices:
+      - $k=-3$, $x=-4$
+      - $k=-3$, $y=4$
+      - $k=-1$, $x=-4$
+      - $k=-1$, $x=4$
+      - $k=-1$, $y=-4$
+    answer: ②
+
+  - text: 두 직선 $7x+8y+2=0$, $3x-4y-14=0$의 교점을 지나고, 직선 $x-5y-1=0$과 평행한 직선의 방정식이 $ax+by-12=0$일 때, $a+b$의 값은? (단, $a$, $b$는 수이다.) [5점]
+    choices:
+      - $-4$
+      - $-2$
+      - $2$
+      - $4$
+      - $6$
+    answer: ①
+
+  - text: 두 직선의 방정식 $2x+y-p=0$, $3x-y+q=0$의 그래프와 $x$축의 교점을 각각 $\mathrm{A}$, $\mathrm{B}$라 하고, $y$축과의 교점을 각각 $\mathrm{C}$, $\mathrm{D}$라고 하자. $4\overline{\mathrm{AO}}=3\overline{\mathrm{BO}}$이고 $\overline{\mathrm{CD}}=3$일 때, $p+q$의 값은? (단, $p$, $q$는 수이다.) [5점]
+    figure: p003.svg
+    alt: 좌표평면. 2x+y-p=0(p=3)은 A(1.5, 0)과 C(0, 3)을 지나 내려가고, 3x-y+q=0(q=6)은 B(-2, 0)과 D(0, 6)을 지나 올라간다. 두 직선은 (-0.6, 4.2)에서 만난다. 식 이름은 화살표 지시선
+    choices:
+      - $7$
+      - $\dfrac{15}{2}$
+      - $8$
+      - $\dfrac{17}{2}$
+      - $9$
+    answer: ⑤
+
+  - text: 연립방정식 [[p004s.svg]] 의 해가 없을 때, 일차방정식 $mx-6y=6$의 그래프를 $y$축의 방향으로 $n$만큼 평행이동해서 이 연립방정식의 해가 무수히 많아지게 하려고 한다. 이때 $m+n$의 값은? (단, $m$, $n$은 수이다.) [5점]
+    choices:
+      - $-\dfrac{9}{2}$
+      - $-3$
+      - $5$
+      - $\dfrac{11}{2}$
+      - $7$
+    answer: ⑤
+
+  - text: 직선의 방정식 $ax-by+\dfrac{c}{a}=0$의 그래프가 그림과 같을 때, 직선의 방정식 $ax+by+c=0$의 그래프가 될 수 있는 것을 <보기>에서 있는 대로 고른 것은? (단, $a$, $b$, $c$는 0이 아닌 수이다.) [5점]
+    figure: p005.svg
+    alt: 좌표평면. 오른쪽 아래로 내려가는 직선, y절편과 x절편이 모두 양
+    notes:
+      - figure: p005a.svg
+      - figure: p005b.svg
+      - figure: p005c.svg
+      - figure: p005d.svg
+    choices:
+      - ㄱ
+      - ㄷ
+      - ㄱ, ㄴ
+      - ㄷ, ㄹ
+      - ㄱ, ㄴ, ㄹ
+    answer: ③
+    min_rows: 5              # 원문의 보기 그래프 넷과 3열 선지라 8칸을 못 지킨다
+
+
+
+  - text: ${\bigtriangleup}\mathrm{ABC}$에서 $\angle\mathrm{A}=62^{\circ}$, $\angle\mathrm{ABD}=18^{\circ}$, $\angle\mathrm{C}=80^{\circ}$, $\overline{\mathrm{CD}}=4$이다. ${\bigtriangleup}\mathrm{ABC}$의 둘레의 길이가 30일 때, ${\bigtriangleup}\mathrm{ABD}$의 둘레의 길이는? [4점]
+    figure: p006.svg
+    alt: 삼각형 ABC와 변 AC 위의 점 D, 선분 BD. 각 A 62°, 각 ABD 18°, 각 C 80°, CD 4
+    choices:
+      - $22$
+      - $24$
+      - $25$
+      - $26$
+      - $28$
+    answer: ④
+
+  - text: $\angle\mathrm{B}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$에서 $\angle\mathrm{A}$의 이등분선이 $\overline{\mathrm{BC}}$와 만나는 점을 $\mathrm{D}$라고 하면 $\overline{\mathrm{BD}}=5$이고 ${\bigtriangleup}\mathrm{ADE}$의 넓이는 10이다. $\overline{\mathrm{AE}}:\overline{\mathrm{AC}}=1:4$일 때, $\overline{\mathrm{CE}}$의 길이는? [5점]
+    figure: p007.svg
+    alt: 직각삼각형 ABC(B 직각). 각 A의 이등분선 AD, 변 AC 위의 점 E, 삼각형 ADE 색칠, BD 5. 각 BAD와 각 DAE에 같은 각 점, 10에서 삼각형 ADE를 가리키는 화살표
+    choices:
+      - $12$
+      - $13$
+      - $14$
+      - $15$
+      - $16$
+    answer: ①
+
+  - text: 점 $\mathrm{O}$는 ${\bigtriangleup}\mathrm{ABC}$의 외심이다. $\angle\mathrm{ABO}=52^{\circ}$, $\angle\mathrm{BOC}=136^{\circ}$일 때, $\angle\mathrm{ACO}$의 크기는? [4점]
+    figure: p008.svg
+    alt: 삼각형 ABC와 외심 O, 선분 OB, OC. 각 ABO 52°, 각 BOC 136°, 각 ACO에 호
+    choices:
+      - $12^{\circ}$
+      - $14^{\circ}$
+      - $16^{\circ}$
+      - $18^{\circ}$
+      - $20^{\circ}$
+    answer: ③
+
+  - text: 점 $\mathrm{O}$는 ${\bigtriangleup}\mathrm{ABC}$와 ${\bigtriangleup}\mathrm{BCD}$의 외심이다. $\overline{\mathrm{BC}}//\overline{\mathrm{OD}}$이고 $\angle\mathrm{A}=56^{\circ}$일 때, $\angle\mathrm{BOD}$의 크기는? [5점]
+    figure: p009.svg
+    alt: 삼각형 ABC와 점 D, 외심 O에서 B, D로 선분, 선분 BD, CD. OD와 BC가 평행(화살표). 각 A 56°, 각 BOD에 호
+    choices:
+      - $146^{\circ}$
+      - $148^{\circ}$
+      - $150^{\circ}$
+      - $152^{\circ}$
+      - $154^{\circ}$
+    answer: ①
+
+  - text: 점 $\mathrm{I}$는 ${\bigtriangleup}\mathrm{ABC}$의 내심이고, 세 점 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$는 각각 ${\bigtriangleup}\mathrm{ABC}$의 세 변과 내접원 $\mathrm{I}$의 접점이다. $\overline{\mathrm{AB}}=13$, $\overline{\mathrm{CE}}=6$, $\overline{\mathrm{AC}}=11$이고 ${\bigtriangleup}\mathrm{ABC}$의 넓이가 76일 때, 사각형 $\mathrm{BEID}$의 넓이는? [5점]
+    figure: p010.svg
+    alt: 삼각형 ABC와 내접원 I, 접점 D(AB), E(BC), F(CA). 사각형 BEID 색칠. AB 13, AC 11, CE 6
+    choices:
+      - $24$
+      - $26$
+      - $28$
+      - $30$
+      - $32$
+    answer: ⑤
+
+  - text: 점 $\mathrm{I}$는 ${\bigtriangleup}\mathrm{ABC}$의 내심이고 $\overline{\mathrm{CI}}$, $\overline{\mathrm{AI}}$, $\overline{\mathrm{BI}}$의 연장선이 $\overline{\mathrm{AB}}$, $\overline{\mathrm{BC}}$, $\overline{\mathrm{AC}}$와 만나는 점을 각각 $\mathrm{D}$, $\mathrm{E}$, $\mathrm{F}$라고 하자. $\angle\mathrm{AFB}=78^{\circ}$, $\angle\mathrm{BCD}=20^{\circ}$일 때, $\angle\mathrm{AEC}-\angle\mathrm{ADC}$의 값은? [5점]
+    figure: p011.svg
+    alt: 삼각형 ABC와 내심 I, 선분 CD, AE, BF. 각 AFB 78°, 각 BCD 20°
+    choices:
+      - $11^{\circ}$
+      - $12^{\circ}$
+      - $13^{\circ}$
+      - $14^{\circ}$
+      - $15^{\circ}$
+    answer: ②
+
+  - text: 점 $\mathrm{I}$는 $\angle\mathrm{B}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$의 내심이고, 점 $\mathrm{M}$은 $\overline{\mathrm{AC}}$의 중점이다. $\angle\mathrm{A}=70^{\circ}$일 때, $\angle\mathrm{IBM}$의 크기는? [4점]
+    figure: p012.svg
+    alt: 직각삼각형 ABC(B 직각)와 내심 I, 변 AC의 중점 M, 선분 BI, BM. 각 A 70°
+    choices:
+      - $20^{\circ}$
+      - $22^{\circ}$
+      - $23^{\circ}$
+      - $25^{\circ}$
+      - $28^{\circ}$
+    answer: ④
+
+  - text: 점 $\mathrm{O}$와 $\mathrm{I}$는 각각 $\overline{\mathrm{AB}}=\overline{\mathrm{AC}}$인 이등변삼각형 $\mathrm{ABC}$의 외심과 내심이다. 점 $\mathrm{O}$에서 $\overline{\mathrm{AB}}$, $\overline{\mathrm{AC}}$에 내린 수선의 발을 각각 $\mathrm{D}$, $\mathrm{E}$라고 할 때, 옳은 것만을 <보기>에서 있는 대로 고른 것은? [5점]
+    figure: p013.svg
+    alt: 이등변삼각형 ABC와 외심 O, 내심 I. O에서 AB, AC에 내린 수선의 발 D, E
+    notes:
+      - $\overline{\mathrm{BI}}=\overline{\mathrm{CI}}$
+      - $\angle\mathrm{BOC}=4\angle\mathrm{BAO}$
+      - $\angle\mathrm{OBI}=\angle\mathrm{OCI}$
+      - ${\bigtriangleup}\mathrm{ADO}\equiv{}{\bigtriangleup}\mathrm{CEO}$
+    choices:
+      - ㄱ, ㄷ
+      - ㄴ, ㄹ
+      - ㄱ, ㄴ, ㄷ
+      - ㄴ, ㄷ, ㄹ
+      - ㄱ, ㄴ, ㄷ, ㄹ
+    answer: ⑤
+    min_rows: 3              # 원문의 보기 넷과 1열 선지(ㄱ, ㄴ, ㄷ, ㄹ가 3열에 안 든다)라 8칸을 못 지킨다
+
+  - text: 평행사변형 $\mathrm{ABCD}$에서 $\angle\mathrm{C}$의 이등분선이 $\overline{\mathrm{AD}}$와 만나는 점을 $\mathrm{E}$라고 하자. $\overline{\mathrm{AB}}=36$, $\overline{\mathrm{AD}}=42$, $\angle\mathrm{ABC}=40^{\circ}$이고 $\overline{\mathrm{AE}}=x$, $\angle\mathrm{CED}=y^{\circ}$일 때, $x+y$의 값은? [4점]
+    figure: p014.svg
+    alt: 평행사변형 ABCD와 각 C의 이등분선 CE. 각 ABC 40°, 각 CED y°, AB 36, AD 42, AE x
+    choices:
+      - $61$
+      - $66$
+      - $71$
+      - $76$
+      - $81$
+    answer: ④
+
+  - text: 평행사변형 $\mathrm{ABCD}$에서 $\overline{\mathrm{AD}}$의 연장선 위에 $\overline{\mathrm{AD}}=\overline{\mathrm{DE}}$가 되도록 점 $\mathrm{E}$를 잡자. $\angle\mathrm{DEO}=\angle\mathrm{CEO}=26^{\circ}$, $\angle\mathrm{ADO}=x^{\circ}$, $\angle\mathrm{BCO}=y^{\circ}$일 때, $x+y$의 값은? (단, 점 $\mathrm{O}$는 두 대각선의 교점이다.) [5점]
+    figure: p015.svg
+    alt: 평행사변형 ABCD와 변 AD의 연장선 위의 점 E, 대각선의 교점 O(원본 그림에 이름이 없다), 선분 EO, EC. 각 DEO, CEO 26°, 각 ADO x°, 각 BCO y°
+    unnamed: [O]             # 지문이 부르지만 원본 그림에 이름이 인쇄되어 있지 않다(두 대각선의 교점)
+    choices:
+      - $114$
+      - $116$
+      - $118$
+      - $120$
+      - $122$
+    answer: ②
+
+  - text: 사각형 $\mathrm{ABCD}$가 평행사변형이 되도록 하는 조건을 <보기>에서 있는 대로 고른 것은? (단, 점 $\mathrm{O}$는 두 대각선의 교점이다.) [5점]
+    figure: p016.svg
+    alt: 사각형 ABCD(평행사변형이 아니다)와 대각선 AC, BD의 교점 O
+    notes:
+      - $\overline{\mathrm{AB}}=\overline{\mathrm{BC}}$, $\overline{\mathrm{AD}}=\overline{\mathrm{DC}}$
+      - $\overline{\mathrm{AO}}=\overline{\mathrm{CO}}$, $\overline{\mathrm{BO}}=\overline{\mathrm{DO}}$
+      - ${\bigtriangleup}\mathrm{AOB}\equiv{}{\bigtriangleup}\mathrm{COD}$
+      - $\angle\mathrm{BAO}=\angle\mathrm{OCD}$, $\overline{\mathrm{AD}}=\overline{\mathrm{BC}}$
+    choices:
+      - ㄴ
+      - ㄱ, ㄹ
+      - ㄴ, ㄷ
+      - ㄷ, ㄹ
+      - ㄴ, ㄷ, ㄹ
+    answer: ③
+
+  - text: 평행사변형 $\mathrm{ABCD}$에서 $\overline{\mathrm{CD}}$ 위에 한 점 $\mathrm{E}$를 잡고, $\overline{\mathrm{BE}}$ 위에 $\overline{\mathrm{BP}}:\overline{\mathrm{PE}}=2:3$이 되도록 점 $\mathrm{P}$를 잡자. ${\bigtriangleup}\mathrm{PCD}$의 넓이가 48일 때, ${\bigtriangleup}\mathrm{ABP}$의 넓이는? [5점]
+    figure: p017.svg
+    alt: 평행사변형 ABCD와 변 CD 위의 점 E, 선분 BE 위의 점 P, 선분 AE, AP, PC, PD. 삼각형 ABP 색칠
+    choices:
+      - $24$
+      - $28$
+      - $32$
+      - $36$
+      - $40$
+    answer: ③
+
+  - "no": "018"
+    label: 논술형 1
+    text: 두 직선의 방정식 $x+ay-10=0$, $x+y+b=0$의 그래프가 그림과 같을 때, $a+b$의 값을 구하고 그 과정을 서술하시오. (단, $a$, $b$는 수이다.) [7점]
+    figure: p018.svg
+    alt: 좌표평면. x+y+b=0(b=-4)은 y절편 4로 내려가고, x+ay-10=0(a=-2)은 올라간다. 두 직선은 (6, -2)에서 만나고 x축의 6에서 점선
+    answer: $-6$
+    solution: |
+      주어진 그림에서
+      직선 $x+y+b=0$의 $y$절편이 4이므로
+      $b=-4$ …… ①이다.
+      두 직선의 교점은 $x$좌표가 6이고
+      직선 $x+y-4=0$ 위에 있으므로
+      교점의 좌표는 $(6,\,{-2})$이다.
+      이 점이 직선 $x+ay-10=0$ 위에 있으므로
+      $a=-2$ …… ②이다.
+      ①, ②에 의하여
+      $a+b=-6$이다.
+      따라서 $a+b$의 값은 $-6$이다.
+
+  - "no": "019"
+    label: 논술형 2
+    text: $\angle\mathrm{C}=90^{\circ}$인 직각삼각형 $\mathrm{ABC}$에서 $\overline{\mathrm{AC}}=\overline{\mathrm{AD}}$가 되도록 $\overline{\mathrm{AB}}$ 위에 점 $\mathrm{D}$를 잡고, $\overline{\mathrm{AB}}\perp\overline{\mathrm{DE}}$이 되도록 $\overline{\mathrm{BC}}$ 위에 점 $\mathrm{E}$를 잡자. $\overline{\mathrm{BC}}=10$, $\overline{\mathrm{DE}}=3$일 때, $\overline{\mathrm{BE}}$의 길이를 구하고 그 과정을 서술하시오. [7점]
+    figure: p019.svg
+    alt: 직각삼각형 ABC(C 직각)와 변 AB 위의 점 D, 변 BC 위의 점 E, 선분 DE(D에서 직각). AD와 AC 같은 길이, DE 3, BC 10
+    answer: $7$
+    solution: |
+      선분 $\mathrm{AE}$를 그으면
+      두 직각삼각형 $\mathrm{ACE}$, $\mathrm{ADE}$에서
+      $\angle\mathrm{ACE}=\angle\mathrm{ADE}=90^{\circ}$,
+      $\overline{\mathrm{AC}}=\overline{\mathrm{AD}}$이고
+      빗변 $\mathrm{AE}$는 공통이므로
+      ${\bigtriangleup}\mathrm{ACE}\equiv{}{\bigtriangleup}\mathrm{ADE}$(RHS 합동)이다.
+      즉, $\overline{\mathrm{CE}}=\overline{\mathrm{DE}}=3$이므로
+      $\overline{\mathrm{BE}}=\overline{\mathrm{BC}}-\overline{\mathrm{CE}}=7$이다.
+      따라서 $\overline{\mathrm{BE}}$의 길이는 7이다.
+
+  - "no": "020"
+    label: 논술형 3
+    text: 평행사변형 $\mathrm{ABCD}$에서 $\overline{\mathrm{AB}}$, $\overline{\mathrm{CD}}$의 중점을 각각 $\mathrm{E}$, $\mathrm{F}$라고 할 때, 사각형 $\mathrm{EBFD}$가 평행사변형임을 설명하시오. [6점]
+    figure: p020.svg
+    alt: 평행사변형 ABCD와 변 AB의 중점 E, 변 CD의 중점 F. 사각형 EBFD 색칠
+    answer: 풀이 참고
+    solution: |
+      평행사변형 $\mathrm{ABCD}$에서
+      $\overline{\mathrm{AB}}//\overline{\mathrm{DC}}$, $\overline{\mathrm{AB}}=\overline{\mathrm{DC}}$이다.
+      두 점 $\mathrm{E}$, $\mathrm{F}$는 각각
+      $\overline{\mathrm{AB}}$, $\overline{\mathrm{CD}}$ 위에 있으므로
+      $\overline{\mathrm{EB}}//\overline{\mathrm{DF}}$ …… ①이고
+      $\mathrm{E}$, $\mathrm{F}$가 중점이므로
+      $\overline{\mathrm{EB}}=\dfrac{1}{2}\overline{\mathrm{AB}}=\dfrac{1}{2}\overline{\mathrm{DC}}=\overline{\mathrm{DF}}$ …… ②이다.
+      ①, ②에 의하여
+      사각형 $\mathrm{EBFD}$는 한 쌍의 대변이
+      평행하고 그 길이가 같다.
+      따라서 사각형 $\mathrm{EBFD}$는 평행사변형이다.
