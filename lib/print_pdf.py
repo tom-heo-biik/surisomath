@@ -5,7 +5,7 @@
 따로 정한다. 한 부씩 따로 보내므로 쪽 수가 홀수여도 부마다 새 장에서 시작한다.
 
     python lib/print_pdf.py 삼각비.pdf --plan                       계획만(작업·장 수, 프린터 설정 확인)
-    python lib/print_pdf.py 삼각비.pdf=4/2 원과직선.pdf=2/2 --go    학생 쪽 4부·선생님 쪽 2부, 원과직선은 2부·2부
+    python lib/print_pdf.py 삼각비.pdf=4/2 "원과 직선.pdf=2/2" --go    학생 쪽 4부·선생님 쪽 2부, 원과 직선은 2부·2부
     python lib/print_pdf.py 삼각비.pdf=1/0 --go                     학생 쪽만 한 부
     python lib/print_pdf.py 삼각비.pdf=4/1 --quality high --go      "최고품질"이면 높게+섬세하게로
     python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go             1·2쪽만 한 부(--copies N)

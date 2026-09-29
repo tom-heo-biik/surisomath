@@ -106,7 +106,7 @@ def rich(s: str, prefix: str, fig_dir: Path, size: float, color: str) -> str:
         return f"{NUL}{len(maths) - 1}{NUL}"
 
     # 명사 + 이름("원 O", "선분 AB", "점 P")과 "(단, …"의 첫 토막은 한 어절로 묶어 줄 끝에서 갈라지지
-    # 않게 한다 — 평가원 조판 관례(2026-09-23 독립 검토가 원과직선 005·010·012·017·019에서 잡았다)
+    # 않게 한다 — 평가원 조판 관례(2026-09-23 독립 검토가 원과 직선 005·010·012·017·019에서 잡았다)
     toks, i = [], 0
     raw = MATH.sub(stash, s).split()
     while i < len(raw):

@@ -262,7 +262,7 @@ def p6():
 
 def p7():
     # 큰 반원 C(반지름 r = 3)와 작은 반원 C'(반지름 r' = 1). 2026-09-27 선생님 지시로 큰 반원이 C, 작은 반원이
-    # C'이고 꼭짓점 C가 겹쳐 삼각형을 PQR로 바꿨다(원과직선 007처럼). 지문이 중심을 안 부르므로 중심은 점만
+    # C'이고 꼭짓점 C가 겹쳐 삼각형을 PQR로 바꿨다(원과 직선 007처럼). 지문이 중심을 안 부르므로 중심은 점만
     # 찍는다(변수 Ob, Os는 자리 이름). 반지름 선분은 안 긋고 r, r'을 빗변 위의 지름에 단다.
     rb, rs = 3.0, 1.0
     d = (0.5, -R3 / 2)                                    # 빗변 P에서 R로 가는 방향
@@ -668,7 +668,7 @@ def p23():
     g.name(ax, R, "R", dy=-5, va="top")
     g.name(ax, U, "U", dx=-4, dy=2, ha="right", va="bottom")
     g.name(ax, T, "T", dx=3, dy=4, ha="left", va="bottom")
-    g.name(ax, g.polar(O, 12.0, -50), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")   # 원의 이름(원과직선 005처럼)
+    g.name(ax, g.polar(O, 12.0, -50), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")   # 원의 이름(원과 직선 005처럼)
     g.save(fig, "p23.svg")
 
 

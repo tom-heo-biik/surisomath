@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""시험대비 · 2026학년도 2학기 중간고사 · 중3 · 원과직선 — 도형 그림 스무 장.
+"""시험대비 · 2026학년도 2학기 중간고사 · 중3 · 원과 직선 — 도형 그림 스무 장.
 
 도우미는 surisomath-grind 스킬의 grind_figure를 쓴다. build.py가 import 경로를 잡아
 주므로 이 파일은 build.py로 실행한다.
 
-    python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/원과직선/problems.yaml
+    python .claude/skills/surisomath-exam/templates/build.py build/시험대비/20262학기중간/중3/원과 직선/problems.yaml
 
 원은 g.circle, 현·접선은 g.seg, 중심은 g.dot, 길이는 연마와 같이 점선 곡선(g.dim), 직각은
 corner_mark, 같은 각은 점(ticks=1). 길이 곡선은 책처럼 꼭짓점에서 꼭짓점까지 잇는다(trim 없음 —
@@ -439,7 +439,7 @@ def p13():
 # ── 014 — 두 직각삼각형의 내접원과 평행사변형 EOFO' ──────────────────────
 # PQ = 12, QR = 16, PR = 20. O(4, 4), O'(12, 8). E = P에서 8, F = R에서 8. EF = 4, 넓이 16.
 # 이름은 P, Q, R, S(책은 A, B, C, D). 두 원 C, C'과 중심 O, O'을 가르려고 꼭짓점 C를 피했다
-# (2026-09-29 선생님, 원과직선 007, 삼각비 007처럼). 코드의 변수 A, B, C, D는 책의 이름 그대로다.
+# (2026-09-29 선생님, 원과 직선 007, 삼각비 007처럼). 코드의 변수 A, B, C, D는 책의 이름 그대로다.
 
 def p14():
     A, B, C, D = (0.0, 12.0), (0.0, 0.0), (16.0, 0.0), (16.0, 12.0)
@@ -496,7 +496,7 @@ def p15():
 # ── 016 — 지름의 연장선과 현의 연장선의 교점 T ───────────────────────────
 # O(0, 0) r = 6, P(−6, 0), Q(6, 0), S(0, −6), T(−8, 0). R은 직선 TS와 원의 다른 교점. PR = 6√2/5.
 # 이름은 P, Q, R, S, T(책은 A, B, C, D, P). 원 C의 중심 O와 가르려고 점 C를 피했다
-# (2026-09-29 선생님, 원과직선 007, 삼각비 023처럼).
+# (2026-09-29 선생님, 원과 직선 007, 삼각비 023처럼).
 
 def p16():
     O, P, Q, S, T = (0.0, 0.0), (-6.0, 0.0), (6.0, 0.0), (0.0, -6.0), (-8.0, 0.0)
@@ -523,7 +523,7 @@ def p16():
     g.name(ax, Q, "Q", dx=4, ha="left")
     g.name(ax, R, "R", dx=-4, dy=-2, ha="right", va="top")
     g.name(ax, S, "S", dy=-5, va="top")
-    g.name(ax, g.polar(O, 6.0, -50), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")   # 원의 이름(원과직선 005처럼)
+    g.name(ax, g.polar(O, 6.0, -50), "$\\mathrm{C}$", dx=3, dy=-3, ha="left", va="top")   # 원의 이름(원과 직선 005처럼)
     g.save(fig, "p16.svg")
 
 

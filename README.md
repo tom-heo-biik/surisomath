@@ -105,8 +105,8 @@ python .claude/skills/surisomath-assess/templates/build.py build/수행평가/20
 세 양식 모두 앞 절반이 학생 쪽, 뒤 절반이 선생님 쪽이라 두 쪽의 부수를 따로 정한다.
 
 ```
-python lib/print_pdf.py 삼각비.pdf=4/2 원과직선.pdf=2/2 --plan   계획과 프린터 설정 확인
-python lib/print_pdf.py 삼각비.pdf=4/2 원과직선.pdf=2/2 --go     보낸다 (학생 쪽 4부·선생님 쪽 2부 …)
+python lib/print_pdf.py 삼각비.pdf=4/2 "원과 직선.pdf=2/2" --plan   계획과 프린터 설정 확인
+python lib/print_pdf.py 삼각비.pdf=4/2 "원과 직선.pdf=2/2" --go     보낸다 (학생 쪽 4부·선생님 쪽 2부 …)
 python lib/print_pdf.py 삼각비.pdf --pages 1-2 --go              1·2쪽만 한 부
 python lib/print_pdf.py 삼각비.pdf=4/1 --quality high --go       "최고품질"이면 높게+섬세하게로
 ```

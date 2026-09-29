@@ -15,7 +15,7 @@ text·conditions·after·table·notes·choices·answer(그림 파일 이름은 �
     python seal.py <problems.yaml> --check       대조. 바뀐 것이 있으면 종료 코드 1
     python seal.py <problems.yaml> --list        봉인 목록(풀이가 봉인된 문항은 풀이 지문도 보인다)
 
-봉인은 사람이 건다. 모델이 알아서 걸거나 풀지 않는다(2026-09-26 선생님 요청 — 원과직선 003·004가 첫 봉인).
+봉인은 사람이 건다. 모델이 알아서 걸거나 풀지 않는다(2026-09-26 선생님 요청 — 원과 직선 003·004가 첫 봉인).
 
 --check와 빌드는 봉인 목록과 두 기록도 맞춰 본다(records). problems.md 머리의 "확정" 줄, 그리고
 references/canon.md의 책과 정본 쌍이다. 쌍은 그 단원 절 아래 번호 차례에 있어야 하고 정본은 yaml 글과 같아야 한다.
