@@ -30,6 +30,7 @@ description: "수리소 수학학원의 실전 모의 학습지 '시험대비' �
 
 ## 기계가 하는 것
 결정론적인 일은 기계가 합니다. photos.py는 사진에 번호를 달고 축소본을 만듭니다. grind_figure.save는 그림의 칸 수와 너비와 위아래 여백을 재서 y 범위를 제안하고 글자와 선과 원과 호와 다른 글자의 겹침을 잡습니다. build.py는 수식 조판, 선지 열, 정답과 풀이 줄 너비, 풀 자리 칸 수, 단 넘침, 잇단 줄의 수식 겹침, 그리드와 서체를 보고 --png로 쪽과 그림 크롭을 뽑습니다. 견본 회귀는 git status가 말해 줍니다.
+- build.py는 문제마다 표기도 검사하고 확정 문항은 봉인과 대조합니다. 잡는 것은 표기 검사와 봉인 절에 있습니다.
 - 새 꼴은 photos.py가 사진마다 문제 폴더를 만들어 photo.jpg로 옮기고 번호는 있는 폴더 다음부터 잇습니다.
 - 새 꼴의 build.py는 figrun.py로 figure.py를 한 프로세스에서 그리고 problem.md와 yaml을 대조합니다.
 
@@ -74,6 +75,7 @@ build.py가 문제마다 notation.py의 check()를 불러 표기 경계를 `!`�
 - 확정 표시는 옛 꼴이 problems.md 머리의 확정 줄, 새 꼴이 그 문제 problem.md 둘째 줄의 `확정(2026. 10. 1.)`입니다.
 - 봉인은 `python .claude/skills/surisomath-munhang/templates/seal.py "{단원 폴더}" 003 004`입니다.
 - seal.py에는 `--check`, `--list`, `--unseal 003`이 있습니다.
+- 그림을 놓인 자리로 부른 말("다음 그림", "오른쪽 그림")도 표기 검사가 잡습니다(선생님). 사진에서 옮긴 책 문항에는 흔한 말이고 2026. 9. 30. 기준 canon.md의 책 블록 50개 중 48개에 있습니다.
 - 표기만 따로 보려면 `python .claude/skills/surisomath-munhang/templates/notation.py "{단원 폴더}"`를 돌립니다.
 - 원문 그대로(`verbatim: true`)인 단원이면 notation.py도 빌드처럼 건너뜁니다. 두 명령 모두 두 꼴의 단원 폴더를 받습니다.
 

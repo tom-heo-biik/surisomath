@@ -38,7 +38,7 @@ problems.yaml
   date: 2026.09.01                 # PDF의 만든 날짜. 생략하면 학기 첫날(1학기 3. 1., 2학기 9. 1.).
                                    # 폴더 꼴이 안 맞으면 yaml 수정 시각 — 그때는 PDF가 재현되지 않는다
   problems:
-    - text: 다음 그림과 같이 …       # 지문. 표기 규칙은 SKILL.md. ": "가 들어가면 따옴표로 감싼다
+    - text: 그림과 같이 …          # 지문. 표기 규칙은 SKILL.md. ": "가 들어가면 따옴표로 감싼다
       figure: p1.svg               # figures/ 안의 그림. units는 없다 — SVG 높이가 칸 수를 정한다
       alt: …                       # 그림 설명. PDF에는 안 찍힌다
       conditions:                  # 있으면 조건 상자(평가원 꼴). (가) (나) 항목. 지문 뒤, 그림 앞
@@ -302,8 +302,7 @@ _sspec.loader.exec_module(seal)                         # 확정 문항 봉인 �
 NAME_WARNINGS = 0
 
 def check_notation(no: str, p: dict) -> None:
-    """표기 규칙 검사 — surisomath-munhang/templates/notation.py(길이·크기는 식 안에서 기호, 도형은 낱말).
-    기호가 식 밖에 홀로 있거나 낱말 뒤에 = : < ⊥가 오면 경고."""
+    """표기 규칙 검사(surisomath-munhang/templates/notation.py). 무엇을 잡는지는 그 머리글의 (가)~(라)에 있다."""
     global NAME_WARNINGS
     for msg in notation.check(notation.problem_fields(p)):
         print(f"  ! {no}: {msg}")
