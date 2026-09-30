@@ -41,6 +41,9 @@ problems.yaml
     - text: 그림과 같이 …          # 지문. 표기 규칙은 SKILL.md. ": "가 들어가면 따옴표로 감싼다
       figure: p1.svg               # figures/ 안의 그림. units는 없다 — SVG 높이가 칸 수를 정한다
       alt: …                       # 그림 설명. PDF에는 안 찍힌다
+      figure_at: end               # 있으면 그림을 문제 블록 끝(선지 뒤)에 둔다. 지문이 부르지 않는 참고 그림(평가원
+                                   # 그림 문항의 절반)과 그릴 자리 모눈. 표기 검사 (바)는 거꾸로 본다(지문에 '그림과
+                                   # 같'이 있으면 키를 잘못 단 것이라 잡는다. 2026-09-30 선생님)
       conditions:                  # 있으면 조건 상자(평가원 꼴). (가) (나) 항목. 지문 뒤, 그림 앞
         - $f(0)=1$
       after: $f(4)$의 값을 구하시오.  # 조건 상자 뒤에 오는 문단
@@ -462,14 +465,19 @@ def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
     # 번호 자리의 글. 보통은 번호(001)이고 시험기출의 논술형은 label(논술형 1)이다. 파일 이름과
     # 검사는 늘 번호로 한다
     label = html.escape(str(p.get("label") or no))
+    # 그림은 보통 조건 상자 뒤, 표 앞이다. figure_at: end면 선지 뒤(평가원의 참고 그림 자리, 그릴 자리 모눈).
+    # 블록마다 높이가 22의 배수이고 아래 여백이 한 칸이라 차례를 바꿔도 그리드와 풀 자리는 그대로다
+    fig = figure_html(no, p, fig_dir)
+    end = str(p.get("figure_at") or "") == "end"
     return ('    <div class="col">\n'
             f'      <h2>{label}</h2>\n'
             f'{text_html(no, p, fig_dir)}'
             f'{conditions_html(no, p, fig_dir)}'
-            f'{figure_html(no, p, fig_dir)}'
+            f'{"" if end else fig}'
             f'{table_html(no, p, fig_dir)}'
             f'{notes_html(no, p, fig_dir)}'
             f'{choices_html(no, p, fig_dir)}'
+            f'{fig if end else ""}'
             f'      <div class="work box {"t" if teacher else "n"}{no}">\n{work}      </div>\n'
             '    </div>\n')
 
@@ -551,6 +559,8 @@ def check(problems: list) -> int:
         # 평가원 문항에는 소문항이 없다. 책의 소문항은 한 물음으로 합친다(2026-09-28 선생님, 삼각비 011)
         if "subs" in p:
             raise SystemExit(f"{no}번째 문제: 소문항(subs)은 쓰지 않는다. 한 물음으로 합쳐라(삼각비 011)")
+        if "figure_at" in p and (str(p["figure_at"]) != "end" or not p.get("figure")):
+            raise SystemExit(f"{no}번째 문제: figure_at은 figure가 있을 때 end 하나만 쓴다(그림을 선지 뒤로)")
         if "choices" in p and not isinstance(p["choices"], list):
             raise SystemExit(f"{no}번째 문제: choices는 목록('- …' 다섯 줄)이어야 한다")
         if "choices" in p and len(p["choices"] or []) != 5:
