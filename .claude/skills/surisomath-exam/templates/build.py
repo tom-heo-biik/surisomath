@@ -302,9 +302,9 @@ _sspec.loader.exec_module(seal)                         # 확정 문항 봉인 �
 NAME_WARNINGS = 0
 
 def check_notation(no: str, p: dict) -> None:
-    """표기 규칙 검사(surisomath-munhang/templates/notation.py). 무엇을 잡는지는 그 머리글의 (가)~(라)에 있다."""
+    """표기 규칙 검사(surisomath-munhang/templates/notation.py). 무엇을 잡는지는 그 머리글의 (가)~(바)에 있다."""
     global NAME_WARNINGS
-    for msg in notation.check(notation.problem_fields(p)):
+    for msg in notation.check_problem(p):
         print(f"  ! {no}: {msg}")
         NAME_WARNINGS += 1
 

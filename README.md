@@ -142,7 +142,8 @@ python .claude/skills/surisomath-assess/templates/build.py build/수행평가/20
 └─ templates/
    ├─ unit.py          단원 읽기. 옛 꼴과 새 꼴을 같은 모양으로 돌려준다(빌드, 봉인, 표기 검사가 함께 쓴다)
    ├─ seal.py          확정 문항 봉인. 단원의 sealed.json에 글의 해시를 적고 빌드마다 대조한다
-   ├─ notation.py      표기 검사(길이와 크기는 식 안의 기호, 도형은 낱말). "다음 그림"처럼 자리로 부른 그림도 잡는다
+   ├─ notation.py      표기 검사(길이와 크기는 식 안의 기호, 도형은 낱말). "다음 그림"처럼 자리로 부른 그림도 잡는다.
+   │                   표는 "다음 표", "주어진 표"처럼 부른 것을, 그림 문제는 지문에 "그림과 같"이 없는 것을 잡는다
    └─ review_brief.md  독립 검토자에게 주는 브리핑 틀
 ```
 
