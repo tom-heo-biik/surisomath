@@ -1,0 +1,12 @@
+# 삼각비 017의 확정 정본을 글자 그대로 옮겼다(2026. 9. 27. 봉인). 원본은 그 단원의 problems.yaml이다.
+# 이 폴더에는 봉인이 없어 빌드가 대조하지 않는다. 글은 고치지 않고 원본이 바뀌면 다시 옮긴다.
+text: 그림과 같이 $\angle\mathrm{AOB}=90^{\circ}$, $\overline{\mathrm{OA}}=\overline{\mathrm{OB}}=4$인 부채꼴 $\mathrm{OAB}$와 $\angle\mathrm{POA}=2\angle\mathrm{POB}$를 만족시키는 현 $\mathrm{AP}$가 있다. 원 $\mathrm{C}$가 세 선분 $\mathrm{OA}$, $\mathrm{OB}$, $\mathrm{AP}$에 모두 접할 때, 원 $\mathrm{C}$의 반지름의 길이는?
+figure: p003.svg
+alt: 부채꼴 O 왼쪽 아래(직각), A 오른쪽, B 위. P는 호 위 B 가까이(∠POB = 30°). 선분 AP. OA, OB, AP에 접하는 원 C(이름은 원 안). 4는 OA 아래
+choices:
+  - $\sqrt{2}$
+  - $2\sqrt{3}-2$
+  - $\sqrt{3}$
+  - $2\sqrt{2}-1$
+  - $2\sqrt{3}-1$
+answer: ②

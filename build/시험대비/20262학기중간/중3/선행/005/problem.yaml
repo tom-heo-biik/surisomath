@@ -1,0 +1,12 @@
+# 원과 직선 001의 확정 정본을 글자 그대로 옮겼다(2026. 9. 26. 봉인). 원본은 그 단원의 problems.yaml이다.
+# 이 폴더에는 봉인이 없어 빌드가 대조하지 않는다. 글은 고치지 않고 원본이 바뀌면 다시 옮긴다.
+text: 그림과 같이 두 원 $\mathrm{O}$, $\mathrm{O}'$은 각각 두 사각형 $\mathrm{ABCD}$, $\mathrm{CEFD}$에 내접한다. $\overline{\mathrm{AD}}=8$, $\overline{\mathrm{DF}}=5$, $\overline{\mathrm{BC}}=6$, $\overline{\mathrm{CE}}=12$일 때, $\overline{\mathrm{EF}}-\overline{\mathrm{AB}}$의 값은?
+figure: p005.svg
+alt: 변 CD를 맞댄 두 사각형 ABCD, CEFD에 원 O, O'이 각각 내접한다. B·C·E는 아래 한 직선 위, A·D·F는 위 한 직선 위. AD=8, DF=5는 위에, BC=6, CE=12는 아래에 점선 곡선
+choices:
+  - $1$
+  - $\dfrac{3}{2}$
+  - $2$
+  - $\dfrac{5}{2}$
+  - $3$
+answer: ⑤

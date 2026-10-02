@@ -1,0 +1,6 @@
+# 삼각비 030의 확정 정본을 글자 그대로 옮겼다(2026. 9. 28. 봉인). 원본은 그 단원의 problems.yaml이다.
+# 이 폴더에는 봉인이 없어 빌드가 대조하지 않는다. 글은 고치지 않고 원본이 바뀌면 다시 옮긴다.
+text: 그림과 같이 $\overline{\mathrm{AB}}=\overline{\mathrm{AB}'}=10$인 두 정사각형 $\mathrm{ABCD}$, $\mathrm{AB}'\mathrm{C}'\mathrm{D}'$에서 두 변 $\mathrm{CD}$, $\mathrm{B}'\mathrm{C}'$은 점 $\mathrm{E}$에서 만난다. $\angle\mathrm{BAB}'=34^{\circ}$일 때, 사각형 $\mathrm{AB}'\mathrm{ED}$의 넓이를 구하시오. (단, $\tan 28^{\circ}=0.5317$로 계산한다.)
+figure: p004.svg
+alt: 정사각형 ABCD(A 왼쪽 아래)와 34° 회전한 AB'C'D'. E는 B'C'과 DC의 교점. 겹친 부분 AB'ED 색칠. 34°는 A. 귀퉁이 직각 표시. 10은 AB 아래
+answer: $53.17$
