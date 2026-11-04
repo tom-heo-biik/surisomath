@@ -74,6 +74,10 @@ DEFAULT_NAME = None    # 문제마다 폴더(단원/001/figure.py)면 save()의 
 FRAC_NUM, FRAC_DEN = (float(s) for s in os.environ.get("GRIND_FRAC", "0.46,0.40").split(","))
 FRAC_RULE = 0.04       # 분수 가로줄 두께(em). TeX 규격. mathtext의 밑줄 두께(0.075em)는 굵고,
                        # 최소 간격(3θ)까지 부풀려 분수가 22pt를 넘게 만든다
+ARC_RISE = 0.20        # 호 기호(\overset{\frown})의 높이(em). 현에서 바깥 호 꼭대기까지
+ARC_STEM = 0.045       # 호 기호 가운데 두께(em). 양 끝으로 가며 가늘어지는 초승달이다
+ARC_GAP = 0.10         # 밑글자 위와 호 사이(em)
+ARC_INSET = 0.04       # 호의 양 끝을 밑글자 양 끝에서 들이는 양(em)
 
 
 def warn(msg: str) -> None:
@@ -391,7 +395,8 @@ def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
     아래 4.8pt, 가장 큰 b/y가 22pt로 KoPub 12pt 글줄 상자(위 14.4pt·아래 7.6pt) 안에
     든다. 그래서 분수 줄이 잇달아도 안 겹친다. 상자를 넘는 수식(겹분수,
     큰 괄호)은 build.py가 img에 음수 여백을 줘 글줄만은 22pt로 지킨다. \\frac은
-    분자·분모가 7할로 줄어 교과서와 다르다. mathtext에는 \\tfrac이 없다."""
+    분자·분모가 7할로 줄어 교과서와 다르다. mathtext에는 \\tfrac이 없다. 호 기호
+    \\overset{\\frown}{\\mathrm{AB}}는 _tex_arc()가 밑글자 너비로 늘려 그린다."""
     from matplotlib.font_manager import FontProperties
     from matplotlib.patches import PathPatch
     from matplotlib.textpath import TextPath
@@ -523,8 +528,118 @@ def _tex_sqrt() -> None:
         pass
 
 
+def _tex_arc() -> None:
+    """mathtext의 호 기호(\\overset{\\frown}{\\mathrm{AB}})를 밑글자 너비의 호로 바꿔 끼운다.
+
+    matplotlib은 \\overset의 주석을 7할로 줄여 밑글자 가운데에 얹기만 한다. ⌢는 늘지 않는 글리프라
+    12pt에서 7.4pt인 호가 16.4pt인 AB의 절반도 못 덮었다(정본 원과 직선도 같았다. 2026-11-04 Tom 지시로
+    고침). 주석이 \\frown 하나면 글리프 대신 밑글자 너비의 빈 상자를 ARC_GAP 위에 얹는다. 밑글자 양 끝의
+    빈 간격(Kern)은 빼고 글자에 맞춘다. 상자는 그려질 때 너비를 뒤집은 사각형을 표지로 남기고(규칙 상자의
+    너비는 늘 양수라 섞이지 않는다), TextToPath가 그 표지를 가운데 두께 ARC_STEM의 초승달(3차 베지어 넷)로
+    바꾼다. mathtext는 파싱 결과를 캐시하므로 표지는 결과 안에 남겨야 한다. 래스터 출력(Agg)은 표지를
+    그리지 않지만 학습지는 SVG 패스만 쓴다. 다른 주석의 \\overset과 \\underset은 그대로다. 안의 상자
+    클래스가 없는 판에서는 그대로 둔다."""
+    import matplotlib._mathtext as mt
+    from matplotlib.path import Path as MPath
+    from matplotlib.textpath import TextToPath
+
+    if getattr(mt.Parser.overset, "_tex", False):
+        return
+    try:
+        Box, Char, Hlist, HCentered, Kern, Vbox, Vlist = (
+            mt.Box, mt.Char, mt.Hlist, mt.HCentered, mt.Kern, mt.Vbox, mt.Vlist)
+    except AttributeError:
+        return
+
+    class ArcBox(Box):
+        """호가 앉을 빈 상자. left, right는 상자 양 끝에서 호 양 끝까지(밑글자 끝 간격 + ARC_INSET)."""
+
+        def __init__(self, width, state, left, right):
+            em = state.fontsize * state.dpi / 72.0
+            super().__init__(width, ARC_RISE * em, 0.0)
+            self.fontset = state.fontset
+            self.left, self.right = left + ARC_INSET * em, right + ARC_INSET * em
+
+        def render(self, output, x, y, w, h):                # y는 상자 바닥(아래로 느는 좌표)
+            self.fontset.render_rect_filled(output, x + w - self.right, y - h, x + self.left, y)
+
+    def chars(node):
+        if isinstance(node, Char):
+            return [node.c]
+        return [c for k in getattr(node, "children", []) for c in chars(k)]
+
+    def kerns(node):                                          # 밑글자 앞뒤의 빈 간격 너비
+        kids = node.children
+        while len(kids) == 1 and isinstance(kids[0], Hlist):
+            kids = kids[0].children
+        lead = trail = 0.0
+        for k in kids:
+            if not isinstance(k, Kern):
+                break
+            lead += k.width
+        for k in reversed(kids):
+            if not isinstance(k, Kern):
+                break
+            trail += k.width
+        return lead, trail
+
+    genset = mt.Parser.overset
+
+    def overset(self, s, loc, toks):
+        annotation, body = toks["annotation"], toks["body"]
+        if chars(annotation) != [r"\frown"]:
+            return genset(self, s, loc, toks)
+        state = self.get_state()
+        em = state.fontsize * state.dpi / 72.0
+        centered = HCentered([body])
+        centered.hpack(body.width, "exactly")
+        arc = Hlist([ArcBox(body.width, state, *kerns(body))])
+        return Vlist([arc, Vbox(0, ARC_GAP * em), centered])
+
+    def crescent(x0, x1, y0, y1):
+        """(x0, y0)과 (x1, y0)을 잇는 초승달. 바깥 호의 꼭대기가 y1이다. 바깥 호는 왼쪽에서
+        오른쪽으로, 안쪽 호(높이에서 두께를 뺀 호)는 거꾸로 돌아온다. 호마다 반으로 갈라 베지어 둘."""
+        c, rise = x1 - x0, y1 - y0
+        if c <= 0 or rise <= 0:
+            return [(x0, y0)], [MPath.MOVETO]
+        mx = (x0 + x1) / 2
+        verts = [(x0, y0)]
+        for s, sign in ((rise, -1), (rise * (1 - ARC_STEM / ARC_RISE), 1)):
+            r = (c * c / 4 + s * s) / (2 * s)                 # 현 c, 높이 s인 원호의 반지름
+            cy, phi = y0 + s - r, math.asin(min(1.0, c / 2 / r))
+            for a0, a1 in ((math.pi / 2 - sign * phi, math.pi / 2),
+                           (math.pi / 2, math.pi / 2 + sign * phi)):
+                k = 4 / 3 * math.tan((a1 - a0) / 4)
+                p0 = (mx + r * math.cos(a0), cy + r * math.sin(a0))
+                p3 = (mx + r * math.cos(a1), cy + r * math.sin(a1))
+                verts += [(p0[0] - k * r * math.sin(a0), p0[1] + k * r * math.cos(a0)),
+                          (p3[0] + k * r * math.sin(a1), p3[1] - k * r * math.cos(a1)), p3]
+        verts.append((x0, y0))
+        return verts, [MPath.MOVETO] + [MPath.CURVE4] * 12 + [MPath.CLOSEPOLY]
+
+    glyphs = TextToPath.get_glyphs_mathtext
+
+    def get_glyphs_mathtext(self, prop, s, glyph_map=None, return_new_glyphs_only=False):
+        info, gmap, rects = glyphs(self, prop, s, glyph_map, return_new_glyphs_only)
+        out = []
+        for verts, codes in rects:                            # 너비가 음수인 사각형은 ArcBox의 표지
+            (xr, yb), (_, yt), (xl, _) = verts[0], verts[1], verts[2]
+            out.append(crescent(xl, xr, yb, yt) if xl < xr else (verts, codes))
+        return info, gmap, out
+
+    overset._tex = True
+    mt.Parser.overset = overset
+    TextToPath.get_glyphs_mathtext = get_glyphs_mathtext
+    try:                                                      # 이미 만든 파서가 있으면 새로 만들게
+        import matplotlib.mathtext as mathtext
+        mathtext.MathTextParser._parser = None
+    except AttributeError:
+        pass
+
+
 _tex_fraction()
 _tex_sqrt()
+_tex_arc()
 
 
 # ── 기본 도형 ───────────────────────────────────────────────────────────
