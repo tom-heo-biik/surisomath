@@ -15,7 +15,7 @@
   1. 옛 꼴은 단원 폴더의 figures.py를, 새 꼴은 문제 폴더마다의 figure.py를(figrun.py가 한 프로세스에서)
      실행해 figures/ 에 SVG를 뽑는다. grind_figure를 찾도록 연마 templates 폴더를 PYTHONPATH에 넣어 준다.
   2. problems.yaml을 읽어 한 쪽에 문제 둘(두 단, 단마다 하나)인 HTML을 쓴다. 그림은 SVG
-     높이가 22의 배수인지, 너비가 단 글 너비(229pt) 안인지 본다. 칸 수는 높이가 정한다.
+     높이가 20의 배수인지, 너비가 단 글 너비(229pt) 안인지 본다. 칸 수는 높이가 정한다.
   3. 지문·선지·정답·풀이의 $…$는 연마 build.py의 rich()가 Computer Modern SVG로 그린다.
   4. 선지는 너비를 재서 5열·3열·1열을 고른다(수능·모의고사 관례). 분수처럼 키 큰 선지가 두 줄
      이상 쌓이면 항목마다 두 칸을 주고 둘씩 들면 2열.
@@ -117,15 +117,18 @@ gb = _grind_build()
 rich, rel, svg_height, check_overlap = gb.rich, gb.rel, gb.svg_height, gb.check_overlap
 
 SERIES = "시험대비"
-GRID = 22.0
-BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 풀 자리가 여기서 끝난다
+# 그리드와 문항 글자는 surisomath-a4 base.css의 20pt·10pt다(2026-11-05 Tom 지시. 22pt·12pt에서)
+GRID = 20.0
+TEXT = 10.0            # 문항 글자 크기(pt). 지문·조건·보기·선지·풀이의 수식도 이 크기로 그린다
+BOTTOM = 752.0         # 본문 영역 아래 끝(842 - 90). 풀 자리가 여기서 끝난다
 COL_W = 229.0          # 단 글 너비(pt). 왼 단 229, 오른 단 230 — 좁은 쪽으로 잰다
-MARK_W = 14.8          # 선지 마커 칸(exam.css의 ol.n7 --pad). ① 10.8pt + 4pt
+MARK_W = 13.0          # 선지 마커 칸(exam.css의 ol.n7 --pad). ① 9pt + 4pt(12pt 때는 14.8pt)
 GUTTER = 6.0           # 여러 열일 때 칸마다 남겨야 하는 여백(pt). 칸에 딱 맞으면 다음 마커와 붙어 보인다
                        # (2026-09-26 근호가 좁아지며 삼각비 016·018이 3열에 0.3pt 차로 들어 ②와 ③이 붙었다)
 MIN_ROWS = 8           # 풀 자리 최소 칸 수
-NOTE_FIG_W = 84.0      # 그림 보기 한 칸의 그림 너비(pt). (229 - 16) / 2 - 22
-TALL = 16.0            # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸 간격
+NOTE_FIG_W = 86.5      # 그림 보기 한 칸의 그림 너비(pt). (229 - 16) / 2 - 20
+TALL = 16.0 * TEXT / 12.0   # 선지 수식의 잉크 높이(pt)가 이보다 크면 키 큰 선지 — 분수. 두 줄 이상 쌓이면 두 칸
+                            # 간격. 12pt 때 16pt였던 문턱을 글자 크기에 맞춰 줄인다
 CAPTION = gb.CAPTION   # neutral-500. 정답 줄
 MATH = gb.MATH
 FOLDER = re.compile(r"(\d{4})(\d)학기(중간|기말)")
@@ -156,7 +159,7 @@ def kopub_width(s: str, size: float) -> float:
     return w
 
 
-def width_of(s: str, size: float = 12.0) -> float:
+def width_of(s: str, size: float = TEXT) -> float:
     """조판한 글의 너비(pt). $…$는 Computer Modern 잉크 너비, 나머지는 KoPub 폭."""
     from matplotlib.font_manager import FontProperties
     from matplotlib.textpath import TextPath
@@ -173,7 +176,7 @@ def width_of(s: str, size: float = 12.0) -> float:
     return w
 
 
-def height_of(s: str, size: float = 12.0) -> float:
+def height_of(s: str, size: float = TEXT) -> float:
     """조판한 글 안 수식의 잉크 높이(pt). 글자 조각은 0 — 글줄에 꽉 차는 것은 분수뿐이다."""
     from matplotlib.font_manager import FontProperties
     from matplotlib.textpath import TextPath
@@ -189,7 +192,7 @@ def height_of(s: str, size: float = 12.0) -> float:
 
 def choice_layout(choices: list) -> tuple[int, bool]:
     """(열 수, 두 칸 간격 여부). 다섯이 한 줄에 들면 5열, 셋씩 들면 3열, 아니면 1열 — 수능·모의고사
-    관례. 칸 너비가 같아 ④가 ① 아래 온다. 한 칸 = 마커 칸 22pt + 글 너비.
+    관례. 칸 너비가 같아 ④가 ① 아래 온다. 한 칸 = 마커 칸(MARK_W) + 글 너비.
     분수처럼 글줄에 꽉 차는 수식(잉크 높이 TALL 초과)이 든 선지가 두 줄 이상 쌓이면 잇단 줄의
     분수가 닿으므로 항목마다 두 칸을 주고, 그때는 둘씩 들면 2열로 줄 수를 아낀다."""
     widths = [MARK_W + width_of(str(c).strip()) for c in choices]
@@ -245,7 +248,7 @@ def meta(data: dict, out_dir: Path) -> dict:
 # ── HTML ────────────────────────────────────────────────────────────────
 
 def svg_units(no: str, svg: Path, width: float = COL_W, where: str = "단 글 너비") -> int:
-    """그림 SVG의 칸 수. 높이가 22의 배수가 아니거나 너비가 자리를 넘으면 멈춘다."""
+    """그림 SVG의 칸 수. 높이가 칸(20pt)의 배수가 아니거나 너비가 자리를 넘으면 멈춘다."""
     if not svg.is_file():
         raise SystemExit(f"{no}: 그림 파일이 없다: {svg}")
     h, w = svg_height(svg), svg_width(svg)
@@ -253,7 +256,7 @@ def svg_units(no: str, svg: Path, width: float = COL_W, where: str = "단 글 �
         raise SystemExit(f"{no}: {svg.name}의 크기를 읽을 수 없다. grind_figure.save()로 만든 SVG여야 한다")
     units = round(h / GRID)
     if abs(h - units * GRID) > 0.05:
-        raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt가 22의 배수가 아니다. g.canvas의 units를 보라")
+        raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt가 {GRID:g}의 배수가 아니다. g.canvas의 units를 보라")
     if w > width:
         raise SystemExit(f"{no}: {svg.name} 너비 {w:.0f}pt가 {where} {width:.0f}pt를 넘는다. "
                          f"y 범위를 {w / width:.2f}배 넓혀 배율을 줄여라")
@@ -280,7 +283,7 @@ def text_html(no: str, p: dict, fig_dir: Path) -> str:
     SVG 높이)을 두고 뒤 글이 다음 줄에서 이어진다. 문장 하나라 블록 앞뒤에 빈 칸을 두지 않는다."""
     parts = DISPLAY.split(str(p["text"]).strip())
     if len(parts) == 1:
-        return f'      <p>{rich(parts[0], f"m{no}", fig_dir, 12.0, g.INK)}</p>\n'
+        return f'      <p>{rich(parts[0], f"m{no}", fig_dir, TEXT, g.INK)}</p>\n'
     out, k = [], 0
     for i, piece in enumerate(parts):
         if i % 2:                                   # 홀수째 조각이 별행 수식 그림 이름이다
@@ -291,7 +294,7 @@ def text_html(no: str, p: dict, fig_dir: Path) -> str:
             k += 1
             last = i == len(parts) - 1
             out.append(f'      <p{"" if last else " class=\"run\""}>'
-                       f'{rich(piece.strip(), f"m{no}" if k == 1 else f"m{no}_{k}", fig_dir, 12.0, g.INK)}</p>\n')
+                       f'{rich(piece.strip(), f"m{no}" if k == 1 else f"m{no}_{k}", fig_dir, TEXT, g.INK)}</p>\n')
     return "".join(out)
 
 
@@ -362,11 +365,11 @@ def conditions_html(no: str, p: dict, fig_dir: Path) -> str:
     if conds:
         if not isinstance(conds, list):
             raise SystemExit(f"{no}: conditions는 목록('- …')이어야 한다")
-        items = "".join(f'          <li>{rich(str(c).strip(), f"k{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
+        items = "".join(f'          <li>{rich(str(c).strip(), f"k{no}_{k}", fig_dir, TEXT, g.INK)}</li>\n'
                         for k, c in enumerate(conds, 1))
         out += f'      <div class="notes cond">\n        <ol class="cond">\n{items}        </ol>\n      </div>\n'
     if p.get("after"):
-        out += f'      <p>{rich(str(p["after"]).strip(), f"e{no}", fig_dir, 12.0, g.INK)}</p>\n'
+        out += f'      <p>{rich(str(p["after"]).strip(), f"e{no}", fig_dir, TEXT, g.INK)}</p>\n'
     return out
 
 
@@ -381,7 +384,7 @@ def notes_html(no: str, p: dict, fig_dir: Path) -> str:
     figs = [isinstance(c, dict) and c.get("figure") for c in notes]
     if any(figs):
         # 그림 보기(ㄱ. ㄴ. ㄷ. ㄹ.가 저마다 그래프). 두 열로 놓고 마커는 칸 왼쪽 위. 그림 너비는
-        # 상자 안(229 - 16pt)의 절반에서 마커 칸 22pt를 뺀 84pt 안. 칸 수는 가장 높은 그림이 정한다
+        # 상자 안(229 - 16pt)의 절반에서 마커 칸 한 칸(20pt)을 뺀 86.5pt 안. 칸 수는 가장 높은 그림이 정한다
         if not all(figs):
             raise SystemExit(f"{no}: 보기를 그림으로 쓰려면 항목 모두를 '- figure: 이름.svg'로 적어라")
         units = [svg_units(no, fig_dir / str(f), NOTE_FIG_W, "그림 보기 칸 너비") for f in figs]
@@ -389,7 +392,7 @@ def notes_html(no: str, p: dict, fig_dir: Path) -> str:
                         f'<img src="figures/{f}" alt=""></div></li>\n' for f in figs)
         return ('      <div class="notes">\n        <p class="head">보기</p>\n'
                 f'        <ol class="bogi figs">\n{items}        </ol>\n      </div>\n')
-    items = "".join(f'          <li>{rich(str(c).strip(), f"b{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
+    items = "".join(f'          <li>{rich(str(c).strip(), f"b{no}_{k}", fig_dir, TEXT, g.INK)}</li>\n'
                     for k, c in enumerate(notes, 1))
     return ('      <div class="notes">\n        <p class="head">보기</p>\n'
             f'        <ol class="bogi">\n{items}        </ol>\n      </div>\n')
@@ -397,7 +400,7 @@ def notes_html(no: str, p: dict, fig_dir: Path) -> str:
 
 def table_html(no: str, p: dict, fig_dir: Path) -> str:
     """삼각비의 표. yaml의 table(head 머리 행 · rows 몸 행 목록)을 수행평가 통계 표와 같은
-    격자(table.stat)로 조판한다 — 교과서의 삼각비의 표가 격자다. typo-0, 행 22pt, 선 0.4pt.
+    격자(table.stat)로 조판한다 — 교과서의 삼각비의 표가 격자다. typo-0, 행 한 칸, 선 0.4pt.
     칸 안 $…$는 10pt 수식. 그림 뒤, 보기 상자 앞에 온다. 높이 = (머리 행 + 몸 행) 칸, 아래 한 칸."""
     t = p.get("table")
     if not t:
@@ -435,7 +438,7 @@ def choices_html(no: str, p: dict, fig_dir: Path) -> str:
     if not choices:
         return ""
     cols, tall = choice_layout(choices)
-    items = "".join(f'        <li>{rich(str(c).strip(), f"c{no}_{k}", fig_dir, 12.0, g.INK)}</li>\n'
+    items = "".join(f'        <li>{rich(str(c).strip(), f"c{no}_{k}", fig_dir, TEXT, g.INK)}</li>\n'
                     for k, c in enumerate(choices, 1))
     return f'      <ol class="n7 c{cols}{" tall" if tall else ""}">\n{items}      </ol>\n'
 
@@ -451,7 +454,7 @@ def work_html(no: str, p: dict, fig_dir: Path) -> str:
         if not line.strip():
             out.append('        <p class="gap"></p>')
         else:
-            out.append(f'        <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, 12.0, g.INK)}</p>')
+            out.append(f'        <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, TEXT, g.INK)}</p>')
     return "\n".join(out) + "\n"
 
 
@@ -466,7 +469,7 @@ def problem_html(no: str, p: dict, fig_dir: Path, teacher: bool) -> str:
     # 검사는 늘 번호로 한다
     label = html.escape(str(p.get("label") or no))
     # 그림은 보통 조건 상자 뒤, 표 앞이다. figure_at: end면 선지 뒤(평가원의 참고 그림 자리, 그릴 자리 모눈).
-    # 블록마다 높이가 22의 배수이고 아래 여백이 한 칸이라 차례를 바꿔도 그리드와 풀 자리는 그대로다
+    # 블록마다 높이가 칸(20pt)의 배수이고 아래 여백이 한 칸이라 차례를 바꿔도 그리드와 풀 자리는 그대로다
     fig = figure_html(no, p, fig_dir)
     end = str(p.get("figure_at") or "") == "end"
     return ('    <div class="col">\n'

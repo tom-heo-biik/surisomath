@@ -4,7 +4,7 @@
 단원 폴더의 figures.py가 이 모듈을 가져다 문제 그림을 그린다. 규격은
 surisomath-a4를 따른다: Computer Modern(한글은 KoPub 폴백), 도형 선 0.7pt,
 끈·경로 1pt, 보조선 0.4pt, 점선 2pt 등간격, 색칠은 잉크 10% 틴트, 블록 높이는
-22pt의 배수. 좌표는 문제의 단위(cm, m)를 그대로 쓰고, 선 두께·글자·간격처럼
+20pt의 배수(2026-11-05부터. 그 전에는 22pt). 좌표는 문제의 단위(cm, m)를 그대로 쓰고, 선 두께·글자·간격처럼
 종이 위의 크기는 pt로 정한다. pt(ax, n)이 둘을 잇는다.
 
     import grind_figure as g                 # build.py가 import 경로를 잡아 준다
@@ -14,7 +14,7 @@ surisomath-a4를 따른다: Computer Modern(한글은 KoPub 폴백), 도형 선 
     g.dim(ax, (0, 0), (12, 0), "12cm", side=-1)   # 점선 곡선 길이 표시
     g.save(f, "p1.svg")                      # x 범위는 잉크에 맞춰 자동으로 잡는다
 
-y 범위가 배율을 정한다(배율 = units×22 ÷ y 범위). x 범위는 save()가 잉크 기준으로
+y 범위가 배율을 정한다(배율 = units×20 ÷ y 범위). x 범위는 save()가 잉크 기준으로
 좌우 대칭이 되게 잡으므로 손댈 것이 없다. 위아래 여백이 모자라면 save()가 얼마로
 바꾸라고 알려 준다.
 
@@ -43,7 +43,7 @@ from matplotlib.patches import Arc, Circle, Polygon, Wedge  # noqa: E402
 # 파일이 매번 달라진다.
 matplotlib.rcParams["svg.hashsalt"] = "surisomath"
 
-GRID = 22.0
+GRID = 20.0           # 베이스라인 한 칸(pt). surisomath-a4 base.css의 --grid와 같다
 PT = 1 / 72
 WIDTH = 475.0          # 본문 영역 너비(pt). 그림은 이보다 넓을 수 없다
 INK = _a4.INK          # neutral-1000
@@ -58,22 +58,23 @@ DASHDOT = (6, 2, 1, 2) # 일점쇄선(pt): 긴 획 6, 빈 2, 점 1, 빈 2. 회�
 TICK = 5.0             # 같은 길이 표시 획의 길이(pt)
 MARK = 5.5             # 직각 표시 한 변(pt)
 MARGIN = 4.0           # 잉크에서 캔버스 가장자리까지 최소(pt). 잘리지 않게
-LEADER = 22.0          # 지시선 길이(pt)
+LEADER = 20.0          # 지시선 길이(pt). 한 칸
 PAD = 2.0              # 길이 글 양옆에 비우는 점선 길이(pt)
-SLACK = 22.0           # 위아래 여백이 이보다 크면 그림이 블록에 비해 작다
+SLACK = 20.0           # 위아래 여백이 이보다 크면(한 칸 넘게 비면) 그림이 블록에 비해 작다
 
 OUT = None             # setup()이 단원 폴더의 figures/ 로 잡는다
 DEFAULT_NAME = None    # 문제마다 폴더(단원/001/figure.py)면 save()의 기본 이름 p001.svg
 
-# dfrac에서 분자 기준선을 올리는 양과 분모 기준선을 내리는 양(em). 22pt 글줄 상자
-# (KoPub 12pt: 베이스라인 위 14.4pt·아래 7.6pt)에 분수가 통째로 들도록 잡은 값이다.
-# 12pt에서 b/x가 위 13.8pt·아래 4.8pt, 20/100이 위 13.3pt·아래 6.9pt, 가장 큰 b/y가
-# 22pt. TeX 디스플레이 규격(num1 0.677·denom1 0.686em)은 25.8pt라 22pt 행간에서
-# 잇단 줄의 분수가 3.8pt 겹친다. 환경 변수 GRIND_FRAC="0.68,0.69"처럼 주면 다른
-# 값을 시험할 수 있다
+# dfrac에서 분자 기준선을 올리는 양과 분모 기준선을 내리는 양(em). 글줄 상자에 분수가
+# 통째로 들도록 12pt·22pt 때 잡은 값이고, em 비율이라 10pt·20pt에서도 그대로 든다
+# (KoPub 10pt 글줄 상자는 베이스라인 위 12.8pt·아래 7.2pt). 10pt에서 잰 잉크는 b/x가 위
+# 11.6pt·아래 4.1pt, 20/100이 위 11.3pt·아래 5.7pt, 가장 큰 b/y가 위 11.6pt·아래 6.0pt(17.6pt)다.
+# TeX 디스플레이 규격(num1 0.677·denom1 0.686em)이면 10pt에서 b/y가 위 13.8pt·아래 8.8pt라 글줄
+# 상자를 넘고 20pt 행간에서 잇단 줄의 분수가 겹친다(2026-11-05 측정). 환경 변수
+# GRIND_FRAC="0.68,0.69"처럼 주면 다른 값을 시험할 수 있다
 FRAC_NUM, FRAC_DEN = (float(s) for s in os.environ.get("GRIND_FRAC", "0.46,0.40").split(","))
 FRAC_RULE = 0.04       # 분수 가로줄 두께(em). TeX 규격. mathtext의 밑줄 두께(0.075em)는 굵고,
-                       # 최소 간격(3θ)까지 부풀려 분수가 22pt를 넘게 만든다
+                       # 최소 간격(3θ)까지 부풀려 12pt·22pt 때 분수가 글줄을 넘게 만들었다
 ARC_RISE = 0.20        # 호 기호(\overset{\frown})의 높이(em). 현에서 바깥 호 꼭대기까지
 ARC_STEM = 0.045       # 호 기호 가운데 두께(em). 양 끝으로 가며 가늘어지는 초승달이다
 ARC_GAP = 0.10         # 밑글자 위와 호 사이(em)
@@ -105,7 +106,7 @@ def setup(script_file: str) -> Path:
 # ── 캔버스 ──────────────────────────────────────────────────────────────
 
 def canvas(units: int, y0: float, y1: float):
-    """높이 units×22pt인 캔버스. y 범위가 배율을 정한다(배율 = units×22 ÷ (y1-y0)).
+    """높이 units×20pt(GRID)인 캔버스. y 범위가 배율을 정한다(배율 = units×20 ÷ (y1-y0)).
     x 범위는 save()가 잉크에 맞춰 잡으므로 여기서 정하지 않는다."""
     if units < 1:
         raise ValueError("units는 1 이상이어야 한다")
@@ -380,7 +381,7 @@ def save(f, filename: str | None = None) -> Path:
 
 # ── 본문 안 수식 ────────────────────────────────────────────────────────
 
-def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
+def inline(tex: str, path: Path, size: float = 10.0, color: str = INK,
            pad: float = 0.5) -> tuple[float, float, float]:
     """수식 한 토막($ 없이)을 Computer Modern로 그려 SVG로 저장한다. 상자는 잉크에
     pad pt 여백을 두고 딱 맞춘다. (너비, 높이, 깊이)를 pt로 돌려준다. 깊이는
@@ -391,10 +392,10 @@ def inline(tex: str, path: Path, size: float = 12.0, color: str = INK,
     Text.get_window_extent는 글꼴 상자를 돌려줘 실제 잉크보다 위아래로 3pt쯤
     크다. 그 값으로 앉히면 수식이 베이스라인 위에 떠 보인다.
 
-    분수는 \\dfrac을 쓴다. 배치는 _tex_fraction()이 바꿔 두어 12pt에서 b/x가 위 13.8pt·
-    아래 4.8pt, 가장 큰 b/y가 22pt로 KoPub 12pt 글줄 상자(위 14.4pt·아래 7.6pt) 안에
+    분수는 \\dfrac을 쓴다. 배치는 _tex_fraction()이 바꿔 두어 10pt에서 b/x가 위 11.6pt·
+    아래 4.1pt, 가장 큰 b/y가 위 11.6pt·아래 6.0pt로 KoPub 10pt 글줄 상자(위 12.8pt·아래 7.2pt) 안에
     든다. 그래서 분수 줄이 잇달아도 안 겹친다. 상자를 넘는 수식(겹분수,
-    큰 괄호)은 build.py가 img에 음수 여백을 줘 글줄만은 22pt로 지킨다. \\frac은
+    큰 괄호)은 build.py가 img에 음수 여백을 줘 글줄만은 20pt로 지킨다. \\frac은
     분자·분모가 7할로 줄어 교과서와 다르다. mathtext에는 \\tfrac이 없다. 호 기호
     \\overset{\\frown}{\\mathrm{AB}}는 _tex_arc()가 밑글자 너비로 늘려 그린다."""
     from matplotlib.font_manager import FontProperties
@@ -428,10 +429,10 @@ def _tex_fraction() -> None:
     TeX처럼 분자 기준선을 올리고 분모 기준선을 내리되(디스플레이 스타일 dfrac은
     FRAC_NUM·FRAC_DEN, 텍스트 스타일 frac은 cmsy num2·denom2), 가로줄과 최소 3θ
     (frac은 θ)를 띄우고 가로줄을 = 의 한가운데(축 높이)에 둔다. 올리고 내리는 양은
-    TeX 디스플레이 값이 아니라 22pt 글줄 안에 드는 값이다(FRAC_NUM 주석). 12pt에서
-    분자와 가로줄 사이 2.3pt, 가로줄과 분모 사이 2.4pt — 교과서 본문 속 분수처럼 선다.
-    가로줄 두께도 TeX 규격(FRAC_RULE)이다. mathtext의 밑줄 두께로 3θ를 띄우면 키 큰
-    분모(숫자, b)가 22pt를 넘긴다.
+    TeX 디스플레이 값이 아니라 글줄(20pt) 안에 드는 값이다(FRAC_NUM 주석). 10pt에서
+    분자와 가로줄 사이 1.9pt, 가로줄과 분모 사이 2.0pt — 교과서 본문 속 분수처럼 선다.
+    가로줄 두께도 TeX 규격(FRAC_RULE)이다. mathtext의 밑줄 두께로 3θ를 띄우면 12pt·22pt
+    때는 키 큰 분모(숫자, b)가 글줄을 넘겼다.
 
     matplotlib 3.10의 Parser._genfrac을 바꾼다. 안의 상자 클래스가 없는 판에서는
     그대로 둔다."""

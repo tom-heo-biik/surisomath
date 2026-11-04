@@ -18,25 +18,26 @@ unit: pt(A4 = 595×842)
 ## 여백
 margin-top: 72pt
 margin-side: 60pt
-margin-bottom: 88pt
+margin-bottom: 90pt(본문 영역 680pt = 20pt × 34칸)
 
 
 ## 베이스라인 그리드
 여백 방향: 아래
-단위: 22pt
-반 칸: 11pt
-문단 간격: 22pt
-섹션 위 간격: 33pt
-섹션 아래 간격: 11pt
+단위: 20pt
+반 칸: 10pt
+문단 간격: 20pt
+섹션 위 간격: 30pt
+섹션 아래 간격: 10pt
+바꾼 날: 2026. 11. 5. Tom 지시로 비익 표준 문서 양식(template-a4)의 20pt 그리드와 10pt 본문을 따른다. 그 전에는 22pt 그리드, 본문 12pt, 아래 여백 88pt였다.
 
 
 ## 타이포그래피
 font: KoPubWorld 바탕체
-body-leading: 22pt
+body-leading: 20pt
 typo-4(제목): 20pt/700/-0.05em
 typo-3(섹션): 16pt/500/-0.04em
-typo-2(소제목): 12pt/500/-0.03em
-typo-1(본문): 12pt/300/-0.03em
+typo-2(소제목): 10pt/500/-0.02em
+typo-1(본문): 10pt/300/-0.02em
 typo-0(캡션): 10pt/300/-0.02em + 10pt/500/-0.02em
 
 
@@ -66,18 +67,18 @@ neutral-1000:
 
 ## 표
 텍스트: typo-0
-행 높이: 22pt
+행 높이: 20pt
 행 높이 주의할 점: 선 두께(0.4pt) 보정 필요
 선: 가로만
 선 두께: 0.4pt
 배경: 없음
 셀 패딩: 가로 16pt(첫 열 왼쪽·끝 열 오른쪽은 0)
-간격: 표 위아래 22pt
+간격: 표 위아래 20pt
 
 
 ## 리스트
 항목 사이 간격: 0pt
-블록 높이: 22pt
+블록 높이: 20pt
 마커: • / ◦
 마커 간격: 10pt(글머리표 왼끝에서 텍스트 왼끝까지)
 레벨: 최대 2레벨
@@ -88,16 +89,16 @@ neutral-1000:
 ## 쪽번호
 형식: - n -
 크기: typo-0
-위치: 하단 중앙에서 44pt 위
+위치: 하단 중앙에서 45pt 위
 
 
 ## 수식
 렌더링: LaTeX
 폰트: Computer Modern
 크기: 본문 배율 1.0
-구현: `figsize = (475/72, units*22/72)`
+구현: `figsize = (475/72, units*20/72)`
 줄 바꿈: 수식 안에서 안 함
-블록 높이: 22의 배수 pt(별행)
+블록 높이: 20의 배수 pt(별행)
 
 
 ## 그래프
@@ -109,7 +110,7 @@ neutral-1000:
 그래프 선 두께: 1pt
 점선 두께: 0.4pt
 점선 등간격: 2pt
-블록 높이: 22의 배수 pt
+블록 높이: 20의 배수 pt
 
 
 ## 파일
@@ -125,13 +126,13 @@ templates/fonts/: KoPubWorld 바탕체 Light·Medium·Bold
 1. templates/base.html을 복사해 내용을 채운다
 2. 섹션은 반드시 `<section>`으로 감싼다. 쪽이 중간에서 끊기지 않는 단위가 이것이다
 3. `python templates/render.py 문서.html --check`
-4. --check가 "이상 없음"이면 모든 글줄이 22pt 그리드 위에 있다
+4. --check가 "이상 없음"이면 모든 글줄이 20pt 그리드 위에 있다
 5. 양식 서체가 안 박히면 --check 없이도 경고가 뜬다. 뜨면 그리드도 같이 깨져 있다
 
 
 ## 쓰는 법
 어절 줄 바꿈: render.py가 어절마다 nowrap을 건다. HTML에 따로 쓰지 않는다
-수식·그래프: `<div class="math" style="--u:3">` — 높이를 22pt의 몇 칸으로 줄지 정한다
+수식·그래프: `<div class="math" style="--u:3">` — 높이를 20pt의 몇 칸으로 줄지 정한다
 순서 표기: `<ol class="n1">`~`<ol class="n8">`이 1. 가. 1) 가) (1) (가) ① ㉮ 순서다
 숫자 열 오른쪽 정렬: `<td class="num">`
 

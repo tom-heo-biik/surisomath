@@ -2,21 +2,22 @@
    수리소 수학학원 시험대비 학습지 양식
    surisomath-a4/templates/base.css 위에 얹는다. 판형·여백·그리드·서체는 그쪽 것.
    --------------------------------------------------------------------------
-   한 쪽에 문제 둘. 본문 영역 475×682pt(31칸)를 세로 플렉스로 잡아 머리줄을 위에
-   두고, 남은 높이(44~682pt)를 두 단이 채운다. 단마다 번호·지문·그림·선지가 위에서
+   한 쪽에 문제 둘. 본문 영역 475×680pt(34칸)를 세로 플렉스로 잡아 머리줄을 위에
+   두고, 남은 높이(40~680pt)를 두 단이 채운다. 단마다 번호·지문·그림·선지가 위에서
    부터 쌓이고 그 아래가 풀 자리(빈 종이)다.
 
    쪽의 세로 짜임(본문 영역 위 끝 기준)
-     0~11    빈 반 칸
-     11~33   머리줄(시리즈 · 시험 · 학년 · 단원). 첫 쪽 오른쪽 끝에 이름 칸 — 캡션 글자, 본문 위상
-     33~44   빈 반 칸
-     44~66   문제 번호 — typo-4, 제목 위상
-     77~     지문, 그림, 선지, 풀 자리
-   반 칸을 두 번 비우는 까닭은 연마와 같다. 11 + 22 + 11 + 22 + 11 = 77.
+     0~10    빈 반 칸
+     10~30   머리줄(시리즈 · 시험 · 학년 · 단원). 첫 쪽 오른쪽 끝에 이름 칸 — 캡션 글자, 본문 위상
+     30~40   빈 반 칸
+     40~60   문제 번호 — typo-4, 제목 위상
+     70~     지문, 그림, 선지, 풀 자리
+   반 칸을 두 번 비우는 까닭은 연마와 같다. 10 + 20 + 10 + 20 + 10 = 70.
+   그리드는 2026-11-05에 22pt에서 20pt가, 문항 글자는 12pt에서 10pt가 되었다(Tom 지시).
    ========================================================================== */
 
 section.exam {
-  box-sizing: border-box; height: 682pt; padding-top: 11pt; margin: 0;
+  box-sizing: border-box; height: 680pt; padding-top: var(--half); margin: 0;
   break-after: page; position: relative;
   display: flex; flex-direction: column;
 }
@@ -24,15 +25,15 @@ section.exam > * { flex: none; }
 
 /* 머리줄 — 캡션 서체지만 검정 */
 section.exam p.series {
-  margin: 0 0 11pt; font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
-  line-height: 22pt; color: var(--neutral-1000);
+  margin: 0 0 var(--half); font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
+  line-height: var(--grid); color: var(--neutral-1000);
 }
 
 /* 이름 칸 — 첫 쪽 머리줄 오른쪽 끝. 빈 자리는 너비를 가진 inline-block(&nbsp;는
    render.py의 어절 처리에 접힌다). 높이 0인 상자의 아래 선이라 글줄 상자를 안 키운다 */
 section.exam p.name {
-  position: absolute; top: 11pt; right: 0; margin: 0;
-  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: 22pt;
+  position: absolute; top: var(--half); right: 0; margin: 0;
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: var(--grid);
 }
 section.exam p.name .blank {
   display: inline-block; width: 90pt; height: 0; margin-left: 4pt;
@@ -42,7 +43,7 @@ section.exam p.name .blank {
 /* 두 단. 가운데 세로선 하나 — 오른 단의 왼쪽 선이다. x = 237pt(쪽 기준 297pt) 정수 좌표.
    반반(237.5)이면 화면에서 회색으로 보인다. 글은 선에서 8pt. 왼 단 글 너비 229pt,
    오른 단 230pt(선 0.4pt를 빼고 7.6pt 띄워 245pt에서 시작). 세로선은 .cols가 바닥까지
-   늘어나고(flex: 1) 단이 그 높이로 늘어나(stretch) 44~682pt를 다 지난다 */
+   늘어나고(flex: 1) 단이 그 높이로 늘어나(stretch) 40~680pt를 다 지난다 */
 section.exam .cols { flex: 1; display: flex; margin: 0; min-height: 0; }
 section.exam .col {
   flex: none; box-sizing: border-box; width: 237pt; min-width: 0;
@@ -62,15 +63,15 @@ section.exam h2 {
 section.exam img.mi { width: auto; }
 
 /* 별행 수식(시험기출 연립방정식) — 지문의 [[이름.svg]]. 한 문장 안이라 앞 문단과 블록 아래에
-   빈 칸을 두지 않고 뒤 글이 다음 줄에서 이어진다. 블록 높이는 22의 배수라 위상이 안 바뀐다 */
+   빈 칸을 두지 않고 뒤 글이 다음 줄에서 이어진다. 블록 높이는 20의 배수라 위상이 안 바뀐다 */
 section.exam p.run { margin-bottom: 0; }
 section.exam .figure.disp { margin: 0; }
 
 /* 선지 — 수능·모의고사 관례의 5열·3열·2열·1열. build.py가 너비를 재서 c5·c3·c2·c1을 고른다.
-   칸 너비가 같아 ④가 ① 아래 온다. 항목 한 줄이 한 칸(22pt).
-   마커 칸은 a4의 22pt 대신 14.8pt — ①(KoPub 12pt, 10.8pt) 뒤에 4pt만 비우고 글이 시작한다.
-   build.py의 MARK_W와 같은 값이다 */
-section.exam ol.n7 { display: flex; flex-wrap: wrap; --pad: 14.8pt; }
+   칸 너비가 같아 ④가 ① 아래 온다. 항목 한 줄이 한 칸(20pt).
+   마커 칸은 한 칸 대신 13pt — ①(KoPub 10pt, 9pt) 뒤에 4pt만 비우고 글이 시작한다.
+   build.py의 MARK_W와 같은 값이다(12pt 때는 14.8pt) */
+section.exam ol.n7 { display: flex; flex-wrap: wrap; --pad: 13pt; }
 section.exam ol.n7 > li { flex: none; box-sizing: border-box; width: 100%; }
 /* 20%·50%는 다섯·둘을 더하면 단 너비와 정확히 같다. WeasyPrint가 항목 너비에서 padding을
    뺐다 더하는 사이 1e-13쯤 넘쳐 줄을 바꾸는 일이 있다(--pad 14.8pt에서 실제로 났다).
@@ -79,19 +80,19 @@ section.exam ol.n7.c5 > li { width: 19.99%; }
 section.exam ol.n7.c3 > li { width: 33.33%; }
 section.exam ol.n7.c2 > li { width: 49.99%; }
 /* 키 큰 선지(분수처럼 글줄에 꽉 차는 수식)가 두 줄 이상 쌓이면 잇단 줄의 분수가 닿는다.
-   항목마다 두 칸 — 글줄은 위 칸에, 아래 칸은 비운다. 글줄 상자는 22pt 그대로라 위상이 안 바뀐다 */
-section.exam ol.n7.tall > li { padding-bottom: 22pt; }
+   항목마다 두 칸 — 글줄은 위 칸에, 아래 칸은 비운다. 글줄 상자는 20pt 그대로라 위상이 안 바뀐다 */
+section.exam ol.n7.tall > li { padding-bottom: var(--grid); }
 
 /* 보기 상자 — 첫 줄 "보기"(typo-2 굵기), 그 아래 ㄱ. ㄴ. ㄷ. 항목. 글은 안쪽 8pt.
    테두리 0.4pt는 ::before가 상자 가장자리에 걸쳐 그린다 — 테두리를 상자 자체에 주면
    글줄이 0.4pt 내려가 그리드(허용 0.25pt)를 벗어난다. 상자 높이 = (1 + 항목 줄 수) 칸 */
-section.exam .notes { position: relative; margin: 0 0 22pt; padding: 0 8pt; }
+section.exam .notes { position: relative; margin: 0 0 var(--grid); padding: 0 8pt; }
 section.exam .notes::before {
   content: ""; position: absolute; top: -0.2pt; bottom: -0.2pt; left: 0; right: 0;
   border: 0.4pt solid var(--neutral-1000);
 }
 section.exam .notes p.head { margin: 0; font-weight: 500; }
-section.exam ol.bogi { margin: 0; --pad: 22pt; }
+section.exam ol.bogi { margin: 0; --pad: var(--grid); }
 @counter-style ko-jamo {
   system: fixed 1;
   symbols: "\3131" "\3134" "\3137" "\3139" "\3141" "\3142" "\3145";
@@ -99,17 +100,17 @@ section.exam ol.bogi { margin: 0; --pad: 22pt; }
 }
 section.exam ol.bogi > li::before { content: counter(item, ko-jamo) "."; }
 /* 그림 보기(시험기출) — ㄱ. ㄴ. ㄷ. ㄹ.가 저마다 그래프. 두 열, 마커는 칸 왼쪽 위.
-   칸 높이 = 그림 칸 수. build.py가 그림 너비를 NOTE_FIG_W(84pt) 안으로 잰다 */
+   칸 높이 = 그림 칸 수. build.py가 그림 너비를 NOTE_FIG_W(86.5pt) 안으로 잰다 */
 section.exam ol.bogi.figs { display: flex; flex-wrap: wrap; }
 section.exam ol.bogi.figs > li { flex: none; box-sizing: border-box; width: 49.99%; position: relative; }
 section.exam ol.bogi.figs > li::before { position: absolute; left: 0; top: 0; margin-left: 0; }
 section.exam ol.bogi.figs .figure { margin: 0; }
-/* 조건 상자(평가원 꼴) — 머리글 없이 (가) (나) 항목만. 마커 칸은 a4 괄호형과 같은 33pt */
-section.exam ol.cond { margin: 0; --pad: 33pt; }
+/* 조건 상자(평가원 꼴) — 머리글 없이 (가) (나) 항목만. 마커 칸은 a4 괄호형과 같은 한 칸 반(30pt) */
+section.exam ol.cond { margin: 0; --pad: 30pt; }
 section.exam ol.cond > li::before { content: "(" counter(item, ko-hangul) ")"; }
 
 /* 삼각비의 표 — 수행평가 통계 표와 같은 격자(교과서의 삼각비의 표가 격자다). a4의 표 규격
-   (typo-0, 행 22pt, 선 0.4pt, 배경 없음) 위에 세로선을 더한다. 열은 같은 너비, 글은 가운데.
+   (typo-0, 행 한 칸 20pt, 선 0.4pt, 배경 없음) 위에 세로선을 더한다. 열은 같은 너비, 글은 가운데.
    위선은 build.py가 첫 행에 단 first에 건다(thead:first-child 선택자와 같은 값이라 두 번 걸려도
    0.4pt 그대로다). 표 아래 한 칸은 base.css의 table margin */
 section.exam table.stat { table-layout: fixed; }
@@ -125,7 +126,7 @@ section.exam table.stat tr.first > * { --top: 0.4pt; }
    10pt 정답 줄이 머리줄과 같은 그리드 잔여값에 앉는다 */
 section.exam .work { margin: 0; }
 section.exam .work p { margin: 0; }
-section.exam .work p.gap { height: 22pt; }
+section.exam .work p.gap { height: var(--grid); }
 section.exam .work p.answer {
   font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; color: var(--c-caption);
 }

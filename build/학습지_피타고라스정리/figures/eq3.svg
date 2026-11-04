@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="475pt" height="44pt" viewBox="0 0 475 44" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="475pt" height="40pt" viewBox="0 0 475 40" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-09-05T14:20:17.784231</dc:date>
+    <dc:date>2026-11-05T00:57:47.436962</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -21,17 +21,17 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 44 
-L 475 44 
+   <path d="M 0 40 
+L 475 40 
 L 475 0 
 L 0 0 
-L 0 44 
+L 0 40 
 z
 " style="fill: none; opacity: 0"/>
   </g>
   <g id="text_1">
    <!-- $\sqrt{37^2 + 5^2} = \sqrt{1394}$ -->
-   <g transform="translate(183.2 27.593125) scale(0.12 -0.12)">
+   <g transform="translate(183.2 25.593125) scale(0.12 -0.12)">
     <defs>
      <path id="Cmex10-70" d="M 2713 -7425 
 L 1269 -4063 

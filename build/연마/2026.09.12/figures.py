@@ -78,7 +78,7 @@ def bx(score):
 
 
 def p1():
-    f, ax = g.canvas(7, 0, 154)          # 1단위 = 1pt
+    f, ax = g.canvas(8, -3, 157)          # 1단위 = 1pt. 2026-11-05 20pt 그리드에서 크기를 지키려고 칸을 늘리고 가운데에 앉혔다
 
     # 모눈. 회색 실선 0.4pt. 축은 검정으로 그 위에 긋는다
     for i in range(NX + 1):

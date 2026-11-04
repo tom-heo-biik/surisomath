@@ -1,10 +1,12 @@
 /* ==========================================================================
    수리소 주간 리포트 — base.css 위에 얹는 양식 스타일
    손으로 채우는 빈 양식. 칸을 다 두른 공문서 서식 꼴이다.
-   세로 배치(칸 = 22pt, 본문 위 72pt 기준):
+   세로 배치(칸 = 20pt, 본문 위 72pt 기준):
      0 제목 · 1 안내·기간 줄(바닥선이 서식 윗선) · 2 프로필 행 · 3~26 요일 행(6행 × 4칸)
-     27~30 학부모님 말씀 상자(첫 줄이 소제목, 마지막 줄이 확인)
-   31칸을 다 쓴다. 체크박스 글줄도 22pt 간격이라 모든 글줄이 그리드 위다.
+     27~33 학부모님 말씀 상자(첫 줄이 소제목, 마지막 줄이 확인)
+   34칸을 다 쓴다. 체크박스 글줄도 20pt 간격이라 모든 글줄이 그리드 위다.
+   2026-11-05에 그리드가 22pt(31칸)에서 20pt(34칸)가 되어(Tom 지시) 늘어난 세 칸을
+   학부모님 말씀 상자에 주었다(4칸에서 7칸).
    ========================================================================== */
 
 /* 한 장짜리 양식 — 쪽번호 없음 */
@@ -15,13 +17,14 @@
 /* 플렉스 상자는 자식 사이 공백을 버리므로 글은 전부 span으로 감싼다(연마와 같다).
    자식은 baseline이 아니라 위끝으로 맞춘다. 크기가 다른 글을 baseline으로 맞추면
    한쪽 줄상자가 밀려 그리드를 벗어난다.
-   10pt 글은 담는 상자에 font-size를 준다. 12pt 상자 안에 10pt span만 두면 줄상자의
-   기준이 12pt라 베이스라인이 0.57pt 내려앉는다(--check가 잡는다). */
+   본문과 크기가 다른 글은 담는 상자에 font-size를 준다. 상자 글자와 다른 크기의 span만 두면
+   줄상자의 기준이 상자 글자라 베이스라인이 내려앉는다(본문이 12pt이던 때 10pt span이 0.57pt.
+   --check가 잡는다). 본문이 10pt가 된 뒤에도 이 꼴을 지킨다. */
 
 /* --- 제목 줄 ------------------------------------------------------------- */
-.head { display: flex; align-items: flex-start; height: 22pt; }
+.head { display: flex; align-items: flex-start; height: var(--grid); }
 .head h1 { display: flex; align-items: center; margin: 0; text-align: left; }
-.head h1 img { height: 22pt; width: auto; margin-right: 4pt; }   /* 심볼 22pt, 글과 4pt */
+.head h1 img { height: var(--grid); width: auto; margin-right: 4pt; }   /* 심볼 한 칸, 글과 4pt */
 
 /* --- 안내·날짜 줄 ------------------------------------------------------- */
 /* 왼쪽에 회수 안내(typo-0, neutral-500), 오른쪽 끝에 기간 빈 칸(typo-1).
@@ -29,7 +32,7 @@
    내려앉으므로, 선은 언제나 위 상자의 바닥에서 안쪽으로 뺀다. */
 .lead {
   display: flex; justify-content: space-between; align-items: flex-start;
-  height: 22pt; box-sizing: border-box;
+  height: var(--grid); box-sizing: border-box;
   border-bottom: 0.4pt solid var(--c-frame);
 }
 .lead p { margin: 0; white-space: nowrap; }
@@ -64,18 +67,18 @@
 .c.fill  { flex: 1 1 0; }
 
 /* 행 높이 */
-.row.profile { height: 22pt; }
-.row.day-row { height: 88pt; }                 /* 4칸. 출결 네 줄 */
-.row.pbox    { height: 88pt; }                 /* 4칸 */
+.row.profile { height: var(--grid); }
+.row.day-row { height: 80pt; }                 /* 4칸. 출결 네 줄 */
+.row.pbox    { height: 140pt; }                /* 7칸 */
 
 /* 요일 행의 요일·출결·숙제 이름표는 둘째 칸에. 숙제 세 줄의 가운데이고 출결 네 줄에선
-   가운데에 가장 가까운 칸이다. 88pt의 한가운데(44pt)는 반 칸 위라 쓰지 않는다 */
-.row.day-row .c.day, .row.day-row .c.label { padding-top: 22pt; }
+   가운데에 가장 가까운 칸이다. 80pt의 한가운데(40pt)는 칸 경계라 글줄을 둘 수 없다 */
+.row.day-row .c.day, .row.day-row .c.label { padding-top: var(--grid); }
 
 /* 요일 칸 — typo-2 */
 .c.day { font-weight: 500; }
 
-/* 체크박스 — 한 줄에 하나, 글 뒤에 상자. typo-0. 한 줄이 한 칸(22pt)이라 그리드 위다.
+/* 체크박스 — 한 줄에 하나, 글 뒤에 상자. typo-0. 한 줄이 한 칸(20pt)이라 그리드 위다.
    출결과 숙제는 같은 줄에서 시작해 출석·훌륭함, 지각·적당함, 조퇴·부족함이 가로로 맞는다 */
 .c p { margin: 0; font-size: 10pt; letter-spacing: -0.02em; white-space: nowrap; }
 .c i {
@@ -87,18 +90,18 @@
   vertical-align: -0.5pt;          /* 글자 바닥에 맞춘다. 줄상자 안이라 그리드엔 영향 없다 */
 }
 
-/* 학부모님 말씀 상자 — 줄 없는 빈 네모 88pt. 첫 줄(27번 칸)에 소제목(typo-2),
-   마지막 줄(30번 칸) 오른쪽에 "확인".
-   행 안쪽 높이가 87.6pt라 마지막 줄상자는 21.6pt로 줄인다(base.css의 표와 같은 보정).
-   22pt 그대로 두면 0.4pt가 행을 넘친다 */
+/* 학부모님 말씀 상자 — 줄 없는 빈 네모 140pt(7칸). 첫 줄(27번 칸)에 소제목(typo-2),
+   마지막 줄(33번 칸) 오른쪽에 "확인".
+   행 안쪽 높이가 139.6pt라 마지막 줄상자는 19.6pt로 줄인다(base.css의 표와 같은 보정).
+   20pt 그대로 두면 0.4pt가 행을 넘친다 */
 .row.pbox .c { padding-right: 8pt; }
 .row.pbox .phead { display: flex; align-items: flex-start; }
 .row.pbox .h { font-weight: 500; }
 .row.pbox .sign {
   display: flex; justify-content: flex-end; align-items: flex-start;
-  margin-top: 44pt;                /* 소제목 줄 22 + 44 = 66pt. 곧 30번 칸 */
+  margin-top: 100pt;               /* 소제목 줄 20 + 100 = 120pt. 곧 33번 칸 */
   font-size: 10pt; letter-spacing: -0.02em;
-  line-height: 21.6pt;
+  line-height: 19.6pt;
 }
 .row.pbox .blank { display: inline-block; width: 60pt; }
 

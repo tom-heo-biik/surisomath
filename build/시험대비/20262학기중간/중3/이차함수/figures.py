@@ -108,7 +108,7 @@ def p3():
     A, B, C, D = (3.0, 9.0), (3.0, 8.0), (4.0, 8.0), (4.0, 9.0)
     top = 9.7                                  # 곡선을 정사각형 바로 위에서 잘라 배율을 키운다
     xf, xh = math.sqrt(top), math.sqrt(2 * top)
-    fig, ax = g.canvas(7, -1.56, 11.54)
+    fig, ax = g.canvas(7, -1.61, 11.82)
     plane(ax, -4.9, 5.1, -1.1, 10.5, o=(-3, -3, "right", "top"))
     curve(ax, f, -xf, xf)
     curve(ax, h, -xh, xh)
@@ -130,7 +130,7 @@ def p3():
 def p4():
     f3, f13 = (lambda x: 3 * x * x), (lambda x: x * x / 3)
     A, B, C, D = (1.5, 0.75), (4.5, 0.75), (4.5, 6.75), (1.5, 6.75)
-    fig, ax = g.canvas(7, -1.16, 9.14)
+    fig, ax = g.canvas(7, -1.32, 9.23)
     plane(ax, -5.3, 5.5, -0.8, 8.5, o=(-3, -4, "right", "top"))
     g.shade(ax, [A, B, C, D])
     curve(ax, f3, -1.6, 1.6)
@@ -173,7 +173,7 @@ def p5():
 def p6():
     f4, fa = (lambda x: 4 * x * x), (lambda x: -x * x)
     A, B, C, D = (-0.5, 1.0), (-1.0, -1.0), (0.0, -1.0), (0.5, 1.0)
-    fig, ax = g.canvas(6, -2.68, 2.26)
+    fig, ax = g.canvas(6, -2.74, 2.31)
     plane(ax, -1.8, 2.0, -2.4, 1.9, o=(-3, -5, "right", "top"))
     curve(ax, f4, -0.66, 0.66)
     curve(ax, fa, -1.5, 1.5)
@@ -193,7 +193,7 @@ def p6():
 def p7():
     up, down = (lambda x: x * x - 1), (lambda x: -x * x + 1)
     A, B, C, D = (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0), (1.0, 0.0)
-    fig, ax = g.canvas(6, -2.52, 2.68)
+    fig, ax = g.canvas(6, -2.58, 2.73)
     plane(ax, -2.1, 2.4, -2.3, 2.3, o=(3, -3, "left", "top"))
     curve(ax, up, -1.75, 1.75)
     curve(ax, down, -1.75, 1.75)
@@ -238,7 +238,7 @@ def p8():
 def p9():
     f, line = (lambda x: (x - 3) ** 2), (lambda x: x + 3)
     A, B, C = (-3.0, 0.0), (0.0, 3.0), (6.0, 9.0)
-    fig, ax = g.canvas(7, -1.96, 11.21)
+    fig, ax = g.canvas(7, -2.00, 11.32)
     plane(ax, -4.4, 7.7, -1.5, 10.4, o=(3, -3, "left", "top"))
     curve(ax, f, -0.1, 6.1)
     g.seg(ax, (-3.9, line(-3.9)), (6.7, line(6.7)), lw=g.STRING)
@@ -265,7 +265,7 @@ def shade2(ax, pts_):
 def p13():
     f, h = (lambda x: x * x + 2), (lambda x: -x * x + 2 * x + 6)
     A, B = (-1.0, 3.0), (2.0, 6.0)
-    fig, ax = g.canvas(7, -2.30, 9.21)
+    fig, ax = g.canvas(7, -2.33, 9.30)
     plane(ax, -3.0, 4.6, -1.9, 8.5, o=(3, -4, "left", "top"))
     g.shade(ax, pts(h, -1, 2) + pts(f, 2, -1))
     shade2(ax, [(-1.0, 0.0)] + pts(f, -1, 2) + [(2.0, 0.0)])
@@ -294,7 +294,7 @@ def p13():
 def p16():
     f = lambda x: x * x / 2 + x - 4
     A, B, C, D = (-4.0, 0.0), (0.0, -4.0), (2.0, 0.0), (-2.0, 4.0)
-    fig, ax = g.canvas(7, -5.73, 6.56)
+    fig, ax = g.canvas(7, -5.76, 6.66)
     plane(ax, -5.9, 4.6, -5.3, 5.8, o=(-3, -3, "right", "top"))
     g.shade(ax, [A, B, C, D])
     curve(ax, f, -5.4, 3.4)
@@ -315,7 +315,7 @@ def p17():
     f, line = (lambda x: -(x + 2) ** 2 + 9), (lambda x: x + 5)
     A, B, C, D = (-2.0, 9.0), (-5.0, 0.0), (1.0, 0.0), (-0.5, 4.5)
     xl, xr = roots(-1, -4, 5 + 3)           # y = -3인 x
-    fig, ax = g.canvas(7, -4.13, 11.15)
+    fig, ax = g.canvas(7, -4.30, 11.27)
     plane(ax, -6.4, 2.7, -3.4, 10.2, o=(3, -3, "left", "top"))
     g.shade(ax, [A, B, C])
     curve(ax, f, xl, xr)
@@ -337,7 +337,7 @@ def p18():
     f, line = (lambda x: -(x - 1) ** 2 + 9), (lambda x: -2 * x + 8)
     A, B, C = (-2.0, 0.0), (4.0, 0.0), (0.0, 8.0)
     xl, xr = roots(-1, 2, 8 + 2.5)          # y = -2.5인 x
-    fig, ax = g.canvas(7, -3.51, 11.10)
+    fig, ax = g.canvas(7, -3.55, 11.24)
     plane(ax, -3.1, 5.7, -3.0, 10.2, o=(3, -3, "left", "top"))
     curve(ax, f, xl, xr)
     g.seg(ax, (-0.7, line(-0.7)), (5.0, line(5.0)), lw=g.STRING)
@@ -358,7 +358,7 @@ def p19():
     fs = [(lambda x: (x - 1) * (x - 2), 2.2, "$y=f(x)$"),
           (lambda x: (x - 1) * (x - 3), 3.2, "$y=g(x)$"),
           (lambda x: (x - 1) * (x - 4), 4.2, "$y=h(x)$")]
-    fig, ax = g.canvas(7, -3.09, 5.29)
+    fig, ax = g.canvas(7, -3.12, 5.46)
     plane(ax, -0.7, 5.9, -2.8, 4.7, o=(-3, -4, "right", "top"))
     for i, (fn, top, text) in enumerate(fs):
         r2 = 2 + i                                 # 다른 근

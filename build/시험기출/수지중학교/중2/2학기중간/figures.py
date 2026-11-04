@@ -232,7 +232,7 @@ def bogi_line(sx, sy, filename):
     g.save(fig, filename)
 
 
-BOGI_Y = (-0.72, 1.99)  # 절편 쪽이 위인 보기 그림(ㄱ, ㄷ)의 y 범위. 아래인 것(ㄴ, ㄹ)은 L - S만큼 내린다
+BOGI_Y = (-0.75, 2.05)  # 절편 쪽이 위인 보기 그림(ㄱ, ㄷ)의 y 범위. 아래인 것(ㄴ, ㄹ)은 L - S만큼 내린다
 
 
 # ── 그림 ────────────────────────────────────────────────────────────────
@@ -274,21 +274,26 @@ def p003():
 
 
 def p004s():
-    """004. 지문 안의 연립방정식(별행 수식). 2칸(44pt) 블록.
+    """004. 지문 안의 연립방정식(별행 수식). 2칸(40pt) 블록.
 
-    mathtext에 cases가 없어 figures.py가 그린다. 두 식은 본문과 같은 12pt Computer Modern이고
-    원본처럼 왼끝을 맞춘다(등호를 맞추지 않는다). 베이스라인은 블록 위 끝에서 14.4pt와 36.4pt라
-    본문 글줄과 같은 위상이다(캔버스는 1단위 = 1pt, 아래에서 29.6pt와 7.6pt).
+    mathtext에 cases가 없어 figures.py가 그린다. 두 식은 본문과 같은 10pt Computer Modern이고
+    원본처럼 왼끝을 맞춘다(등호를 맞추지 않는다). 베이스라인은 블록 위 끝에서 12.8pt와 32.8pt라
+    본문 글줄과 같은 위상이다(캔버스는 1단위 = 1pt, 아래에서 27.2pt와 7.2pt).
     중괄호는 cmex10의 \\Bigg 중괄호 윤곽이다(cases_brace). 두 줄의 수식 축(베이스라인 위 0.25em =
-    3pt)의 한가운데(아래에서 21.6pt)에 가운데를 두고 잉크 높이 34pt(4.6~38.6pt)로 맞췄다. TeX가
-    고르는 \\Bigg는 36pt라 위아래 여백 4pt 안에 안 들어 글자 크기 11.3pt로 줄였다. 괄호 뒤 글은
-    TeX처럼 괄호의 나아가기 너비 끝에서 시작한다."""
-    fig, ax = g.canvas(2, 0.0, 44.0)
-    b1, b2 = 44.0 - 14.4, 44.0 - 36.4
-    mid = ((b1 + 3.0) + (b2 + 3.0)) / 2
-    x = cases_brace(ax, 0.0, mid + 17.0, mid - 17.0)
-    g.label(ax, x, b1, "$mx-6y=6$", ha="left", va="baseline", size=12)
-    g.label(ax, x, b2, "$x-3y=-12$", ha="left", va="baseline", size=12)
+    2.5pt)의 한가운데(아래에서 19.7pt)에 가운데를 두고 잉크 높이 28.3pt(5.55~33.85pt)로 맞췄다. 괄호
+    뒤 글은 TeX처럼 괄호의 나아가기 너비 끝에서 시작한다. 2026-11-05에 그리드가 22pt에서 20pt로, 본문이
+    12pt에서 10pt로 바뀌어(Tom 지시) 블록 44pt, 식 12pt, 베이스라인 14.4pt·36.4pt, 괄호 34pt를 고쳤다."""
+    from matplotlib.font_manager import FontProperties
+    from matplotlib.textpath import TextPath
+    fig, ax = g.canvas(2, 0.0, 40.0)
+    b1, b2 = 40.0 - 12.8, 40.0 - 32.8
+    mid = ((b1 + 2.5) + (b2 + 2.5)) / 2
+    x = cases_brace(ax, 0.0, mid + 14.15, mid - 14.15)
+    # 두 식은 글(g.label) 대신 패스로 그린다. 여백 검사가 글을 글꼴 상자로 재는데, 둘째 줄 기준선이 바닥에서
+    # 7.2pt로 박혀 있어 글꼴 상자로는 여백이 3.6pt라 4pt를 밑돈다. 패스면 잉크로 잰다. 모양은 같다
+    for b, tex in ((b1, "$mx-6y=6$"), (b2, "$x-3y=-12$")):
+        ax.add_patch(PathPatch(TextPath((x, b), tex, size=10, prop=FontProperties(size=10)),
+                               facecolor=g.INK, edgecolor="none", linewidth=0))
     g.save(fig, "p004s.svg")
 
 
@@ -299,7 +304,7 @@ def p005():
     y = 1 - x(두 절편 1)로 그린다. 축은 원점에서 x는 -0.4~1.74, y는 -0.4~1.64이고 직선은
     x = -0.45(y = 1.45)에서 x = 1.42(y = -0.42)까지다(원본의 축 길이와 직선 끝을 절편 1로 잰 값).
     O는 원점 왼쪽 아래."""
-    fig, ax = g.canvas(4, -0.58, 1.91)
+    fig, ax = g.canvas(4, -0.59, 1.95)
     plane(ax, -0.40, 1.74, -0.40, 1.64)
     g.seg(ax, (-0.45, 1.45), (1.42, -0.42), lw=g.STRING)
     g.save(fig, "p005.svg")
@@ -344,7 +349,7 @@ def p018():
     아래 화살은 2pt 앞에서 멈춘다(원본 2~3pt)."""
     fall = lambda x: 4 - x
     rise = lambda x: (x - 10) / 2
-    fig, ax = g.canvas(7, -11.41, 11.11)
+    fig, ax = g.canvas(7, -11.51, 11.39)
     plane(ax, -4.1, 24.4, -10.4, 9.7)
     g.seg(ax, (-4.0, fall(-4.0)), (14.6, fall(14.6)), lw=g.STRING)
     g.seg(ax, (-4.0, rise(-4.0)), (24.5, rise(24.5)), lw=g.STRING)
@@ -423,7 +428,7 @@ def p006():
     B, C = (0.0, 0.0), (a, 0.0)
     A = polar(B, c, 38)
     D = polar(B, a, 20)                            # BD = BC
-    fig, ax = g.canvas(6, -1.26, 8.65)
+    fig, ax = g.canvas(6, -0.91, 8.76)
     g.poly(ax, [A, B, C])
     g.seg(ax, B, D)
     g.angle(ax, A, B, C, "$62^{\\circ}$", r=12)
@@ -467,7 +472,7 @@ def p007():
     B, A, C = (0.0, 0.0), (0.0, AB), (BC, 0.0)
     D = (BC * AB / (AB + AC), 0.0)
     E = lerp(A, C, 0.25)
-    fig, ax = g.canvas(6, -1.76, 10.08)
+    fig, ax = g.canvas(6, -1.99, 10.30)
     g.shade(ax, [A, D, E])
     g.poly(ax, [A, B, C])
     g.seg(ax, A, D)
@@ -506,7 +511,7 @@ def p008():
     B, C = (0.0, 0.0), (10.0, 0.0)
     A = polar(B, 10 * math.sin(math.radians(38)) / math.sin(math.radians(68)), 74)
     O = (5.0, 5 * math.tan(math.radians(22)))
-    fig, ax = g.canvas(6, -1.09, 7.54)
+    fig, ax = g.canvas(6, -0.87, 7.64)
     g.poly(ax, [A, B, C])
     g.seg(ax, O, B)
     g.seg(ax, O, C)
@@ -542,7 +547,7 @@ def p009():
     R = 5.0
     O = (0.0, 0.0)
     A, B, C, D = polar(O, R, 107), polar(O, R, 214), polar(O, R, 326), (R, 0.0)
-    fig, ax = g.canvas(7, -3.84, 5.91)
+    fig, ax = g.canvas(7, -3.57, 6.00)
     g.poly(ax, [A, B, C])
     g.seg(ax, O, B)
     g.seg(ax, O, D)
@@ -579,7 +584,7 @@ def p010():
     E = (I[0], 0.0)
     D = lerp(B, A, 8 / 13)
     F = lerp(C, A, 6 / 11)
-    f, ax = g.canvas(6, -2.2, 11.6)
+    f, ax = g.canvas(6, -2.31, 11.84)
     g.shade(ax, [B, E, I, D])
     g.poly(ax, [A, B, C])
     g.circle(ax, I, r)
@@ -617,7 +622,7 @@ def p011():
     D = cross(C, I, A, B)
     E = cross(A, I, B, C)
     F = cross(B, I, A, C)
-    f, ax = g.canvas(6, -1.6, 8.4)
+    f, ax = g.canvas(6, -1.57, 8.51)
     g.poly(ax, [A, B, C])
     g.seg(ax, C, D)
     g.seg(ax, A, E)
@@ -688,7 +693,7 @@ def p013():
     I, _ = incircle(A, B, C)
     D = foot_of(O, A, B)
     E = foot_of(O, A, C)
-    f, ax = g.canvas(5, -0.38, 3.105)
+    f, ax = g.canvas(5, -0.46, 3.22)
     g.poly(ax, [A, B, C])
     for p, q in ((A, O), (O, D), (O, E), (O, B), (O, C), (I, B), (I, C)):
         g.seg(ax, p, q)
@@ -722,7 +727,7 @@ def p014():
     손글씨 36과 C 옆의 호, E 오른쪽 위의 연한 〃, 빨간 채점 곡선, 풀이 글씨(y = 70°, x = 6).
 
     배치. 배율은 1 = 2.46pt라 AE가 종이에서 15pt뿐이다. x 글이 그 가운데 9.5pt를 끊으니 x 곡선은 양끝
-    토막만 남는다. 곡선을 깊게 해도 가로로 보이는 토막은 늘지 않아서 배율을 5칸 안에서 되도록 키웠다.
+    토막만 남는다. 곡선을 깊게 해도 가로로 보이는 토막은 늘지 않아서 배율을 5칸 안에서 되도록 키웠다(그리드가 20pt가 된 2026-11-05부터는 같은 배율이 6칸이라 6칸으로 늘렸다).
     깊이는 13.5pt다. 원본은 x 글이 y° 글과 같은 높이에 있고 x가 글자 높이의 1할쯤 아래다. 13.5pt면
     x가 y의 몸통보다 1할 남짓 내려앉고 A와 E에서 x로 모이는 토막이 8pt쯤 된다. 11pt에서는 x가 y°보다
     몸통 4할만큼 떠 보이고 토막이 틱 둘처럼 짧았다(검토 지적). 42 곡선은 26pt로 띄워 원본처럼
@@ -733,7 +738,7 @@ def p014():
     A = polar(B, 36.0, 40.0)
     D = (A[0] + 42.0, A[1])
     E = (A[0] + 6.0, A[1])
-    f, ax = g.canvas(5, -7.53, 37.14)
+    f, ax = g.canvas(6, -9.24, 40.43)
     g.poly(ax, [A, B, C, D])
     g.seg(ax, C, E)
     g.angle(ax, B, C, A, "$40^{\\circ}$", r=16)
@@ -781,7 +786,7 @@ def p015():
     C = polar(E, 2.0, 232.0)
     B = (A[0] + C[0] - D[0], A[1] + C[1] - D[1])
     O = mid(A, C)
-    f, ax = g.canvas(7, -1.87, 0.50)
+    f, ax = g.canvas(7, -1.90, 0.55)
     k = g.pt(ax, 1)                               # 1pt
     g.seg(ax, A, E)
     g.seg(ax, A, B)
@@ -826,7 +831,7 @@ def p016():
     """
     B, A, D, C = (0.0, 1.75), (1.95, 7.65), (8.45, 7.75), (8.5, 0.0)
     O = cross(A, C, B, D)
-    f, ax = g.canvas(5, -1.6, 9.4)
+    f, ax = g.canvas(5, -1.95, 9.70)
     g.poly(ax, [A, B, C, D])
     g.seg(ax, A, C)
     g.seg(ax, B, D)
@@ -901,7 +906,7 @@ def p019():
     C, B, A = (0.0, 0.0), (-10.0, 0.0), (0.0, AC)
     D = lerp(A, B, AC / dist(A, B))
     E = (-3.0, 0.0)
-    fig, ax = g.canvas(6, -1.6, 5.75)
+    fig, ax = g.canvas(6, -1.70, 5.85)
     g.poly(ax, [A, B, C])
     g.seg(ax, D, E)
     g.corner_mark(ax, D, unit(D, A), unit(D, E))
@@ -935,7 +940,7 @@ def p020():
     h, b, s = 4.0, 7.0, 1.86
     B, C, A, D = (0.0, 0.0), (b, 0.0), (s, h), (s + b, h)
     E, F = mid(A, B), mid(C, D)
-    fig, ax = g.canvas(5, -0.73, 4.73)
+    fig, ax = g.canvas(5, -0.83, 4.83)
     g.shade(ax, [E, B, F, D])
     g.poly(ax, [A, B, C, D])
     g.seg(ax, E, D)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="160.695959pt" height="110pt" viewBox="0 0 160.695959 110" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="147.895959pt" height="100pt" viewBox="0 0 147.895959 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -20,42 +20,42 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 110 
-L 160.695959 110 
-L 160.695959 0 
+   <path d="M 0 100 
+L 147.895959 100 
+L 147.895959 0 
 L 0 0 
-L 0 110 
+L 0 100 
 z
 " style="fill: none; opacity: 0"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 85.945959 99 
-C 97.614896 99 108.807474 94.363882 117.058658 86.112698 
-C 125.309842 77.861514 129.945959 66.668936 129.945959 55 
-C 129.945959 43.331064 125.309842 32.138486 117.058658 23.887302 
-C 108.807474 15.636118 97.614896 11 85.945959 11 
-C 74.277023 11 63.084445 15.636118 54.833261 23.887302 
-C 46.582077 32.138486 41.945959 43.331064 41.945959 55 
-C 41.945959 66.668936 46.582077 77.861514 54.833261 86.112698 
-C 63.084445 94.363882 74.277023 99 85.945959 99 
-L 85.945959 99 
+    <path d="M 79.545959 90 
+C 90.154083 90 100.329154 85.785348 107.830231 78.284271 
+C 115.331307 70.783195 119.545959 60.608124 119.545959 50 
+C 119.545959 39.391876 115.331307 29.216805 107.830231 21.715729 
+C 100.329154 14.214652 90.154083 10 79.545959 10 
+C 68.937835 10 58.762765 14.214652 51.261688 21.715729 
+C 43.760612 29.216805 39.545959 39.391876 39.545959 50 
+C 39.545959 60.608124 43.760612 70.783195 51.261688 78.284271 
+C 58.762765 85.785348 68.937835 90 79.545959 90 
+L 79.545959 90 
 z
-" clip-path="url(#p036b3b02f6)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linejoin: miter"/>
+" clip-path="url(#p427b976825)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
-    <path d="M 15.545959 28.6 
-L 156.345959 28.6 
-" clip-path="url(#p036b3b02f6)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linecap: round"/>
+    <path d="M 15.545959 26 
+L 143.545959 26 
+" clip-path="url(#p427b976825)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linecap: round"/>
    </g>
    <g id="line2d_2">
-    <path d="M 15.545959 72.6 
-L 156.345959 72.6 
-" clip-path="url(#p036b3b02f6)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linecap: round"/>
+    <path d="M 15.545959 66 
+L 143.545959 66 
+" clip-path="url(#p427b976825)" style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linecap: round"/>
    </g>
    <g id="text_1">
     <!-- $l_1$ -->
-    <g transform="translate(4.345959 31.1) scale(0.1 -0.1)">
+    <g transform="translate(4.345959 28.5) scale(0.1 -0.1)">
      <defs>
       <path id="Cmmi10-6c" d="M 281 519 
 Q 281 538 286 575 
@@ -109,7 +109,7 @@ z
    </g>
    <g id="text_2">
     <!-- $l_2$ -->
-    <g transform="translate(4.345959 75.1) scale(0.1 -0.1)">
+    <g transform="translate(4.345959 68.5) scale(0.1 -0.1)">
      <defs>
       <path id="Cmr10-32" d="M 319 0 
 L 319 172 
@@ -159,7 +159,7 @@ z
    </g>
    <g id="text_3">
     <!-- O -->
-    <g transform="translate(89.945959 57.5) scale(0.1 -0.1)">
+    <g transform="translate(83.545959 52.5) scale(0.1 -0.1)">
      <defs>
       <path id="Cmr10-4f" d="M 2491 -141 
 Q 1881 -141 1395 182 
@@ -215,15 +215,15 @@ C -0.623496 1.07356 -0.318244 1.2 0 1.2
 z
 "/>
     </defs>
-    <g clip-path="url(#p036b3b02f6)">
-     <use xlink:href="#m576663cfbb" x="85.945959" y="55"/>
+    <g clip-path="url(#p427b976825)">
+     <use xlink:href="#m576663cfbb" x="79.545959" y="50"/>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p036b3b02f6">
-   <rect x="0" y="0" width="160.695959" height="110"/>
+  <clipPath id="p427b976825">
+   <rect x="0" y="0" width="147.895959" height="100"/>
   </clipPath>
  </defs>
 </svg>

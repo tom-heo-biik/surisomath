@@ -25,7 +25,7 @@ def draw():
     A = (0.0, 0.0)
     B = (10 * math.cos(math.radians(30)), 0.0)
     C = (B[0], 5.0)
-    f, ax = g.canvas(5, -1.19, 6.19)
+    f, ax = g.canvas(5, -1.37, 6.37)
     g.poly(ax, [A, B, C])
     g.right_angle(ax, B, -1, 1)
     g.angle(ax, A, B, C, "$30^{\\circ}$", r=16)

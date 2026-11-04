@@ -6,7 +6,7 @@
 
 ### surisomath-a4
 
-수리소 표준 문서 양식. A4 세로 595×842pt, 22pt 베이스라인 그리드, KoPubWorld 바탕체.
+수리소 표준 문서 양식. A4 세로 595×842pt, 20pt 베이스라인 그리드, KoPubWorld 바탕체.
 HTML로 쓰고 WeasyPrint로 PDF를 뽑는다.
 
 ```
@@ -28,7 +28,7 @@ winget install tschoonj.GTKForWindows        # Windows에서만
 python .claude/skills/surisomath-a4/templates/render.py 문서.html --check
 ```
 
-`--check`는 렌더한 PDF의 모든 글줄이 22pt 그리드 위에 있는지 실제로 재서 알려 준다.
+`--check`는 렌더한 PDF의 모든 글줄이 20pt 그리드 위에 있는지 실제로 재서 알려 준다.
 
 ### surisomath-grind
 
@@ -43,7 +43,7 @@ python .claude/skills/surisomath-a4/templates/render.py 문서.html --check
    ├─ grind.css        base.css 위에 얹는 연마 스타일
    ├─ grind_figure.py  문제 그림 도우미(캔버스·점선 곡선 치수·음영·직각 표시)
    ├─ build.py         problems.yaml → 그림 → HTML → PDF → --check
-   ├─ symbol.svg       소제목 앞 심볼(22pt)
+   ├─ symbol.svg       소제목 앞 심볼(높이 한 칸)
    └─ sample/          견본 단원. 새 단원은 이 폴더를 복사해 출발한다
 ```
 

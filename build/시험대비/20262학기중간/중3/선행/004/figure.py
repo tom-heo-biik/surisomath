@@ -42,7 +42,7 @@ def draw():
     D2 = g.polar(A, s, 124)
     C2 = (B2[0] + D2[0], B2[1] + D2[1])
     E = cross(B2, C2, D, C)
-    fig, ax = g.canvas(7, -2.32, 16.31)
+    fig, ax = g.canvas(7, -2.71, 16.73)
     g.shade(ax, [A, B2, E, D])
     g.rect(ax, A, s, s)
     g.poly(ax, [A, B2, C2, D2])

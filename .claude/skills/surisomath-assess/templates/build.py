@@ -8,7 +8,7 @@
 하는 일
   1. 학습지 폴더에 figures.py가 있으면 실행해 figures/ 에 SVG를 뽑는다. grind_figure를
      찾도록 연마 templates 폴더를 PYTHONPATH에 넣어 준다.
-  2. problems.yaml을 읽어 문제 한 개 = 한 쪽인 HTML을 쓴다. 그림은 SVG 높이가 22의 배수인지,
+  2. problems.yaml을 읽어 문제 한 개 = 한 쪽인 HTML을 쓴다. 그림은 SVG 높이가 20의 배수인지,
      너비가 본문 너비(475pt) 안인지 본다.
   3. 지문·표·정답·풀이의 $…$는 연마 build.py의 rich()가 Computer Modern SVG로 그린다.
   4. 표(table)는 중1 교과서의 도수분포표 꼴로 조판한다. 제목은 표 위 가운데, 빈 칸은 빈 셀,
@@ -86,8 +86,9 @@ rich, rel, svg_height, check_overlap, numbers = gb.rich, gb.rel, gb.svg_height, 
 svg_width, width_of = eb.svg_width, eb.width_of
 
 SERIES = "수행평가"
-GRID = 22.0
-BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 빈 자리가 여기서 끝난다
+GRID = 20.0            # base.css의 --grid(2026-11-05 Tom 지시로 22pt에서)
+TEXT = 10.0            # 본문 글자 크기(pt). 지문과 풀이의 수식도 이 크기로 그린다(같은 날 12pt에서)
+BOTTOM = 752.0         # 본문 영역 아래 끝(842 - 90). 빈 자리가 여기서 끝난다
 WIDTH = 475.0          # 본문 너비(pt). 그림은 이보다 넓을 수 없다
 MIN_ROWS = 12          # 빈 자리 최소 칸 수. 서술형 답안을 손으로 쓰는 자리다
 CAPTION = gb.CAPTION   # neutral-500. 정답 줄과 표의 답 칸
@@ -133,7 +134,7 @@ def figure_html(no: str, p: dict, fig_dir: Path) -> str:
         raise SystemExit(f"{no}: {svg.name}의 크기를 읽을 수 없다. grind_figure.save()로 만든 SVG여야 한다")
     units = round(h / GRID)
     if abs(h - units * GRID) > 0.05:
-        raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt가 22의 배수가 아니다. g.canvas의 units를 보라")
+        raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt가 {GRID:g}의 배수가 아니다. g.canvas의 units를 보라")
     if w > WIDTH + 0.05:
         raise SystemExit(f"{no}: {svg.name} 너비 {w:.0f}pt가 본문 너비 {WIDTH:.0f}pt를 넘는다. "
                          f"y 범위를 {w / WIDTH:.2f}배 넓혀 배율을 줄여라")
@@ -212,13 +213,13 @@ def solution_html(no: str, p: dict, fig_dir: Path) -> str:
         if not line.strip():
             out.append('    <p class="gap"></p>')
         else:
-            out.append(f'    <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, 12.0, g.INK)}</p>')
+            out.append(f'    <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, TEXT, g.INK)}</p>')
     return "".join(s + "\n" for s in out)
 
 
 def problem_html(no: str, p: dict, head: str, name: bool, fig_dir: Path, teacher: bool) -> str:
     """문제 한 쪽. teacher면 선생님 쪽 — 같은 양식에 머리줄 오른쪽 끝에 정답, 빈 자리에 풀이."""
-    text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
+    text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, TEXT, g.INK)
     name_html = '  <p class="name">이름<span class="blank"></span></p>\n' if name and not teacher else ""
     answer = (f'  <p class="answer">정답: {rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)}</p>\n'
               if teacher else "")

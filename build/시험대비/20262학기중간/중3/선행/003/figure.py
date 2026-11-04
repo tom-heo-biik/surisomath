@@ -22,7 +22,7 @@ def draw():
     O, A, B = (0.0, 0.0), (4.0, 0.0), (0.0, 4.0)
     P = g.polar(O, 4.0, 60)
     r = 2 * R3 - 2
-    fig, ax = g.canvas(6, -0.81, 4.65)
+    fig, ax = g.canvas(6, -0.92, 4.74)
     g.seg(ax, O, A)
     g.seg(ax, O, B)
     g.arc(ax, O, 4.0, 0, 90)

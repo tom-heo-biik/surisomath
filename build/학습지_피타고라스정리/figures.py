@@ -2,7 +2,7 @@
 """학습지 '피타고라스 정리, 어려운 두 문제' — 그림·수식·로고 SVG 생성.
 
 surisomath-a4 규격을 따른다: Computer Modern, 도형 변 0.7pt, 보조 점선 0.4pt·2pt
-등간격, 블록 높이는 22pt의 배수. 로고는 vectorize로 비트맵을 패스로 떠서 쓴다.
+등간격, 블록 높이는 20pt의 배수(2026-11-05부터. 그 전에는 22pt). 로고는 vectorize로 비트맵을 패스로 떠서 쓴다.
 
     python build/학습지_피타고라스정리/figures.py
 """
@@ -27,7 +27,7 @@ from matplotlib.patches import Arc, Polygon
 OUT = HERE / "figures"
 OUT.mkdir(exist_ok=True)
 
-GRID = 22.0
+GRID = 20.0            # surisomath-a4 base.css의 --grid
 PT = 1 / 72
 INK = fig.INK          # figure.py와 같은 잉크색(neutral-1000)
 EDGE = 0.7             # 도형 변
@@ -41,7 +41,7 @@ LABEL = 10.0
 # ── 공통 ────────────────────────────────────────────────────────────────
 
 def canvas(units: int, x0, x1, y0, y1, flip=False):
-    """높이 units×22pt, 데이터 비율 그대로의 캔버스."""
+    """높이 units×20pt, 데이터 비율 그대로의 캔버스."""
     scale = units * GRID / (y1 - y0)
     w = (x1 - x0) * scale
     f = plt.figure(figsize=(w * PT, units * GRID * PT))

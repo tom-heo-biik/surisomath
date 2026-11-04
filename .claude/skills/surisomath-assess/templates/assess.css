@@ -2,21 +2,22 @@
    수리소 수학학원 수행평가 학습지 양식
    surisomath-a4/templates/base.css 위에 얹는다. 판형·여백·그리드·서체는 그쪽 것.
    --------------------------------------------------------------------------
-   문제 한 개가 한 쪽이다. 본문 영역 475×682pt(31칸)를 세로 플렉스로 잡아 머리줄·번호·
+   문제 한 개가 한 쪽이다. 본문 영역 475×680pt(34칸)를 세로 플렉스로 잡아 머리줄·번호·
    지문·그림(또는 표)을 위에 두고, 남은 높이가 학생이 손으로 쓰는 빈 자리다. 단은 하나,
    선은 없다 — 학교 수행평가 답안지처럼 빈 종이다.
 
    쪽의 세로 짜임(본문 영역 위 끝 기준)
-     0~11    빈 반 칸
-     11~33   머리줄(시리즈 · 학년도 학기 · 학교 · 학년 · 날짜). 첫 쪽 오른쪽 끝에 이름 칸 — 캡션 글자, 본문 위상
-     33~44   빈 반 칸
-     44~66   문제 번호 — typo-4, 제목 위상
-     77~     지문, 그림 또는 표, 빈 자리
-   반 칸을 두 번 비우는 까닭은 연마·시험대비와 같다. 11 + 22 + 11 + 22 + 11 = 77.
+     0~10    빈 반 칸
+     10~30   머리줄(시리즈 · 학년도 학기 · 학교 · 학년 · 날짜). 첫 쪽 오른쪽 끝에 이름 칸 — 캡션 글자, 본문 위상
+     30~40   빈 반 칸
+     40~60   문제 번호 — typo-4, 제목 위상
+     70~     지문, 그림 또는 표, 빈 자리
+   반 칸을 두 번 비우는 까닭은 연마·시험대비와 같다. 10 + 20 + 10 + 20 + 10 = 70.
+   그리드는 2026-11-05에 22pt에서 20pt가 되었다.
    ========================================================================== */
 
 section.assess {
-  box-sizing: border-box; height: 682pt; padding-top: 11pt; margin: 0;
+  box-sizing: border-box; height: 680pt; padding-top: var(--half); margin: 0;
   break-after: page; position: relative;
   display: flex; flex-direction: column;
 }
@@ -24,16 +25,16 @@ section.assess > * { flex: none; }
 
 /* 머리줄 — 캡션 서체지만 검정 */
 section.assess p.series {
-  margin: 0 0 11pt; font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
-  line-height: 22pt; color: var(--neutral-1000);
+  margin: 0 0 var(--half); font-size: 10pt; font-weight: 300; letter-spacing: -0.02em;
+  line-height: var(--grid); color: var(--neutral-1000);
 }
 
 /* 이름 칸 — 첫 쪽 머리줄 오른쪽 끝. 시험대비와 같다. 빈 자리는 너비를 가진
    inline-block(&nbsp;는 render.py의 어절 처리에 접힌다). 높이 0인 상자의 아래 선이라
    글줄 상자를 안 키운다 */
 section.assess p.name {
-  position: absolute; top: 11pt; right: 0; margin: 0;
-  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: 22pt;
+  position: absolute; top: var(--half); right: 0; margin: 0;
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: var(--grid);
 }
 section.assess p.name .blank {
   display: inline-block; width: 90pt; height: 0; margin-left: 4pt;
@@ -51,8 +52,8 @@ section.assess img.mi { width: auto; }
 /* 정답 — 선생님 쪽 머리줄 오른쪽 끝. 연마와 같다(캡션 서체·회색·오른끝맞추기). 학생 쪽 첫 줄은
    머리줄(과 첫 쪽의 이름 칸)뿐이다 */
 section.assess p.answer {
-  position: absolute; top: 11pt; right: 0; margin: 0;
-  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: 22pt;
+  position: absolute; top: var(--half); right: 0; margin: 0;
+  font-size: 10pt; font-weight: 300; letter-spacing: -0.02em; line-height: var(--grid);
   color: var(--c-caption); text-align: right;
 }
 
@@ -61,9 +62,9 @@ section.assess p.answer {
    본문과 같은 그리드에 앉는다 */
 section.assess .work { flex: 1; margin: 0; }
 section.assess .work p { margin: 0; }
-section.assess .work p.gap { height: 22pt; }
+section.assess .work p.gap { height: var(--grid); }
 
-/* 통계 표 — 중1 교과서의 도수분포표·상대도수의 분포표 꼴. a4의 표 규격(typo-0, 행 22pt,
+/* 통계 표 — 중1 교과서의 도수분포표·상대도수의 분포표 꼴. a4의 표 규격(typo-0, 행 한 칸 20pt,
    가로선 0.4pt, 배경 없음) 위에 얹는다.
      제목  caption. 표 위 가운데, 10pt/500 검정. 학교가 학생에게 요구하는 표의 제목
            (자료/통계_작성_주의사항.pdf)이라 문서 캡션(회색·왼끝·아래)과 달리 표의 일부다
@@ -80,7 +81,7 @@ section.assess table.stat td {
 }
 section.assess table.stat caption {
   caption-side: top; text-align: center; margin: 0; padding: 0;
-  height: 22pt; line-height: 22pt;
+  height: var(--grid); line-height: var(--grid);
   font-size: 10pt; font-weight: 500; letter-spacing: -0.02em; color: var(--neutral-1000);
 }
 section.assess table.stat th,

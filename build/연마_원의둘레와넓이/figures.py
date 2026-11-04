@@ -37,7 +37,7 @@ def p2():
 def p2_1():
     r, o = 5.0, 0.4
     cs = [(5, 5), (15, 5), (5, 15), (15, 15)]
-    f, ax = g.canvas(6, -1.2, 21.3)
+    f, ax = g.canvas(7, -1.45, 21.45)
     for c in cs:
         g.circle(ax, c, r)
         g.dot(ax, c)

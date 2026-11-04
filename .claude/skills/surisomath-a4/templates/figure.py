@@ -1,7 +1,7 @@
 """수리소 수학학원 문서 양식 — 수식·그래프를 SVG로 뽑는다.
 
 스펙대로 Computer Modern, 배율 1.0, 축 0.4pt / 곡선 1pt / 점선 0.4pt·2pt 등간격,
-블록 높이는 22pt의 배수로 맞춘다. 글과 선은 neutral-1000, 격자만 neutral-500이다.
+블록 높이는 20pt의 배수로 맞춘다. 글과 선은 neutral-1000, 격자만 neutral-500이다.
 글자는 패스로 변환하므로 결과 SVG는 폰트 설치 없이 그대로 렌더된다.
 
     from figure import equation, graph
@@ -13,7 +13,7 @@
 
     python figure.py --samples
 
-TikZ/pgfplots를 쓸 수 있는 환경이라면 같은 규격(높이 22의 배수, 축 0.4pt,
+TikZ/pgfplots를 쓸 수 있는 환경이라면 같은 규격(높이 20의 배수, 축 0.4pt,
 곡선 1pt)으로 SVG나 PDF를 뽑아 그대로 바꿔 끼우면 된다.
 """
 
@@ -24,7 +24,7 @@ matplotlib.use("Agg")
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-GRID = 22.0          # 베이스라인 한 칸(pt)
+GRID = 20.0          # 베이스라인 한 칸(pt). base.css의 --grid(2026-11-05부터. 그 전에는 22pt)
 CONTENT_W = 475.0    # 본문 영역 너비 595 - 60 - 60 (pt)
 PT = 1 / 72          # pt → inch
 
@@ -55,7 +55,7 @@ matplotlib.rcParams.update({
 
 
 def _figure(units: int, width_pt: float):
-    """높이가 정확히 units × 22pt인 빈 figure를 만든다."""
+    """높이가 정확히 units × 20pt인 빈 figure를 만든다."""
     if units < 1:
         raise ValueError("units는 1 이상이어야 한다")
     fig = plt.figure(figsize=(width_pt * PT, units * GRID * PT))

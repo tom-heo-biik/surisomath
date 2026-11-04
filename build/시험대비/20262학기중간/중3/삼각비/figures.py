@@ -142,7 +142,7 @@ def p2():
     A, B, C, D = (0.0, 4.0), (0.0, 0.0), (8.0, 0.0), (8.0, 4.0)
     R, Q = (3.0, 4.0), (5.0, 0.0)
     P = (3.2, -2.4)
-    fig, ax = g.canvas(6, -3.79, 6.15)
+    fig, ax = g.canvas(6, -4.02, 6.50)
     for p, q in ((A, B), (A, R), (R, B), (R, Q), (Q, P), (P, B)):
         g.seg(ax, p, q)
     for p, q in ((R, D), (D, C), (C, Q), (B, Q)):
@@ -168,7 +168,7 @@ def p2():
 def p3():
     C, D, B = (0.0, 0.0), (-6.0, 0.0), (-12.0, 0.0)
     A = (0.0, 12 * R2)
-    fig, ax = g.canvas(7, -1.5, 19.5)
+    fig, ax = g.canvas(7, -1.42, 19.80)
     g.poly(ax, [A, B, C])
     g.seg(ax, A, D)
     g.right_angle(ax, C, -1, 1)
@@ -188,7 +188,7 @@ def p3():
 
 def p4():
     A, B, C = (6.0, 6.0), (-2.0, 2.0), (2.0, -1.0)
-    fig, ax = g.canvas(6, -2.74, 8.19)
+    fig, ax = g.canvas(6, -2.94, 8.30)
     plane(ax, -3.6, 7.6, -2.3, 7.4, o=(-3, -2, "right", "top"))
     g.poly(ax, [A, B, C])
     g.dashed(ax, A, (6.0, 0.0))
@@ -216,7 +216,7 @@ def p4():
 def p5():
     C, A = (0.0, 0.0), (0.0, R2)
     F, E, D, B = (-1.0, 0.0), (-2.0, 0.0), (-3.0, 0.0), (-4.0, 0.0)
-    fig, ax = g.canvas(5, -1.05, 1.9)
+    fig, ax = g.canvas(6, -1.20, 2.00)   # 20pt 칸(2026-11-05)에서 5칸이면 θ₂°를 선 FA가 지난다
     g.poly(ax, [A, B, C])
     for p in (D, E, F):
         g.seg(ax, A, p)
@@ -273,7 +273,7 @@ def p7():
     R = (P[1] / R3, 0.0)
     T = (Os[0] + rs * d[0], Os[1] + rs * d[1])            # 두 반원이 외접하는 점(빗변 위)
     Cend = (Ob[0] + rb * d[0], Ob[1] + rb * d[1])         # 큰 반원 지름의 아래 끝(R 쪽)
-    fig, ax = g.canvas(7, -1.16, 9.49)
+    fig, ax = g.canvas(7, -1.31, 9.66)
     g.poly(ax, [P, Q, R])
     g.arc(ax, Os, rs, 120, 300)
     g.arc(ax, Ob, rb, 120, 300)
@@ -332,7 +332,7 @@ def p10():
     B, C = (0.0, 0.0), (100.0, 0.0)
     H = (h / t28, 0.0)
     A = (H[0], h)
-    fig, ax = g.canvas(5, -34.79, 162.99)                  # 표가 있는 문제라 5칸 — 풀 자리 8칸을 지킨다
+    fig, ax = g.canvas(5, -40.70, 168.57)                  # 표가 있는 문제라 5칸 — 풀 자리 8칸을 지킨다
     g.seg(ax, B, H)
     g.seg(ax, B, A)
     g.seg(ax, C, A)
@@ -357,7 +357,7 @@ def p11():
     A = (0.0, math.sqrt(ab * ab - 1))
     u = unit(A, C)
     D = (A[0] + 2 * u[0], A[1] + 2 * u[1])
-    fig, ax = g.canvas(6, -0.65, 3.69)
+    fig, ax = g.canvas(6, -0.73, 3.77)
     g.poly(ax, [A, B, C])
     g.seg(ax, B, D)
     g.angle(ax, A, B, C, "", r=14)                        # 36°는 좁아 글을 책처럼 왼쪽 밖에
@@ -378,7 +378,7 @@ def p11():
 def p12():
     C, B, A = (0.0, 0.0), (-12.0, 0.0), (-12.0, 6.0)
     D = (-12 * 0.6, 12 * 0.8)
-    fig, ax = g.canvas(6, -1.9, 11.5)
+    fig, ax = g.canvas(6, -2.18, 11.78)
     g.poly(ax, [A, B, C, D])
     g.seg(ax, A, C)
     H = g.foot(ax, D, B, C)
@@ -437,13 +437,13 @@ def p13():
     B, C, D, E = base(195), base(285), base(15), base(105)
     t = 0.55
     P = perspective((t * s * math.cos(math.radians(15)), t * s * math.sin(math.radians(15)), (1 - t) * s))
-    fig, ax = g.canvas(5, -0.67, 0.57)
+    fig, ax = g.canvas(6, -0.70, 0.61)   # 20pt 칸(2026-11-05)에서 5칸이면 θ°를 선이 지난다
     for p, q in ((A, B), (A, C), (A, D), (B, C), (C, D), (E, P)):
         g.seg(ax, p, q)
     for p, q in ((A, E), (E, B), (E, D), (E, C)):
         g.seg(ax, p, q, dashed=True)
     m = g.angle(ax, E, C, P, "", r=12)
-    g.leader(ax, m, "$\\theta^{\\circ}$", dx=1, dy=-0.69, length=12)     # 대각선 EC와 모서리 ED 사이, 모서리 AC 오른쪽으로
+    g.leader(ax, m, "$\\theta^{\\circ}$", dx=1, dy=-0.5, length=12)     # 대각선 EC와 모서리 ED 사이, 모서리 AC 오른쪽으로
     g.dim(ax, A, B, "1", side=-1)
     g.dot(ax, P)
     g.name(ax, A, "A", dy=5, va="bottom")
@@ -463,7 +463,7 @@ def p15():
     E = lerp(A, C, 1.8 / 6)
     D = (6.0 - 1.8, 0.0)
     P = cross(B, E, A, D)
-    fig, ax = g.canvas(6, -1.02, 6.22)
+    fig, ax = g.canvas(6, -1.17, 6.37)
     g.poly(ax, [A, B, C])
     g.seg(ax, B, E)
     g.seg(ax, A, D)
@@ -510,7 +510,7 @@ def p17():
     O, A, B = (0.0, 0.0), (4.0, 0.0), (0.0, 4.0)
     P = g.polar(O, 4.0, 60)
     r = 2 * R3 - 2
-    fig, ax = g.canvas(6, -0.81, 4.65)
+    fig, ax = g.canvas(6, -0.92, 4.74)
     g.seg(ax, O, A)
     g.seg(ax, O, B)
     g.arc(ax, O, 4.0, 0, 90)
@@ -536,7 +536,7 @@ def p18():
     B = g.polar(A, 6.0, 225)
     D = g.polar(A, 6.0, 315)
     C = g.polar(B, 6.0, -15)
-    fig, ax = g.canvas(6, -6.94, 1.15)
+    fig, ax = g.canvas(6, -7.11, 1.31)
     g.poly(ax, [A, B, C, D])
     g.seg(ax, B, D)
     g.corner_mark(ax, A, unit(A, B), unit(A, D))
@@ -557,7 +557,7 @@ def p19():
     B, C = (0.0, 0.0), (0.0, 4.0)
     A = (-4 * R3, 0.0)
     P = mid(A, C)
-    fig, ax = g.canvas(6, -0.68, 4.68)
+    fig, ax = g.canvas(6, -0.77, 4.77)
     g.poly(ax, [A, B, C])
     g.seg(ax, B, P)
     g.right_angle(ax, B, -1, 1)
@@ -577,7 +577,7 @@ def p20():
     B, C = (0.0, 0.0), (6 * R3, 0.0)
     A = (3 * R3, 3.0)
     D = (2 * R3, 0.0)
-    fig, ax = g.canvas(4, -1.11, 4.11)                     # 밑변이 길어 4칸 — 5칸이면 단 너비를 넘는다
+    fig, ax = g.canvas(4, -1.32, 4.32)                     # 밑변이 길어 4칸 — 5칸이면 단 너비를 넘는다
     g.poly(ax, [A, B, C])
     g.seg(ax, A, D)
     g.angle(ax, B, C, A, "$30^{\\circ}$", r=16)
@@ -603,7 +603,7 @@ def p21():
     A = (0.0, 0.0)
     B, C = (-x1, -h), (16 - x1, -h)
     D, E = mid(A, B), mid(A, C)
-    fig, ax = g.canvas(7, -22.03, 2.95)
+    fig, ax = g.canvas(7, -22.55, 3.44)
     g.poly(ax, [A, B, C])
     g.seg(ax, D, E)
     g.angle(ax, A, B, C, "$45^{\\circ}$", r=14)
@@ -624,7 +624,7 @@ def p22():
     A = (2.0, 2 * R3)
     D = mid(A, C)
     E = mid(B, D)
-    fig, ax = g.canvas(6, -1.58, 4.3)
+    fig, ax = g.canvas(6, -0.81, 4.25)
     g.poly(ax, [A, B, C])
     g.seg(ax, B, D)
     g.seg(ax, C, E)
@@ -651,7 +651,7 @@ def p23():
     U = (0.0, 8.0)
     t = 288 / 208
     T = (-12 + 12 * t, 8 * t)
-    fig, ax = g.canvas(6, -16.75, 16.75)                   # 지문이 길어 6칸(풀 자리 8칸)
+    fig, ax = g.canvas(6, -17.44, 17.44)                   # 지문이 길어 6칸(풀 자리 8칸)
     g.circle(ax, O, 12.0)
     g.seg(ax, P, Q)
     g.seg(ax, S, R)
@@ -683,7 +683,7 @@ def p24():
     A = (0.0, 0.0)
     B, C = (-x1, -h), (bc - x1, -h)
     D = lerp(B, C, 0.6)
-    fig, ax = g.canvas(7, -10.72, 1.48)
+    fig, ax = g.canvas(7, -10.92, 1.69)
     g.poly(ax, [A, B, C])
     g.seg(ax, A, D)
     g.angle(ax, A, B, D, "$45^{\\circ}$", r=14)
@@ -708,7 +708,7 @@ def p25():
     A = g.polar(O, 6.0, 33)
     P = g.polar(O, 4.2, 60)
     Q = (5.0, 0.0)
-    fig, ax = g.canvas(7, -0.9, 6.77)
+    fig, ax = g.canvas(7, -1.04, 6.78)
     arrow(ax, O, X_end)
     arrow(ax, O, Y_end)
     g.poly(ax, [A, P, Q])
@@ -740,7 +740,7 @@ def p26():
     Q = g.polar(M, 6.0, 210)
     L = (-6.0, 8.0)
     cab = 0.5                                              # 곤돌라 반지름
-    fig, ax = g.canvas(5, -5.73, 19.34)                    # 지문이 길어 5칸(단위 단서로 한 줄 늘었다). 풀 자리 8칸을 지킨다
+    fig, ax = g.canvas(5, -6.94, 20.46)                    # 지문이 길어 5칸(단위 단서로 한 줄 늘었다). 풀 자리 8칸을 지킨다
     # 지면 띠와 기둥
     ax.add_patch(Polygon([(-9.0, -0.9), (9.0, -0.9), (9.0, 0.0), (-9.0, 0.0)],
                          closed=True, facecolor=g.INK, alpha=g.TINT, edgecolor="none", gid="noedge"))
@@ -794,7 +794,7 @@ def p27():
     A, B, C, D, E, F = (rot(p) for p in (A, B, C, D, E, F))
     G = lerp(D, E, 2 / 3)
     H = lerp(D, F, 2 / 3)
-    fig, ax = g.canvas(6, -6.85, 0.93)
+    fig, ax = g.canvas(6, -6.80, 1.02)
     g.shade(ax, [E, F, H, G])
     g.poly(ax, [A, B, C, D])
     g.seg(ax, A, C)
@@ -832,7 +832,7 @@ def p28():
     B, C = (0.0, 0.0), (bc, 0.0)
     A = g.polar(B, a, 40)
     D = (bc * a / (a + b), 0.0)
-    fig, ax = g.canvas(6, -0.97, 5.9)
+    fig, ax = g.canvas(6, -1.12, 6.04)
     g.poly(ax, [A, B, C])
     g.seg(ax, A, D)
     g.angle(ax, B, C, A, "$40^{\\circ}$", r=16)
@@ -854,7 +854,7 @@ def p29():
     A, B = (-3.0, 0.0), (3.0, 0.0)
     C = g.polar(O, 3.0, 120)
     D = g.polar(O, 3.0, 150)
-    fig, ax = g.canvas(6, -3.7, 3.6)
+    fig, ax = g.canvas(6, -3.30, 3.65)
     g.shade(ax, [A, B, C, D])
     g.circle(ax, O, 3.0)
     g.poly(ax, [A, B, C, D])
@@ -879,7 +879,7 @@ def p30():
     D2 = g.polar(A, s, 124)
     C2 = (B2[0] + D2[0], B2[1] + D2[1])
     E = cross(B2, C2, D, C)
-    fig, ax = g.canvas(7, -2.32, 16.31)
+    fig, ax = g.canvas(7, -2.71, 16.73)
     g.shade(ax, [A, B2, E, D])
     g.rect(ax, A, s, s)
     g.poly(ax, [A, B2, C2, D2])

@@ -138,7 +138,7 @@ def p2():
     C = (-ce * c[0], -ce * c[1])
     D = ((16 - ce) * c[0], (16 - ce) * c[1])
     O = (2 * a[0] + math.sqrt(19) * c[0], 2 * a[1] + math.sqrt(19) * c[1])
-    fig, ax = g.canvas(6, -13.57, 6.14)
+    fig, ax = g.canvas(6, -13.66, 6.49)
     g.circle(ax, O, math.sqrt(68))
     g.seg(ax, A, B)
     g.seg(ax, C, D)
@@ -169,7 +169,7 @@ def p3():
     C, D = chord(3.0, 4.0)
     A, B = chord(4.0, 3.0)
     O = (0.0, 0.0)
-    fig, ax = g.canvas(6, -6.59, 5.51)
+    fig, ax = g.canvas(6, -6.81, 5.57)
     g.circle(ax, O, 5.0)
     for p, q in ((A, B), (C, D), (E, F)):
         g.seg(ax, p, q)
@@ -192,7 +192,7 @@ def p4():
     h = 3 * math.sqrt(7)
     A = (M[0] - h * d[0], M[1] - h * d[1])
     B = (M[0] + h * d[0], M[1] + h * d[1])
-    fig, ax = g.canvas(6, -9.70, 9.81)                     # C₁ 이름이 큰 원 아래로 나가 y 범위를 넓혔다
+    fig, ax = g.canvas(6, -10.11, 10.17)                     # C₁ 이름이 큰 원 아래로 나가 y 범위를 넓혔다
     g.circle(ax, O, 8.0)
     g.circle(ax, O, 6.0)
     g.seg(ax, O, C)
@@ -287,7 +287,7 @@ def p7():
 def p8():
     O, A, B, C = (0.0, 6.0), (0.0, 0.0), (10.0, 0.0), (10.0, 6.0)
     D, E = (6.0, 6.0), (2.0, 0.0)
-    fig, ax = g.canvas(6, -1.22, 7.28)
+    fig, ax = g.canvas(6, -1.36, 7.43)
     g.rect(ax, A, 10.0, 6.0)
     g.arc(ax, O, 6.0, 270, 360)
     g.seg(ax, C, E)
@@ -309,7 +309,7 @@ def p9():
     O1, O2 = (0.0, 4.0), (4.0, 1.0)
     B, C = (0.0, 0.0), (4.0, 0.0)
     A = lerp(O1, O2, 4 / 5)
-    fig, ax = g.canvas(6, -1.39, 8.39)
+    fig, ax = g.canvas(6, -1.55, 8.46)
     g.seg(ax, (-4.9, 0.0), (6.4, 0.0))
     g.circle(ax, O1, 4.0)
     g.circle(ax, O2, 1.0)
@@ -354,7 +354,7 @@ def p11():
     t = (-math.sin(math.radians(220)), math.cos(math.radians(220)))
     D = meet(T, t, B, unit(B, A))
     E = meet(T, t, B, (1.0, 0.0))
-    fig, ax = g.canvas(7, -2.86, 11.72)
+    fig, ax = g.canvas(7, -3.10, 11.91)
     g.poly(ax, [A, B, C])
     g.circle(ax, O, r)
     g.seg(ax, D, E)
@@ -414,7 +414,7 @@ def p13():
         pts.append(g.polar(P, pb, ang))
     A, B, C, D, E = pts
     circles = [incircle(P, A, B), incircle(P, B, C), incircle(P, C, D), incircle(P, D, E)]
-    fig, ax = g.canvas(7, -15.08, 2.09)
+    fig, ax = g.canvas(7, -15.34, 2.35)
     g.poly(ax, [P, A, B, C, D, E])
     for q in (B, C, D):
         g.seg(ax, P, q)
@@ -445,7 +445,7 @@ def p14():
     A, B, C, D = (0.0, 12.0), (0.0, 0.0), (16.0, 0.0), (16.0, 12.0)
     O, O2 = (4.0, 4.0), (12.0, 8.0)
     E, F = lerp(A, C, 8 / 20), lerp(C, A, 8 / 20)
-    fig, ax = g.canvas(7, -1.6, 13.6)
+    fig, ax = g.canvas(7, -1.88, 13.88)
     g.shade(ax, [E, O, F, O2])
     g.rect(ax, B, 16.0, 12.0)
     g.seg(ax, A, C)
@@ -506,7 +506,7 @@ def p16():
     qc = T[0] ** 2 + T[1] ** 2 - 36
     s = (-qb - math.sqrt(qb * qb - 4 * qa * qc)) / (2 * qa)
     R = (T[0] + s * dx, T[1] + s * dy)
-    fig, ax = g.canvas(6, -8.07, 6.61)
+    fig, ax = g.canvas(6, -8.32, 6.69)
     g.circle(ax, O, 6.0)
     g.seg(ax, T, Q)
     g.seg(ax, T, S)

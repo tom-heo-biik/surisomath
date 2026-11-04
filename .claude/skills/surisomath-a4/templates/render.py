@@ -23,7 +23,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 BASE_CSS = HERE / "base.css"
-GRID = 22.0
+GRID = 20.0             # base.css의 --grid(2026-11-05부터. 그 전에는 22pt)
 FONT = "KoPubWorld"     # base.css 가 쓰는 서체. 이게 안 박히면 그리드가 통째로 밀린다
 
 # WeasyPrint가 쓰는 GTK 런타임 (Windows)
@@ -170,16 +170,16 @@ def prepare(src: Path) -> tuple[str, bool]:
 
 # --- 그리드 검사 ------------------------------------------------------------
 
-def check_grid(pdf_path: Path) -> int:
-    """모든 글줄의 베이스라인이 22pt 그리드 위에 있는지 본다.
+def check_grid(pdf_path: Path, grid: float = GRID) -> int:
+    """모든 글줄의 베이스라인이 그리드(기본 20pt, --grid로 바꿀 수 있다) 위에 있는지 본다.
 
     베이스라인이 줄상자 안에서 놓이는 높이는 글자 크기마다 다르다. 그래서
-    크기별로 묶어 잔여값(mod 22)이 문서 전체에서 같은지를 본다. 표 테두리가
+    크기별로 묶어 잔여값(mod 칸)이 문서 전체에서 같은지를 본다. 표 테두리가
     행 높이를 늘리거나, 쪽 맨 위에 여백이 남는 식으로 그리드가 밀리면 잡힌다.
 
-    허용오차 0.25pt — 표 셀은 행간이 21.6pt라 같은 10pt 글자여도 베이스라인이
+    허용오차 0.25pt — 표 셀은 행간이 19.6pt(20pt에서 선 0.4pt를 뺀 값)라 같은 10pt 글자여도 베이스라인이
     본문보다 0.2pt 아래에 놓인다. 줄상자는 그리드 위에 있으므로 이 정도는 통과
-    시키고, 행마다 쌓이는 0.4pt 밀림이나 쪽 맨 위 11pt 밀림은 잡는다.
+    시키고, 행마다 쌓이는 0.4pt 밀림이나 쪽 맨 위 10pt(반 칸) 밀림은 잡는다.
     """
     try:
         import pdfplumber
@@ -190,7 +190,7 @@ def check_grid(pdf_path: Path) -> int:
     lines = []          # (쪽, 베이스라인, 크기)
     with pdfplumber.open(pdf_path) as pdf:
         for pno, page in enumerate(pdf.pages, 1):
-            folio_top = page.height - 88          # 쪽번호 영역은 뺀다
+            folio_top = page.height - 90          # 쪽번호 영역(아래 여백 90pt)은 뺀다
             seen = set()
             for c in page.chars:
                 base = round(page.height - c["matrix"][5], 2)
@@ -202,12 +202,12 @@ def check_grid(pdf_path: Path) -> int:
     ref: dict[float, float] = {}
     bad = 0
     for pno, base, size in sorted(lines, key=lambda r: (r[2], r[0], r[1])):
-        residue = base % GRID
+        residue = base % grid
         if size not in ref:
             ref[size] = residue
             continue
         off = abs(residue - ref[size])
-        off = min(off, GRID - off)
+        off = min(off, grid - off)
         if off > 0.25:
             print(f"  ! p{pno} {size}pt 줄 base={base:.2f} — 그리드에서 {off:.2f}pt 벗어남")
             bad += 1
@@ -283,6 +283,7 @@ def main() -> int:
     ap.add_argument("source", type=Path, help="입력 HTML")
     ap.add_argument("-o", "--output", type=Path, help="출력 PDF (기본: 같은 이름 .pdf)")
     ap.add_argument("--check", action="store_true", help="렌더 후 베이스라인 그리드 검사")
+    ap.add_argument("--grid", type=float, default=GRID, help="그리드 검사의 칸(pt). 기본은 base.css의 20pt")
     ap.add_argument("--no-wrap", action="store_true", help="어절 nowrap 처리를 끈다")
     ap.add_argument("--boxes", type=Path, help="img·class box 요소의 상자 위치를 이 JSON 파일에 적는다(쪽별 목록)")
     args = ap.parse_args()
@@ -318,7 +319,7 @@ def main() -> int:
     print(f"{out}  ({len(doc.pages)}쪽)")
     bad = check_fonts(out)
     if args.check:
-        bad += check_grid(out)
+        bad += check_grid(out, args.grid)
     return 1 if bad else 0
 
 

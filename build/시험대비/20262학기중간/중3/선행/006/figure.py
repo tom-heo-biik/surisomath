@@ -29,7 +29,7 @@ def draw():
     A, B, C, D = (0.0, 12.0), (0.0, 0.0), (16.0, 0.0), (16.0, 12.0)
     O, O2 = (4.0, 4.0), (12.0, 8.0)
     E, F = lerp(A, C, 8 / 20), lerp(C, A, 8 / 20)
-    fig, ax = g.canvas(7, -1.6, 13.6)
+    fig, ax = g.canvas(7, -1.88, 13.88)
     g.shade(ax, [E, O, F, O2])
     g.rect(ax, B, 16.0, 12.0)
     g.seg(ax, A, C)

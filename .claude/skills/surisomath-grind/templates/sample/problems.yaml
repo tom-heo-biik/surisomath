@@ -8,7 +8,7 @@
 #            따옴표가 없으면 YAML이 no를 거짓으로 읽어 번호가 무시된다
 #     text    문제 글 한 문단. 단위는 숫자에 붙인다(17cm, 6m 28cm). 원주율은 적지 않는다
 #     figure  figures/ 안의 그림 파일. figures.py 가 그린다
-#     units   그림 블록 높이. 22pt 의 칸 수. figure 가 있으면 필수
+#     units   그림 블록 높이. 20pt 의 칸 수. figure 가 있으면 필수
 #     alt     그림 설명(선택)
 #     answer  정답. "정답: " 뒤에 그대로 붙는다. 단위까지 쓴다
 

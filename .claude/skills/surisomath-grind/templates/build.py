@@ -9,9 +9,9 @@
      grind_figure를 찾도록 이 폴더를 PYTHONPATH에 넣어 준다.
   2. 심볼(symbol.svg)을 figures/ 에 복사한다.
   3. problems.yaml을 읽어 문제 한 개 = 한 쪽인 HTML을 쓴다. 그림마다 SVG 높이가
-     units×22pt인지 확인한다. base.css와 grind.css는 저장소 안 상대 경로로 링크한다.
+     units×20pt인지 확인한다. base.css와 grind.css는 저장소 안 상대 경로로 링크한다.
   4. 문제 글과 정답의 $…$는 Computer Modern 수식 SVG로 바꿔 figures/ 에 둔다
-     (본문 12pt 검정, 정답 10pt 회색). 수식이 든 어절은 통째로 nowrap이다.
+     (본문 10pt 검정, 정답 10pt 회색). 수식이 든 어절은 통째로 nowrap이다.
   5. solution이 있는 문제는 학생 쪽 뒤에 선생님 풀이 쪽을 같은 차례로 붙인다. 양식은
      같고 왼 단 소제목이 '선생님 풀이', 그 단에 풀이 글(줄마다 한 칸), 오른 단은 '메모'.
   6. surisomath-a4/templates/render.py 로 PDF를 뽑고 --check 로 그리드를 검사한다.
@@ -36,7 +36,7 @@ problems.yaml
     - "no": "004"             # 번호. 키까지 따옴표로. YAML은 no를 거짓으로 읽는다
       text: …
       figure: p2.svg          # figures/ 안의 그림 파일
-      units: 5                # 그림 블록 높이(22pt의 칸 수). figure가 있으면 필수
+      units: 5                # 그림 블록 높이(20pt의 칸 수). figure가 있으면 필수
       alt: …                  # 그림을 글로 적어 둔다. PDF에는 안 찍힌다
       answer: 114.24cm
 """
@@ -67,8 +67,9 @@ SYMBOL = HERE / "symbol.svg"
 DEFAULT_SERIES = "연마(硏磨)"
 LEFT, RIGHT = "원석 풀이", "보석 풀이"          # 학생 쪽 두 단 소제목
 TEACHER, MEMO = "선생님 풀이", "메모"           # 선생님 풀이 쪽 두 단 소제목
-GRID = 22.0
-BOTTOM = 754.0         # 본문 영역 아래 끝(842 - 88). 두 단 상자가 여기서 끝난다
+GRID = 20.0           # base.css의 --grid(2026-11-05 Tom 지시로 22pt에서)
+TEXT = 10.0           # 본문 글자 크기(pt). 문제 글과 풀이의 수식도 이 크기로 그린다(같은 날 12pt에서)
+BOTTOM = 752.0         # 본문 영역 아래 끝(842 - 90). 두 단 상자가 여기서 끝난다
 MIN_ROWS = 12          # 풀이 자리 최소 칸 수
 CAPTION = "#636363"    # neutral-500. 정답 줄의 수식 색
 MATH = re.compile(r"\$([^$]+)\$")
@@ -149,10 +150,10 @@ KOPUB_ASC, KOPUB_DESC = 1.05, 0.49     # KoPub 바탕 hhea ascent·descent(em). 
 def inline_style(h: float, d: float, size: float) -> str:
     """수식 img를 글줄 베이스라인에 앉히는 style.
 
-    글줄 상자(행간 22pt)는 베이스라인 위 ascent + 반행간, 아래 descent + 반행간까지
-    받는다(12pt: 위 14.4pt·아래 7.6pt). 보통 분수(dfrac)는 이 안에 들게 배치되어
+    글줄 상자(행간 20pt)는 베이스라인 위 ascent + 반행간, 아래 descent + 반행간까지
+    받는다(10pt: 위 12.8pt·아래 7.2pt). 보통 분수(dfrac)는 이 안에 들게 배치되어
     있다(grind_figure.FRAC_NUM). 인라인 img는 여백 상자로 글줄 높이를 셈하므로,
-    겹분수처럼 잉크가 그보다 큰 수식은 넘는 만큼 음수 여백을 줘 글줄 상자를 22pt에
+    겹분수처럼 잉크가 그보다 큰 수식은 넘는 만큼 음수 여백을 줘 글줄 상자를 20pt에
     붙든다. 잉크는 그대로 다 찍히고 옆 줄과 겹칠 수 있다 — check_overlap이 본다.
     vertical-align은 여백 상자 바닥 기준이라 아래 여백만큼 덜 내린다."""
     half = (GRID - (KOPUB_ASC + KOPUB_DESC) * size) / 2
@@ -170,14 +171,14 @@ def solution_html(no: str, text: str, fig_dir: Path) -> str:
         if not line.strip():
             out.append('      <p class="gap"></p>')
         else:
-            out.append(f'      <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, 12.0, g.INK)}</p>')
+            out.append(f'      <p>{rich(line.strip(), f"s{no}_{i}", fig_dir, TEXT, g.INK)}</p>')
     return '    <div class="solution">\n' + "\n".join(out) + "\n    </div>\n"
 
 
 def problem_html(no: str, p: dict, series: str, fig_dir: Path, teacher: bool = False) -> str:
     """문제 한 쪽. teacher면 선생님 풀이 쪽 — 같은 양식에 왼 단 소제목이 '선생님 풀이'고
     그 단에 solution이 들어간다. 오른 단은 '메모'로 비워 둔다."""
-    text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, 12.0, g.INK)
+    text = rich(str(p["text"]).strip(), f"m{no}", fig_dir, TEXT, g.INK)
     # 정답은 선생님 풀이 쪽에만 적는다. 학생 쪽 첫 줄은 시리즈 이름뿐이다
     answer = (f'  <p class="answer">정답: {rich(str(p["answer"]).strip(), f"a{no}", fig_dir, 10.0, CAPTION)}</p>\n'
               if teacher else "")
@@ -193,7 +194,7 @@ def problem_html(no: str, p: dict, series: str, fig_dir: Path, teacher: bool = F
             raise SystemExit(f"{no}: 그림 파일이 없다: {svg}")
         h = svg_height(svg)
         if h is not None and abs(h - units * GRID) > 0.05:
-            raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt ≠ units {units} × 22 = {units * GRID:g}pt. "
+            raise SystemExit(f"{no}: {svg.name} 높이 {h:g}pt ≠ units {units} × {GRID:g} = {units * GRID:g}pt. "
                              "yaml의 units와 g.canvas의 units를 맞춰라")
         alt = html.escape(str(p.get("alt", "")))
         fig = (f'  <div class="figure" style="--u:{units}">'
@@ -283,8 +284,9 @@ def report_space(pdf: Path, nos: list[str]) -> int:
                 bad += 1
                 continue
             rows.append((no, max(r["height"] for r in box) / GRID))
-            # 선생님 풀이가 단 바닥을 넘으면 글자가 본문 영역 아래로 나간다(쪽번호 10pt는 뺀다)
-            if any(c["bottom"] > BOTTOM + 0.5 and c["size"] > 10.5 for c in page.chars):
+            # 선생님 풀이가 단 바닥을 넘으면 글자가 본문 영역 바로 아래로 나간다. 본문과 쪽번호가 둘 다
+            # 10pt라 크기로는 못 가르고, 바닥 아래 한 칸 반 안만 본다. 쪽번호는 아래 여백 한가운데(45pt 위)다
+            if any(BOTTOM + 0.5 < c["bottom"] < BOTTOM + 1.5 * GRID for c in page.chars):
                 print(f"  ! {no}: 풀이 글이 두 단 바닥을 넘는다. 줄을 줄여라")
                 bad += 1
     if not rows:
@@ -300,7 +302,7 @@ def report_space(pdf: Path, nos: list[str]) -> int:
 def check_overlap(boxes: list, nos: list[str]) -> int:
     """글줄에 끼운 수식(img.mi)끼리 겹치면 경고한다.
 
-    보통 분수는 22pt 글줄 안에 들게 배치되어 잇단 줄에 있어도 안 겹친다. 겹분수나
+    보통 분수는 20pt 글줄 안에 들게 배치되어 잇단 줄에 있어도 안 겹친다. 겹분수나
     큰 괄호처럼 상자를 넘는 수식이 잇단 줄에 오면 위 줄의 아래쪽과 아래 줄의
     위쪽이 겹친다. 같은 줄의 수식은 나란히 있어 안 겹치므로, 겹침은 곧 잇단 줄의
     큰 수식이다. render.py --boxes 가 준 레이아웃 상자로 본다."""
